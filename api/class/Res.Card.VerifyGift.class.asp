@@ -1,0 +1,29 @@
+<%
+'카드선물유효성체크
+Class clsResCardVerifyGift
+	Public mCode, mMessage, mReceiverMembershipJoinYn
+
+	Public Function Init(ByRef obj)
+		If JSON.hasKey(obj, "code") Then
+			mCode = obj.code
+		End If
+		If JSON.hasKey(obj, "message") Then
+			mMessage = obj.message
+		End If
+		If JSON.hasKey(obj, "result") Then
+			If JSON.hasKey(obj.result, "receiverMembershipJoinYn") Then
+				mReceiverMembershipJoinYn = obj.result.receiverMembershipJoinYn
+			End If
+		End If
+	End Function
+
+	Private Sub Class_Initialize
+		mCode = 0
+		mMessage = ""
+		mReceiverMembershipJoinYn = ""
+	End Sub
+
+	Private Sub Class_Terminate
+	End Sub
+End Class
+%>

@@ -1,0 +1,206 @@
+@charset "utf-8";
+
+/*----------------------------------------------------------------------------------------------------------------------------------------
+	File : layout.css
+	Company : The Webstyle co.,ltd
+    CSS 적용순서 : 아이디 > 태그와 클래스 > 클래스 > 태그
+    CSS 선택자 선언순서 : Type Selector, Layout Selector, Class Selector, Etc
+    CSS 속성 선언순서 : display, position, float/clear, overflow, width/height, margin/padding, border, background, font/color, align, etc
+------------------------------------------------------------------------------------------------------------------------------------------*/
+
+.wrapper {position:relative; overflow:hidden; width:100%; min-width:1360px; min-height:100%;}
+
+/* Header */
+.header-wrap {
+	position:fixed;
+	top:0px;
+	left:0px;
+	z-index:300;
+	width:100%;
+	min-width:1420px;
+	height:104px;
+	border-bottom:1px solid #999;
+	background-color:rgba(243, 243, 243, 0.95);
+	box-shadow:0 1px 2px 0 rgba(0,0,0,0.1);
+}
+.header-wrap:before {
+	content:"";
+	display:block;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:43px;
+	border-bottom:2px solid #cf152d;
+	background-color:#111;
+	transition:all 0.2s ease-out;
+}
+.header-wrap .header {position:relative; z-index:20; width:1196px; margin:0 auto;}
+.header .gnb-wrap {width:100%; height:43px;}
+.header .gnb-wrap .familyBrand {overflow:hidden; padding-top:5px;}
+.header .gnb-wrap .familyBrand li {float:left;}
+.header .gnb-wrap .familyBrand li a {display:block; height:36px; padding:0 19px; font-family:"NanumSquareOTFR"; font-size:16px; line-height:31px; color:#666;}
+.header .gnb-wrap .familyBrand li a:hover {color:#fff;}
+.header .gnb-wrap .familyBrand li.on a {color:#fff; background-color:#cf152d;}
+.header .gnb-wrap .familyBrand li.point a {color:#ffa800;}
+.header .gnb-wrap .gnb {display:inline-block; position:absolute; top:5px; right:0px; overflow:hidden;}
+.header .gnb-wrap .gnb li {float:left; margin-left:35px;}
+.header .gnb-wrap .gnb li a {display:block; font-family:"NanumSquareOTFR"; font-size:14px; line-height:31px; color:#c8c8c8;}
+.header .gnb-wrap .gnb li a.cart {position:relative; padding-left:38px; background:url('/images/common/ico_cart.png') left 4px no-repeat;}
+.header .gnb-wrap .gnb li a.cart .txt {font-size:0;}
+.header .gnb-wrap .gnb li a.cart .count {display:inline-block; position:absolute; top:1px; right:0; min-width:20px; height:20px; padding:0 5px; border-radius:20px; line-height:20px; color:#fff; text-align:center; background-color:#cf152d;}
+.header .lnb-wrap {position:relative; width:100%; height:60px; padding-left:264px;}
+.header .lnb-wrap .logo-header {display:inline-table; position:absolute; top:0px; left:0px; overflow:hidden; height:60px;}
+.header .lnb-wrap .logo-header a {display:table-cell; height:60px; vertical-align:middle;}
+.header .lnb-wrap .lnb {display:inline-block; position:relative;}
+.header .lnb-wrap .lnb:after {content:""; display:block; clear:both;}
+.header .lnb-wrap .lnb li.node1 {position:relative; float:left; margin:0 70px;}
+.header .lnb-wrap .lnb li.node1:first-child {margin-left:0px;}
+.header .lnb-wrap .lnb li.node1 a.depth1 {
+	display:block;
+	font-family:"NanumSquareOTFR";
+	font-size:20px;
+	line-height:60px;
+	color:#111;
+	letter-spacing:-1px;
+	text-align:center;
+	transition:all 0.3s ease-out;
+}
+.header .lnb-wrap .lnb li.node1:hover a.depth1 {color:#cf152d;}
+.header .lnb li.node1 .submenu {display:none; position:relative; top:0px; left:0px; height:345px; margin:0 -70px; padding:40px 0;}
+.header .lnb li.node1 .submenu li.node2 {position:relative; margin-top:32px; text-align:center;}
+.header .lnb li.node1 .submenu li.node2:first-child {margin-top:0px;}
+.header .lnb li.node1 .submenu li.node2 a.depth2 {font-family:"NanumSquareOTFR"; font-size:16px; color:#111; transition:all 0.3s ease-out;}
+.header .lnb li.node1 .submenu li.node2 a.depth2:hover {color:#cf152d;}
+
+.header-wrap .bg-lnb {
+	display:none;
+	position:absolute;
+	top:104px;
+	left:0px;
+	width:100%;
+	height:345px;
+	background-color:rgba(243,243,243,0.95);
+	box-shadow:0 2px 2px 0 rgba(0,0,0,0.1);
+}
+.header-wrap.open .bg-lnb {height:345px;}
+
+.header .lnb-wrap .callNumber {
+	display:inline-block;
+	position:absolute;
+	top:0px;
+	right:0px;
+	padding-left:25px;
+	font-family:"NanumSquareOTFB";
+	font-size:24px;
+	line-height:60px;
+	color:#111;
+	letter-spacing:-1px;
+	background:url('/images/common/ico_callNumber.png') left center no-repeat;
+}
+
+/* Container */
+.container {position:relative; padding:104px 0 362px 0;}
+.container.main {padding:0;}
+
+.btn_scrollTop {
+	display:none;
+	position:fixed;
+	bottom:40px;
+	right:20px;
+	z-index:200;
+	width:50px;
+	height:50px;
+	font-size:0;
+	background:url('/images/common/btn_scrollTop.png') center center no-repeat;
+	background-size:100%;
+}
+.btn_scrollTop.active {display:block;}
+
+/* Breadcrumb */
+.breadcrumb-wrap {position:relative; width:100%; height:37px; background-color:#555555;}
+.breadcrumb-wrap .breadcrumb {position:relative; overflow:hidden; width:1196px; margin:0 auto;}
+.breadcrumb-wrap .breadcrumb li {
+	float:left;
+	margin-left:13px;
+	padding-left:40px;
+	font-family:"NanumSquareOTFR";
+	font-size:14px;
+	line-height:37px;
+	color:#eee;
+	background:url('/images/common/ico_breadcrumb.png') left center no-repeat;
+}
+.breadcrumb-wrap .breadcrumb li:first-child {padding-left:0px; background:none;}
+.breadcrumb-wrap .breadcrumb li a {display:block; font-family:"NanumSquareOTFR"; font-size:14px; line-height:37px; color:#eee;}
+.breadcrumb-wrap .breadcrumb .menu a {display:inline-block; margin-right:25px;}
+.breadcrumb-wrap.type2 {background-color:#555;}
+
+.wrapper.scrolled .header-wrap {height:63px;}
+.wrapper.scrolled .bg-lnb {top:63px;}
+.wrapper.scrolled .header-wrap:before {top:-41px;}
+.wrapper.scrolled .header .lnb-wrap .logo-header {height:63px;}
+.wrapper.scrolled .gnb-wrap {display:none;}
+.wrapper.scrolled .header .lnb-wrap {height:63px;}
+.wrapper.scrolled .container {padding-top:63px;}
+
+.content {position:relative; width:1196px; margin:0 auto; padding:40px 0 160px;}
+.main .content {width:100%; height:4631px; padding:0;}
+.main .content .inner {position:relative; /*width:1196px;*/ margin:0 auto;}
+.content.content-wide {width:100%;}
+.content.content-wide2 {width:100%; padding:0;}
+
+/* Quick Menu */
+.quickMenu {
+	position:fixed;
+	top:182px;
+	right:20px;
+	width:112px;
+	border-radius:6px;
+	background-color:#8c674a;
+	transition:all 0.2s ease-out;
+	z-index:200;
+}
+.scrolled .quickMenu {top:93px;}
+.quickMenu .menuList {display:table; width:100%;}
+.quickMenu .menuList li {display:table-row; }
+.quickMenu .menuList li a {display:table-cell; height:110px; border-top:1px solid #967962; text-align:center; vertical-align:middle;}
+.quickMenu .menuList li:first-child a {border-top:0px;}
+.quickMenu .menuList li a span {display:inline-block; padding-top:43px; font-family:"NanumSquareOTFR"; font-size:16px; color:#fff;}
+.quickMenu .menuList li:nth-child(1) a span {background:url('/images/common/ico_quickmenu01.png') center top no-repeat;}
+.quickMenu .menuList li:nth-child(2) a span {background:url('/images/common/ico_quickmenu02.png') center top no-repeat;}
+.quickMenu .menuList li:nth-child(3) a span {background:url('/images/common/ico_quickmenu03.png') center top no-repeat;}
+.quickMenu .menuList li:nth-child(4) a span {background:url('/images/common/ico_quickmenu04.png') center top no-repeat;}
+
+@media all and (max-width:1500px) {
+	.quickMenu {width:50px; right:17px;}
+	.quickMenu .menuList li a {height:80px}
+	.quickMenu .menuList li a span {width:40px; padding-top:30px; font-size:0px; background-position:center center !important;}
+}
+
+/* Footer */
+.footer-wrap {position:absolute; left:0px; bottom:0px; z-index:100; width:100%; height:370px; background-color:#252525;}
+.footer-wrap:after {content:""; display:block; position:absolute; top:100px; left:0px; z-index:1; width:100%; height:1px; background-color:#6c6c6c;}
+.footer {position:relative; z-index:10; width:1196px; height:362px; margin:0 auto;}
+.footer .familySite {display:table; width:100%; margin-bottom:41px; table-layout:fixed;}
+.footer .familySite li {display:table-cell; height:100px; text-align:center; vertical-align:middle;}
+.footer .familySite li a {font-family:"NanumSquareOTFR"; font-size:18px; color:#666;}
+.footer .familySite li a:hover {color:#fff;}
+.footer .fnb-wrap {position:relative;}
+.footer .logo-footer {margin-bottom:20px;}
+.footer .fnb {overflow:hidden; margin-bottom:11px;}
+.footer .fnb li {float:left; margin-left:37px;}
+.footer .fnb li:first-child {margin-left:0px;}
+.footer .fnb li a {font-family:"NanumSquareOTFR"; font-size:16px; color:#fff;}
+.footer .footer-addr {margin-bottom:10px; font-family:"NanumSquareOTFR"; font-size:16px; line-height:24px; color:#999;}
+.footer .footer-addr span {margin:0 7px;}
+.footer .copyright {font-family:"NanumSquareOTFR"; font-size:14px; color:#999;}
+.footer .footer-sns {display:inline-block; position:absolute; top:0px; right:0px; overflow:hidden;}
+.footer .footer-sns li {float:left; margin-right:19px;}
+.footer .footer-sns li a {display:block; width:28px; height:28px; font-size:0px;}
+.footer .footer-sns li a.sns_facebook  {background:url('/images/common/btn_footer_sns_facebook.png') center top no-repeat;}
+.footer .footer-sns li a.sns_instagram {background:url('/images/common/btn_footer_sns_instagram.png') center top no-repeat;}
+.footer .footer-sns li a.sns_youtube   {background:url('/images/common/btn_footer_sns_youtube.png') center top no-repeat;}
+.footer .footer-sns li a.sns_blog      {background:url('/images/common/btn_footer_sns_blog.png') center top no-repeat;}
+.footer .footer-sns li a:hover {background-position:center bottom;}
+.footer .fnb-wrap .callNumber {	display:inline-block; font-family:"NanumSquareOTFB"; font-size:18px; line-height:24px;	color:#999; letter-spacing:-1px;	/*padding-left:18px;  background:url('/images/common/ico_footerCallNumber.png') left center no-repeat;*/ margin-bottom: 14px;
+}

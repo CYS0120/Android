@@ -1,0 +1,313 @@
+<!--#include virtual="/api/include/utf8.asp"-->
+<!--#include virtual="/include/db_open.asp"-->
+<!doctype html>
+<html lang="ko">
+<head>
+<!--#include virtual="/includes/top.asp"-->
+<meta name="Keywords" content="장바구니, BBQ치킨">
+<meta name="Description" content="장바구니 메인">
+<title>장바구니 | BBQ치킨</title>
+<script>
+jQuery(document).ready(function(e) {
+	
+	$(window).on('scroll',function(e){
+		if ($(window).scrollTop() > 0) {
+			$(".wrapper").addClass("scrolled");
+		} else {
+			$(".wrapper").removeClass("scrolled");
+		}
+	});
+
+});
+</script>
+<script type="text/javascript">
+	var delivery_amt = 2000;
+	var cartPage = "cart";
+	$(function(){
+		$("#delivery_fee").text(numberWithCommas(delivery_amt)+"원");
+		getView();
+	});
+
+	function goOrder() {
+		var cartV = getAllCartMenu();
+		if(cartV.length == 0) {
+			alert("장바구니에 상품이 없습니다.");
+			return;
+		}
+		$("#cart_form input[name=cart_value]").val(JSON.stringify(cartV));
+		$("#cart_form").submit();
+	}
+</script>
+
+</head>
+<%
+	Dim branch_id : branch_id = Request("branch_id")
+	Dim addr_idx : addr_idx = Request("addr_idx")
+
+	If IsEmpty(branch_id) Or IsNull(branch_id) Or Trim(branch_id) = "" Or Not IsNumeric(branch_id) THEN branch_id = 0
+	If IsEmpty(addr_idx) Or IsNull(addr_idx) Or Trim(addr_idx) = "" Or Not IsNumeric(addr_idx) Then addr_idx = 0
+
+	If branch_id = 0 Then branch_id = 1
+
+	Dim aCmd, aRs
+
+	Set aCmd = Server.CreateObject("ADODB.Command")
+
+	With aCmd
+		.ActiveConnection = dbconn
+		.NamedParameters = True
+		.CommandType = adCmdStoredProc
+		.CommandText = "bp_branch_select"
+
+		.Parameters.Append .CreateParameter("@branch_id", adInteger, adParamInput, , branch_id)
+
+		Set aRs = .Execute
+	End With
+
+	Set aCmd = Nothing
+
+	Dim vBranchName, vBranchTel
+	If Not (aRs.BOF Or aRs.EOF) Then
+		vBranchName = aRs("branch_name")
+		vBranchTel = aRs("branch_tel")
+	End If
+
+	Set aRs = Nothing
+
+	Set aCmd = Server.CreateObject("ADODB.Command")
+
+	With aCmd
+		.ActiveConnection = dbconn
+		.NamedParameters = True
+		.CommandType = adCmdStoredProc
+		.CommandText = "bp_member_addr_select"
+
+		.Parameters.Append .CreateParameter("@addr_idx", adInteger, adParamInput, , addr_idx)
+		.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 50, Session("userIdNo"))
+		If addr_idx = 0 Then
+			.Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput, 10, "MAIN")
+		Else
+			.Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput, 10, "ONE")
+		End If
+
+		Set aRs = .Execute
+	End With
+	Set aCmd = Nothing
+
+	Dim vAddrIdx, vAddress
+	If Not (aRs.BOF Or aRs.EOF) Then
+		vAddrIdx = aRs("addr_idx")
+		vAddress = aRs("address_main")&" "&aRs("address_detail")
+	End If
+
+	Set aRs = Nothing
+%>
+<body>
+<div class="wrapper">
+	<!-- Header -->
+	<!--#include virtual="/includes/header.asp"-->
+	<!--// Header -->
+	<hr>
+	
+	<!-- Container -->
+	<div class="container">
+		
+		<!-- Content -->
+		<article class="content">
+	
+			<!-- 주문단계 -->
+			<section class="section section-orderStep">
+				<ul>
+					<li class="step1 on"><span>01 장바구니</span></li>
+					<li class="step2"><span>02 주문/결제</span></li>
+					<li class="step3"><span>03 주문완료</span></li>
+				</ul>
+			</section>
+			<!-- //주문단계 -->
+
+			<h1>장바구니</h1>
+			<form id="cart_form" name="cart_form" method="post" action="payment.asp">
+				<input type="hidden" name="branch_id" value="<%=branch_id%>">
+				<input type="hidden" name="addr_idx" value="<%=vAddrIdx%>">
+				<input type="hidden" name="cart_value">
+			</form>
+			<!-- 상단 배달정보 -->
+			<section class="section section_cartSum">
+				<ul>
+					<li>
+						<strong>배달매장 :</strong>
+						<span class="red"><%=vBranchName%></span>
+						<span>(<%=vBranchTel%>)</span>
+					</li>
+					<li>
+						<strong>배달비 :</strong>
+						<span id="delivery_free">0원</span>
+					</li>
+					<li>
+						<strong>배달주소 :</strong>
+						<span><%=vAddress%></span>
+					</li>
+				</ul>
+				<a href="#" class="btn btn-sm btn-gray" onclick="javascript:lpOpen('.lp_orderShipping');">변경</a>
+			</section>
+			<!-- //상단 배달정보 -->
+
+			<!-- 장바구니 테이블 -->
+			<table border="1" cellspacing="0" class="tbl-cart">
+				<caption>장바구니</caption>
+				<colgroup>
+					<col style="width:50px;">
+					<col style="width:141px;">
+					<col>
+					<col style="width:200px;">
+					<col style="width:180px;">
+				</colgroup>
+				<thead>
+					<tr>
+						<th><label class="ui-checkbox no-txt"><input type="checkbox"><span></span></label></th>
+						<th colspan="2">상품정보</th>
+						<th>상품금액</th>
+						<th>변경</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="chk"><label class="ui-checkbox no-txt"><input type="checkbox"><span></span></label></td>
+						<td class="img">
+							<a href="#"><img src="http://placehold.it/120x120"/></a>
+						</td>
+						<td class="info ta-l">
+							<div class="pdt-info div-table">
+								<dl class="tr">
+									<dt class="td">황금 올리브 치킨</dt>
+									<dd class="td pm">
+										<span class="form-pm">
+											<button type="button" class="minus">-</button>
+											<input type="text" value="1">
+											<button type="button" class="plus">+</button>
+										</span>
+									</dd>
+									<dd class="td sum">18,000원</dd>
+								</dl>
+								<dl class="tr">
+									<dt class="td">황금 올리브 치킨</dt>
+									<dd class="td pm">
+										<span class="form-pm">
+											<button type="button" class="minus">-</button>
+											<input type="text" value="1">
+											<button type="button" class="plus">+</button>
+										</span>
+									</dd>
+									<dd class="td sum">1,000원</dd>
+								</dl>
+							</div>
+						</td>
+						<td class="pay">28,500원</td>
+						<td><button type="button" class="btn btn-sm btn-grayLine">사이드 변경</button></td>
+					</tr>
+					<tr>
+						<td class="chk"><label class="ui-checkbox no-txt"><input type="checkbox"><span></span></label></td>
+						<td class="img">
+							<a href="#"><img src="http://placehold.it/120x120"/></a>
+						</td>
+						<td class="info ta-l">
+							<div class="pdt-info div-table">
+								<dl class="tr">
+									<dt class="td">황금 올리브 치킨</dt>
+									<dd class="td pm">
+										<span class="form-pm">
+											<button type="button" class="minus">-</button>
+											<input type="text" value="1">
+											<button type="button" class="plus">+</button>
+										</span>
+									</dd>
+									<dd class="td sum">18,000원</dd>
+								</dl>
+								<dl class="tr">
+									<dt class="td">황금 올리브 치킨</dt>
+									<dd class="td pm">
+										<span class="form-pm">
+											<button type="button" class="minus">-</button>
+											<input type="text" value="1">
+											<button type="button" class="plus">+</button>
+										</span>
+									</dd>
+									<dd class="td sum">1,000원</dd>
+								</dl>
+								<dl class="tr">
+									<dt class="td">황금 올리브 치킨</dt>
+									<dd class="td pm">
+										<span class="form-pm">
+											<button type="button" class="minus">-</button>
+											<input type="text" value="1">
+											<button type="button" class="plus">+</button>
+										</span>
+									</dd>
+									<dd class="td sum">1,000원</dd>
+								</dl>
+								<dl class="tr">
+									<dt class="td">황금 올리브 치킨</dt>
+									<dd class="td pm">
+										<span class="form-pm">
+											<button type="button" class="minus">-</button>
+											<input type="text" value="1">
+											<button type="button" class="plus">+</button>
+										</span>
+									</dd>
+									<dd class="td sum">1,000원</dd>
+								</dl>
+							</div>
+						</td>
+						<td class="pay">28,500원</td>
+						<td><button type="button" class="btn btn-sm btn-grayLine">사이드 변경</button></td>
+					</tr>
+				</tbody>
+			</table>
+			<!-- //장바구니 테이블 -->
+
+			<!-- 장바구니 하단 정보 -->
+			<div class="cart-botInfo div-table">
+				<div class="tr">
+					<div class="td lef">
+						<button type="button" class="btn btn-sm btn-grayLine">선택삭제</button>
+						<button type="button" class="btn btn-sm btn-grayLine">전체삭제</button>
+					</div>
+					<div class="td rig">
+						<span>총 상품금액</span>
+						<strong>18,000</strong>
+						<span>원</span>
+						<em><img src="/images/mypage/ico_calc_plus.png" alt=""></em>
+						<span>배달비</span>
+						<strong>2,000</strong>
+						<span>원</span>
+						<em><img src="/images/mypage/ico_calc_equal.png" alt=""></em>
+						<span>합계</span>
+						<strong class="red">50,000</strong>
+						<span>원</span>
+					</div>
+				</div>
+			</div>
+			<!-- //장바구니 하단 정보 -->
+
+			<div class="btn-wrap two-up inner mar-t60">
+				<a href="#" class="btn btn-lg btn-redLine"><span>다른메뉴 더보기</span></a>
+				<button type="submit" class="btn btn-lg btn-red"><span>주문하기</span></button>
+			</div>
+
+		</article>
+		<!--// Content -->	
+		
+		<!-- QuickMenu -->
+		<!--#include virtual="/includes/quickmenu.asp"-->
+		<!-- QuickMenu -->
+
+	</div>
+	<!--// Container -->
+	<hr>
+	
+	<!-- Footer -->
+	<!--#include virtual="/includes/footer.asp"-->
+	<!--// Footer -->
+</div>
+</body>
+</html>

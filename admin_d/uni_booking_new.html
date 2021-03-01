@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/jquery.flexslider.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/admin.js"></script>
+
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/content.css">
+
+</head>
+
+<body>
+    <div class="wrap">
+         <!--header-->
+        <div class="head_wrap">
+                <div class="log_info">
+                    <ul>
+                        <li>
+                            <span>님</span>
+                            <span>&nbsp;환영합니다.</span>
+                        </li>
+                        <li>
+                            <span>접속IP:</span>
+                            <span>106.248.76.213</span>
+                        </li>
+                        <li>
+                            <span>접속경과시간:</span>
+                            <span>05시간 20분</span>
+                        </li>
+                        <li>
+                            <span>자동 로그아웃 남은시간 :</span>
+                            <span>50분</span>
+                        </li>
+                        <div>
+                            <a href="javascript:;" class="logout">로그아웃</a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+            <!--//header-->
+            <!--NAV-->
+            <div class="navwrap">
+                <!--GNB-->
+                <div class="gnbwrap">
+                    <div class="gnb">
+                        <div class="left_logo">
+                            <a href="javascript:;">
+                                <img src="img/logo.png" alt="">
+                            </a>
+                        </div>
+                        <div class="right_gnb">
+                            <ul id="menu_hover" class="gnb_list">
+                                <li class="main_depth pr">
+                                    <a href="#main_sub">
+                                        <img src="img/gnb/main_off.png" alt="">
+                                        <span>메인관리</span>
+                                    </a>
+                                    <ul id="main_sub" class="tab-data">
+                                        <li><a href="javascript:;">비비큐치킨</a></li>
+                                        <li><a href="javascript:;">닭익는마을</a></li>
+                                        <li><a href="javascript:;">우쿠야</a></li>
+                                        <li><a href="javascript:;">올떡</a></li>
+                                        <li><a href="javascript:;">소신</a></li>
+                                        <li><a href="javascript:;">와타미</a></li>
+                                        <li><a href="javascript:;">행복한집밥</a></li>
+                                        <li><a href="javascript:;">치킨대학</a></li>
+                                        <li><a href="javascript:;">창업센터</a></li>
+                                        <li><a href="javascript:;">제너시스글로벌</a></li>
+                                        <li><a href="javascript:;">제너시스그룹</a></li>
+                                    </ul>
+                                </li>
+                                <li class="order_depth pr">
+                                    <a href="#order_sub">
+                                        <img src="img/gnb/order_off.png" alt="">
+                                        <span>주문관리</span>
+                                    </a>
+                                    <ul class="tab-data" id="order_sub">
+                                        <li><a href="javascript:;">웹주문관리</a></li>
+                                        <li><a href="javascript:;">유선주문취소리스트</a></li>
+                                    </ul>
+                                </li>
+                                <li class="store_depth pr">
+                                    <a href="#store_sub">
+                                        <img src="img/gnb/store_off.png" alt="">
+                                        <span>매장관리</span>
+                                    </a>
+                                    <ul id="store_sub" class="tab-data">
+                                        <li><a href="javascript:;">비비큐치킨</a></li>
+                                        <li><a href="javascript:;">닭익는마을</a></li>
+                                        <li><a href="javascript:;">우쿠야</a></li>
+                                        <li><a href="javascript:;">올떡</a></li>
+                                        <li><a href="javascript:;">소신</a></li>
+                                        <li><a href="javascript:;">와타미</a></li>
+                                        <li><a href="javascript:;">행복한집밥</a></li>
+                                        <li><a href="javascript:;">코드관리</a></li>
+                                    </ul>
+                                </li>                        
+                                <li class="menu_depth pr">
+                                    <a href="#menu_sub">
+                                        <img src="img/gnb/menu_off.png" alt="">
+                                        <span>메뉴관리</span>
+                                    </a>
+                                    <ul id="menu_sub" class="tab-data">
+                                        <li><a href="javascript:;">비비큐치킨</a></li>
+                                        <li><a href="javascript:;">닭익는마을</a></li>
+                                        <li><a href="javascript:;">우쿠야</a></li>
+                                        <li><a href="javascript:;">올떡</a></li>
+                                        <li><a href="javascript:;">소신</a></li>
+                                        <li><a href="javascript:;">와타미</a></li>
+                                        <li><a href="javascript:;">행복한집밥</a></li>
+                                        <li><a href="javascript:;">코드관리</a></li>
+                                    </ul>
+                                </li>
+                                <li class="board_depth pr">
+                                    <a href="#board_sub">
+                                        <img src="img/gnb/board_off.png" alt="">
+                                        <span>게시판관리</span>
+                                    </a>
+                                    <ul id="board_sub" class="tab-data">
+                                        <li><a href="javascript:;">비비큐치킨</a></li>
+                                        <li><a href="javascript:;">닭익는마을</a></li>
+                                        <li><a href="javascript:;">우쿠야</a></li>
+                                        <li><a href="javascript:;">올떡</a></li>
+                                        <li><a href="javascript:;">소신</a></li>
+                                        <li><a href="javascript:;">와타미</a></li>
+                                        <li><a href="javascript:;">행복한집밥</a></li>
+                                        <li><a href="javascript:;">치킨대학</a></li>
+                                        <li><a href="javascript:;">창업센터</a></li>
+                                        <li><a href="javascript:;">제너시스글로벌</a></li>
+                                        <li><a href="javascript:;">제너시스그룹</a></li>
+                                    </ul>
+                                </li>
+                                <li class="popup_depth pr">
+                                    <a href="#popup_sub">
+                                        <img src="img/gnb/popup_off.png" alt="">
+                                        <span>팝업관리</span>
+                                    </a>
+                                    <ul id="popup_sub" class="tab-data">
+                                        <li><a href="javascript:;">팝업관리</a></li>
+                                        <li><a href="javascript:;">팝업리스트</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">
+                                        <img src="img/gnb/coupon_off.png" alt="">
+                                        <span>쿠폰관리</span>
+                                    </a>
+                                </li>
+                                <li class="manager_depth pr">
+                                    <a href="javascript:;">
+                                        <img src="img/gnb/manager_off.png" alt="">
+                                        <span>관리자관리</span>
+                                    </a>
+                                </li>
+                                <li class="statistics_depth pr">
+                                    <a href="#statistics_sub">
+                                        <img src="img/gnb/statistics_off.png" alt="">
+                                        <span>통계</span>
+                                    </a>
+                                    <ul id="statistics_sub" class="tab-data">
+                                        <li><a href="javascript:;">비비큐치킨</a></li>
+                                        <li><a href="javascript:;">닭익는마을</a></li>
+                                        <li><a href="javascript:;">우쿠야</a></li>
+                                        <li><a href="javascript:;">올떡</a></li>
+                                        <li><a href="javascript:;">소신</a></li>
+                                        <li><a href="javascript:;">와타미</a></li>
+                                        <li><a href="javascript:;">행복한집밥</a></li>
+                                        <li><a href="javascript:;">치킨대학</a></li>
+                                        <li><a href="javascript:;">창업센터</a></li>
+                                        <li><a href="javascript:;">제너시스글로벌</a></li>
+                                        <li><a href="javascript:;">제너시스그룹</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="board_top">
+                        <div class="route"> 
+                            <span><p>관리자</p> > <p>통계</p></span>
+                        </div>
+                    </div>
+                </div>
+                <!--//GNB-->
+            </div>
+            <!--//NAV-->
+            <div class="content">
+                <div class="section section_uni_booking">
+                    <div class="menu_detail">
+                        <form action="">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <th>
+                                            <ul>
+                                                <li><label for=""><input type="radio" name="order_uni">에약관리</label></li>
+                                                <li><label for=""><input type="radio" name="order_uni">주문관리</label></li>
+                                                <li><label for=""><input type="radio" name="order_uni">무통장계좌설정</label></li>    
+                                            </ul>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="uni_booking">
+                                <div class="uni_booking_date">
+                                    <span>2019. 2</span>
+                                </div>
+                                <table>
+                                    <tr>
+                                        <th>일</th>
+                                        <th>월</th>
+                                        <th>화</th>
+                                        <th>수</th>
+                                        <th>목</th>
+                                        <th>금</th>
+                                        <th>토</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span>1</span>
+                                            <div class="moning">
+                                                <ul>
+                                                    <li>오전</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                            <div class="after">
+                                                <ul>
+                                                    <li>오후</li>
+                                                    <li class="btn_green">가능</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                               
+                                <div class="booking_btn">
+                                    <ul>
+                                        <li><label for=""><input type="radio" name="cancle">전체</label></li>
+                                        <li><label for=""><input type="radio" name="cancle">전체취소</label></li>
+                                        <li><input type="button" value="예약가능" class="btn_green125"></li>
+                                        <li><input type="button" value="예약불가" class="btn_purple125"></li>
+                                    </ul>
+                                </div>
+                            </div>    
+                         <!--   <div class="menu_bottom_btn">
+                                <div class="menu_edit_btn">
+                                    <input type="button" class="btn_white125" value="등록">
+                                    <input type="button" class="btn_white125" value="수정">
+                                    <input type="button" class="btn_white125" value="삭제">
+                                </div>
+                            </div>-->
+                        </form>
+                     
+                    </div>
+                </div>
+        </div>
+            <!--footer-->
+            <div class="footwrap">
+                <div class="footer">
+                    <ul>
+                        <li>
+                            <a href="javascript:;">비비큐치킨</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">닭익는마을</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">우쿠야</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">올떡</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">소신</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">와타미</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">행복한집밥</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">치킨대학</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">창업센터</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">제너시스글로벌</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">제너시스그룹</a>
+                        </li>
+                    </ul>
+                </div>
+                <span>
+                    COPYRIGHT 2019 GENESIS BBQ ALL RIGHTS RESERVED
+                </span>
+            </div>
+            
+            <!--//footer-->
+        </div>
+</body>
+ <script>
+    $(document).ready(function(){
+        $('li.btn_green').click(function(){
+            $(this).toggleClass('btn_green btn_purple');
+            $(this).text($(this).text() == '가능' ? '불가' : '가능')
+
+        })
+    })
+</script>
+</html>
+
+

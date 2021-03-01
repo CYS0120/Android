@@ -1,0 +1,142 @@
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/jquery.flexslider.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/content.css">
+
+    <script>//LNB
+        $(function(){
+        var duration = 300;
+    
+        var $side = $('.lnb,.s_btn_bg' );
+        var $sidebt = $side.find('.s_btn').on('click', function(){
+            $side.toggleClass('open');
+    
+            if($side.hasClass('open')) {
+                $side.stop(true).animate({left:'0px'}, duration);
+                $('.s_btn_bg').stop(true).animate({left:'218px'}, duration);
+            }else{
+                $side.stop(true).animate({left:'-218px'}, duration);
+                $('.s_btn_bg').stop(true).animate({left:'0px'}, duration);
+                };
+            });
+        });
+    </script>
+    <script> //2차메뉴 드랍
+        $(document).ready(function(){            
+            $('.third_depth').click(function(){
+                var submenu = $(this).next('ul');
+                if(submenu.is(':visible')){
+                    submenu.slideUp();
+                }else{
+                    submenu.slideDown();
+                }
+            });
+            return false;
+        });
+    </script>
+    <script>
+    
+        var fileTarget = $('.filebox .upload-hidden');
+
+        fileTarget.on('change', function(){ // 값이 변경되면
+        if(window.FileReader){ // modern browser
+            var filename = $(this)[0].files[0].name;
+        }
+        else { // old IE
+            var filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출
+        }
+
+        // 추출한 파일명 삽입
+        $(this).siblings('.upload-name').val(filename);
+        });
+    
+    </script>
+    <script>//첨부파일 
+    
+        var fileTarget = $('.filebox .upload-hidden');
+
+        fileTarget.on('change', function(){ // 값이 변경되면
+        if(window.FileReader){ // modern browser
+            var filename = $(this)[0].files[0].name;
+        }
+        else { // old IE
+            var filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출
+        }
+
+        // 추출한 파일명 삽입
+        $(this).siblings('.upload-name').val(filename);
+        });
+    
+    </script>
+    <script type="text/javascript"> //팝업
+        function wrapWindowByMask(){
+            var maskHeight = $(document).height();
+            var maskWidth = $(window).width();
+    
+            $('.mask').css({'width':maskWidth,'height':maskHeight});
+    
+            $('.mask').fadeIn(0);
+            $('.mask').fadeTo("slow",0.6);
+    
+            var left = ( $(window).scrollLeft() + ( $(window).width() - $('.window').width()) / 2 );
+            var top = ( $(window).scrollTop() + ( $(window).height() - $('.window').height()) / 2 );
+    
+            $('.window').css({'left':left,'top':top, 'position':'absolute'});
+            $('.window').show();
+        }
+    
+        $(document).ready(function(){
+            $('.popup').click(function(e){
+                e.preventDefault();
+                wrapWindowByMask();
+            });
+    
+            $('.mask').click(function () {
+                $(this).hide();
+                $('.window').hide();
+            });
+            
+            $('.window .close').click(function (e) {
+                e.preventDefault();
+                $('.mask, .window').hide();
+            });
+        
+            
+        });
+    </script>
+    <script> //달력
+
+        $(function() {
+            $("#datepicker1, #datepicker2").datepicker({
+                dateFormat: 'yy-mm',
+                prevText: '이전 달',
+                nextText: '다음 달',
+                monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+                dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                showMonthAfterYear: true,
+                yearSuffix: '년'
+            });
+        });
+    
+    </script>
+
+    <script type="text/javascript"> //헤더와 풋터 로드
+        $(document).ready(function(){
+        $("#header").load("header.html")
+        $("#footer").load("footer.html")
+        });
+    </script> 
+

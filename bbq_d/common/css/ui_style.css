@@ -1,0 +1,307 @@
+@charset "utf-8";
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+	File : ui_style.css
+	Company : The Webstyle co.,ltd
+	CSS 적용순서 : 아이디 > 태그와 클래스 > 클래스 > 태그
+	CSS 선택자 선언순서 : Type Selector, Layout Selector, Class Selector, Etc
+	CSS 속성 선언순서 : display, position, float/clear, overflow, width/height, margin/padding, border, background, font/color, align, etc
+	공통선언방법 : Common(기본값), Design(디자인), Detail(상세유형)
+-----------------------------------------------------------------------------------------------------------------------------------------*/
+
+/* Link */
+a {color:#111; text-decoration:none;}
+a:hover, a:active, a:visited {color:#111;}
+
+/* Input, Select */
+input[type=text],
+input[type=password],
+select {
+	height:47px;
+	padding:10px 16px;
+	border:1px solid #c2c2c2;
+	font-family:"NanumSquareOTFR";
+	font-size:14px;
+	color:#333;
+	background-color:#ffffff;
+	appearance:none;
+	-webkit-appearance:none;
+	-moz-appearance:none;
+	-o-appearance:none;
+	letter-spacing:-1.5px;
+}
+input[type=password] {font-family:"NotoSans-Regular";}
+
+/* Placeholder Color */
+:-ms-input-placeholder 		{font-family:"NotoSans-Light"; color:#999 !important;} /* IE 10 + */
+::-webkit-input-placeholder {font-family:"NotoSans-Light"; color:#999;} /* Webkit Browser */
+:-moz-placeholder 			{font-family:"NotoSans-Light"; color:#999;}	/* Mozilla Firefox 4 to 18*/
+::-moz-placeholder 			{font-family:"NotoSans-Light"; color:#999;} /* Mozilla Firefox 19+ */
+
+/* Select - Default */
+select {padding:10px 56px 10px 15px; background:url('/images/common/ico_select_arrow.png') right center no-repeat;}
+select::-ms-expand {display:none;}
+
+textarea {padding:20px 15px; font-family:"NanumSquareOTFR"; font-size:14px; border:1px solid #c2c2c2; resize:none;}
+
+/* UI Input File */
+.ui-input-file {display:inline-block; position:relative; padding-right:85px;}
+.ui-input-file:after {
+	content:"첨부파일";
+	display:inline-block;
+	position:absolute;
+	top:0px;
+	right:0px;
+	min-width:72px;
+	height:36px;
+	border:1px solid #dedede;
+	padding:0 15px;
+	border-radius:5px;
+	font-size:13px;
+	line-height:34px;
+	color:#606060;
+	background-color:#fff;
+}
+.ui-input-file input[type=file] {position:absolute; top:0px; left:0px; z-index:1; width:100%; height:100%; opacity:0;}
+.ui-input-file .input_filePath {width:100%;}
+
+/* UI Input Date */
+.ui-input-date {display:inline-block; position: relative;}
+.ui-input-date .btn_datepicker {position: absolute; right: 10px; top:5px;}
+.ui-input-date .btn_datepicker .ico_date {
+	display:inline-block;
+	width:24px;
+	height:24px;
+	text-indent:-9999px;
+	background:url('/images/common/ico_datepicker.png');
+}
+
+/* UI Checkbox */
+.ui-checkbox {
+	display:inline-block;
+	position:relative;
+	width:170px;
+	font-family:"NanumSquareOTFR";
+	font-size:16px;
+	line-height:18px;
+	color:#666;
+	letter-spacing:-1px;
+	vertical-align:middle;
+}
+.ui-checkbox input {display:none;}
+.ui-checkbox input+span {
+	display:inline-block;
+	position:relative;
+	top:-2px;
+	width:18px;
+	height:18px;
+	margin-right:6px;
+	vertical-align:middle;
+	background:url('/images/common/ui_checkbox.png') left top no-repeat;
+}
+.ui-checkbox input:checked+span {background-position:right top;}
+.ui-checkbox.type2 input + span {background:url('/images/common/ui_checkbox2.png') left top no-repeat;}
+.ui-checkbox.type2 input:checked+span {background-position:right top;}
+
+.ui-group-checkbox {position:relative;}
+.ui-group-checkbox:after {content:""; display:block; clear:both;}
+.ui-group-checkbox .ui-checkbox {margin-right:30px;}
+.ui-group-checkbox.three-up .ui-checkbox {float:left;}
+.ui-group-checkbox.three-up .ui-checkbox:nth-child(3n) {margin-right:0px;}
+
+/* UI Radio */
+.ui-radio {
+	display:inline-block;
+	position:relative;
+	font-family:"NanumSquareOTFR";
+	font-size:16px;
+	line-height:18px;
+	color:#737373;
+	letter-spacing:-1px;
+	vertical-align:middle;
+}
+.ui-radio input {display:none;}
+.ui-radio input+span {
+	display:inline-block;
+	position:relative;
+	top:-2px;
+	width:18px;
+	height:18px;
+	margin-right:12px;
+	vertical-align:middle;
+	background:url('/images/common/ui_radio.png') left top no-repeat;
+}
+.ui-radio input:checked+span {background-position:right top;}
+
+
+/* Button */
+button {overflow:visible; padding:0px; border:0px; font-weight:normal; cursor:pointer; outline:none; background-color:transparent;}
+button::-moz-focus-inner {border:0px; padding:0px;}
+
+.btn {position:relative; display:inline-block; text-align:center; white-space:nowrap; vertical-align:middle; cursor:pointer; opacity:1;}
+.btn > span {display:inline-block; position:relative;}
+.btn > span > .ico {position:relative; top:-1px;}
+.btn:hover {transition-property:background-color, color ,opacity; transition-duration:0.5s; transition-timing-function:ease-out;}
+
+.btn > span.ico-only {font-size:0px;}
+.btn > span.ico-only:before {font-size:14px;}
+.btn > span.ico:before {margin-right:5px;}
+
+.btn-wrap {text-align:center;}
+.btn-wrap:after {content:""; display:block; clear:both;}
+.btn-wrap .btn-left {display:inline-block; float:left;}
+.btn-wrap .btn-right {display:inline-block; float:right;}
+
+.btn-wrap.two-up .btn {width:200px; margin:0 6px;}
+.btn-wrap.two-up .btn-flat {width:50%; margin-right:0; margin-left:0;}
+.btn-wrap.line {padding-top:40px; border-top:1px solid #b7b7b7;}
+
+.btn-sm {height:30px; padding:0 17px; font-family:"NanumSquareOTFR"; font-size:14px; line-height:28px; border-radius:3px;}
+.btn-sm2 {height:36px; padding:0 22px; font-family:"NanumSquareOTFR"; font-size:14px; line-height:34px; border-radius:3px;}
+.btn-md {height:36px; padding:0 23px; font-family:"NanumSquareOTFR"; font-size:18px; line-height:34px; border-radius:3px;}
+.btn-md2 {width:130px; height:46px; font-family:"NanumSquareOTFR"; font-size:14px; line-height:44px; border-radius:3px;}
+.btn-md4 {height:47px; padding:0 34px; font-family:"NanumSquareOTFR"; font-size:14px; line-height:44px;}
+.btn-lg {height:60px; padding:0 35px; font-family:"NanumSquareOTFR"; font-size:18px; line-height:58px; border-radius:3px;}
+
+.btn-black	   {color:#ffffff !important; border:1px solid #333333; background-color:#333333;}
+.btn-gray	   {color:#666666; border:1px solid #c6c6c6; background-color:#eeeeee;}
+.btn-yellow	   {color:#fff; border:1px solid #eeeeee; background-color:#feb500;}
+.btn-red   	   {color:#ffffff !important; border:1px solid #e31937; background-color:#e31937;}
+.btn-brown     {color:#ffffff !important; border:1px solid #625a5a; background-color:#625a5a;}
+.btn-grayLine  {color:#111111; border:1px solid #afafaf; background-color:#ffffff;}
+.btn-redLine   {color:#e31937 !important; border:1px solid #e31937; background-color:#ffffff;}
+.btn-brownLine {color:#625a5a; border:1px solid #625a5a; background-color:#ffffff;}
+.btn-blackLine {color:#111; border:1px solid #111; background-color:#fff;}
+.btn-line {border:1px solid #111;}
+.btn-noLine {border:none;}
+.btn-red-main{color:#ffffff; border:1px solid #e31937; background-color:#e31937;}
+.btn-red-main:hover{background:#fff; color:#e31937;	transition-property:all; transition-duration:0.3s; transition-timing-function:ease-in-out;	transition-delay:0;}
+.btn-grayLine-main{color:#111111; border:1px solid #afafaf; background-color:#ffffff;}
+.btn-grayLine-main:hover{background:#fff; color:#e31937; border:1px solid #e31937; transition-property:all; transition-duration:0.3s; transition-timing-function:ease-in-out;	transition-delay:0;}
+
+.btn-flat {float:left; width:100%; height:38px; border:0; font-size:14px; line-height:36px; background-color:transparent;}
+.btn-flat + .btn-flat {border-left:1px solid #ccc;}
+.btn-flat.btn-red {color:#cf152d !important;}
+.btn-flat.btn-gray {color:#666;}
+
+.btn-etc {height:30px; width:135px; padding:0; font-family:"NanumSquareOTFR"; font-size:14px; line-height:28px; border-radius:3px;}
+
+/* Icon */
+.ico {display:inline-block; vertical-align:middle; text-indent:-9999em;}
+
+.ico-branch {display:inline-block; width:86px; height:22px; border-radius:11px; color:#fff !important; font-size:13px !important; font-family:'NanumSquareOTFR'; text-align:center; line-height:22px;}
+.ico-branch.red {background:#e31937; color:#fff !important;}
+.ico-branch.orange {background:#e34419;}
+.ico-branch.yellow {background:#ffa800;}
+
+
+/* Tab */
+.tab-wrap {position:relative;}
+.tab {position:relative;}
+.tab:after {content:""; display:block; clear:both;}
+.tab li {float:left; position:relative;}
+.tab.two-up li {width:50%;}
+
+.tab-type1 {margin-bottom:70px;}
+.tab-type1 .tab li {border-left:2px solid #dcdcdc;}
+.tab-type1 .tab li:first-child {border-left:0px;}
+.tab-type1 .tab li a {
+	display:block;
+	height:123px;
+	border-bottom:2px solid #dcdcdc;
+	font-size:32px;
+	line-height:121px;
+	text-align:center;
+	background-color:#f2f2f2;
+}
+.tab-type1 .tab li a span {display:inline-block; color:#111; opacity:0.75;}
+.tab-type1 .tab li.on a {border-bottom:0px; background-color:#fff;}
+.tab-type1 .tab li.on a span {opacity:1;}
+
+.tab-type1 .tab li .ico-memEdit {padding-left:42px; background:url('/images/mypage/ico_member.png') left center no-repeat;}
+.tab-type1 .tab li .ico-shipping {padding-left:46px; background:url('/images/mypage/ico_shipping.png') left center no-repeat;}
+.tab-type1 .tab li .ico-prodInquiry {padding-left:43px; background:url('/images/mypage/ico_product.png') left center no-repeat;}
+.tab-type1 .tab li .ico-inquiry {padding-left:65px; background:url('/images/mypage/ico_inquiry.png') left center no-repeat;}
+
+.tab-container {position:relative;}
+.tab-container-layer .tab-content {display:none;}
+.tab-container-layer .tab-content.on {display:block;}
+
+/* bullet */
+.bul > li:before, .bul > p:before, dt.bul:before, dd.bul:before {content:''; display:block; position:absolute;}
+.bul-dot:before {display:inline-block; padding-right:0;}
+
+.bul-dot {position:relative; padding-left:8px;}
+.bul-dot:before {top:8px; left:0px; margin-top:-1px; width:3px; height:3px; border-radius:50%; background:#444;}
+
+/* UI Group Email */
+.ui-group-email {display:table; width:100%;}
+.ui-group-email span {display:table-cell; text-align:center; vertical-align:middle;}
+.ui-group-email span.dash {width:50px;}
+.ui-group-email span:last-child {padding-left:10px;}
+.ui-group-email input,
+.ui-group-email select {width:100%;}
+.ui-group-email select {min-width:215px;}
+
+/* UI Group List */
+.ui-group-list {position:relative;}
+.ui-group-list:after {content:""; display:block; clear:both;}
+.ui-group-list li {float:left;}
+
+.ui-group-list.two-up li {width:50%; margin-bottom:15px;}
+.ui-group-list.two-up li .ui-radio {font-size:26px;}
+
+.ui-group-list.three-up li {width:33.333%; margin-bottom:15px;}
+.ui-group-list.three-up li .ui-radio {font-size:16px;}
+
+/* UL, OL Type */
+.ul-guide {padding-left:15px;}
+.ul-guide li {position:relative; font-family:"NanumSquareOTFR"; font-size:14px; line-height:24px; color:#737373; word-break:keep-all;}
+.ul-guide li:before {content:"*"; display:inline-block; position:absolute; top:3px; left:-15px; line-height:24px;}
+.ul-guide li:first-child {margin-top:0px;}
+.ul-guide li.red {color:#e31937;}
+
+.ul-guide.ul-guide-type2 li {position:relative; font-family:"NanumSquareOTFR"; font-size:16px; line-height:30px; color:#333;}
+.ul-guide.ul-guide-type2 li.red {color:#e31937;}
+.ul-guide.ul-guide-type2 li:before {display:none;}
+
+/* Datepicker */
+.ui-datepicker {display:none; width:260px; border:1px solid #d2d2d2; border-top:2px solid #647cbd; background-color:#fff;}
+.ui-datepicker .ui-datepicker-header {position:relative; padding:20px 0 5px;}
+.ui-datepicker .ui-datepicker-header a {
+	display:inline-block;
+	position:absolute;
+	top:20px;
+	font-family:'Font Awesome 5 Free';
+	font-size:14px;
+	font-weight:900;
+	text-align:center;
+	cursor:pointer;
+}
+.ui-datepicker .ui-datepicker-header a span {font-size:0;}
+.ui-datepicker .ui-datepicker-prev {left:30px;}
+.ui-datepicker .ui-datepicker-next {right:30px;}
+.ui-datepicker .ui-datepicker-prev:after {content:"\f053"; line-height:25px;}
+.ui-datepicker .ui-datepicker-next:after {content:"\f054"; line-height:25px;}
+.ui-datepicker .ui-datepicker-title {text-align:center;}
+.ui-datepicker .ui-datepicker-title span {font-size:12px; color:#333333;}
+.ui-datepicker .ui-datepicker-title select {width:auto; height:25px; padding-right:40px; font-size:12px; margin:0px 1px;}
+.ui-datepicker table {width:100%; font-size:11px; border-collapse:collapse;}
+.ui-datepicker th {height:25px; font-size:12px; text-align:center; border-left:1px solid #d2d2d2; border-top:1px solid #d2d2d2;}
+.ui-datepicker th:first-child {border-left:0px;}
+.ui-datepicker th span {font-weight:normal;}
+.ui-datepicker th:first-child span {color:#f20018;}
+.ui-datepicker td {height:25px; border-left:1px solid #d2d2d2; border-top:1px solid #d2d2d2;}
+.ui-datepicker tr td:first-child {border-left:0px;}
+.ui-datepicker td.ui-datepicker-today {font-weight:bold; background-color:#ddd;}
+.ui-datepicker td a.ui-state-highlight {color:#333;}
+.ui-datepicker td span,
+.ui-datepicker td a {display:block; padding:0px 11px; line-height:25px; text-align:right; text-decoration:none;}
+.ui-datepicker td:first-child a {color:#f20018;}
+.ui-datepicker td a.ui-state-hover,
+.ui-datepicker td a.ui-state-active {color:#fff; background-color:#647cbd;}
+.ui-datepicker .ui-datepicker-buttonpane {text-align:center; position:absolute; right:10px; top:5px;}
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {display:none;}
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-close {display:inline-block; font-size:0;}
+
+.ddack {font-family:"NotoSans-Bold"; font-style:inherit; font-weight:bold; position:relative;}

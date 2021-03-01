@@ -1,0 +1,1 @@
+<div id="aside_div"></div>

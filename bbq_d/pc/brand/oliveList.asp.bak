@@ -1,0 +1,190 @@
+<!--#include virtual="/api/include/utf8.asp"-->
+
+<!doctype html>
+<html lang="ko">
+<head>
+<!--#include virtual="/includes/top.asp"-->
+<meta name="Keywords" content="브랜드스토리, BBQ치킨">
+<meta name="Description" content="브랜드스토리 메인">
+<title>비비큐 소식 | BBQ치킨</title>
+<script>
+jQuery(document).ready(function(e) {
+	
+	$(window).on('scroll',function(e){
+		if ($(window).scrollTop() > 0) {
+			$(".wrapper").addClass("scrolled");
+		} else {
+			$(".wrapper").removeClass("scrolled");
+		}
+	});
+	
+	$(document).on('click', '.section_faq .question', function(e) {
+		var par = $(this).closest('.box');
+		if(par.hasClass('active')){
+			par.removeClass('active').find('.answer').stop().slideUp('fast');
+		}else{
+			par.addClass('active').find('.answer').stop().slideDown('fast');
+		}
+	});
+
+
+});
+</script>
+</head>
+
+<body>	
+<div class="wrapper">
+	<!-- Header -->
+	<!--#include virtual="/includes/header.asp"-->
+	<!--// Header -->
+	<hr>
+	
+	<!-- Container -->
+	<div class="container">
+		<!-- BreadCrumb -->
+		<div class="breadcrumb-wrap">
+			<ul class="breadcrumb">
+				<li><a href="/">bbq home</a></li>
+				<li><a href="#">브랜드</a></li>
+				<li>브랜드스토리</li>
+			</ul>
+		</div>
+		<!--// BreadCrumb -->
+		
+		<!-- Content -->
+		<article class="content">
+			<h1 class="ta-l">브랜드스토리</h1>
+			<div class="tab-wrap tab-type3">
+				<ul class="tab">
+					<li><a href="./bbq.asp"><span>비비큐 이야기</span></a></li>
+					<li class="on"><a href="./oliveList.asp"><span>올리브 이야기</span></a></li>
+					<li><a href="./videoList.asp"><span>영상콘텐츠</span></a></li>
+				</ul>
+			</div>
+
+			<!-- 이미지 텍스트 -->
+			<div class="brand-bg brand_bgOlive1">
+				<dl>
+					<dt>우리가 모르고있던 올리브유</dt>
+					<dd>올리브유 YES or NO</dd>
+				</dl>
+			</div>
+			<!-- //이미지 텍스트 -->
+
+			<!-- FAQ -->
+			<section class="section section_faq">
+				<div class="box active">
+					<a href="#this" class="question">
+						<p>다른 맛도 먹어보고 싶어요. 이런질문내용. 이런저런 질문내용이 여기에 보이고있어요~~  <span class="ico_yes">YES</span></p>
+					</a>
+					<div class="answer" style="display:block;">
+						<p>
+							안녕하세요 고객님<br>
+							딥치즈맛, 스윗허니맛이 있습니다.<br>
+							주문 시 참고해주세요.
+						</p>
+					</div>
+				</div>
+				<div class="box">
+					<a href="#this" class="question">
+						<p>다른 맛도 먹어보고 싶어요. 이런질문내용. 이런저런 질문내용이 여기에 보이고있어요~~ <span class="ico_no">NO</span></p>
+					</a>
+					<div class="answer">
+						<p>
+							안녕하세요 고객님<br>
+							딥치즈맛, 스윗허니맛이 있습니다.<br>
+							주문 시 참고해주세요.
+						</p>
+					</div>
+				</div>
+				<div class="box">
+					<a href="#this" class="question">
+						<p>다른 맛도 먹어보고 싶어요. 이런질문내용. 이런저런 질문내용이 여기에 보이고있어요~~ <span class="ico_no">NO</span></p>
+					</a>
+					<div class="answer">
+						<p>
+							안녕하세요 고객님<br>
+							딥치즈맛, 스윗허니맛이 있습니다.<br>
+							주문 시 참고해주세요.
+						</p>
+					</div>
+				</div>
+			</section>
+			<!-- //FAQ -->
+
+			<!-- 이미지 텍스트 -->
+			<div class="brand-bg brand_bgOlive2 mar-t100">
+				<dl>
+					<dt>Great taste, eat Fresh</dt>
+					<dd>엑스트라 버진 올리브유 이야기</dd>
+				</dl>
+				<div class="txt">
+					BBQ는 예로부터 신이 내린 최고의 선물이라 찬사를 받아온 ‘엑스트라 버진 올리브유’만을 고집합니다.<br/>
+					세상에서 가장 맛있고 건강한 치킨만을 제공하겠다는 BBQ의 건강한 고집! <br/>
+					BBQ는 올리브 오일 중에 최상급인 100% 엑스트라 버진 올리브오일을 원료로 사용하는 올리브오일만을 사용합니다.<br/>
+					그리고 3년간의 꾸준한 연구결과, BBQ만의 후라잉 오일 황금올리브유를 탄생시켜 세상에서 단 하나밖에 없는 <br/>
+					건강하고 맛있는 치킨을 대한민국 국민치킨으로 제공하고 있습니다. 
+				</div>
+			</div>
+
+			<!-- //이미지 텍스트 -->
+
+			<!-- FAQ -->
+			<section class="section section_faq">
+				<div class="box active">
+					<a href="#this" class="question">
+						<p>다른 맛도 먹어보고 싶어요. 이런질문내용. 이런저런 질문내용이 여기에 보이고있어요~~</p>
+					</a>
+					<div class="answer" style="display:block;">
+						<p>
+							안녕하세요 고객님<br>
+							딥치즈맛, 스윗허니맛이 있습니다.<br>
+							주문 시 참고해주세요.
+						</p>
+					</div>
+				</div>
+				<div class="box">
+					<a href="#this" class="question">
+						<p>다른 맛도 먹어보고 싶어요. 이런질문내용. 이런저런 질문내용이 여기에 보이고있어요~~</p>
+					</a>
+					<div class="answer">
+						<p>
+							안녕하세요 고객님<br>
+							딥치즈맛, 스윗허니맛이 있습니다.<br>
+							주문 시 참고해주세요.
+						</p>
+					</div>
+				</div>
+				<div class="box">
+					<a href="#this" class="question">
+						<p>다른 맛도 먹어보고 싶어요. 이런질문내용. 이런저런 질문내용이 여기에 보이고있어요~~</p>
+					</a>
+					<div class="answer">
+						<p>
+							안녕하세요 고객님<br>
+							딥치즈맛, 스윗허니맛이 있습니다.<br>
+							주문 시 참고해주세요.
+						</p>
+					</div>
+				</div>
+			</section>
+			<!-- //FAQ -->
+
+
+		</article>
+		<!--// Content -->	
+		
+		<!-- QuickMenu -->
+		<!--#include virtual="/includes/quickmenu.asp"-->
+		<!-- QuickMenu -->
+
+	</div>
+	<!--// Container -->
+	<hr>
+	
+	<!-- Footer -->
+	<!--#include virtual="/includes/footer.asp"-->
+	<!--// Footer -->
+</div>
+</body>
+</html>

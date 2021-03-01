@@ -1,0 +1,858 @@
+2020-01-20 오후 5:30:33 payco_popup.asp is Called - gubun : Order, pm : , order_idx : 373506, order_num : M20000000373506, pay_method : Payco, domain : mobile, branch_id : 1172804, event_point : 0, event_point_productcd : , coupon_amt : , 
+2020-01-20 오후 5:30:34 payco_reserve.asp is Called - order_idx : 373506, domain : mobile, branch_id : 1172804, gubun : Order, order_num : M20000000373506, pay_method : Payco, 
+2020-01-20 오후 5:30:34 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 5:30:34 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00406",
+            "productId": "BBQ00406_EASYP",
+            "productAmt": "2000",
+            "productPaymentAmt": "2000",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00406",
+    "sellerOrderReferenceKey": "M20000000373506",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "2000",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "1818",
+    "totalVatAmt": "182",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://m.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"1818\",\r\n    \"totalVatAmt\": \"182\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "MOBILE",
+    "inAppYn": "Y",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"https://m.bbq.co.kr/order/cart.asp?cancel_idx=373506\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 5:30:34 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 5:30:34 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"result":{"reserveOrderNo":"202001202420898265","orderSheetUrl":"https://bill.payco.com/m/easyAppLogin/202001202420898265?inAppYn=Y"},"code":0,"message":"success"}
+2020-01-20 오후 5:31:53 payco_return.asp is Called - POST DATA : GET DATA : code : 0, totalPaymentAmt : 2000, totalTaxfreeAmt : 0, totalTaxableAmt : 1818, totalVatAmt : 182, totalRemoteAreaDeliveryFeeAmt : 0, reserveOrderNo : 202001202420898265, sellerOrderReferenceKey : M20000000373506, pointAmt : 0, taxationType : TAXATION, mainPgCode : 31, discountAmt : 0, paymentCertifyToken : A8yvg6tEl1jyp_Sf6AKeeaP0plCZY9fOrhpX4zZ9gW2QC9gSsXB0IKKN5evBxU28, 
+2020-01-20 오후 5:31:53 Call API   https://api-bill.payco.com/outseller/payment/approval Mode : json
+2020-01-20 오후 5:31:53 Call API   https://api-bill.payco.com/outseller/payment/approval Data : {
+    "sellerKey": "BBQ00406",
+    "reserveOrderNo": "202001202420898265",
+    "sellerOrderReferenceKey": "M20000000373506",
+    "paymentCertifyToken": "A8yvg6tEl1jyp_Sf6AKeeaP0plCZY9fOrhpX4zZ9gW2QC9gSsXB0IKKN5evBxU28",
+    "totalPaymentAmt": "2000"
+}
+2020-01-20 오후 5:31:54 API Result https://api-bill.payco.com/outseller/payment/approval Status : 200
+2020-01-20 오후 5:31:54 API Result https://api-bill.payco.com/outseller/payment/approval ResponseText : {"result":{"sellerOrderReferenceKey":"M20000000373506","reserveOrderNo":"202001202420898265","orderNo":"202001202276907731","memberName":"박**","memberEmail":"iw****","orderChannel":"MOBILE","totalOrderAmt":2000,"totalDeliveryFeeAmt":0,"totalRemoteAreaDeliveryFeeAmt":0,"totalPaymentAmt":2000,"receiptPaycoPointAmt":0,"receiptPaycoPointTaxfreeAmt":0,"receiptPaycoPointTaxableAmt":0,"receiptPaycoPointVatAmt":0,"receiptPaycoPointServiceAmt":0,"orderProducts":[{"orderProductNo":"202001202287496975","sellerOrderProductReferenceKey":"ITEM_100001","orderProductStatusCode":"OPSPAED","orderProductStatusName":"결제완료","cpId":"BBQ00406","productId":"BBQ00406_EASYP","productKindCode":"GENERAL_PRODUCT","productPaymentAmt":2000,"originalProductPaymentAmt":2000}],"paymentDetails":[{"cardSettleInfo":{"cardCompanyName":"BC카드","cardCompanyCode":"CCBC","cardNo":"523527******4032","cardInstallmentMonthNumber":"00","cardAdmissionNo":"33505953","cardInterestFreeYn":"N","corporateCardYn":"N","partCancelPossibleYn":"Y"},"paymentTradeNo":"202001202567647810","paymentMethodCode":"31","paymentMethodName":"신용카드","paymentAmt":2000,"taxfreeAmt":0,"taxableAmt":1818,"vatAmt":182,"serviceAmt":0,"tradeYmdt":"20200120173154","pgAdmissionNo":"20650854768517","pgAdmissionYmdt":"20200120173153","easyPaymentYn":"Y"}],"orderCertifyKey":"sKAAJu2z0v0VMxjHWibePkaz8hULL6WAnh7mDhn5on5QCC","paymentCompletionYn":"Y","paymentCompleteYmdt":"20200120173154"},"code":0,"message":"success"}
+2020-01-20 오후 5:31:54 payco_return.asp receive json data : {
+    "result": {
+        "sellerOrderReferenceKey": "M20000000373506",
+        "reserveOrderNo": "202001202420898265",
+        "orderNo": "202001202276907731",
+        "memberName": "박**",
+        "memberEmail": "iw****",
+        "orderChannel": "MOBILE",
+        "totalOrderAmt": 2000,
+        "totalDeliveryFeeAmt": 0,
+        "totalRemoteAreaDeliveryFeeAmt": 0,
+        "totalPaymentAmt": 2000,
+        "receiptPaycoPointAmt": 0,
+        "receiptPaycoPointTaxfreeAmt": 0,
+        "receiptPaycoPointTaxableAmt": 0,
+        "receiptPaycoPointVatAmt": 0,
+        "receiptPaycoPointServiceAmt": 0,
+        "orderProducts": [
+            {
+                "orderProductNo": "202001202287496975",
+                "sellerOrderProductReferenceKey": "ITEM_100001",
+                "orderProductStatusCode": "OPSPAED",
+                "orderProductStatusName": "결제완료",
+                "cpId": "BBQ00406",
+                "productId": "BBQ00406_EASYP",
+                "productKindCode": "GENERAL_PRODUCT",
+                "productPaymentAmt": 2000,
+                "originalProductPaymentAmt": 2000
+            }
+        ],
+        "paymentDetails": [
+            {
+                "cardSettleInfo": {
+                    "cardCompanyName": "BC카드",
+                    "cardCompanyCode": "CCBC",
+                    "cardNo": "523527******4032",
+                    "cardInstallmentMonthNumber": "00",
+                    "cardAdmissionNo": "33505953",
+                    "cardInterestFreeYn": "N",
+                    "corporateCardYn": "N",
+                    "partCancelPossibleYn": "Y"
+                },
+                "paymentTradeNo": "202001202567647810",
+                "paymentMethodCode": "31",
+                "paymentMethodName": "신용카드",
+                "paymentAmt": 2000,
+                "taxfreeAmt": 0,
+                "taxableAmt": 1818,
+                "vatAmt": 182,
+                "serviceAmt": 0,
+                "tradeYmdt": "20200120173154",
+                "pgAdmissionNo": "20650854768517",
+                "pgAdmissionYmdt": "20200120173153",
+                "easyPaymentYn": "Y"
+            }
+        ],
+        "orderCertifyKey": "sKAAJu2z0v0VMxjHWibePkaz8hULL6WAnh7mDhn5on5QCC",
+        "paymentCompletionYn": "Y",
+        "paymentCompleteYmdt": "20200120173154"
+    },
+    "code": 0,
+    "message": "success"
+}
+2020-01-20 오후 5:31:54 orderProductStatusName : 결제완료
+2020-01-20 오후 5:31:54 paymentDetails's CardNumber : 523527******4032
+2020-01-20 오후 5:31:54 payco_return.asp return success.
+2020-01-20 오후 5:52:44 payco_popup.asp is Called - gubun : Order, pm : , order_idx : 373558, order_num : M20000000373558, pay_method : Payco, domain : mobile, branch_id : 1227702, event_point : 0, event_point_productcd : , coupon_amt : , 
+2020-01-20 오후 5:52:50 payco_reserve.asp is Called - order_idx : 373558, domain : mobile, branch_id : 1227702, gubun : Order, order_num : M20000000373558, pay_method : Payco, 
+2020-01-20 오후 5:52:50 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 5:52:50 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00443",
+            "productId": "BBQ00443_EASYP",
+            "productAmt": "4000",
+            "productPaymentAmt": "4000",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00443",
+    "sellerOrderReferenceKey": "M20000000373558",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "4000",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "3636",
+    "totalVatAmt": "364",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://m.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"3636\",\r\n    \"totalVatAmt\": \"364\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "MOBILE",
+    "inAppYn": "N",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"https://m.bbq.co.kr/order/cart.asp?cancel_idx=373558\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 5:52:50 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 5:52:50 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"result":{"reserveOrderNo":"202001202420905932","orderSheetUrl":"https://bill.payco.com/m/easyAppLogin/202001202420905932"},"code":0,"message":"success"}
+2020-01-20 오후 5:53:35 payco_return.asp is Called - POST DATA : GET DATA : code : 0, totalPaymentAmt : 4000, totalTaxfreeAmt : 0, totalTaxableAmt : 3636, totalVatAmt : 364, totalRemoteAreaDeliveryFeeAmt : 0, reserveOrderNo : 202001202420905932, sellerOrderReferenceKey : M20000000373558, pointAmt : 0, taxationType : TAXATION, mainPgCode : 31, discountAmt : 0, paymentCertifyToken : mcumYeRPQUs9MqL1A6ujWCKbNMhJIeMSg_nyujA3ZVBtVuE-JN_bvhZ-2WfU9V-F, 
+2020-01-20 오후 5:53:35 Call API   https://api-bill.payco.com/outseller/payment/approval Mode : json
+2020-01-20 오후 5:53:35 Call API   https://api-bill.payco.com/outseller/payment/approval Data : {
+    "sellerKey": "BBQ00443",
+    "reserveOrderNo": "202001202420905932",
+    "sellerOrderReferenceKey": "M20000000373558",
+    "paymentCertifyToken": "mcumYeRPQUs9MqL1A6ujWCKbNMhJIeMSg_nyujA3ZVBtVuE-JN_bvhZ-2WfU9V-F",
+    "totalPaymentAmt": "4000"
+}
+2020-01-20 오후 5:53:36 API Result https://api-bill.payco.com/outseller/payment/approval Status : 200
+2020-01-20 오후 5:53:36 API Result https://api-bill.payco.com/outseller/payment/approval ResponseText : {"result":{"sellerOrderReferenceKey":"M20000000373558","reserveOrderNo":"202001202420905932","orderNo":"202001202276914471","memberName":"이**","memberEmail":"ww****","orderChannel":"MOBILE","totalOrderAmt":4000,"totalDeliveryFeeAmt":0,"totalRemoteAreaDeliveryFeeAmt":0,"totalPaymentAmt":4000,"receiptPaycoPointAmt":0,"receiptPaycoPointTaxfreeAmt":0,"receiptPaycoPointTaxableAmt":0,"receiptPaycoPointVatAmt":0,"receiptPaycoPointServiceAmt":0,"orderProducts":[{"orderProductNo":"202001202287504305","sellerOrderProductReferenceKey":"ITEM_100001","orderProductStatusCode":"OPSPAED","orderProductStatusName":"결제완료","cpId":"BBQ00443","productId":"BBQ00443_EASYP","productKindCode":"GENERAL_PRODUCT","productPaymentAmt":4000,"originalProductPaymentAmt":4000}],"paymentDetails":[{"cardSettleInfo":{"cardCompanyName":"신한카드","cardCompanyCode":"CCLG","cardNo":"451842******3008","cardInstallmentMonthNumber":"00","cardAdmissionNo":"30660094","cardInterestFreeYn":"N","corporateCardYn":"N","partCancelPossibleYn":"Y"},"paymentTradeNo":"202001202567659510","paymentMethodCode":"31","paymentMethodName":"신용카드","paymentAmt":4000,"taxfreeAmt":0,"taxableAmt":3636,"vatAmt":364,"serviceAmt":0,"tradeYmdt":"20200120175336","pgAdmissionNo":"20650855073346","pgAdmissionYmdt":"20200120175335","easyPaymentYn":"Y"}],"orderCertifyKey":"QB1aevURSJyHwCiwJE5dXtqbnSjfl8W6HB8ZJJGFaxkCC","paymentCompletionYn":"Y","paymentCompleteYmdt":"20200120175336"},"code":0,"message":"success"}
+2020-01-20 오후 5:53:36 payco_return.asp receive json data : {
+    "result": {
+        "sellerOrderReferenceKey": "M20000000373558",
+        "reserveOrderNo": "202001202420905932",
+        "orderNo": "202001202276914471",
+        "memberName": "이**",
+        "memberEmail": "ww****",
+        "orderChannel": "MOBILE",
+        "totalOrderAmt": 4000,
+        "totalDeliveryFeeAmt": 0,
+        "totalRemoteAreaDeliveryFeeAmt": 0,
+        "totalPaymentAmt": 4000,
+        "receiptPaycoPointAmt": 0,
+        "receiptPaycoPointTaxfreeAmt": 0,
+        "receiptPaycoPointTaxableAmt": 0,
+        "receiptPaycoPointVatAmt": 0,
+        "receiptPaycoPointServiceAmt": 0,
+        "orderProducts": [
+            {
+                "orderProductNo": "202001202287504305",
+                "sellerOrderProductReferenceKey": "ITEM_100001",
+                "orderProductStatusCode": "OPSPAED",
+                "orderProductStatusName": "결제완료",
+                "cpId": "BBQ00443",
+                "productId": "BBQ00443_EASYP",
+                "productKindCode": "GENERAL_PRODUCT",
+                "productPaymentAmt": 4000,
+                "originalProductPaymentAmt": 4000
+            }
+        ],
+        "paymentDetails": [
+            {
+                "cardSettleInfo": {
+                    "cardCompanyName": "신한카드",
+                    "cardCompanyCode": "CCLG",
+                    "cardNo": "451842******3008",
+                    "cardInstallmentMonthNumber": "00",
+                    "cardAdmissionNo": "30660094",
+                    "cardInterestFreeYn": "N",
+                    "corporateCardYn": "N",
+                    "partCancelPossibleYn": "Y"
+                },
+                "paymentTradeNo": "202001202567659510",
+                "paymentMethodCode": "31",
+                "paymentMethodName": "신용카드",
+                "paymentAmt": 4000,
+                "taxfreeAmt": 0,
+                "taxableAmt": 3636,
+                "vatAmt": 364,
+                "serviceAmt": 0,
+                "tradeYmdt": "20200120175336",
+                "pgAdmissionNo": "20650855073346",
+                "pgAdmissionYmdt": "20200120175335",
+                "easyPaymentYn": "Y"
+            }
+        ],
+        "orderCertifyKey": "QB1aevURSJyHwCiwJE5dXtqbnSjfl8W6HB8ZJJGFaxkCC",
+        "paymentCompletionYn": "Y",
+        "paymentCompleteYmdt": "20200120175336"
+    },
+    "code": 0,
+    "message": "success"
+}
+2020-01-20 오후 5:53:36 orderProductStatusName : 결제완료
+2020-01-20 오후 5:53:36 paymentDetails's CardNumber : 451842******3008
+2020-01-20 오후 5:53:36 payco_return.asp return success.
+2020-01-20 오후 6:04:33 payco_popup.asp is Called - gubun : Order, pm : , order_idx : 373595, order_num : M20000000373595, pay_method : Payco, domain : mobile, branch_id : 7194401, event_point : 0, event_point_productcd : , coupon_amt : , 
+2020-01-20 오후 6:04:34 payco_reserve.asp is Called - order_idx : 373595, domain : mobile, branch_id : 7194401, gubun : Order, order_num : M20000000373595, pay_method : Payco, 
+2020-01-20 오후 6:04:34 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 6:04:34 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00210",
+            "productId": "BBQ00210_EASYP",
+            "productAmt": "25000",
+            "productPaymentAmt": "25000",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00210",
+    "sellerOrderReferenceKey": "M20000000373595",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "25000",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "22727",
+    "totalVatAmt": "2273",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://m.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"22727\",\r\n    \"totalVatAmt\": \"2273\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "MOBILE",
+    "inAppYn": "N",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"https://m.bbq.co.kr/order/cart.asp?cancel_idx=373595\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 6:04:34 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 6:04:34 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"result":{"reserveOrderNo":"202001202420909954","orderSheetUrl":"https://bill.payco.com/m/easyAppLogin/202001202420909954"},"code":0,"message":"success"}
+2020-01-20 오후 6:04:38 payco_reserve.asp is Called - order_idx : 373595, domain : mobile, branch_id : 7194401, gubun : Order, order_num : M20000000373595, pay_method : Payco, 
+2020-01-20 오후 6:04:38 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 6:04:38 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00210",
+            "productId": "BBQ00210_EASYP",
+            "productAmt": "25000",
+            "productPaymentAmt": "25000",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00210",
+    "sellerOrderReferenceKey": "M20000000373595",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "25000",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "22727",
+    "totalVatAmt": "2273",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://m.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"22727\",\r\n    \"totalVatAmt\": \"2273\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "MOBILE",
+    "inAppYn": "N",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"https://m.bbq.co.kr/order/cart.asp?cancel_idx=373595\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 6:04:38 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 6:04:38 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"result":{"reserveOrderNo":"202001202420909970","orderSheetUrl":"https://bill.payco.com/m/easyAppLogin/202001202420909970"},"code":0,"message":"success"}
+2020-01-20 오후 6:12:55 payco_popup.asp is Called - gubun : Order, pm : , order_idx : 373618, order_num : W20000000373618, pay_method : Payco, domain : pc, branch_id : 7386201, event_point : 0, event_point_productcd : , coupon_amt : , 
+2020-01-20 오후 6:12:56 payco_reserve.asp is Called - order_idx : 373618, domain : pc, branch_id : 7386201, gubun : Order, order_num : W20000000373618, pay_method : Payco, 
+2020-01-20 오후 6:12:56 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 6:12:56 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00114",
+            "productId": "BBQ00114_EASYP",
+            "productAmt": "18000",
+            "productPaymentAmt": "18000",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00114",
+    "sellerOrderReferenceKey": "W20000000373618",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "18000",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "16364",
+    "totalVatAmt": "1636",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://www.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"16364\",\r\n    \"totalVatAmt\": \"1636\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "PC",
+    "inAppYn": "N",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 6:12:56 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 6:12:56 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"result":{"reserveOrderNo":"202001202420913104","orderSheetUrl":"https://bill.payco.com/easyLogin/202001202420913104"},"code":0,"message":"success"}
+2020-01-20 오후 6:13:39 payco_return.asp is Called - POST DATA : GET DATA : code : 2222, totalTaxfreeAmt : 0, totalTaxableAmt : 16364, totalVatAmt : 1636, message : 주문이 취소되었습니다., taxationType : TAXATION, 
+2020-01-20 오후 6:13:39 payco_return.asp is canceled : Code : 2222, message : 사용자에 의해 취소되었음.
+2020-01-20 오후 6:21:45 payco_popup.asp is Called - gubun : Order, pm : , order_idx : 373638, order_num : M20000000373638, pay_method : Payco, domain : mobile, branch_id : 1225303, event_point : 0, event_point_productcd : , coupon_amt : , 
+2020-01-20 오후 6:21:46 payco_reserve.asp is Called - order_idx : 373638, domain : mobile, branch_id : 1225303, gubun : Order, order_num : M20000000373638, pay_method : Payco, 
+2020-01-20 오후 6:21:46 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 6:21:46 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00495",
+            "productId": "BBQ00495_EASYP",
+            "productAmt": "3000",
+            "productPaymentAmt": "3000",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00495",
+    "sellerOrderReferenceKey": "M20000000373638",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "3000",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "2727",
+    "totalVatAmt": "273",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://m.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"2727\",\r\n    \"totalVatAmt\": \"273\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "MOBILE",
+    "inAppYn": "N",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"https://m.bbq.co.kr/order/cart.asp?cancel_idx=373638\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 6:21:46 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 6:21:46 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"result":{"reserveOrderNo":"202001202420916225","orderSheetUrl":"https://bill.payco.com/m/easyAppLogin/202001202420916225"},"code":0,"message":"success"}
+2020-01-20 오후 6:22:35 payco_return.asp is Called - POST DATA : GET DATA : code : 0, totalPaymentAmt : 3000, totalTaxfreeAmt : 0, totalTaxableAmt : 2727, totalVatAmt : 273, totalRemoteAreaDeliveryFeeAmt : 0, reserveOrderNo : 202001202420916225, sellerOrderReferenceKey : M20000000373638, pointAmt : 0, taxationType : TAXATION, mainPgCode : 31, discountAmt : 0, paymentCertifyToken : oh2UsY3Q7EviZFR7_K5kg5tgjr02PvZTxIWkvpoYdZEV-9sNOf1-qppe62Rz54ux, 
+2020-01-20 오후 6:22:35 Call API   https://api-bill.payco.com/outseller/payment/approval Mode : json
+2020-01-20 오후 6:22:35 Call API   https://api-bill.payco.com/outseller/payment/approval Data : {
+    "sellerKey": "BBQ00495",
+    "reserveOrderNo": "202001202420916225",
+    "sellerOrderReferenceKey": "M20000000373638",
+    "paymentCertifyToken": "oh2UsY3Q7EviZFR7_K5kg5tgjr02PvZTxIWkvpoYdZEV-9sNOf1-qppe62Rz54ux",
+    "totalPaymentAmt": "3000"
+}
+2020-01-20 오후 6:22:37 API Result https://api-bill.payco.com/outseller/payment/approval Status : 200
+2020-01-20 오후 6:22:37 API Result https://api-bill.payco.com/outseller/payment/approval ResponseText : {"result":{"sellerOrderReferenceKey":"M20000000373638","reserveOrderNo":"202001202420916225","orderNo":"202001202276924204","memberName":"김**","memberEmail":"bl****","orderChannel":"MOBILE","totalOrderAmt":3000,"totalDeliveryFeeAmt":0,"totalRemoteAreaDeliveryFeeAmt":0,"totalPaymentAmt":3000,"receiptPaycoPointAmt":0,"receiptPaycoPointTaxfreeAmt":0,"receiptPaycoPointTaxableAmt":0,"receiptPaycoPointVatAmt":0,"receiptPaycoPointServiceAmt":0,"orderProducts":[{"orderProductNo":"202001202287514874","sellerOrderProductReferenceKey":"ITEM_100001","orderProductStatusCode":"OPSPAED","orderProductStatusName":"결제완료","cpId":"BBQ00495","productId":"BBQ00495_EASYP","productKindCode":"GENERAL_PRODUCT","productPaymentAmt":3000,"originalProductPaymentAmt":3000}],"paymentDetails":[{"cardSettleInfo":{"cardCompanyName":"카카오뱅크카드","cardCompanyCode":"CCKA","cardNo":"536510******4319","cardInstallmentMonthNumber":"00","cardAdmissionNo":"28042710","cardInterestFreeYn":"N","corporateCardYn":"N","partCancelPossibleYn":"Y"},"paymentTradeNo":"202001202567675910","paymentMethodCode":"31","paymentMethodName":"신용카드","paymentAmt":3000,"taxfreeAmt":0,"taxableAmt":2727,"vatAmt":273,"serviceAmt":0,"tradeYmdt":"20200120182237","pgAdmissionNo":"20650855502316","pgAdmissionYmdt":"20200120182236","easyPaymentYn":"Y"}],"orderCertifyKey":"fSBBAVJN65P8UPXWsEUlQRCNNlwn9oATY03g8lZGQYICC","paymentCompletionYn":"Y","paymentCompleteYmdt":"20200120182237"},"code":0,"message":"success"}
+2020-01-20 오후 6:22:37 payco_return.asp receive json data : {
+    "result": {
+        "sellerOrderReferenceKey": "M20000000373638",
+        "reserveOrderNo": "202001202420916225",
+        "orderNo": "202001202276924204",
+        "memberName": "김**",
+        "memberEmail": "bl****",
+        "orderChannel": "MOBILE",
+        "totalOrderAmt": 3000,
+        "totalDeliveryFeeAmt": 0,
+        "totalRemoteAreaDeliveryFeeAmt": 0,
+        "totalPaymentAmt": 3000,
+        "receiptPaycoPointAmt": 0,
+        "receiptPaycoPointTaxfreeAmt": 0,
+        "receiptPaycoPointTaxableAmt": 0,
+        "receiptPaycoPointVatAmt": 0,
+        "receiptPaycoPointServiceAmt": 0,
+        "orderProducts": [
+            {
+                "orderProductNo": "202001202287514874",
+                "sellerOrderProductReferenceKey": "ITEM_100001",
+                "orderProductStatusCode": "OPSPAED",
+                "orderProductStatusName": "결제완료",
+                "cpId": "BBQ00495",
+                "productId": "BBQ00495_EASYP",
+                "productKindCode": "GENERAL_PRODUCT",
+                "productPaymentAmt": 3000,
+                "originalProductPaymentAmt": 3000
+            }
+        ],
+        "paymentDetails": [
+            {
+                "cardSettleInfo": {
+                    "cardCompanyName": "카카오뱅크카드",
+                    "cardCompanyCode": "CCKA",
+                    "cardNo": "536510******4319",
+                    "cardInstallmentMonthNumber": "00",
+                    "cardAdmissionNo": "28042710",
+                    "cardInterestFreeYn": "N",
+                    "corporateCardYn": "N",
+                    "partCancelPossibleYn": "Y"
+                },
+                "paymentTradeNo": "202001202567675910",
+                "paymentMethodCode": "31",
+                "paymentMethodName": "신용카드",
+                "paymentAmt": 3000,
+                "taxfreeAmt": 0,
+                "taxableAmt": 2727,
+                "vatAmt": 273,
+                "serviceAmt": 0,
+                "tradeYmdt": "20200120182237",
+                "pgAdmissionNo": "20650855502316",
+                "pgAdmissionYmdt": "20200120182236",
+                "easyPaymentYn": "Y"
+            }
+        ],
+        "orderCertifyKey": "fSBBAVJN65P8UPXWsEUlQRCNNlwn9oATY03g8lZGQYICC",
+        "paymentCompletionYn": "Y",
+        "paymentCompleteYmdt": "20200120182237"
+    },
+    "code": 0,
+    "message": "success"
+}
+2020-01-20 오후 6:22:37 orderProductStatusName : 결제완료
+2020-01-20 오후 6:22:37 paymentDetails's CardNumber : 536510******4319
+2020-01-20 오후 6:22:37 payco_return.asp return success.
+2020-01-20 오후 6:23:26 payco_reserve.asp is Called - order_idx : 373638, domain : mobile, branch_id : 1225303, gubun : Order, order_num : M20000000373638, pay_method : Payco, 
+2020-01-20 오후 6:23:26 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 6:23:26 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00495",
+            "productId": "BBQ00495_EASYP",
+            "productAmt": "3000",
+            "productPaymentAmt": "3000",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00495",
+    "sellerOrderReferenceKey": "M20000000373638",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "3000",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "2727",
+    "totalVatAmt": "273",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://m.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"2727\",\r\n    \"totalVatAmt\": \"273\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "MOBILE",
+    "inAppYn": "N",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"https://m.bbq.co.kr/order/cart.asp?cancel_idx=373638\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 6:23:26 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 6:23:26 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"code":1005,"message":"The order number is already registered.","redirectUrl":null}
+2020-01-20 오후 6:56:39 payco_popup.asp is Called - gubun : Order, pm : , order_idx : 373741, order_num : M20000000373741, pay_method : Payco, domain : mobile, branch_id : 1343801, event_point : 0, event_point_productcd : , coupon_amt : , 
+2020-01-20 오후 6:56:40 payco_reserve.asp is Called - order_idx : 373741, domain : mobile, branch_id : 1343801, gubun : Order, order_num : M20000000373741, pay_method : Payco, 
+2020-01-20 오후 6:56:40 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 6:56:40 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00236",
+            "productId": "BBQ00236_EASYP",
+            "productAmt": "2000",
+            "productPaymentAmt": "2000",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00236",
+    "sellerOrderReferenceKey": "M20000000373741",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "2000",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "1818",
+    "totalVatAmt": "182",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://m.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"1818\",\r\n    \"totalVatAmt\": \"182\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "MOBILE",
+    "inAppYn": "N",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"https://m.bbq.co.kr/order/cart.asp?cancel_idx=373741\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 6:56:40 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 6:56:40 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"result":{"reserveOrderNo":"202001202420928616","orderSheetUrl":"https://bill.payco.com/m/easyAppLogin/202001202420928616"},"code":0,"message":"success"}
+2020-01-20 오후 7:25:17 payco_popup.asp is Called - gubun : Order, pm : , order_idx : 373841, order_num : M20000000373841, pay_method : Payco, domain : mobile, branch_id : 7346901, event_point : 0, event_point_productcd : , coupon_amt : , 
+2020-01-20 오후 7:25:17 payco_reserve.asp is Called - order_idx : 373841, domain : mobile, branch_id : 7346901, gubun : Order, order_num : M20000000373841, pay_method : Payco, 
+2020-01-20 오후 7:25:17 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 7:25:17 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00393",
+            "productId": "BBQ00393_EASYP",
+            "productAmt": "3000",
+            "productPaymentAmt": "3000",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00393",
+    "sellerOrderReferenceKey": "M20000000373841",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "3000",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "2727",
+    "totalVatAmt": "273",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://m.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"2727\",\r\n    \"totalVatAmt\": \"273\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "MOBILE",
+    "inAppYn": "N",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"https://m.bbq.co.kr/order/cart.asp?cancel_idx=373841\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 7:25:17 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 7:25:17 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"result":{"reserveOrderNo":"202001202420938963","orderSheetUrl":"https://bill.payco.com/m/easyAppLogin/202001202420938963"},"code":0,"message":"success"}
+2020-01-20 오후 7:25:50 payco_return.asp is Called - POST DATA : GET DATA : totalRemoteAreaDeliveryFeeAmt : 0, code : 0, totalPaymentAmt : 3000, mainPgCode : 31, totalTaxfreeAmt : 0, totalTaxableAmt : 2727, totalVatAmt : 273, reserveOrderNo : 202001202420938963, sellerOrderReferenceKey : M20000000373841, pointAmt : 0, taxationType : TAXATION, discountAmt : 0, paymentCertifyToken : Dn-Q5A-PAqov5cilyD8kVrHNw_CUy0mXN4TEGOVYA3V5SWH3x9wzrMkjRuVq0Izs, 
+2020-01-20 오후 7:25:50 Call API   https://api-bill.payco.com/outseller/payment/approval Mode : json
+2020-01-20 오후 7:25:50 Call API   https://api-bill.payco.com/outseller/payment/approval Data : {
+    "sellerKey": "BBQ00393",
+    "reserveOrderNo": "202001202420938963",
+    "sellerOrderReferenceKey": "M20000000373841",
+    "paymentCertifyToken": "Dn-Q5A-PAqov5cilyD8kVrHNw_CUy0mXN4TEGOVYA3V5SWH3x9wzrMkjRuVq0Izs",
+    "totalPaymentAmt": "3000"
+}
+2020-01-20 오후 7:25:51 API Result https://api-bill.payco.com/outseller/payment/approval Status : 200
+2020-01-20 오후 7:25:51 API Result https://api-bill.payco.com/outseller/payment/approval ResponseText : {"result":{"sellerOrderReferenceKey":"M20000000373841","reserveOrderNo":"202001202420938963","orderNo":"202001202276945391","memberName":"신**","memberEmail":"op****","orderChannel":"MOBILE","totalOrderAmt":3000,"totalDeliveryFeeAmt":0,"totalRemoteAreaDeliveryFeeAmt":0,"totalPaymentAmt":3000,"receiptPaycoPointAmt":0,"receiptPaycoPointTaxfreeAmt":0,"receiptPaycoPointTaxableAmt":0,"receiptPaycoPointVatAmt":0,"receiptPaycoPointServiceAmt":0,"orderProducts":[{"orderProductNo":"202001202287538033","sellerOrderProductReferenceKey":"ITEM_100001","orderProductStatusCode":"OPSPAED","orderProductStatusName":"결제완료","cpId":"BBQ00393","productId":"BBQ00393_EASYP","productKindCode":"GENERAL_PRODUCT","productPaymentAmt":3000,"originalProductPaymentAmt":3000}],"paymentDetails":[{"cardSettleInfo":{"cardCompanyName":"BC카드","cardCompanyCode":"CCBC","cardNo":"551431******4953","cardInstallmentMonthNumber":"00","cardAdmissionNo":"34324926","cardInterestFreeYn":"N","corporateCardYn":"N","partCancelPossibleYn":"Y"},"paymentTradeNo":"202001202567711009","paymentMethodCode":"31","paymentMethodName":"신용카드","paymentAmt":3000,"taxfreeAmt":0,"taxableAmt":2727,"vatAmt":273,"serviceAmt":0,"tradeYmdt":"20200120192551","pgAdmissionNo":"20650856370477","pgAdmissionYmdt":"20200120192550","easyPaymentYn":"Y"}],"orderCertifyKey":"Xoo12YhLGSNWmlk2pNZw43fODIHlQD43fZRxObz3fx4CC","paymentCompletionYn":"Y","paymentCompleteYmdt":"20200120192551"},"code":0,"message":"success"}
+2020-01-20 오후 7:25:51 payco_return.asp receive json data : {
+    "result": {
+        "sellerOrderReferenceKey": "M20000000373841",
+        "reserveOrderNo": "202001202420938963",
+        "orderNo": "202001202276945391",
+        "memberName": "신**",
+        "memberEmail": "op****",
+        "orderChannel": "MOBILE",
+        "totalOrderAmt": 3000,
+        "totalDeliveryFeeAmt": 0,
+        "totalRemoteAreaDeliveryFeeAmt": 0,
+        "totalPaymentAmt": 3000,
+        "receiptPaycoPointAmt": 0,
+        "receiptPaycoPointTaxfreeAmt": 0,
+        "receiptPaycoPointTaxableAmt": 0,
+        "receiptPaycoPointVatAmt": 0,
+        "receiptPaycoPointServiceAmt": 0,
+        "orderProducts": [
+            {
+                "orderProductNo": "202001202287538033",
+                "sellerOrderProductReferenceKey": "ITEM_100001",
+                "orderProductStatusCode": "OPSPAED",
+                "orderProductStatusName": "결제완료",
+                "cpId": "BBQ00393",
+                "productId": "BBQ00393_EASYP",
+                "productKindCode": "GENERAL_PRODUCT",
+                "productPaymentAmt": 3000,
+                "originalProductPaymentAmt": 3000
+            }
+        ],
+        "paymentDetails": [
+            {
+                "cardSettleInfo": {
+                    "cardCompanyName": "BC카드",
+                    "cardCompanyCode": "CCBC",
+                    "cardNo": "551431******4953",
+                    "cardInstallmentMonthNumber": "00",
+                    "cardAdmissionNo": "34324926",
+                    "cardInterestFreeYn": "N",
+                    "corporateCardYn": "N",
+                    "partCancelPossibleYn": "Y"
+                },
+                "paymentTradeNo": "202001202567711009",
+                "paymentMethodCode": "31",
+                "paymentMethodName": "신용카드",
+                "paymentAmt": 3000,
+                "taxfreeAmt": 0,
+                "taxableAmt": 2727,
+                "vatAmt": 273,
+                "serviceAmt": 0,
+                "tradeYmdt": "20200120192551",
+                "pgAdmissionNo": "20650856370477",
+                "pgAdmissionYmdt": "20200120192550",
+                "easyPaymentYn": "Y"
+            }
+        ],
+        "orderCertifyKey": "Xoo12YhLGSNWmlk2pNZw43fODIHlQD43fZRxObz3fx4CC",
+        "paymentCompletionYn": "Y",
+        "paymentCompleteYmdt": "20200120192551"
+    },
+    "code": 0,
+    "message": "success"
+}
+2020-01-20 오후 7:25:51 orderProductStatusName : 결제완료
+2020-01-20 오후 7:25:51 paymentDetails's CardNumber : 551431******4953
+2020-01-20 오후 7:25:51 payco_return.asp return success.
+2020-01-20 오후 8:44:00 payco_popup.asp is Called - gubun : Order, pm : , order_idx : 374031, order_num : M20000000374031, pay_method : Payco, domain : mobile, branch_id : 7217001, event_point : 0, event_point_productcd : , coupon_amt : , 
+2020-01-20 오후 8:44:01 payco_reserve.asp is Called - order_idx : 374031, domain : mobile, branch_id : 7217001, gubun : Order, order_num : M20000000374031, pay_method : Payco, 
+2020-01-20 오후 8:44:01 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 8:44:01 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00414",
+            "productId": "BBQ00414_EASYP",
+            "productAmt": "3500",
+            "productPaymentAmt": "3500",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00414",
+    "sellerOrderReferenceKey": "M20000000374031",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "3500",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "3182",
+    "totalVatAmt": "318",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://m.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"3182\",\r\n    \"totalVatAmt\": \"318\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "MOBILE",
+    "inAppYn": "N",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"https://m.bbq.co.kr/order/cart.asp?cancel_idx=374031\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 8:44:01 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 8:44:01 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"result":{"reserveOrderNo":"202001202420966405","orderSheetUrl":"https://bill.payco.com/m/easyAppLogin/202001202420966405"},"code":0,"message":"success"}
+2020-01-20 오후 8:44:24 payco_return.asp is Called - POST DATA : GET DATA : totalRemoteAreaDeliveryFeeAmt : 0, code : 0, totalPaymentAmt : 3500, mainPgCode : 31, totalTaxfreeAmt : 0, totalTaxableAmt : 3182, totalVatAmt : 318, reserveOrderNo : 202001202420966405, sellerOrderReferenceKey : M20000000374031, pointAmt : 0, taxationType : TAXATION, discountAmt : 0, paymentCertifyToken : 7WR0OzOSOagVaebFW7StngiNne4Tr58b0T75j2zls_KkV8K7Nej3vnizuR7G3r8A, 
+2020-01-20 오후 8:44:24 Call API   https://api-bill.payco.com/outseller/payment/approval Mode : json
+2020-01-20 오후 8:44:24 Call API   https://api-bill.payco.com/outseller/payment/approval Data : {
+    "sellerKey": "BBQ00414",
+    "reserveOrderNo": "202001202420966405",
+    "sellerOrderReferenceKey": "M20000000374031",
+    "paymentCertifyToken": "7WR0OzOSOagVaebFW7StngiNne4Tr58b0T75j2zls_KkV8K7Nej3vnizuR7G3r8A",
+    "totalPaymentAmt": "3500"
+}
+2020-01-20 오후 8:44:25 API Result https://api-bill.payco.com/outseller/payment/approval Status : 200
+2020-01-20 오후 8:44:25 API Result https://api-bill.payco.com/outseller/payment/approval ResponseText : {"result":{"sellerOrderReferenceKey":"M20000000374031","reserveOrderNo":"202001202420966405","orderNo":"202001202276969397","memberName":"강**","memberEmail":"ga****","orderChannel":"MOBILE","totalOrderAmt":3500,"totalDeliveryFeeAmt":0,"totalRemoteAreaDeliveryFeeAmt":0,"totalPaymentAmt":3500,"receiptPaycoPointAmt":0,"receiptPaycoPointTaxfreeAmt":0,"receiptPaycoPointTaxableAmt":0,"receiptPaycoPointVatAmt":0,"receiptPaycoPointServiceAmt":0,"orderProducts":[{"orderProductNo":"202001202287564219","sellerOrderProductReferenceKey":"ITEM_100001","orderProductStatusCode":"OPSPAED","orderProductStatusName":"결제완료","cpId":"BBQ00414","productId":"BBQ00414_EASYP","productKindCode":"GENERAL_PRODUCT","productPaymentAmt":3500,"originalProductPaymentAmt":3500}],"paymentDetails":[{"cardSettleInfo":{"cardCompanyName":"삼성카드","cardCompanyCode":"CCSS","cardNo":"536148******0137","cardInstallmentMonthNumber":"00","cardAdmissionNo":"46342369","cardInterestFreeYn":"N","corporateCardYn":"N","partCancelPossibleYn":"Y"},"paymentTradeNo":"202001202567751829","paymentMethodCode":"31","paymentMethodName":"신용카드","paymentAmt":3500,"taxfreeAmt":0,"taxableAmt":3182,"vatAmt":318,"serviceAmt":0,"tradeYmdt":"20200120204425","pgAdmissionNo":"20650857350939","pgAdmissionYmdt":"20200120204424","easyPaymentYn":"Y"}],"orderCertifyKey":"rH6ESp5tBB06iP4JAAwCumsffqaTOYQSBuNQlCvCL2JMCC","paymentCompletionYn":"Y","paymentCompleteYmdt":"20200120204425"},"code":0,"message":"success"}
+2020-01-20 오후 8:44:25 payco_return.asp receive json data : {
+    "result": {
+        "sellerOrderReferenceKey": "M20000000374031",
+        "reserveOrderNo": "202001202420966405",
+        "orderNo": "202001202276969397",
+        "memberName": "강**",
+        "memberEmail": "ga****",
+        "orderChannel": "MOBILE",
+        "totalOrderAmt": 3500,
+        "totalDeliveryFeeAmt": 0,
+        "totalRemoteAreaDeliveryFeeAmt": 0,
+        "totalPaymentAmt": 3500,
+        "receiptPaycoPointAmt": 0,
+        "receiptPaycoPointTaxfreeAmt": 0,
+        "receiptPaycoPointTaxableAmt": 0,
+        "receiptPaycoPointVatAmt": 0,
+        "receiptPaycoPointServiceAmt": 0,
+        "orderProducts": [
+            {
+                "orderProductNo": "202001202287564219",
+                "sellerOrderProductReferenceKey": "ITEM_100001",
+                "orderProductStatusCode": "OPSPAED",
+                "orderProductStatusName": "결제완료",
+                "cpId": "BBQ00414",
+                "productId": "BBQ00414_EASYP",
+                "productKindCode": "GENERAL_PRODUCT",
+                "productPaymentAmt": 3500,
+                "originalProductPaymentAmt": 3500
+            }
+        ],
+        "paymentDetails": [
+            {
+                "cardSettleInfo": {
+                    "cardCompanyName": "삼성카드",
+                    "cardCompanyCode": "CCSS",
+                    "cardNo": "536148******0137",
+                    "cardInstallmentMonthNumber": "00",
+                    "cardAdmissionNo": "46342369",
+                    "cardInterestFreeYn": "N",
+                    "corporateCardYn": "N",
+                    "partCancelPossibleYn": "Y"
+                },
+                "paymentTradeNo": "202001202567751829",
+                "paymentMethodCode": "31",
+                "paymentMethodName": "신용카드",
+                "paymentAmt": 3500,
+                "taxfreeAmt": 0,
+                "taxableAmt": 3182,
+                "vatAmt": 318,
+                "serviceAmt": 0,
+                "tradeYmdt": "20200120204425",
+                "pgAdmissionNo": "20650857350939",
+                "pgAdmissionYmdt": "20200120204424",
+                "easyPaymentYn": "Y"
+            }
+        ],
+        "orderCertifyKey": "rH6ESp5tBB06iP4JAAwCumsffqaTOYQSBuNQlCvCL2JMCC",
+        "paymentCompletionYn": "Y",
+        "paymentCompleteYmdt": "20200120204425"
+    },
+    "code": 0,
+    "message": "success"
+}
+2020-01-20 오후 8:44:25 orderProductStatusName : 결제완료
+2020-01-20 오후 8:44:25 paymentDetails's CardNumber : 536148******0137
+2020-01-20 오후 8:44:25 payco_return.asp return success.
+2020-01-20 오후 8:50:57 payco_popup.asp is Called - gubun : Order, pm : , order_idx : 374055, order_num : W20000000374055, pay_method : Payco, domain : pc, branch_id : 7249101, event_point : 0, event_point_productcd : , coupon_amt : , 
+2020-01-20 오후 8:50:57 payco_reserve.asp is Called - order_idx : 374055, domain : pc, branch_id : 7249101, gubun : Order, order_num : W20000000374055, pay_method : Payco, 
+2020-01-20 오후 8:50:57 Call API   https://api-bill.payco.com/outseller/order/reserve Mode : json
+2020-01-20 오후 8:50:57 Call API   https://api-bill.payco.com/outseller/order/reserve Data : {
+    "orderProducts": [
+        {
+            "cpId": "BBQ00340",
+            "productId": "BBQ00340_EASYP",
+            "productAmt": "8000",
+            "productPaymentAmt": "8000",
+            "orderQuantity": 1,
+            "option": "245",
+            "sortOrdering": 1,
+            "productName": "BBQ Chicken",
+            "orderConfirmUrl": "",
+            "orderConfirmMobileUrl": "",
+            "productImageUrl": "",
+            "sellerOrderProductReferenceKey": "ITEM_100001",
+            "taxationType": "TAXATION"
+        }
+    ],
+    "sellerKey": "BBQ00340",
+    "sellerOrderReferenceKey": "W20000000374055",
+    "sellerOrderReferenceKeyType": "UNIQUE_KEY",
+    "currency": "KRW",
+    "totalPaymentAmt": "8000",
+    "totalTaxfreeAmt": "0",
+    "totalTaxableAmt": "7273",
+    "totalVatAmt": "727",
+    "orderTitle": "BBQ Chicken",
+    "returnUrl": "https://www.bbq.co.kr/pay/payco/payco_return.asp",
+    "returnUrlParam": "{\r\n    \"taxationType\": \"TAXATION\",\r\n    \"totalTaxfreeAmt\": \"0\",\r\n    \"totalTaxableAmt\": \"7273\",\r\n    \"totalVatAmt\": \"727\"\r\n}",
+    "nonBankbookDepositInformUrl": "http://xxx.xxx.xxx.xxx/payco_without_bankbook.asp",
+    "orderMethod": "EASYPAY",
+    "orderChannel": "PC",
+    "inAppYn": "N",
+    "individualCustomNoInputYn": "N",
+    "orderSheetUiType": "GRAY",
+    "payMode": "PAY2",
+    "extraData": "{\r\n    \"payExpiryYmdt\": \"\",\r\n    \"cancelMobileUrl\": \"\",\r\n    \"viewOptions\": {\r\n        \"showMobileTopGnbYn\": \"N\",\r\n        \"iframeYn\": \"N\"\r\n    }\r\n}"
+}
+2020-01-20 오후 8:50:57 API Result https://api-bill.payco.com/outseller/order/reserve Status : 200
+2020-01-20 오후 8:50:57 API Result https://api-bill.payco.com/outseller/order/reserve ResponseText : {"result":{"reserveOrderNo":"202001202420968754","orderSheetUrl":"https://bill.payco.com/easyLogin/202001202420968754"},"code":0,"message":"success"}

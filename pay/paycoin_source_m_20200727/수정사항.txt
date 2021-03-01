@@ -1,0 +1,53 @@
+
+실 사용시 변경사항
+
+1. webSetting.config
+  <!-- 아래 부분 {url}부분만 수정 요망-->
+  <add key="target_url" value="{url}/Result.aspx"/>
+  <add key="bill_url" value="{url}/target.aspx"/>
+  <add key="cancle_url" value="{url}/cancel.aspx"/>
+  <!--아래 부분 {수정부분} 수정 요망-->
+  <add key="success_url" value="{수정부분}"/>
+  <add key="failure_url" value="{수정부분}"/>
+  <add key="test_start_url" value="{수정부분}"/>
+
+2. 결제창 호출 : {url}/ready.aspx
+   - 파라메터 명
+   orderid //주문시 생성되는 고유번호
+   amount //결제금액
+   product //상품명
+   user_id //(회원)로그인ID, (비회원)임시ID
+   cp_id //가맹점별 거래번호
+   agent_type = "MOBILE"
+
+3. 결제후 success_url 로 리턴되는 값 : POST
+   workmode = "pay";
+   returncode
+   returnmsg
+   tid
+   amount
+   pci
+   date
+
+4. 결제 취소 : {url}/cancel.aspx
+   - 파라메터 명
+   tid
+   cp_id //가맹점별 거래번호
+   orderid //주문시 생성되는 고유번호
+
+5. 취소 성공 후 결과 리턴 값 : POST
+   workmode = "cancel"
+   scmsg = "SUCC|SUCCESS" or "FAIL|FAIL"
+   returncode
+   returnmsg
+   tid
+   date
+
+6. 결제 취소-2 : {url}/cancel_ajax.aspx
+   - 파라메터 명
+   tid
+   cp_id //가맹점별 거래번호
+   orderid //주문시 생성되는 고유번호
+
+7. 취소 성공 후 결과 리턴 값 - 2
+SUCC|SUCCESS|returncode|returnmsg 또는 FAIL|FAIL|returncode|returnmsg

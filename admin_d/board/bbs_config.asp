@@ -1,0 +1,66 @@
+<%
+	DISP_SEL_YN = "N"	'선택
+	If BBSCODE = "A01" Or BBSCODE = "K03" Then
+		DISP_SEL_YN = "Y"
+	End If 
+
+	DISP_THUM_YN = "N"	'썸네일 이미지
+	If BBSCODE = "A01" Or BBSCODE = "A02" or BBSCODE = "A06" Or BBSCODE = "G02" Or BBSCODE = "G03" Or BBSCODE = "G04" Or BBSCODE = "H01" Or BBSCODE = "J01" Or BBSCODE = "K01" Or BBSCODE = "K03" Or BBSCODE = "K06" Then
+		DISP_THUM_YN = "Y"
+	End If 
+
+	DISP_TOP_YN = "N"	'TOP 구분
+	If BBSCODE = "A03" Or BBSCODE = "B01" Or BBSCODE = "C01" Or BBSCODE = "D01" Or BBSCODE = "E01" Or BBSCODE = "F01" Or BBSCODE = "G01" Or BBSCODE = "I01" Or BBSCODE = "J01" Then
+		DISP_TOP_YN = "Y"
+	End If 
+
+	DISP_EVENT_YN = "N"	'이벤트 기간
+	If BBSCODE = "A02" or BBSCODE = "A06" Or BBSCODE = "G03" Then
+		DISP_EVENT_YN = "Y"
+	End If 
+
+	DISP_HIT_YN = "N"	'조회, 노출
+	If BBSCODE = "A03" Or BBSCODE = "A04" Or BBSCODE = "B01" Or BBSCODE = "C01" Or BBSCODE = "D01" Or BBSCODE = "E01" Or BBSCODE = "F01" Or BBSCODE = "G01" Or BBSCODE = "I01" Or BBSCODE = "J01" Or BBSCODE = "K01" Or BBSCODE = "K02" Then
+		DISP_HIT_YN = "Y"
+	End If 
+
+	DISP_MAIN_YN = "N"	'메인 설정
+	If BBSCODE = "J01" Or BBSCODE = "K01" Then
+		DISP_MAIN_YN = "Y"
+	End If 
+
+	DISP_FIEL_YN = "N"	'첨부파일
+	If BBSCODE = "A03" Or BBSCODE = "B01" Or BBSCODE = "C01" Or BBSCODE = "D01" Or BBSCODE = "E01" Or BBSCODE = "F01" Or BBSCODE = "G01" Or BBSCODE = "I01" Or BBSCODE = "J01" Or BBSCODE = "H01" Then
+		DISP_FIEL_YN = "Y"
+	End If 
+
+	DISP_SUBTITLE_YN = "N"	'언론사
+	If BBSCODE = "K02" Then
+		DISP_SUBTITLE_YN = "Y"
+	End If
+
+	DISP_LINK_YN = "N"	'YouTube URL
+	If BBSCODE = "A01" Or BBSCODE = "A07" Or BBSCODE = "K02" Or BBSCODE = "K03" Then
+		DISP_LINK_YN = "Y"
+	End If
+
+	DISP_RESERVE_YN = "N"	'예약등록일
+	If BBSCODE = "A01" Or BBSCODE = "A02" or BBSCODE = "A06" Or BBSCODE = "A03" Or BBSCODE = "B01" Or BBSCODE = "C01" Or BBSCODE = "D01" Or BBSCODE = "E01" Or BBSCODE = "F01" Or BBSCODE = "G01" Or BBSCODE = "I01" Or BBSCODE = "J01" Then
+		DISP_RESERVE_YN = "Y"
+	End If 
+
+	DISP_PDATE_YN = "N"	'기사작성일
+	If BBSCODE = "K02" Then
+		DISP_PDATE_YN = "Y"
+	End If 
+
+	DISP_EDITOR_YN = "Y"	'에디터 사용여부
+	If BBSCODE = "A01" Or BBSCODE = "G04" Or BBSCODE = "K02" Or BBSCODE = "K03" Or BBSCODE = "K06" Then
+		DISP_EDITOR_YN = "N"
+	End If
+
+	DISP_MDATE_YN = "N"	'등록 수정일 노출여부
+	If BBSCODE = "A04" Then
+		DISP_MDATE_YN = "Y"
+	End If
+%>

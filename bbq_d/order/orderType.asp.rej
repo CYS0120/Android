@@ -1,0 +1,15 @@
+diff a/order/orderType.asp b/order/orderType.asp	(rejected hunks)
+@@ -201,8 +201,11 @@
+ 		// }
+ 		// $("#cart_form input[name=cart_value]").val(JSON.stringify(cartV));
+ 		// $("#cart_form").submit();
+-
+-		$("#cart_form").attr("action", "cart.asp");
++		<% If ecoupon_yn = "Y" Then %>
++			$("#cart_form").attr("action", "ecoupon.asp");
++		<% Else %>
++			$("#cart_form").attr("action", "cart.asp");
++		<% End If %>
+ 		$("#cart_form").submit();
+ 	}
+ </script>

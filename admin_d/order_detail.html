@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/jquery.flexslider.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/admin.js"></script>
+    
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/content.css">
+
+   
+</head>
+
+<body>
+    <div class="wrap">
+        <!--popup-->
+        <div class="mask"></div>
+        <div class="window">
+            
+            <div class="sitemap_wrap">
+                <!--content-->
+                <div class="manager_popup_area" style="height:350px;">
+                    <form action="">
+                        <div class="popup_title">
+                            <span>상담 내역 및 주문취소</span>
+                            <a href="maneger_popup.html" class="close"><img src="img/close.png" alt=""></a>
+                        </div>
+                        <table>
+                            <colgroup>
+                                <col width="30%">
+                                <col width="70%">
+                            </colgroup>
+                            <tr>
+                                <th>상담자</th>
+                                <td><input type="text"></td>
+                            </tr>
+                            <tr>
+                                <th>상담내용</th>
+                                <td><textarea name="" id="" cols="45" rows="10"  style="height:120px;"></textarea></td>
+                            </tr>
+                            <tr>
+                                <th>처리상태</th>
+                                <td style="text-align: left;padding-left:20px;">
+                                    <div><input type="radio"><label>주문취소</label></div>
+                                    <div><input type="radio"><label>주문상담(주문취소가 되지 않고 상담내역만 등록</label></div>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                        <div class="popup_btn">
+                            <input type="submit" value="등록" class="btn_red125">
+                            <input type="submit" value="수정" class="btn_red125">
+                            <input type="submit" value="취소" class="btn_white125">
+                        </div>
+                    </form>
+                </div>
+                <!--//content-->
+            </div>
+        </div>
+        <!--//popup-->
+        <!--header-->
+        <div class="head_wrap">
+            <div class="log_info">
+                <ul>
+                     <li>
+                        <span>님</span>
+                        <span>&nbsp;환영합니다.</span>
+                     </li>
+                     <li>
+                        <span>접속IP:</span>
+                        <span>106.248.76.213</span>
+                     </li>
+                     <li>
+                        <span>접속경과시간:</span>
+                        <span>05시간 20분</span>
+                     </li>
+                     <li>
+                        <span>자동 로그아웃 남은시간 :</span>
+                        <span>50분</span>
+                     </li>
+                     <div>
+                         <a href="javascript:;" class="logout">로그아웃</a>
+                     </div>
+                </ul>
+            </div>
+        </div>
+        <!--//header-->
+        <!--NAV-->
+        <div class="navwrap">
+            
+            
+                <!--LNb-->
+                <div class="lnb">
+                    <div class="s_btn_bg">
+                        <div class="s_btn">
+                            <a href="javascript:void(0)" class="round side_btn">
+                            <img src="img/bars-solid.png" alt="">
+                            </a>
+                        </div>
+                    </div>  
+                   <!-- <div class="left_logo">
+                        <a href="javascript:;">
+                            <img src="img/logo.png" alt="">
+                        </a> 
+                    </div>-->
+                    <div class="depth">
+                        <div class="main_depth">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;">비비큐치킨</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" class="third_depth">닭익는마을</a>
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:;">명가식</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">철판닭갈비</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">도리마루</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">우쿠야</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">올떡</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">소신</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">와타미</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">행복한집밥</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">치킨대학</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">창업센터</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">제너시스글로벌</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">제너시스그룹</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mem_depth hide">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;">회원검색</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="order_depth hide">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;" class="third_depth">비비큐치킨</a>
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:;">웹주문관리</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">유선주문취소리스트</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" class="third_depth">행복한집밥</a>
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:;">웹주문관리</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">유선주문취소리스트</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="store_depth hide">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;">비비큐치킨</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" class="third_depth">닭익는마을</a>
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:;">명가식</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">철판닭갈비</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">도리마루</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">우쿠야</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">올떡</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">소신</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">와타미</a>
+                                </li>
+                            </ul>                                  
+                        </div>
+                        <div class="menu_depth hide">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;">비비큐치킨</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" class="third_depth">닭익는마을</a>
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:;">명가식</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">철판닭갈비</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">도리마루</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">우쿠야</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">올떡</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">소신</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">와타미</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">행복한집밥</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="board_depth hide">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;">비비큐치킨</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" class="third_depth">닭익는마을</a>
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:;">명가식</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">철판닭갈비</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">도리마루</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">우쿠야</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">올떡</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">소신</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">와타미</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">행복한집밥</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">치킨대학</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">창업센터</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">제너시스글로벌</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">제너시스그룹</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="popup_depth hide">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;">팝업리스트</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">팝업등록</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="coupon_depth hide">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;">E-쿠폰관리</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="manager_depth hide">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;" class="third_depth">브랜드별</a>
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:;">비비큐치킨</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">닭익는마을</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">우쿠야</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">올떡</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">소신</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">와타미</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">행복한집밥</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">치킨대학</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">창업센터</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">제너시스글로벌</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">제너시스그룹</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="">통합관리자</a>
+                                </li>
+                                <li>
+                                    <a href="">브랜드별</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="statistics_depth hide">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;">매출통계</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">접속자통계</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">주문통계</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">회원통계</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">창업문의통계</a>
+                                </li>                                    
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--//LNb-->
+                <!--GNB-->
+                <div class="gnbwrap">
+                    <div class="gnb">
+                        <ul id="menu_hover">
+                            <li>
+                                <div class="left_logo">
+                                    <a href="javascript:;">
+                                        <img src="img/logo.png" alt="">
+                                    </a>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <img src="img/gnb/main.png" alt="">
+                                    <span>메인관리</span>
+                                </a>
+                            </li>
+                           <!-- <li>
+                                <a href="javascript:;">
+                                    <img src="img/member-1.png" alt="">
+                                    <span>회원관리</span>
+                                </a>
+                            </li> -->
+                            <li>
+                                <a href="javascript:;">
+                                    <img src="img/gnb/order.png" alt="">
+                                    <span>주문관리</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <img src="img/gnb/store.png" alt="">
+                                    <span>매장관리</span>
+                                </a>
+                            </li>                        
+                            <li>
+                                <a href="javascript:;">
+                                    <img src="img/gnb/menu.png" alt="">
+                                    <span>메뉴관리</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <img src="img/gnb/board.png" alt="">
+                                    <span>게시판관리</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <img src="img/gnb/popup.png" alt="">
+                                    <span>팝업관리</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <img src="img/gnb/coupon.png" alt="">
+                                    <span>쿠폰관리</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <img src="img/gnb/manager.png" alt="">
+                                    <span>관리자관리</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <img src="img/gnb/statistics.png" alt="">
+                                    <span>통계</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="board_top">
+                        <div class="route"> 
+                            <span><p>관리자</p> > <p>주문관리</p></span>
+                        </div>
+                    </div>
+                </div>
+                <!--//GNB-->
+        </div>
+        <!--//NAV-->
+        <div class="content">
+            <div class="section section_order_detail">
+                <form action="">
+                 <!--   <div class="board_top">
+                        <div class="route"> 
+                            <span><p>관리자</p> > <p>게시판관리</p> > <p>비비큐치킨</p></span>
+                        </div> 
+                    </div>-->
+                    <div class="db_all">
+                            <div class="db db_1">
+                                <div class="txt_t">
+                                    <b>주문정보A</b>
+                                </div>
+                                <div class="ta ta_1">
+                                    <table>
+                                        <tr>
+                                            <th>주문번호</th>
+                                            <th>주문형태</th>
+                                            <th>주문날짜</th>
+                                            <th>주문시간</th>
+                                            <th>메모</th>
+                                        </tr>
+                                        <tr>
+                                            <td>W10009778</td>
+                                            <td>콜주문</td>
+                                            <td>20190101</td>
+                                            <td>15:00</td>
+                                            <td>배달료 3000원 안내(스마트폰 주문)</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                
+                            <div class="db db_2">
+                                <div class="txt_t">
+                                    <b>주문상품정보</b>
+                                </div>
+                                <div class="ta ta_1">
+                                    <table>
+                                        <tr>
+                                            <th>상품명</th>
+                                            <th>단가</th>
+                                            <th>수량</th>
+                                            <th>금액</th>
+                                        </tr>
+                                        <tr>
+                                            <td>상품명1</td>
+                                            <td>20,000원</td>
+                                            <td>1</td>
+                                            <td>20,000원</td>
+                                        </tr>
+                                        <tr>
+                                            <td>상품명2</td>
+                                            <td>16,000원</td>
+                                            <td>2</td>
+                                            <td>48,000원</td>
+                                        </tr>
+                                        <tr style="text-align:center">
+                                            <td>합계(판매금액)</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>68,000원</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                
+                            <div class="db db_3">
+                                <div class="txt_t">
+                                    <b>결제정보</b>
+                                </div>
+                                <div class="ta ta_1">
+                                    <table>
+                                        <tr>
+                                            <th>결제유형</th>
+                                            <th>결제방법</th>
+                                            <th>판매금액</th>
+                                            <th>사용포인트</th>
+                                            <th>결제금액</th>
+                                            <th>결제잔액</th>
+                                        </tr>
+                                        <tr>
+                                            <td>선불</td>
+                                            <td>카트+포인트</td>
+                                            <td>68,000원</td>
+                                            <td>2,000</td>
+                                            <td>18,000원</td>
+                                            <td>0원</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                
+                            <div class="db db_4">
+                                <div class="txt_t">
+                                    <b>포인트&amp;쿠폰 사용 정보</b>
+                                </div>
+                                <div class="ta ta_1">
+                                    <table>
+                                        <tr>
+                                            <th colspan="2">포인트</th>
+                                            <th colspan="5">쿠폰</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="bg_fa">사용포인트</td>
+                                            <td class="bg_fa">잔여포인트</td>
+                                            <td class="bg_fa">쿠폰명</td>
+                                            <td class="bg_fa">핀번호</td>
+                                            <td class="bg_fa">적용상품</td>
+                                            <td class="bg_fa">적용금액</td>
+                                            <td class="bg_fa">사용일</td>
+                                        </tr>
+                                        <tr class="h20">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr class="h20">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                
+                            <div class="db db_5">
+                                <div class="txt_t">
+                                    <b>배송정보&amp;주문매장정보</b>
+                                </div>
+                                <div class="ta ta_1">
+                                    <table>
+                                        <tr>
+                                            <th>회원명</th>
+                                            <th>회원ID</th>
+                                            <th>회원연락처</th>
+                                            <th>배송받을주소</th>
+                                            <th>주문브랜드</th>
+                                            <th>주문매장명</th>
+                                            <th>주문매장연락처</th>
+                                            <th>사용일</th>
+                                        </tr>
+                                        <tr class="h20">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                
+                            <div class="db db_6">
+                                <div class="txt_t">
+                                    <b>상담내역</b>
+                                </div>
+                                <div class="ta ta_1">
+                                    <table>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>상담자</th>
+                                            <th>상담내용</th>
+                                            <th>상담일시</th>
+                                            <th>처리</th>
+                                        </tr>
+                                        <tr>
+                                            <td>16</td>
+                                            <td>POS</td>
+                                            <td class="tl">[구매옥계사랑점] 주문접수, 맛있는 음식의 배달예상소요시간은 40분 입니다.</td>
+                                            <td>2019-01-01 오후 1:10 19</td>
+                                            <td>안내</td>
+                                        </tr>
+                                        <tr>
+                                            <td>15</td>
+                                            <td>시스템[DB]</td>
+                                            <td class="tl">상태변경 : M / /일자 : 20181218 / 시간 : 155816[UPDATE]</td>
+                                            <td>2019-01-01 오후 1:10 19</td>
+                                            <td>안내</td>
+                                        </tr>
+                                        <tr>
+                                            <td>14</td>
+                                            <td>시스템[DB]</td>
+                                            <td class="tl">상태변경 : M / /일자 : 20181218 / 시간 : 155816[UPDATE]</td>
+                                            <td>2019-01-01 오후 1:10 19</td>
+                                            <td>안내</td>
+                                        </tr>
+                                        <tr>
+                                            <td>13</td>
+                                            <td>시스템[DB]</td>
+                                            <td class="tl">상태변경 : M / /일자 : 20181218 / 시간 : 155816[UPDATE]</td>
+                                            <td>2019-01-01 오후 1:10 19</td>
+                                            <td>안내</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12</td>
+                                            <td>시스템[DB]</td>
+                                            <td class="tl">상태변경 : M / /일자 : 20181218 / 시간 : 155816[UPDATE]</td>
+                                            <td>2019-01-01 오후 1:10 19</td>
+                                            <td>안내</td>
+                                        </tr>
+                                        <tr>
+                                            <td>11</td>
+                                            <td>시스템[DB]</td>
+                                            <td class="tl">상태변경 : M / /일자 : 20181218 / 시간 : 155816[UPDATE]</td>
+                                            <td>2019-01-01 오후 1:10 19</td>
+                                            <td>안내</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10</td>
+                                            <td>시스템[DB]</td>
+                                            <td class="tl">상태변경 : M / /일자 : 20181218 / 시간 : 155816[UPDATE]</td>
+                                            <td>2019-01-01 오후 1:10 19</td>
+                                            <td>안내</td>
+                                        </tr>
+                                        <tr>
+                                            <td>9</td>
+                                            <td>시스템[DB]</td>
+                                            <td class="tl">상태변경 : M / /일자 : 20181218 / 시간 : 155816[UPDATE]</td>
+                                            <td>2019-01-01 오후 1:10 19</td>
+                                            <td>안내</td>
+                                        </tr>
+                                        <tr>
+                                            <td>8</td>
+                                            <td>시스템[DB]</td>
+                                            <td class="tl">상태변경 : M / /일자 : 20181218 / 시간 : 155816[UPDATE]</td>
+                                            <td>2019-01-01 오후 1:10 19</td>
+                                            <td>안내</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td>시스템[DB]</td>
+                                            <td class="tl">상태변경 : M / /일자 : 20181218 / 시간 : 155816[UPDATE]</td>
+                                            <td>2019-01-01 오후 1:10 19</td>
+                                            <td>안내</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list_foot">
+                            <div class="page_num">
+                                <div class="paging_before">
+                                    <a href="" class="btn_arrow">&#60;&#60;</a>
+                                    <a href="" class="btn_arrow">&#60;</a>
+                                </div>
+                                <div class="paging_no">
+                                    <ul>
+                                        <li><a href="">1</a></li>
+                                        <li><a href="">2</a></li>
+                                        <li><a href="">3</a></li>
+                                        <li><a href="">4</a></li>
+                                        <li><a href="">5</a></li>
+                                        <li><a href="">6</a></li>
+                                        <li><a href="">7</a></li>
+                                    </ul>
+                                </div>
+                                <div class="paging_after">
+                                    <a href="" class="btn_arrow">&#62;</a>
+                                    <a href="" class="btn_arrow">&#62;&#62;</a>
+                                </div>
+                            </div>
+                            <div style="display:inline-block;float:right;">
+                                <button class="btn_red125 popup">상담하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--footer-->
+            <div class="footwrap">
+                <div class="footer">
+                    <ul>
+                        <li>
+                            <a href="javascript:;">비비큐치킨</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">닭익는마을</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">우쿠야</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">올떡</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">소신</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">와타미</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">행복한집밥</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">치킨대학</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">창업센터</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">제너시스글로벌</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">제너시스그룹</a>
+                        </li>
+                    </ul>
+                </div>
+                <span>
+                    COPYRIGHT 2019 GENESIS BBQ ALL RIGHTS RESERVED
+                </span>
+            </div>
+        </div>
+
+        
+    </div>
+    
+         
+
+       
+        
+    
+    
+</body>
+
+</html>
+
+

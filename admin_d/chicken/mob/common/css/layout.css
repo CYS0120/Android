@@ -1,0 +1,212 @@
+@charset "utf-8";
+
+/*----------------------------------------------------------------------------------------------------------------------------------------
+	File : layout.css
+	Company : The Webstyle co.,ltd
+    CSS 적용순서 : 아이디 > 태그와 클래스 > 클래스 > 태그
+    CSS 선택자 선언순서 : Type Selector, Layout Selector, Class Selector, Etc
+    CSS 속성 선언순서 : display, position, float/clear, overflow, width/height, margin/padding, border, background, font/color, align, etc
+------------------------------------------------------------------------------------------------------------------------------------------*/
+html.fix {overflow:hidden;}
+.wrapper {display:block; position:relative; min-width:320px; min-height:100%; overflow-x:hidden; overflow-y:scroll;  /*white-space:nowrap; */ -webkit-overflow-scrolling:touch;}
+
+/* Header */
+.header {display:block; position:fixed; top:0px; left:0px; z-index:300; width:100%; height:102px; border-bottom:2px solid #dedede; background-color:#fff;}
+.main .header {background-color:transparent;}
+.scrolled.main .header {background-color:#fff;}
+.header h1 {font-family:"NotoSans-Medium"; font-size:36px; line-height:100px; text-align:center;}
+.header h1 a{display:inline-block; position:relative; top:26px; width:100px; height:49px; background:url('/images/common/btn_header_logo.png') no-repeat center center; text-indent:-9999px;}
+.main .header h1 {display:block; text-align:center;}
+.main .header h1 a {display:inline-block; position:relative; top:26px; width:100px; height:49px; background:url('/images/common/btn_header_logo.png') no-repeat center center; text-indent:-9999px;}
+.header .btn-header {display:inline-block; position:absolute; top:29px; height:44px; font-size:0px;}
+.header .btn-header.btn-header-nav {left:40px;}
+.header .btn-header.btn-header-mnu {right:40px;}
+.header .btn-header .btn_header_back {width:27px; height:44px; margin-right:44px; background:url('/images/common/btn_header_back.png') left center no-repeat;}
+.header .btn-header .btn_header_menu {width:38px; height:35px; background:url('/images/common/btn_header_menu.png') left center no-repeat;}
+.header .btn-header .btn_header_cart {position:relative; width:45px; height:44px; background:url('/images/common/btn_header_cart.png') left center no-repeat;}
+.header .btn-header .btn_header_cart .count {display:inline-block; position:absolute; top:-13px; right:-18px; min-width:36px; height:36px; padding:0 5px; border-radius:50%; line-height:36px; color:#fff; text-align:center; background-color:#cf152d; font-size:20px;}
+.header .btn-header .btn_header_brand {width:40px; height:44px; margin-left:44px; background:url('/images/common/btn_header_brand.png') left center no-repeat;}
+.main .header .btn-header .btn_header_menu {position:relative; width:38px; height:35px; background:url('/images/common/btn_header_menu_w.png') left center no-repeat;}
+.main .header .btn-header .btn_header_cart {width:45px; height:44px; background:url('/images/common/btn_header_cart_w.png') left center no-repeat;}
+.main .header .btn-header .btn_header_cart .count {display:inline-block; position:absolute; top:-13px; right:-18px; min-width:36px; height:36px; padding:0 5px; border-radius:50%; line-height:36px; color:#fff; text-align:center; background-color:#cf152d; font-size:20px;}
+.main .header .btn-header .btn_header_brand {width:40px; height:44px; margin-left:44px; background:url('/images/common/btn_header_brand_w.png') left center no-repeat;}
+.scrolled.main .header .btn-header .btn_header_menu {width:38px; height:35px; background:url('/images/common/btn_header_menu.png') left center no-repeat;}
+.scrolled.main .header .btn-header .btn_header_cart {width:45px; height:44px; background:url('/images/common/btn_header_cart.png') left center no-repeat;}
+.scrolled.main .header .btn-header .btn_header_brand {width:40px; height:44px; margin-left:44px; background:url('/images/common/btn_header_brand.png') left center no-repeat;}
+
+/* Container */
+.container {display:block; position:relative; min-height:100%; padding:102px 0 195px 0;}
+.content {display:block; position:relative;}
+.content.content-gray {background-color:#f3f3f3;}
+.content.content-shopList {margin-bottom:-195px;}
+
+.btn_scrollTop {
+	display:none;
+	position:fixed;
+	bottom:40px;
+	right:40px;
+	z-index:100;
+	width:100px;
+	height:100px;
+	font-size:0;
+	background:url('/images/common/btn_scrollTop.png') center center no-repeat;
+}
+.btn_scrollTop.active {display:block;}
+
+/* Aside */
+.aside {display:none; position:fixed; top:0px; left:0px; z-index:500; width:100%; height:100%; background-color:rgba(0, 0, 0, 0.7);}
+.aside .aside-container {position:absolute; top:0px; width:640px; height:100%; padding-top:294px;}
+.aside .aside-header {position:absolute; top:0px; left:0px; width:100%;}
+.aside .aside-body {padding-top:294px; height:100%; overflow-y:auto; -webkit-overflow-scrolling:touch;}
+.aside.aside-brand .aside-body {padding-top:0px;}
+.aside .btn_aside_close {
+	position:absolute;
+	top:0px;
+	z-index:10;
+	width:104px;
+	height:100%;
+	background:url('/images/common/btn_aside_close.png') center top no-repeat;
+}
+
+/* Aside Menu */
+.aside-menu .aside-container {left:0px; padding-top:0px; background-color:#fff;}
+.aside-menu .aside-header {display:none; height:204px; background-color:#fff;}
+.aside-menu .aside-header .loginInfo {position:relative; height:103px; padding:22px 35px 0;}
+.aside-menu .aside-header .loginInfo .memGrade {padding-left:73px; font-family:"NotoSans-Light"; font-size:34px; line-height:61px; color:#111; background:url(/images/common/ico_memChicken.png) left no-repeat; background-size:60px;}
+.aside-menu .aside-header .loginInfo .memGrade span {font-family:"NotoSans-Bold";}
+/*.aside-menu .aside-header .loginInfo .memGrade.gold {background:url('/images/common/ico_memGrade_gold.png') left center no-repeat; background-size:60px;}*/
+.aside-menu .aside-header .loginInfo .btn_myPage {position:absolute; top:27px; right:32px;}
+.aside-menu .aside-header .myInfo {overflow:hidden;}
+.aside-menu .aside-header .myInfo li {
+	padding: 20px 0;
+	float:left;
+	width:33.3333%;
+	font-size:30px;
+	height:105px;
+	/*line-height:101px;*/
+	color:#fff;
+	text-align:center;
+	background-color:#625a5a;
+}
+.aside-menu .aside-header .myInfo li span {font-family:"Roboto-Medium";}
+.aside-menu .aside-header .myInfo li:first-child {border-right:1px solid #fff;}
+.aside-menu .aside-header .myInfo li:last-child {border-left:1px solid #fff;}
+.aside-menu .aside-header .myInfo li dt{font-size:26px; padding-bottom:8px;}
+
+
+.aside-menu .aside-lnb {position:relative;}
+.aside-menu .lnb li.node1 {position:relative;}
+.aside-menu .lnb li.node1 a.depth1 {
+	display:block;
+	position:relative;
+	height:122px;
+	padding:0 150px 0 60px;
+	border-bottom:2px solid #eee;
+	font-size:32px;
+	line-height:120px;
+	color:#333;
+}
+.aside-menu .lnb li.node1.hasMenu a.depth1:after {
+	content:"";
+	display:block;
+	position:absolute;
+	top:50px;
+	right:50px;
+	width:40px;
+	height:20px;
+	background:url('/images/common/lnb_depth1_off.png') center center no-repeat;
+}
+.aside-menu .lnb li.node1.hasMenu.on a.depth1:after {background:url('/images/common/lnb_depth1_on.png') center center no-repeat;}
+.aside-menu .lnb li.node1 .submenu {display:none; border-bottom:2px solid #eee; background-color:#ffa800;}
+.aside-menu .lnb .submenu li.node2 {position:relative;}
+.aside-menu .lnb .submenu li.node2 a.depth2 {height:100px; padding:0 97px; font-size:28px; line-height:100px; color:#fff;}
+.aside-menu .lnb .submenu li.node2 a.depth2 span {font-family:"Roboto-Regular"; font-size:30px;}
+
+.aside-menu .aside-login {
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:640px;
+	height:294px;
+	padding-top:45px;
+	border-bottom:2px solid #ccc;
+	text-align:center;
+	background-color:#fff;
+	z-index:10;
+}
+.aside-menu .aside-login .btn-wrap {font-size:0;}
+.aside-menu .aside-login .btn-wrap .btn {width:170px; height:64px; margin:0 10px; line-height:60px;}
+.aside-menu .aside-login .btn_loginBefore {margin-top:45px;}
+.aside-menu .aside-login .btn_loginAfter {display:none;}
+.aside-menu .aside-login .callNumber {font-size:28px; color:#333;}
+.aside-menu .aside-login .callNumber .txt {margin-bottom:20px;}
+.aside-menu .aside-login .callNumber .tel {font-family:"Roboto-Bold"; font-size:48px; color:#111; letter-spacing:-1px;}
+
+.aside-menu.login .aside-container {padding-top:204px;}
+.aside-menu.login .aside-body {padding-top:0;}
+.aside-menu.login .aside-header {display:block;}
+.aside-menu.login .aside-lnb .lnb li.node1:first-child {display:none;}
+.aside-menu.login .aside-login {display:block;}
+.aside-menu.login .aside-login {position:static; height:auto; padding:50px 0; border-bottom:0px;}
+.aside-menu.login .aside-login .btn_loginBefore {display:none;}
+.aside-menu.login .aside-login .btn_loginAfter {display:block; margin-bottom:65px;}
+
+.aside-menu .btn_aside_close {left:640px;}
+
+/* Aside Quick */
+.aside-quick {overflow:hidden; padding:35px 0; border-bottom:2px solid #cfcfcf; background:#f2f2f2;}
+.aside-quick li {float:left; width:50%;}/*주문조회 안보이게처리190125 width:33.33333%;*/
+.aside-quick li a {display:block; text-align:center;}
+.aside-quick li a span {/*display:block;*/ margin-top:10px; color:#333; font-size:26px; padding-left: 10px; }
+
+/* Aside Brand */
+.aside-brand .aside-container {right:0px; padding-top:143px; background-color:#000;}
+.aside-brand .aside-header {
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:143px;
+	background:url('/images/common/bg_aside_brand.jpg') left top no-repeat;
+}
+.aside-brand .aside-header h2 {margin-top:40px; font-family:"Roboto-Medium"; font-size:60px; color:#fff; text-align:center;}
+.aside-brand .aside-header .brandMenu {display:inline-block; position:absolute; right:63px; bottom:28px; overflow:hidden;}
+.aside-brand .aside-header .brandMenu li {float:left; margin-left:48px;}
+.aside-brand .aside-header .brandMenu li a {display:block; padding-top:58px; font-size:26px; color:#fff; text-align:center;}
+.aside-brand .aside-header .brandMenu li:nth-child(1) a {background:url('/images/common/ico_brandMenu01.png') center top no-repeat;}
+.aside-brand .aside-header .brandMenu li:nth-child(2) a {background:url('/images/common/ico_brandMenu02.png') center top no-repeat;}
+
+.aside-brand .btn_aside_close {left:-104px;}
+.aside-brand .familyBrand li {
+	float:left;
+	display:table;
+	width:50%;
+	height:265px;
+	border-left:2px solid #343434;
+	border-bottom:2px solid #343434;
+	text-align:center;
+}
+.aside-brand .familyBrand li a {display:table-cell; vertical-align:middle;}
+.aside-brand .familyBrand li a span {display:block; padding-top:13px; font-size:26px; line-height:34px; color:#fff;}
+
+/* Footer */
+.footer {display:block; width:100%; height:630px; background-color:#252525;}
+.footer .familySite {display:table; width:100%; border-bottom:1px solid #919191; table-layout:fixed;}
+.footer .familySite li {display:table-cell; height:89px; text-align:center; vertical-align:middle;}
+.footer .familySite li a {font-family:"NotoSans-Regular"; font-size:28px; color:#bbb;}
+.footer .inner {margin-top:55px;}
+.footer .fnb {overflow:hidden; margin-bottom:34px;}
+.footer .fnb li {float:left; margin-right:40px;}
+.footer .fnb li:last-child {margin-right:0px;}
+.footer .fnb li a {font-family:"NotoSans-Regular"; font-size:26px; color:#999;}
+.footer .footer-addr {margin-bottom:36px; font-family:"NotoSans-Regular"; font-size:26px; line-height:38px; color:#666;}
+.footer .copyright {margin-bottom:68px; font-family:"NotoSans-Regular"; font-size:24px; color:#666;}
+.footer .footer-sns {overflow:hidden;}
+.footer .footer-sns li {float:left; margin-right:40px;}
+.footer .footer-sns li a {display:block; width:31px; height:31px; font-size:0px;}
+.footer .footer-sns li a.sns_facebook  {background:url('/images/common/btn_footer_sns_facebook.png') center center no-repeat;}
+.footer .footer-sns li a.sns_instagram {background:url('/images/common/btn_footer_sns_instagram.png') center center no-repeat;}
+.footer .footer-sns li a.sns_youtube   {background:url('/images/common/btn_footer_sns_youtube.png') center center no-repeat;}
+.footer .footer-sns li a.sns_blog      {background:url('/images/common/btn_footer_sns_blog.png') center center no-repeat;}
+.footer .inner .callNumber{margin-bottom:34px; /*background:url('/images/common/ico_footerCallNumber.png') left center no-repeat;*/}
+.footer .inner .callNumber .tel {font-family:"Roboto-Bold"; font-size:30px; color:#999; letter-spacing:-1px; /*padding-left: 20px;*/}
