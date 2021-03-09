@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
 <link href="./css/style.css" type="text/css" rel="stylesheet" media="all" />
-<title>*** 신용카드 결제 ***</title>
+<title>*** 占신울옙카占쏙옙 占쏙옙占쏙옙 ***</title>
 </head>
 <body>
 <form name="form" >
@@ -19,18 +19,18 @@
 		<div class="box">
 			<div class="boxTop">
 				<div class="boxBtm" style="height:136px;">
-					<p class="txt_info">귀하의 결제가 취소되었습니다.</p>
+					<p class="txt_info">占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙撚퓸占쏙옙占쏙옙求占�.</p>
 				</div>
 			</div>
 		</div>
 		<p class="btn">
-			<a href="#"><img src="./img/btn_confirm.gif" width="91" height="28" alt="확인" /></a>
+			<a href="#" onclick="javascript:return false;"><img src="./img/btn_confirm.gif" width="91" height="28" alt="확占쏙옙" /></a>
 		</p>
 		<div class="popFoot">
 			<div class="foot_top">
 				<div class="foot_btm">
 					<div class="noti_area">
-						 다날 신용카드결제를 이용해주셔서 감사합니다. [Tel] 1566-3355
+						 占쌕놂옙 占신울옙카占쏙옙占쏙옙占쏙옙占� 占싱울옙占쏙옙占쌍셔쇽옙 占쏙옙占쏙옙占쌌니댐옙. [Tel] 1566-3355
 					</div>
 				</div>
 			</div>			

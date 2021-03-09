@@ -358,13 +358,13 @@
 												End If 
 											%>
 										<% else %>
-											<li><a href="#" onclick="openLogin('mobile');"><span><img src="/images/main/icon_m_recent.png"></span> <h3>최근주문</h3></a></li>
+											<li><a href="#" onclick="openLogin('mobile');return false;"><span><img src="/images/main/icon_m_recent.png"></span> <h3>최근주문</h3></a></li>
 										<% end if %>
 
 										<% if cdate(date) >= cdate("2020-08-03") then %>
 											<li><a href="https://service.smartbag.kr:18060/81000/brand_giftshop/BRA200721108465763" target="_blank"><span><img src="/images/main/icon_m_gift.png"></span> <h3>선물하기</h3></a></li>
 										<% else %>
-											<li> <a href="#" onclick="alert('서비스 준비 중입니다.');worknet.popup.popLogin({});"><span><img src="/images/main/icon_m_gift.png"></span> <h3>선물하기</h3></a></li>
+											<li> <a href="#" onclick="alert('서비스 준비 중입니다.');worknet.popup.popLogin({});return false;"><span><img src="/images/main/icon_m_gift.png"></span> <h3>선물하기</h3></a></li>
 										<% end if %>
 									</ul>
 								</li>

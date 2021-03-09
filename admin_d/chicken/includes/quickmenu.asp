@@ -1,8 +1,8 @@
 		<!-- quickMenu -->
 		<div class="quickMenu">
 			<ul class="menuList">
-				<li><a href="#"><span>창업센터</span></a></li>
-				<li><a href="#"><span>치킨캠프</span></a></li>
+				<li><a href="#" onclick="javascript:return false;"><span>창업센터</span></a></li>
+				<li><a href="#" onclick="javascript:return false;"><span>치킨캠프</span></a></li>
 				<li><a href="/mypage/card.asp"><span>비비큐카드</span></a></li>
 				<li><a href="javascript:void(0);" onclick="javascript:lpOpen('.lp_eCouponPop');"><span>e쿠폰</span></a></li>
 			</ul>

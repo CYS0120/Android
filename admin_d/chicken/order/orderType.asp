@@ -256,22 +256,22 @@ jQuery(document).ready(function(e) {
 												</div>
 											</div>
 											<div class="area on">
-												<a href="#" class="box" >
+												<a href="#" onclick="javascript:return false;" class="box" >
 													<p class="subject">가산디지털단지점 올리브카페)</p>
 													<p class="add">서울특별시 금천구 디지털로 210 (가산동)</p>
 													<p class="tel">02-851-9282</p>
 												</a>
-												<a href="#" class="box" >
+												<a href="#" onclick="javascript:return false;" class="box" >
 													<p class="subject">가산디지털단지점 올리브카페)</p>
 													<p class="add">서울특별시 금천구 디지털로 210 (가산동)</p>
 													<p class="tel">02-851-9282</p>
 												</a>
-												<a href="#" class="box" >
+												<a href="#" onclick="javascript:return false;" class="box" >
 													<p class="subject">가산디지털단지점 올리브카페)</p>
 													<p class="add">서울특별시 금천구 디지털로 210 (가산동)</p>
 													<p class="tel">02-851-9282</p>
 												</a>
-												<a href="#" class="box" >
+												<a href="#" onclick="javascript:return false;" class="box" >
 													<p class="subject">가산디지털단지점 올리브카페)</p>
 													<p class="add">서울특별시 금천구 디지털로 210 (가산동)</p>
 													<p class="tel">02-851-9282</p>

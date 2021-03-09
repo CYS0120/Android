@@ -78,7 +78,7 @@
 
 			<div class="mar-t40">
 				<div class="inner">
-					<a href="#" class="btn btn-lg btn-black w-100p">목록</a>
+					<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-black w-100p">목록</a>
 				</div>
 			</div>
 

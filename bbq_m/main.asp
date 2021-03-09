@@ -15,6 +15,10 @@
 <html lang="ko">
 <head>
 
+<!--Push Redirect-->
+<!--#include virtual="/includes/push_redirect.asp"-->
+<!--Push Redirect-->
+
 <!--#include virtual="/includes/top.asp"-->
 
 <meta name="Keywords" content="BBQ치킨">
@@ -29,7 +33,7 @@
 		<header class="h-header">
 			<h1><a href="/">BBQ치킨</a></h1>
 			<div class="h-btn-header-nav">
-				<a href="#" class="btn_header_menu">메뉴</a>
+				<a href="#" onclick="javascript:return false;" class="btn_header_menu">메뉴</a>
 			</div>
 		</header>
 		<!--// Header -->
@@ -192,22 +196,22 @@
                         If CheckLogin() Then
                     %>
 						<div class="h-welcome">
-                            <span class="h-main_name"><%=LoginUserName%></span>님 <br> 환영합니닭
+                            <span class="h-main_name"><a href="/mypage/mypage.asp"><%=LoginUserName%></span>님 <br> 환영합니닭</a>
                         </div>
                     <%Else%>
                         <div class="h-welcome">
-                            <span class="h-main_name">로그인</span>이 <br> 필요합니닭
+                            <span class="h-main_name"><a href="#" onclick="javascript:return false;" class="h-btn_header_menu btn_header_menu">로그인</a></span>이 <br> 필요합니닭
                         </div>
                     <%End If%>
 						<div class="h-main_point">
 							<dl>
-								<dt>포인트</dt><dd><span><%=FormatNumber(pMemberPoint.mSavePoint,0)%></span>&nbsp; P</dd>
+								<dt><a href="/mypage/mileage.asp">포인트</a></dt><dd><span><%=FormatNumber(pMemberPoint.mSavePoint,0)%></span>&nbsp; P</dd>
 							</dl>
 							<dl>
-								<dt>쿠폰</dt><dd><span><%=pCouponList.mTotalCount%></span>개</dd>
+								<dt><a href="/mypage/couponList.asp?couponList=coupon">쿠폰</a></dt><dd><span><%=pCouponList.mTotalCount%></span>개</dd>
 							</dl>
 							<dl>
-								<dt>상품권</dt><dd><span class="gc_red">0</span>개</dd>
+								<dt><a href="/mypage/couponList.asp?couponList=giftcard">상품권</a></dt><dd><span class="gc_red">0</span>개</dd>
 							</dl>
 						</div>
 					</div>
@@ -221,21 +225,13 @@
 		</div>
 		<!-- // Container -->
 
-		<!-- Footer -->
-		<footer id="h-footer">		
-			<ul class="h-footer_icon">
-				<li><a href="/menu/menuList.asp?anc=103" class="h-footer_icon_menu">메뉴</a></li>
-				<li><a href="/shop/shopLocation.asp?dir_yn=Y" class="h-footer_icon_shop">매장</a></li>
-				<li><a href="/brand/eventList.asp" class="h-footer_icon_event">이벤트</a></li>
-				<li><a href="/order/group.asp" class="h-footer_icon_brand">단체주문</a></li>
-				<li><a href="#" class="h-btn_header_menu btn_header_menu">더보기</a></li>
-			</ul>
-		</footer>
-		<!-- // Footer -->
+        <!--#include virtual="/includes/app_push.asp"-->
+	    <!-- Footer -->
+        <!--#include virtual="/includes/footer_new.asp"-->
+        <!--// Footer -->
 	</div>
  </body>
 </html>
-<!--#include virtual="/includes/app_push.asp"-->
 <!--#include virtual="/api/ta/ta_footer.asp"-->
 	<%
 		Call DBClose

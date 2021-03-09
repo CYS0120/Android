@@ -391,7 +391,7 @@
 				<% If CheckLogin() Then %>
 					<dl class="set_list">
 						<dt>회원탈퇴</dt>
-						<dd><a href="#" onClick="javascript:lpOpen('.lp_memSecssion');">제너시스BBQ그룹 통합 멤버십 회원 탈퇴</a></dd>
+						<dd><a href="#" onClick="javascript:lpOpen('.lp_memSecssion');return false;">제너시스BBQ그룹 통합 멤버십 회원 탈퇴</a></dd>
 					</dl>
 				<% end if %>
 

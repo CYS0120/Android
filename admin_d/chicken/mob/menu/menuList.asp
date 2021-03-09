@@ -13,7 +13,7 @@
 <div class="wrapper">
 	<!-- Header -->
 	<header class="header">
-		<h1><a href="#">BBQ치킨</a></h1>
+		<h1><a href="#" onclick="javascript:return false;">BBQ치킨</a></h1>
 		<div class="btn-header btn-header-nav">
 			<button type="button" onClick="javascript:history.back();" class="btn btn_header_back"><span class="ico-only">이전페이지</span></button>
 			<button type="button" class="btn btn_header_menu"><span class="ico-only">메뉴</span></button>
@@ -49,8 +49,8 @@
 						</span>
 					</div>
 					<ul class="btnWrap">
-						<li class="cart"><a href="#" class="btn btn-lg btn-grayLine"><img src="/images/menu/ico_menuCart.png" alt=""> 장바구니</a></li>
-						<li class="dir"><a href="#" class="btn btn-lg btn-red"><img src="/images/menu/ico_menuDir.png" alt=""> 바로주문</a></li>
+						<li class="cart"><a href="#" onclick="javascript:return false;" class="btn btn-lg btn-grayLine"><img src="/images/menu/ico_menuCart.png" alt=""> 장바구니</a></li>
+						<li class="dir"><a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red"><img src="/images/menu/ico_menuDir.png" alt=""> 바로주문</a></li>
 					</ul>
 				</div>
 
@@ -64,8 +64,8 @@
 						</span>
 					</div>
 					<ul class="btnWrap">
-						<li class="cart"><a href="#" class="btn btn-lg btn-grayLine"><img src="/images/menu/ico_menuCart.png" alt=""> 장바구니</a></li>
-						<li class="dir"><a href="#" class="btn btn-lg btn-red"><img src="/images/menu/ico_menuDir.png" alt=""> 바로주문</a></li>
+						<li class="cart"><a href="#" onclick="javascript:return false;" class="btn btn-lg btn-grayLine"><img src="/images/menu/ico_menuCart.png" alt=""> 장바구니</a></li>
+						<li class="dir"><a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red"><img src="/images/menu/ico_menuDir.png" alt=""> 바로주문</a></li>
 					</ul>
 				</div>
 
@@ -79,8 +79,8 @@
 						</span>
 					</div>
 					<ul class="btnWrap">
-						<li class="cart"><a href="#" class="btn btn-lg btn-grayLine"><img src="/images/menu/ico_menuCart.png" alt=""> 장바구니</a></li>
-						<li class="dir"><a href="#" class="btn btn-lg btn-red"><img src="/images/menu/ico_menuDir.png" alt=""> 바로주문</a></li>
+						<li class="cart"><a href="#" onclick="javascript:return false;" class="btn btn-lg btn-grayLine"><img src="/images/menu/ico_menuCart.png" alt=""> 장바구니</a></li>
+						<li class="dir"><a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red"><img src="/images/menu/ico_menuDir.png" alt=""> 바로주문</a></li>
 					</ul>
 				</div>
 

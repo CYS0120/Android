@@ -30,7 +30,7 @@ jQuery(document).ready(function(e) {
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
 				<li><a href="/">bbq home</a></li>
-				<li><a href="#">마이페이지</a></li>
+				<li><a href="#" onclick="javascript:return false;">마이페이지</a></li>
 				<li>포인트</li>
 			</ul>
 		</div>

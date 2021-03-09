@@ -1068,7 +1068,6 @@ function setDeliveryShopInfo(data) {
 //						console.log('---');
 
 						ht += "<ul class='find_shop'>";
-						ht += "	<li><a href=\"javascript: addr_img_control('"+ v.addr_idx +"', '"+ v.branch_id +"')\" class='btn btn_middle btn-lightGray'>선택</a></li>";
 						ht += "	<li>";
 
 						if (v.is_main == "Y") {
@@ -1077,7 +1076,8 @@ function setDeliveryShopInfo(data) {
 
 						ht += "		"+ v.address_main +' '+ v.address_detail +" ";
 						ht += "	</li>";
-						ht += "</ul>";
+                        ht += "	<li><a href=\"javascript: addr_img_control('"+ v.addr_idx +"', '"+ v.branch_id +"')\" class='btn btn_middle btn-lightGray' style='border-radius: 50px;'>선택</a></li>";
+                        ht += "</ul>";
 					});
 
 					$("#order_branch_list").append(ht);
@@ -1114,7 +1114,7 @@ function setDeliveryShopInfo(data) {
 //						console.log('---');
 
 						ht += "<ul class='find_shop'>";
-						ht += "	<li><a href=\"javascript: addr_img_control('"+ v.addr_idx +"', '"+ v.branch_id +"')\" class='btn btn_middle btn-lightGray'>선택</a></li>";
+						ht += "	<li></li>";
 						ht += "	<li>";
 						ht += "		<a href='/shop/shopView.asp?branch_id="+ v.branch_id +"' class='find_shop_name'>"+ v.branch_name +"</a> ";
 
@@ -1137,7 +1137,8 @@ function setDeliveryShopInfo(data) {
 						ht += "			<div id='map_"+ z +"' style='width:100%;height:350px;'></div>";
 						ht += "		</div>";
 						ht += "	</li>";
-						ht += "</ul>";
+                        ht += "	<li><a href=\"javascript: addr_img_control('"+ v.addr_idx +"', '"+ v.branch_id +"')\" class='btn btn_middle btn-lightGray' style='border-radius: 50px;'>선택</a></li>";
+                        ht += "</ul>";
 
 						z++;
 					});

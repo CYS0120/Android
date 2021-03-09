@@ -164,7 +164,7 @@
 					</dl>
 				</div>
 				<div class="mar-t70">
-					<a href="#" class="btn btn-lg btn-black w-100p">목록</a>
+					<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-black w-100p">목록</a>
 				</div>
 			</div>
 			<!-- 결제정보 -->

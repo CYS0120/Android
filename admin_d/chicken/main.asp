@@ -193,19 +193,19 @@ function tab_sliderWrap (){
 							<p class="tit">BBQ 치킨을<br><strong>더 알차게 즐기는 방법</strong></p>
 							<ul class="list">
 								<li class="item01">
-									<a href="#">
+									<a href="#" onclick="javascript:return false;">
 										<p>맛있는 치킨 먹고<br>포인트를<br>적립하세요</p>
 										<i class="ico ico-point"></i>
 									</a>
 								</li>
 								<li class="item02 delay-03s">
-									<a href="#">
+									<a href="#" onclick="javascript:return false;">
 										<p>고객님만을 위한<br>쿠폰을<br>확인하시려면?</p>
 										<i class="ico ico-coupon"></i>
 									</a>
 								</li>
 								<li class="item03 delay-06s">
-									<a href="#">
+									<a href="#" onclick="javascript:return false;">
 										<p>BBQ카드 만들고<br>언제 어디서나<br>혜택을 누리세요</p>
 										<i class="ico ico-card"></i>
 									</a>
@@ -232,10 +232,10 @@ function tab_sliderWrap (){
 				<div class="section-body">
 					<div class="tab-wrap tab-layer">
 						<ul class="tab">
-							<li class="on"><a href="#"><span>순수하게 후라이드</span></a></li>
-							<li><a href="#"><span>섞어먹자 반반</span></a></li>
-							<li><a href="#"><span>다양하게 양념</span></a></li>
-							<li><a href="#"><span>구워먹는 비비큐</span></a></li>
+							<li class="on"><a href="#" onclick="javascript:return false;"><span>순수하게 후라이드</span></a></li>
+							<li><a href="#" onclick="javascript:return false;"><span>섞어먹자 반반</span></a></li>
+							<li><a href="#" onclick="javascript:return false;"><span>다양하게 양념</span></a></li>
+							<li><a href="#" onclick="javascript:return false;"><span>구워먹는 비비큐</span></a></li>
 						</ul>
 					</div>
 					<div class="tab-container tab-container-layer">
@@ -670,10 +670,10 @@ function tab_sliderWrap (){
 							</div>
 							<!--<div class="tab-wrap tab-layer">
 								<ul class="tab">
-									<li class="on"><a href="#"><span>전체</span></a></li>
-									<li><a href="#"><span>익스프레스</span></a></li>
-									<li><a href="#"><span>프리미엄</span></a></li>
-									<li><a href="#"><span>주차장</span></a></li>
+									<li class="on"><a href="#" onclick="javascript:return false;"><span>전체</span></a></li>
+									<li><a href="#" onclick="javascript:return false;"><span>익스프레스</span></a></li>
+									<li><a href="#" onclick="javascript:return false;"><span>프리미엄</span></a></li>
+									<li><a href="#" onclick="javascript:return false;"><span>주차장</span></a></li>
 								</ul>
 							</div>-->
 							<div class="tab-container tab-container-layer mCustomScrollbar">
@@ -681,28 +681,28 @@ function tab_sliderWrap (){
 								<div class="tab-content on">
 									<ul class="map-list">
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">전체 신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li class="on">
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
@@ -715,28 +715,28 @@ function tab_sliderWrap (){
 								<div class="tab-content">
 									<ul class="map-list">
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">익스프레스 신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
@@ -749,28 +749,28 @@ function tab_sliderWrap (){
 								<div class="tab-content">
 									<ul class="map-list">
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">프리미엄 신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
@@ -783,28 +783,28 @@ function tab_sliderWrap (){
 								<div class="tab-content">
 									<ul class="map-list">
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">주차장 신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="#" onclick="javascript:return false;">
 												<p class="tit">신대방1점</p>
 												<p class="txt">서울 동작구 신대방동 605-11</p>
 												<p class="tel">02-836-8292</p>
@@ -827,20 +827,20 @@ function tab_sliderWrap (){
 				<!-- <div class="banner-wrap">
 					<ul class="banner-list">
 						<li class="item01">
-							<a href="#">
+							<a href="#" onclick="javascript:return false;">
 								<i class="ico ico-event01"></i>
 								<p>즐거움이 폭발한다!<br><span>EVENT</span></p>
 							</a>
 						</li>
 						<li class="item02">
-							<a href="#">
+							<a href="#" onclick="javascript:return false;">
 								<i class="ico ico-event02"></i>
 								<p>재미있는 CF감상!<br><span>BBQ MOVIE</span></p>
 
 							</a>
 						</li>
 						<li class="item03">
-							<a href="#">
+							<a href="#" onclick="javascript:return false;">
 								<i class="ico ico-event03"></i>
 								<p>치킨을 사랑한다면 체험하라!<br><span>BBQ 치킨캠프</span></p>
 							</a>
@@ -857,19 +857,19 @@ function tab_sliderWrap (){
 						<p class="txt">더 풍부한 행복을 만들기 위해 고객의 입맛과 마음을 연구합니다.<br>당신의 행복을 키우는 BBQ</p>
 						<ul class="bestQuality-list">
 							<li class="item01">
-								<a href="#">
+								<a href="#" onclick="javascript:return false;">
 									<i class="ico ico-story01"></i>
 									<span>BBQ STORY</span>
 								</a>
 							</li>
 							<li class="item02 delay-03s">
-								<a href="#">
+								<a href="#" onclick="javascript:return false;">
 									<i class="ico ico-story02"></i>
 									<span>황금올리브이야기</span>
 								</a>
 							</li>
 							<li class="item03 delay-06s">
-								<a href="#">
+								<a href="#" onclick="javascript:return false;">
 									<i class="ico ico-story03"></i>
 									<span>최고의 맛</span>
 								</a>

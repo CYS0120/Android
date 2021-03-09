@@ -45,12 +45,12 @@
 						<div class="memGrade gold"><!-- silver, bronze -->
 							<p><strong>박아람</strong>님 안녕하세요!</p>
 							<p class="txt">세상에서 가장 건강하고 맛잇는 치킨 bbq 입니다.</p>
-							<p class="mar-t15"><a href="#" class="btn btn-sm btn-grayLine">회원정보 변경</a></p>
+							<p class="mar-t15"><a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine">회원정보 변경</a></p>
 						</div>
 
 						<!-- 치킨캠프 -->
 						<div class="ckcamp">
-							<a href="#"><span>치킨캠프 신청내역 확인하기</span></a>
+							<a href="#" onclick="javascript:return false;"><span>치킨캠프 신청내역 확인하기</span></a>
 						</div>
 						<!-- //치킨캠프 -->
 
@@ -97,7 +97,7 @@
 				<section class="section section_recentOrder">
 					<div class="section-header">
 						<h3>주문내역</h3>
-						<div class="rig"><a href="#" class="more">더보기</a></div>
+						<div class="rig"><a href="#" onclick="javascript:return false;" class="more">더보기</a></div>
 					</div>
 					<div class="section-body">
 						<!-- Order List -->
@@ -172,7 +172,7 @@
 				<section class="section section_mypageInq">
 					<div class="section-header">
 						<h3>주문내역</h3>
-						<div class="rig"><a href="#" class="more">더보기</a></div>
+						<div class="rig"><a href="#" onclick="javascript:return false;" class="more">더보기</a></div>
 					</div>
 					<div class="inquiryList-wrap inner">
 						<ul class="inquiryList mar0">
@@ -218,7 +218,7 @@
 					<ul class="support">
 						<li><a href="/customer/faqList.asp">자주하는질문</a></li>
 						<li><a href="/customer/inquiryWrite.asp">고객의소리</a></li>
-						<li><a href="#">e-쿠폰 등록</a></li>
+						<li><a href="#" onclick="javascript:return false;">e-쿠폰 등록</a></li>
 						<li><a href="/mypage/membership.asp">멤버십 안내</a></li>
 					</ul>
 				</section>

@@ -34,17 +34,17 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap type2">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
-				<li><a href="#">메뉴</a></li>
-				<li><a href="#">치킨</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">메뉴</a></li>
+				<li><a href="#" onclick="javascript:return false;">치킨</a></li>
 				<li class="menu">
-					<a href="#">모든 비비큐치킨</a>
-					<a href="#">순수하게 후라이드</a>
-					<a href="#">다양하게 양념</a>
-					<a href="#">섞어먹자 반반</a>
-					<a href="#">구워먹는 비비큐</a>
-					<a href="#">구이</a>
-					<a href="#">야식</a>
+					<a href="#" onclick="javascript:return false;">모든 비비큐치킨</a>
+					<a href="#" onclick="javascript:return false;">순수하게 후라이드</a>
+					<a href="#" onclick="javascript:return false;">다양하게 양념</a>
+					<a href="#" onclick="javascript:return false;">섞어먹자 반반</a>
+					<a href="#" onclick="javascript:return false;">구워먹는 비비큐</a>
+					<a href="#" onclick="javascript:return false;">구이</a>
+					<a href="#" onclick="javascript:return false;">야식</a>
 				</li>
 			</ul>
 		</div>
@@ -61,13 +61,13 @@ jQuery(document).ready(function(e) {
 				<div class="section-body">
 					<!-- 메뉴 탭 -->
 					<ul class="menu-tab">
-						<li class="on"><a href="#">모든 비비큐치킨</a></li>
-						<li><a href="#">순수하게 후라이드</a></li>
-						<li><a href="#">다양하게 양념</a></li>
-						<li><a href="#">섞어먹자 반반</a></li>
-						<li><a href="#">구워먹는 비비큐</a></li>
-						<li><a href="#">구이</a></li>
-						<li><a href="#">야식</a></li>
+						<li class="on"><a href="#" onclick="javascript:return false;">모든 비비큐치킨</a></li>
+						<li><a href="#" onclick="javascript:return false;">순수하게 후라이드</a></li>
+						<li><a href="#" onclick="javascript:return false;">다양하게 양념</a></li>
+						<li><a href="#" onclick="javascript:return false;">섞어먹자 반반</a></li>
+						<li><a href="#" onclick="javascript:return false;">구워먹는 비비큐</a></li>
+						<li><a href="#" onclick="javascript:return false;">구이</a></li>
+						<li><a href="#" onclick="javascript:return false;">야식</a></li>
 					</ul>
 					<!-- //메뉴 탭 -->
 
@@ -77,8 +77,8 @@ jQuery(document).ready(function(e) {
 							<div class="img">
 								<a href="./menuView.asp"><img src="/images/menu/@menu.jpg" alt=""></a>
 								<ul class="over">
-									<li class="cart"><a href="#">장바구니</a></li>
-									<li class="dir"><a href="#">바로주문</a></li>
+									<li class="cart"><a href="#" onclick="javascript:return false;">장바구니</a></li>
+									<li class="dir"><a href="#" onclick="javascript:return false;">바로주문</a></li>
 								</ul>
 							</div>
 							<div class="info">
@@ -92,8 +92,8 @@ jQuery(document).ready(function(e) {
 							<div class="img">
 								<a href="./menuView.asp"><img src="/images/menu/@menu.jpg" alt=""></a>
 								<ul class="over">
-									<li class="cart"><a href="#">장바구니</a></li>
-									<li class="dir"><a href="#">바로주문</a></li>
+									<li class="cart"><a href="#" onclick="javascript:return false;">장바구니</a></li>
+									<li class="dir"><a href="#" onclick="javascript:return false;">바로주문</a></li>
 								</ul>
 							</div>
 							<div class="info">
@@ -107,8 +107,8 @@ jQuery(document).ready(function(e) {
 							<div class="img">
 								<a href="./menuView.asp"><img src="/images/menu/@menu.jpg" alt=""></a>
 								<ul class="over">
-									<li class="cart"><a href="#">장바구니</a></li>
-									<li class="dir"><a href="#">바로주문</a></li>
+									<li class="cart"><a href="#" onclick="javascript:return false;">장바구니</a></li>
+									<li class="dir"><a href="#" onclick="javascript:return false;">바로주문</a></li>
 								</ul>
 							</div>
 							<div class="info">
@@ -122,8 +122,8 @@ jQuery(document).ready(function(e) {
 							<div class="img">
 								<a href="./menuView.asp"><img src="/images/menu/@menu.jpg" alt=""></a>
 								<ul class="over">
-									<li class="cart"><a href="#">장바구니</a></li>
-									<li class="dir"><a href="#">바로주문</a></li>
+									<li class="cart"><a href="#" onclick="javascript:return false;">장바구니</a></li>
+									<li class="dir"><a href="#" onclick="javascript:return false;">바로주문</a></li>
 								</ul>
 							</div>
 							<div class="info">
@@ -137,8 +137,8 @@ jQuery(document).ready(function(e) {
 							<div class="img">
 								<a href="./menuView.asp"><img src="/images/menu/@menu.jpg" alt=""></a>
 								<ul class="over">
-									<li class="cart"><a href="#">장바구니</a></li>
-									<li class="dir"><a href="#">바로주문</a></li>
+									<li class="cart"><a href="#" onclick="javascript:return false;">장바구니</a></li>
+									<li class="dir"><a href="#" onclick="javascript:return false;">바로주문</a></li>
 								</ul>
 							</div>
 							<div class="info">
@@ -152,8 +152,8 @@ jQuery(document).ready(function(e) {
 							<div class="img">
 								<a href="./menuView.asp"><img src="/images/menu/@menu.jpg" alt=""></a>
 								<ul class="over">
-									<li class="cart"><a href="#">장바구니</a></li>
-									<li class="dir"><a href="#">바로주문</a></li>
+									<li class="cart"><a href="#" onclick="javascript:return false;">장바구니</a></li>
+									<li class="dir"><a href="#" onclick="javascript:return false;">바로주문</a></li>
 								</ul>
 							</div>
 							<div class="info">

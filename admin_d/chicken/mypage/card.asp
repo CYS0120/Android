@@ -25,7 +25,7 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
 				<li>비비큐카드</li>
 			</ul>
 		</div>
@@ -43,33 +43,33 @@ jQuery(document).ready(function(e) {
 						<div class="box">
 							<div class="img"><img src="/admin_d/chicken/images/mypage/@card1.png" alt=""><span class="money">￦<em>10,000</em></span></div>
 							<div class="mar-t20 ta-c">
-								<a href="#" class="btn btn-sm2 btn-black w-120">구매하기</a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-sm2 btn-black w-120">구매하기</a>
 								<button type="button" class="btn btn-sm2 btn-blackLine w-120" onclick="javascript:lpOpen('.lp_cardGiftPop');">선물하기</button>
 							</div>
 						</div>
 						<div class="box">
 							<div class="img"><img src="/admin_d/chicken/images/mypage/@card2.png" alt=""><span class="money">￦<em>20,000</em></span></div>
 							<div class="mar-t20 ta-c">
-								<a href="#" class="btn btn-sm2 btn-black w-120">구매하기</a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-sm2 btn-black w-120">구매하기</a>
 								<button type="button" class="btn btn-sm2 btn-blackLine w-120" onclick="javascript:lpOpen('.lp_cardGiftPop');">선물하기</button>
 							</div>
 						</div>
 						<div class="box">
 							<div class="img"><img src="/admin_d/chicken/images/mypage/@card3.png" alt=""><span class="money">￦<em>30,000</em></span></div>
 							<div class="mar-t20 ta-c">
-								<a href="#" class="btn btn-sm2 btn-black w-120">구매하기</a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-sm2 btn-black w-120">구매하기</a>
 								<button type="button" class="btn btn-sm2 btn-blackLine w-120" onclick="javascript:lpOpen('.lp_cardGiftPop');">선물하기</button>
 							</div>
 						</div>
 						<div class="box">
 							<div class="img"><img src="/admin_d/chicken/images/mypage/@card4.png" alt=""><span class="money">￦<em>40,000</em></span></div>
 							<div class="mar-t20 ta-c">
-								<a href="#" class="btn btn-sm2 btn-black w-120">구매하기</a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-sm2 btn-black w-120">구매하기</a>
 								<button type="button" class="btn btn-sm2 btn-blackLine w-120" onclick="javascript:lpOpen('.lp_cardGiftPop');">선물하기</button>
 							</div>
 						</div>
 						<div class="box blackBox">
-							<div class="img"><a href="#popup" class="popup" onclick="javascript:lpOpen('.lp_cardadd');"><img src="/images/mypage/plus.png" alt=""></a></div>
+							<div class="img"><a href="#popup" class="popup" onclick="javascript:lpOpen('.lp_cardadd');return false;"><img src="/images/mypage/plus.png" alt=""></a></div>
 						</div>
 					</div>
 				</div>

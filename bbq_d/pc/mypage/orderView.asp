@@ -119,7 +119,7 @@ jQuery(document).ready(function(e) {
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
 				<li><a href="/">bbq home</a></li>
-				<li><a href="#">마이페이지</a></li>
+				<li><a href="#" onclick="javascript:return false;">마이페이지</a></li>
 				<li>주문내역</li>
 			</ul>
 		</div>
@@ -224,7 +224,7 @@ jQuery(document).ready(function(e) {
 %>
 							<tr>
 								<td class="img">
-									<a href="#"><img src="<%=aRs("thumb_file_path")%><%=aRs("thumb_file_name")%>" width="85px" height="85px"/></a>
+									<a href="#" onclick="javascript:return false;"><img src="<%=aRs("thumb_file_path")%><%=aRs("thumb_file_name")%>" width="85px" height="85px"/></a>
 								</td>
 								<td class="info ta-l">
 									<div class="pdt-info div-table">

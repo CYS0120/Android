@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
 <link href="./css/style.css" type="text/css" rel="stylesheet"
 	media="screen" />
-<title>*** ╜┼┐ы─л╡х ░с┴ж ┐ф├╗ ***</title>
+<title>*** я┐╜┼┐я┐╜─ля┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜├╗ ***</title>
 <script language="javascript">
     function confirmEvent() {
         document.form.action = "./Ready.asp";
@@ -41,23 +41,23 @@
 		<div class="paymentPop">
 			<div class="titArea">
 				<a href="#" class="logo"><img src="./img/logo2.gif" width="75"
-					height="34" alt="Danal" /></a> <span class="txtArea"><emclass="point">[░с┴ж┐ф├╗]</em> └╠ ╞ф└╠┴Ў┤┬ ╜┼┐ы─л╡х░с┴ж╕ж ┐ф├╗╟╧┤┬ ╞ф└╠┴Ў└╘┤╧┤┘.</span>
+					height="34" alt="Danal" /></a> <span class="txtArea"><emclass="point">[я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├╗]</em> я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜┼┐я┐╜─ля┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜├╗я┐╜╧┤я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘┤╧┤я┐╜.</span>
 			</div>
 			<div class="contenBox">
 				<div class="grayBox">
 					<div class="grayBox_top">
 						<div class="grayBox_btm">
-							└╠ ╞ф└╠┴Ў┤┬ ╜┼┐ы─л╡х░с┴ж╕ж ┐ф├╗╟╧┤┬ ╞ф└╠┴Ў└╘┤╧┤┘. <br>
+							я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜┼┐я┐╜─ля┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜├╗я┐╜╧┤я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘┤╧┤я┐╜. <br>
 
 						</div>
 					</div>
 				</div>
 				<div class="payInfo">
-					<p class="payTitle">╜┼┐ы─л╡х ┴╓╣о┴д║╕</p>
+					<p class="payTitle">я┐╜┼┐я┐╜─ля┐╜я┐╜ я┐╜╓╣я┐╜я┐╜я┐╜я┐╜я┐╜</p>
 					<div class="payDev">
 						<dl>
 							<dt>
-* ┴╓╣о╣°╚г
+* я┐╜╓╣я┐╜я┐╜я┐╜╚г
 							</dt>
 							<dd>
 								<input type="text" class="it1" value="" name="orderid" />
@@ -65,14 +65,14 @@
 						</dl>
 						<dl>
 							<dt>
-* ╗є╟░╕э
+* я┐╜я┐╜╟░я┐╜я┐╜
 							<dd>
 								<input type="text" class="it1" value="TestItem" name="itemname" />
 							</dd>
 						</dl>
 						<dl>
 							<dt>
-* ┴╓╣о└┌╕э
+* я┐╜╓╣я┐╜я┐╜┌╕я┐╜
 							</dt>
 							<dd>
 								<input type="text" class="it" value="XXX" name="username" />
@@ -88,7 +88,7 @@
 						</dl>
 						<dl>
 							<dt>
-* ┴╓╣о└┌ ID
+* я┐╜╓╣я┐╜я┐╜я┐╜ ID
 							</dt>
 							<dd>
 								<input type="text" class="it" value="USERID" name="userid" />
@@ -96,20 +96,20 @@
 						</dl>
 						<dl>
 							<dt>
-* ╗ч┐ы└┌╚п░ц
+* я┐╜я┐╜я┐╜я┐╜я┐╜╚пя┐╜я┐╜
 							</dt>
 							<dd>
-								<input type="text" class="it" value="WP" name="useragent" /> "WP/WM/WA/WI" ┴▀ ╟╧│к.
+								<input type="text" class="it" value="WP" name="useragent" /> "WP/WM/WA/WI" я┐╜я┐╜ я┐╜╧│я┐╜.
 							</dd>
 						</dl>
 
 					</div>
 				</div>
 				<div class="btnSet">
-					<a href="#"><img src="./img/btn_payment.gif" width="112"
-						height="27" alt="░с┴ж┐ф├╗" onclick="javascript:confirmEvent();" /></a> <a
+					<a href="#" onclick="javascript:return false;"><img src="./img/btn_payment.gif" width="112"
+						height="27" alt="я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├╗" onclick="javascript:confirmEvent();" /></a> <a
 						href="#"><img src="./img/btn_first.gif" width="112"
-						height="27" alt="├│└╜└╕╖╬" /></a>
+						height="27" alt="├│я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜" /></a>
 				</div>
 			</div>
 		</div>

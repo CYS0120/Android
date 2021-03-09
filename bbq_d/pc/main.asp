@@ -401,7 +401,7 @@ function tab_sliderWrap (){
 			categoryArray(i,0) = bRs("category_idx")
 			categoryArray(i,1) = bRs("category_name")
 %>
-							<li<%If i = 0 Then%> class="on"<%End If%>><a href="#"><span><%=bRs("category_name")%></span></a></li>
+							<li<%If i = 0 Then%> class="on"<%End If%>><a href="#" onclick="javascript:return false;"><span><%=bRs("category_name")%></span></a></li>
 <%
 			i = i + 1
 			bRs.MoveNext
@@ -758,10 +758,10 @@ $(function(){
 							</div>
 							<!-- <div class="tab-wrap tab-layer">
 								<ul class="tab">
-									<li class="on"><a href="#"><span>전체</span></a></li>
-									<li><a href="#"><span>익스프레스</span></a></li>
-									<li><a href="#"><span>프리미엄</span></a></li>
-									<li><a href="#"><span>주차장</span></a></li>
+									<li class="on"><a href="#" onclick="javascript:return false;"><span>전체</span></a></li>
+									<li><a href="#" onclick="javascript:return false;"><span>익스프레스</span></a></li>
+									<li><a href="#" onclick="javascript:return false;"><span>프리미엄</span></a></li>
+									<li><a href="#" onclick="javascript:return false;"><span>주차장</span></a></li>
 								</ul>
 							</div> -->
 							<div class="tab-container tab-container-layer mCustomScrollbar">
@@ -806,7 +806,7 @@ $(function(){
 								</a>
 							</li>
 							<li class="item03 delay-06s">
-								<a href="#">
+								<a href="#" onclick="javascript:return false;">
 									<i class="ico ico-story03"></i>
 									<span>최고의 맛</span>
 								</a>

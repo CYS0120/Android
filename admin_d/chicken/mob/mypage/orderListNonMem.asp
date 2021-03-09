@@ -65,7 +65,7 @@
 							<span class="dash">-</span>
 							<span><input type="text"></span>
 						</span>
-						<a href="#" class="btn btn-md btn-red">인증번호</a>
+						<a href="#" onclick="javascript:return false;" class="btn btn-md btn-red">인증번호</a>
 					</li>
 					<li>
 						<input type="text" placeholder="인증번호 입력" class="w-100p">

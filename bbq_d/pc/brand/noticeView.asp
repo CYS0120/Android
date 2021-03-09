@@ -35,7 +35,7 @@ jQuery(document).ready(function(e) {
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
 				<li><a href="/">bbq home</a></li>
-				<li><a href="#">브랜드</a></li>
+				<li><a href="#" onclick="javascript:return false;">브랜드</a></li>
 				<li>비비큐 소식</li>
 			</ul>
 		</div>
@@ -72,7 +72,7 @@ jQuery(document).ready(function(e) {
 			<!-- //게시판 뷰 -->
 
 			<div class="btn-wrap two-up inner mar-t60">
-				<a href="#" class="btn btn-lg btn-black"><span>목록</span></a>
+				<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-black"><span>목록</span></a>
 			</div>
 
 		</article>

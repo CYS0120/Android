@@ -216,7 +216,7 @@ jQuery(document).ready(function(e) {
 								사진은 실제 상품과 다를 수 있습니다.
 							</div>
 
-                            <a href="#" class="allergy" onclick="javascript:lpOpen('.lp_allergy');">알레르기 정보</a>							
+                            <a href="#" class="allergy" onclick="javascript:lpOpen('.lp_allergy');return false;">알레르기 정보</a>							
 						</div>
 						<!--동영상 삽입-->
 <%		If exp1_yn = "Y" Then %>

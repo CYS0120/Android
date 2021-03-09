@@ -922,10 +922,10 @@
 								</div>
 								<!-- <div class="tab-wrap tab-layer">
 								<ul class="tab">
-									<li class="on"><a href="#"><span>전체</span></a></li>
-									<li><a href="#"><span>익스프레스</span></a></li>
-									<li><a href="#"><span>프리미엄</span></a></li>
-									<li><a href="#"><span>주차장</span></a></li>
+									<li class="on"><a href="#" onclick="javascript:return false;"><span>전체</span></a></li>
+									<li><a href="#" onclick="javascript:return false;"><span>익스프레스</span></a></li>
+									<li><a href="#" onclick="javascript:return false;"><span>프리미엄</span></a></li>
+									<li><a href="#" onclick="javascript:return false;"><span>주차장</span></a></li>
 								</ul>
 							</div> -->
 								<div class="tab-container tab-container-layer mCustomScrollbar">

@@ -204,7 +204,7 @@ function validInfo() {
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
 				<li><a href="/">bbq home</a></li>
-				<li><a href="#">마이페이지</a></li>
+				<li><a href="#" onclick="javascript:return false;">마이페이지</a></li>
 				<li>회원정보 변경</li>
 			</ul>
 		</div>

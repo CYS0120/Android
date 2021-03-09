@@ -25,8 +25,8 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
-				<li><a href="#">마이페이지</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">마이페이지</a></li>
 				<li>카드</li>
 			</ul>
 		</div>
@@ -137,7 +137,7 @@ jQuery(document).ready(function(e) {
 											<p class="fs20 mar-t5 black">가산디지털단지점 주문사용</p>
 										</td>
 										<td><span class="black">-43,000원</span></td>
-										<td><a href="#" class="btn btn-sm btn-grayLine">주문상세보기</a></td>
+										<td><a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine">주문상세보기</a></td>
 									</tr>
 									<tr>
 										<td>2018.12.12</td>
@@ -148,7 +148,7 @@ jQuery(document).ready(function(e) {
 											<p class="fs20 mar-t5 black">가산디지털단지점 주문사용</p>
 										</td>
 										<td><span class="black">-43,000원</span></td>
-										<td><a href="#" class="btn btn-sm btn-grayLine">주문상세보기</a></td>
+										<td><a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine">주문상세보기</a></td>
 									</tr>
 									<tr>
 										<td>2018.12.12</td>
@@ -159,7 +159,7 @@ jQuery(document).ready(function(e) {
 											<p class="fs20 mar-t5 black">가산디지털단지점 주문사용</p>
 										</td>
 										<td><span class="black">-43,000원</span></td>
-										<td><a href="#" class="btn btn-sm btn-grayLine">주문상세보기</a></td>
+										<td><a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine">주문상세보기</a></td>
 									</tr>
 									<tr>
 										<td>2018.12.12</td>
@@ -168,7 +168,7 @@ jQuery(document).ready(function(e) {
 											<p class="fs20 mar-t5 black">카드구매 - <span class="fs16">어디서나 쉽게 사용해보세요</span></p>
 										</td>
 										<td><span class="black">-43,000원</span></td>
-										<td><a href="#" class="btn btn-sm btn-grayLine">주문상세보기</a></td>
+										<td><a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine">주문상세보기</a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -177,7 +177,7 @@ jQuery(document).ready(function(e) {
 					</div>
 
 					<div class="btn-wrap two-up inner mar-t60">
-						<a href="#" class="btn btn-lg btn-black"><span>목록</span></a>
+						<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-black"><span>목록</span></a>
 					</div>
 
 				</div>

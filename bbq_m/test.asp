@@ -1,5 +1,5 @@
 <!--#include virtual="/api/include/utf8.asp"-->
-<a href="#" onclick="window.open('test3.asp', '_blank', 'width:400,height:500');">팝업</a>
+<a href="#" onclick="window.open('test3.asp', '_blank', 'width:400,height:500');return false;">팝업</a>
 <form name="forms">
 <input type="text" name="adsf">
 </form>

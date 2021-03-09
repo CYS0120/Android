@@ -443,7 +443,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="#" class="animated-button victoria-four">
+						<a href="#" onclick="javascript:return false;" class="animated-button victoria-four">
 							멤버쉽 <span><img src="/images/main/ico_ban_membership.png" alt="" /></span>
 						</a>
 					</li>

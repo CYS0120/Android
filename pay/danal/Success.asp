@@ -2,12 +2,12 @@
 	Response.AddHeader "pragma","no-cache"
 	'/********************************************************************************
 	' *
-	' *´Ù³¯ ÈÞ´ëÆù °áÁ¦
+	' *ï¿½Ù³ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	' *
-	' * - °áÁ¦ ¿Ï·á ÆäÀÌÁö
-	' *	°áÁ¦ È®ÀÎ
+	' * - ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	' *	ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
 	' *
-	' *  °áÁ¦ ½Ã½ºÅÛ ¿¬µ¿¿¡ ´ëÇÑ ¹®ÀÇ»çÇ×ÀÌ ÀÖÀ¸½Ã¸é ¼­ºñ½º°³¹ßÆÀÀ¸·Î ¿¬¶ô ÁÖ½Ê½Ã¿À.
+	' *  ï¿½ï¿½ï¿½ï¿½ ï¿½Ã½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½ ï¿½ï¿½ï¿½ñ½º°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½.
 	' * DANAL Commerce Division Technique supporting Team
 	' * EMail : tech@danal.co.kr
 	' *
@@ -32,7 +32,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 <head>
-<title>´Ù³¯ ÈÞ´ëÆù °áÁ¦</title>
+<title>ï¿½Ù³ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
 <link href="./css/style.css" type="text/css" rel="stylesheet"  media="screen" />
@@ -51,28 +51,28 @@ var BgColor = "<%= BgColor %>";
 	<!-- popup size 500x680 -->
 	<div class="paymentPop cType<%=BgColor%>">
 		<p class="tit">
-			<img src="./images/img_tit.gif" width="494" height="48" alt="´Ù³¯ÈÞ´ëÆù°áÁ¦" />
+			<img src="./images/img_tit.gif" width="494" height="48" alt="ï¿½Ù³ï¿½ï¿½Þ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" />
 			<span class="logo"><img src="<%=URL%>" width="119" height="47" alt="" /></span>
 		</p>
 		<div class="tabArea">
 			<ul class="tab">
-				<li class="tab01">°áÁ¦ ¼º°ø</li>
+				<li class="tab01">ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½</li>
 			</ul>
 			<p class="btnSet">
-				<a href="JavaScript:OpenHelp();"><img src="./images/btn_useInfo.gif" width="55" height="20" alt="ÀÌ¿ë¾È³»" /></a>
-				<a href="JavaScript:OpenCallCenter();"><img src="./images/btn_customer.gif" width="55" height="20" alt="°í°´¼¾ÅÍ" /></a>
+				<a href="JavaScript:OpenHelp();"><img src="./images/btn_useInfo.gif" width="55" height="20" alt="ï¿½Ì¿ï¿½È³ï¿½" /></a>
+				<a href="JavaScript:OpenCallCenter();"><img src="./images/btn_customer.gif" width="55" height="20" alt="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" /></a>
 			</p>
 		</div>
 		<div class="content">
 			<div class="alertBox">
-				<p class="type02"><span>°áÁ¦°¡ Á¤»ó Ã³¸®µÇ¾ú½À´Ï´Ù.</span></p>
+				<p class="type02"><span>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.</span></p>
 			</div>
-			<p class="btnSet02"><a href="#"><img src="./images/btn_ok.gif" width="80" height="32" alt="È®ÀÎ" /></a></p>
+			<p class="btnSet02"><a href="#" onclick="javascript:return false;"><img src="./images/btn_ok.gif" width="80" height="32" alt="È®ï¿½ï¿½" /></a></p>
 		</div>
 		<div class="footer">
 			<dl class="noti">
-				<dt>°øÁö»çÇ×</dt>
-				<dd>´Ù³¯ ÈÞ´ëÆù °áÁ¦¸¦ ÀÌ¿ëÇØÁÖ¼Å¼­ °¨»çÇÕ´Ï´Ù.</dd>
+				<dt>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</dt>
+				<dd>ï¿½Ù³ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½Ö¼Å¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.</dd>
 			</dl>
 		</div>
 	</div>

@@ -232,7 +232,7 @@ jQuery(document).ready(function(e) {
 									<a href="./orderView.asp?oidx=<%=rs("order_idx")%>&gotoPage=<%=gotoPage%>" class="btn btn-sm btn-grayLine">주문상세보기</a>
 								</td>
 								<td class="img">
-									<a href="#"><img src="<%=rs("thumb_file_path")&rs("thumb_file_name")%>" width="80px" height="80px" onerror="this.src='http://placehold.it/80x80';"></a>
+									<a href="#" onclick="javascript:return false;"><img src="<%=rs("thumb_file_path")&rs("thumb_file_name")%>" width="80px" height="80px" onerror="this.src='http://placehold.it/80x80';"></a>
 								</td>
 								<td class="info ta-l">
 									<p class="icon">

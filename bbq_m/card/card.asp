@@ -32,7 +32,7 @@
 					<div class="box">
 						<div class="img"><img src="/images/mypage/@card1.png" alt=""><span class="money">￦<em>10,000</em></span></div>
 						<div class="btn-wrap two-up pad-t40 bg-white inner">
-							<a href="#" class="btn btn-md btn-black btn_confirm"><span>구매하기</span></a>
+							<a href="#" onclick="javascript:return false;" class="btn btn-md btn-black btn_confirm"><span>구매하기</span></a>
 							<!-- <button type="button" onclick="javascript:alert('준비중입니다.');" class="btn btn-md btn-grayLine btn_cancel"><span>선물하기</span></button> -->
 							<button type="button" onclick="javascript:lpOpen('.lp_cardGift');" class="btn btn-md btn-grayLine btn_cancel"><span>선물하기</span></button>
 						</div>
@@ -40,14 +40,14 @@
 					<div class="box">
 						<div class="img"><img src="/images/mypage/@card2.png" alt=""><span class="money">￦<em>10,000</em></span></div>
 						<div class="btn-wrap two-up pad-t40 bg-white inner">
-							<a href="#" class="btn btn-md btn-black btn_confirm"><span>구매하기</span></a>
+							<a href="#" onclick="javascript:return false;" class="btn btn-md btn-black btn_confirm"><span>구매하기</span></a>
 							<button type="button" onclick="javascript:lpOpen('.lp_cardGift');" class="btn btn-md btn-grayLine btn_cancel"><span>선물하기</span></button>
 						</div>
 					</div>
 					<div class="box">
 						<div class="img"><img src="/images/mypage/@card3.png" alt=""><span class="money">￦<em>10,000</em></span></div>
 						<div class="btn-wrap two-up pad-t40 bg-white inner">
-							<a href="#" class="btn btn-md btn-black btn_confirm"><span>구매하기</span></a>
+							<a href="#" onclick="javascript:return false;" class="btn btn-md btn-black btn_confirm"><span>구매하기</span></a>
 							<button type="button" onclick="javascript:lpOpen('.lp_cardGift');" class="btn btn-md btn-grayLine btn_cancel"><span>선물하기</span></button>
 						</div>
 					</div>

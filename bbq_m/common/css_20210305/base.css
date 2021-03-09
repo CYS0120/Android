@@ -1,0 +1,315 @@
+@charset "utf-8";
+
+/*------------------------------------------------------------------------------------------------------------------------------------------
+	File : base.css(Front)
+	Company : The Webstyle co.,ltd
+ 	CSS 적용순서 : 아이디 > 태그와 클래스 > 클래스 > 태그
+	CSS 선택자 선언순서 : Type Selector, Layout Selector, Class Selector, Etc
+	CSS 속성 선언순서 : display, position, float/clear, overflow, width/height, margin/padding, border, background, color/font, align, etc
+--------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+*, *:before, *:after {margin:0px; padding:0px; box-sizing:border-box; text-size-adjust:none; letter-spacing:-0.05em;}
+html, body {
+	height:100%;
+	line-height:1;
+	font-family:"NotoSans-Regular", "Malgun Gothic","Dotum", "Arial", "sans-serif", "serif";
+	color:#111;
+	background:none;
+	-webkit-font-smoothing:antialiased;
+/*	text-size-adjust:none;
+	-webkit-text-size-adjust:none; 
+	-moz-text-size-adjust:none;
+	-ms-text-size-adjust:none;*/
+}
+
+hr {display:none;}
+/*caption {overflow:hidden; height:0px; font-size:0px; line-height:0px;}
+h1, h2, h3, h4, h5, h6 {font:inherit;}
+img {border:none; vertical-align:middle;}
+ol, ul, li, dl, dt, dd {list-style:none;}
+table {width:100%; border:0px; border-spacing:0px; border-collapse:collapse;}
+th, td {border:0px; word-break:break-all;}
+th {font-family:"NotoSans-Regular"; font-weight:normal;}
+td {font-family:"NotoSans-Regular";}
+fieldset {width:100%; border:0px;}
+legend {display:none;}
+frameset {border:0px;}
+iframe {width:100%; border:0px;}
+em, address {font-style:normal;}
+button, input, textarea, select {vertical-align:middle;}
+button {overflow:visible; cursor:pointer; border:0px;}
+button::-moz-focus-inner {padding:0px;}
+select, input, textarea {font:inherit;}
+sub, sup {position:relative; font-size:75%; line-height:0; vertical-align:baseline;}
+sup {top: -.5em}
+sub {bottom: -.25em}
+button, input {-webkit-appearance:none; -moz-appearance:none;}
+*/
+
+
+
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;	
+	font: inherit;
+	font-family:"NotoSans-DemiLight", "NanumSquare","Roboto",  "Dotum", Sans-serif;
+	font-size:15px;
+	color:#000;
+	letter-spacing:-0.03em;
+	word-break:keep-all;
+	letter-spacing:-0.7px;
+	-moz-box-sizing:border-box;
+    box-sizing: border-box;
+	line-height:130%;
+
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {display:block;}
+
+ol, ul	 {list-style: none;}
+blockquote, q {quotes: none; }
+blockquote:before, 
+blockquote:after,
+q:before, q:after	{content: ''; content: none;}
+table {border-collapse: collapse; border-spacing: 0;}
+
+a {text-decoration:none;}
+strong{font-weight:600 !important;}
+
+input,select {border-radius: 0;}
+
+* {-webkit-text-size-adjust:none;}  /* 아이폰 텍스트 자동조절 방지 */
+input[type=text],
+input[type=password],
+input[type=submit],
+input[type=button]
+{-webkit-border-radisu:0; -webkit-appearance:none;} /* 사파리&크롬 input 그림자 라운드 없애기 */
+
+input[type=checkbox] {vertical-align:middle}
+input[type=submit] {}
+input[type=file] {height:40px; border:1px solid #ddd !important}
+
+
+span {font: inherit;}
+img {border:0; vertical-align:middle; max-width:100%; height:auto}
+
+.clearfix		{*zoom:1;} /* ie를 위한 핵 */
+.clearfix:after	{content:" "; display:block; clear:both; height:0; visibility:hidden;}/* 기타 브라우져*/
+
+.floatL		{float:left;}
+.floatR		{float:right;}
+.alignL		{text-align:left !important;}
+.alignR		{text-align:right !important;}
+.alignC		{text-align:center !important;}
+.valignM	{vertical-align:middle !important;}
+.valignB		{vertical-align:bottom !important;}
+.valignT		{vertical-align:top !important;}
+.center		{margin:0 auto !important;}
+.inblock		{display:inline-block;}
+.input100	{width:100%; box-sizing:border-box;}
+
+
+.robotoR {font-family:'Roboto-Regular'} 
+.nono {/*border:solid 1px #ff0000;*/} 
+
+
+/* Font */
+@font-face {
+	font-family:"NotoSans-Thin";
+	font-style:normal;
+	font-weight:100;
+	src:local(※),
+	url('/common/fonts/NotoSans-Thin.eot?#iefix') format('embedded-opentype'),
+	url('/common/fonts/NotoSans-Thin.woff') format('woff'),
+	url('/common/fonts/NotoSans-Thin.otf') format('opentype');
+}
+
+@font-face {
+	font-family:"NotoSans-Light";
+	font-style:normal;
+	font-weight:300;
+	src:local(※),
+	url('/common/fonts/NotoSans-Light.eot?#iefix') format('embedded-opentype'),
+	url('/common/fonts/NotoSans-Light.woff') format('woff'),
+	url('/common/fonts/NotoSans-Light.otf') format('opentype');
+}
+
+@font-face {
+	font-family:"NotoSans-DemiLight";
+	font-style:normal;
+	font-weight:350;
+	src:local(※),
+	url('/common/fonts/NotoSans-DemiLight.eot?#iefix') format('embedded-opentype'),
+	url('/common/fonts/NotoSans-DemiLight.woff') format('woff'),
+	url('/common/fonts/NotoSans-DemiLight.otf') format('opentype');
+}
+
+@font-face {
+	font-family:"NotoSans-Regular";
+	font-style:normal;
+	font-weight:400;
+	src:local(※),
+	url('/common/fonts/NotoSans-Regular.eot?#iefix') format('embedded-opentype'),
+	url('/common/fonts/NotoSans-Regular.woff') format('woff'),
+	url('/common/fonts/NotoSans-Regular.otf') format('opentype');
+}
+
+@font-face {
+	font-family:"NotoSans-Medium";
+	font-style:normal;
+	font-weight:500;
+	src:local(※),
+	url('/common/fonts/NotoSans-Medium.eot?#iefix') format('embedded-opentype'),
+	url('/common/fonts/NotoSans-Medium.woff') format('woff'),
+	url('/common/fonts/NotoSans-Medium.otf') format('opentype');
+}
+
+@font-face {
+	font-family:"NotoSans-Bold";
+	font-style:normal;
+	font-weight:700;
+	src:local(※),
+	url('/common/fonts/NotoSans-Bold.eot?#iefix') format('embedded-opentype'),
+	url('/common/fonts/NotoSans-Bold.woff') format('woff'),
+	url('/common/fonts/NotoSans-Bold.otf') format('opentype');
+}
+
+@font-face {
+	font-family:"Roboto-Light";
+	font-weight:normal;
+	font-style:normal;
+	src:local(※),
+	url('/common/fonts/Roboto-Light.eot?#iefix') format('embedded-opentype'),
+	url('/common/fonts/Roboto-Light.woff') format('woff');
+}
+
+@font-face {
+	font-family:"Roboto-Regular";
+	font-weight:normal;
+	font-style:normal;
+	src:local(※),
+	url('/common/fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'),
+	url('/common/fonts/Roboto-Regular.woff') format('woff');
+}
+
+@font-face {
+	font-family:"Roboto-Medium";
+	font-weight:normal;
+	font-style:normal;
+	src:local(※),
+	url('/common/fonts/Roboto-Medium.eot?#iefix') format('embedded-opentype'),
+	url('/common/fonts/Roboto-Medium.woff') format('woff');
+}
+
+@font-face {
+	font-family:"Roboto-Bold";
+	font-weight:normal;
+	font-style:normal;
+	src:local(※),
+	url('/common/fonts/Roboto-Bold.eot?#iefix') format('embedded-opentype'),
+	url('/common/fonts/Roboto-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family:"NanumSquareOTFR";
+  font-weight:normal;
+  font-style:normal;
+  src:local(※),
+		url('/common/fonts/NanumSquareOTFR.eot?#iefix') format('embedded-opentype'),
+  		url('/common/fonts/NanumSquareOTFR.woff') format('woff');
+}
+
+@font-face {
+  font-family:"NanumSquareOTFB";
+  font-weight:normal;
+  font-style:normal;
+  src:local(※),
+		url('/common/fonts/NanumSquareOTFB.eot?#iefix') format('embedded-opentype'),
+  		url('/common/fonts/NanumSquareOTFB.woff') format('woff');
+}
+
+
+
+@font-face {
+ font-family: "NanumSquareL";
+ font-weight: 300;
+ src:local(※),
+		url('/common/fonts/NanumSquareL.eot');
+		url('/common/fonts/NanumSquareL.eot?#iefix') format('embedded-opentype'),
+		url('/common/fonts/NanumSquareL.woff') format('woff'),
+		url('/common/fonts/NanumSquareL.ttf') format('truetype');
+}
+@font-face {
+ font-family: "NanumSquareR";
+ font-weight: 400;
+ src:local(※),
+		url('/common/fonts/NanumSquareR.eot');
+		url('/common/fonts/NanumSquareR.eot?#iefix') format('embedded-opentype'),
+		url('/common/fonts/NanumSquareR.woff') format('woff'),
+		url('/common/fonts/NanumSquareR.ttf') format('truetype');
+}
+@font-face {
+ font-family: "NanumSquareB";
+ font-weight: 700;
+ src:local(※),
+		url('/common/fonts/NanumSquareB.eot');
+		url('/common/fonts/NanumSquareB.eot?#iefix') format('embedded-opentype'),
+		url('/common/fonts/NanumSquareB.woff') format('woff'),
+		url('/common/fonts/NanumSquareB.ttf') format('truetype');
+}
+@font-face {
+ font-family: "NanumSquareEB";
+ font-weight: 800;
+ src:local(※),
+		url('/common/fonts/NanumSquareEB.eot');
+		url('/common/fonts/NanumSquareEB.eot?#iefix') format('embedded-opentype'),
+		url('/common/fonts/NanumSquareEB.woff') format('woff'),
+		url('/common/fonts/NanumSquareEB.ttf') format('truetype');
+}
+
+
+/*
+@media (max-width:1000px){
+body {border:1px solid #000}
+}
+@media (max-width:750px){
+body {border:1px solid #f00}
+}
+@media (max-width:480px){
+body {border:1px solid blue}
+}
+@media (max-width:360px){
+body {border:1px solid green}
+}
+@media (max-width:320px){
+body {border:1px solid yellow}
+}
+*/
+
+
+
+
+::-webkit-scrollbar { width: 8px; } /* 스크롤 바 */
+::-webkit-scrollbar-track { background-color:#303030; } /* 스크롤 바 밑의 배경 */
+::-webkit-scrollbar-thumb { background: #ffa800; } /* 실질적 스크롤 바 */
+::-webkit-scrollbar-thumb:hover { background: #ffa800; } /* 실질적 스크롤 바 위에 마우스를 올려다 둘 때 */
+::-webkit-scrollbar-thumb:active { background: #ffa800; } /* 실질적 스크롤 바를 클릭할 때 */
+::-webkit-scrollbar-button { display: none; } /* 스크롤 바 상 하단 버튼 */
+

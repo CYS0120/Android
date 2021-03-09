@@ -40,8 +40,8 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
-				<li><a href="#">브랜드</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">브랜드</a></li>
 				<li>브랜드스토리</li>
 			</ul>
 		</div>
@@ -292,9 +292,9 @@ jQuery(document).ready(function(e) {
 						<h3>BBQ 연혁 및 수상내역</h3>
 						<div class="tab mar-t20 div-table">
 							<div class="tr">
-								<a href="#" class="active">2010's</a>
-								<a href="#">2000's</a>
-								<a href="#">1990's</a>
+								<a href="#" class="active" onclick="javascript:return false;">2010's</a>
+								<a href="#" onclick="javascript:return false;">2000's</a>
+								<a href="#" onclick="javascript:return false;">1990's</a>
 							</div>
 						</div>
 						<div class="wrap">

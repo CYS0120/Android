@@ -135,7 +135,11 @@
 			}
 		}
 	}
-	window.close();
+	<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
+        window.SGApp.openergoback('card')
+    <% else %>
+        window.close();
+    <% end if %>
 	// document.BackURL.submit();
 
 	winClose();

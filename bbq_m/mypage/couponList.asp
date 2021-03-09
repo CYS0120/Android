@@ -17,8 +17,8 @@
 
 <div class="tab-type4">
 	<ul class="tab">
-		<li id="tab_coupon" class="on"><a onclick="change_tab('coupon')">쿠폰</a></li>
-		<li id="tab_giftcard"><a onclick="change_tab('giftcard')">상품권</a></li>
+		<li id="tab_coupon" ><a onclick="change_tab('coupon')">쿠폰</a></li>
+		<li id="tab_giftcard" ><a onclick="change_tab('giftcard')">상품권</a></li>
 	</ul>
 </div>
 
@@ -339,8 +339,18 @@
 	<!--#include virtual="/includes/footer.asp"-->
 	<!--// Footer -->
 	</div>
-
+<%
+    if request("couponList") = "" then 
+        couponList = "coupon" '기본 쿠폰으로..
+    else 
+        couponList = request("couponList")
+    end if 
+%>
 <script>
+    $(document).ready(function() {
+        change_tab("<%=couponList%>");
+    });
+    
     function change_tab(data){
             if (data == 'giftcard'){
                 $.ajax({
@@ -471,7 +481,12 @@
         }
                 
         function Regi_GiftCard(){
-            lpOpen('.lp_RegiGiftCard');
+            showAlertMsg({
+               msg: "준비중입니다.",
+               ok: function() {
+               }
+           });
+            // lpOpen('.lp_RegiGiftCard');
         }
         
         function Giftcard_Upload(data){

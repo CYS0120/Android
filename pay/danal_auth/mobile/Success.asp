@@ -66,10 +66,11 @@
 		age = dt.getFullYear() - year;
 
 		if(age >= 19){
-			alert("성인인증이 완료 되었습니다.");					
+            localStorage.setItem("Adult_yn", "Y");
+            alert("성인인증이 완료 되었습니다.");
 			<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
-                $('#o_form input[name=Danal_adult_chk_ok]').val("Y");
-                $('#o_form').submit();
+                window.SGApp.openerACheck("Y")
+                window.SGApp.closeSelf()
             <% else %>
                 opener.document.getElementById("Danal_adult_chk_button").style.display = "none";
                 opener.document.pay_form.Danal_adult_chk_ok.value = "Y";
@@ -79,8 +80,8 @@
 		}else{
 			alert("미성년자는 주류를 구매할 수 없습니다.");
 			<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
-                $('#o_form input[name=Danal_adult_chk_ok]').val("N");
-                $('#o_form').submit();
+                window.SGApp.openerACheck("N")
+                window.SGApp.closeSelf()
             <% else %>
                 opener.document.pay_form.Danal_adult_chk_ok.value = "";
             	$('#pay_ok_go_btn', opener.document).removeClass('btn-red').addClass('btn-lightGray');
@@ -91,16 +92,5 @@
         
     });
 </script>
-<form id="o_form" action="/order/payment.asp" method="post" >
-    <input type="hidden" name="Danal_adult_chk_ok" id="Danal_adult_chk_ok" value="" />
-    <input type="hidden" name="order_type" id="order_type" value="<%=order_type%>">
-    <input type="hidden" name="branch_id" id="branch_id" value="<%=branch_id%>">
-    <input type="hidden" name="branch_data" id="branch_data" value='<%=branch_data%>'>
-    <input type="hidden" name="addr_idx" id="addr_idx" value="<%=addr_idx%>">
-    <input type="hidden" name="cart_value">
-    <input type="hidden" name="addr_data" id="addr_data" value='<%=addr_data%>'>
-    <input type="hidden" name="spent_time" id="spent_time">
-</form>
-
 <input type="hidden" name="IDEN" id="IDEN" value="<%=IDEN%>">
 <input type="hidden" name="isAdult" id="isAdult" value="">

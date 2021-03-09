@@ -34,7 +34,7 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
 				<li>이메일주소 무단수집 거부</li>
 			</ul>
 		</div>

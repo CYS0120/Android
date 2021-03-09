@@ -269,7 +269,7 @@ jQuery(document).ready(function(e) {
 %>
 							<tr>
 								<td class="img">
-									<a href="#"><img src="<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")%><%=aRs("thumb_file_name")%>" width="85px" height="85px"/></a>
+									<a href="#" onclick="javascript:return false;"><img src="<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")%><%=aRs("thumb_file_name")%>" width="85px" height="85px"/></a>
 								</td>
 								<td class="info ta-l">
 									<div class="pdt-info div-table">
@@ -350,7 +350,7 @@ jQuery(document).ready(function(e) {
 %>
 							<tr>
 								<td class="img">
-									<a href="#"><img src="/images/menu/store_menu.jpg" width="85px" height="85px"/></a>
+									<a href="#" onclick="javascript:return false;"><img src="/images/menu/store_menu.jpg" width="85px" height="85px"/></a>
 								</td>
 								<td class="info ta-l">
 									<div class="pdt-info div-table">

@@ -3,31 +3,31 @@
 			<!-- GNB -->
 			<div class="gnb-wrap">
 				<ul class="familyBrand">
-					<li class="on"><a href="#">BBQ치킨</a></li>
-					<li><a href="#">행복한집밥</a></li>
-					<li><a href="#">닭익는마을</a></li>
-					<li><a href="#">참숯바베큐</a></li>
-					<li><a href="#">우쿠야</a></li>
-					<li><a href="#">올떡</a></li>
-					<li><a href="#">소신275°C</a></li>
-					<li><a href="#">와타미</a></li>
-					<li><a href="#">비비큐몰</a></li>
+					<li class="on"><a href="#" onclick="javascript:return false;">BBQ치킨</a></li>
+					<li><a href="#" onclick="javascript:return false;">행복한집밥</a></li>
+					<li><a href="#" onclick="javascript:return false;">닭익는마을</a></li>
+					<li><a href="#" onclick="javascript:return false;">참숯바베큐</a></li>
+					<li><a href="#" onclick="javascript:return false;">우쿠야</a></li>
+					<li><a href="#" onclick="javascript:return false;">올떡</a></li>
+					<li><a href="#" onclick="javascript:return false;">소신275°C</a></li>
+					<li><a href="#" onclick="javascript:return false;">와타미</a></li>
+					<li><a href="#" onclick="javascript:return false;">비비큐몰</a></li>
 				</ul>
 				<!-- 로그인전
 				<ul class="gnb">
-					<li><a href="#">로그인</a></li>
-					<li><a href="#">회원가입</a></li>
-					<li><a href="#">주문조회</a></li>
+					<li><a href="#" onclick="javascript:return false;">로그인</a></li>
+					<li><a href="#" onclick="javascript:return false;">회원가입</a></li>
+					<li><a href="#" onclick="javascript:return false;">주문조회</a></li>
 					<li><a href="#" class="cart">장바구니</a></li>
 				</ul>
 				-->
 				<!-- 로그인 후 -->
 				<ul class="gnb">
-					<li><a href="#">로그아웃</a></li>
-					<li><a href="#">마이페이지</a></li>
+					<li><a href="#" onclick="javascript:return false;">로그아웃</a></li>
+					<li><a href="#" onclick="javascript:return false;">마이페이지</a></li>
 					<li>
 						<!-- s : 20190208 수정 -->
-						<a href="#" class="cart">
+						<a href="#" onclick="javascript:return false;" class="cart">
 							<span class="txt">장바구니</span>
 							<span class="count">0</span>
 						</a>

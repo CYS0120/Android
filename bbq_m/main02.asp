@@ -16,7 +16,7 @@
 <div class="wrapper main">
 	<!-- Header -->
 	<header class="header">
-		<h1><a href="#">BBQ치킨</a></h1>
+		<h1><a href="#" onclick="javascript:return false;">BBQ치킨</a></h1>
 		<div class="btn-header btn-header-nav">
 			<button type="button" class="btn btn_header_menu"><span class="ico-only">메뉴</span></button>
 		</div>
@@ -56,35 +56,35 @@
 							<i class="ico ico-cap"></i>
 							<p class="tit mar-t18">창광식님이 좋아할만한<br><strong>NEW 치킨강정</strong><br>이거 맛보는 건 어떨까요?</p>
 							<div class="btn-wrap two-up mar-t40">
-								<a href="#" class="btn btn-lg btn-grayLine"><span>자세히보기</span></a>
-								<a href="#" class="btn btn-lg btn-red btn-blackLine"><span>바로 주문하기</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-grayLine"><span>자세히보기</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red btn-blackLine"><span>바로 주문하기</span></a>
 							</div>
 							<i class="ico ico-cover mar-t30"></i>
 							<p class="txt mar-t18"><span>BBQ</span> 치킨을 <strong>더 알차게 즐기는 방법</strong></p>
 							<ul class="list mar-t25">
 								<li class="item01">
-									<a href="#">
+									<a href="#" onclick="javascript:return false;">
 										<i class="ico ico-point"></i>
 										<p>포인트</p>
 										<span><em>17,380</em>P</span>
 									</a>
 								</li>
 								<li class="item02">
-									<a href="#">
+									<a href="#" onclick="javascript:return false;">
 										<i class="ico ico-coupon"></i>
 										<p>쿠폰</p>
 										<span><em>1</em>장</span>
 									</a>
 								</li>
 								<li class="item03">
-									<a href="#">
+									<a href="#" onclick="javascript:return false;">
 										<i class="ico ico-card"></i>
 										<p>카드</p>
 									</a>
 								</li>
 							</ul>
 							<div class="btn-wrap mar-t30">
-								<a href="#" class="btn btn-md btn-blackLine w-100p"><span>멤버십 혜택 자세히 보기</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-md btn-blackLine w-100p"><span>멤버십 혜택 자세히 보기</span></a>
 							</div>
 						</div>
 					</div>
@@ -110,7 +110,7 @@
 								<ul class="swiper-wrapper menu-slider">
 									<li class="swiper-slide">
 										<p class="tit">황금 올리브 치킨</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu01.jpg" alt="황금 올리브 치킨"></div>
 											<div class="info-box">
 												<p class="txt">01 육즙 가득한 BBQ 대표메뉴</p>
@@ -120,7 +120,7 @@
 									</li>
 									<li class="swiper-slide">
 										<p class="tit">황금 올리브 치킨</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu01.jpg" alt="황금 올리브 치킨"></div>
 											<div class="info-box">
 												<p class="txt">02 육즙 가득한 BBQ 대표메뉴</p>
@@ -130,7 +130,7 @@
 									</li>
 									<li class="swiper-slide">
 										<p class="tit">황금 올리브 치킨</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu01.jpg" alt="황금 올리브 치킨"></div>
 											<div class="info-box">
 												<p class="txt">03 육즙 가득한 BBQ 대표메뉴</p>
@@ -142,8 +142,8 @@
 								<div class="swiper-pagination"></div>
 							</div>
 							<div class="btn-wrap two-up inner mar-t40">
-								<a href="#" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
-								<a href="#" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
 							</div>
 						</div>
 						<!--// 올리브 오리지널 -->
@@ -154,7 +154,7 @@
 								<ul class="swiper-wrapper menu-slider">
 									<li class="swiper-slide">
 										<p class="tit">마라 핫치킨</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu02.jpg" alt="마라 핫치킨"></div>
 											<div class="info-box">
 												<p class="txt">01 세상에 없던 매운 맛</p>
@@ -164,7 +164,7 @@
 									</li>
 									<li class="swiper-slide">
 										<p class="tit">마라 핫치킨</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu02.jpg" alt="마라 핫치킨"></div>
 											<div class="info-box">
 												<p class="txt">02 세상에 없던 매운 맛</p>
@@ -176,8 +176,8 @@
 								<div class="swiper-pagination"></div>
 							</div>
 							<div class="btn-wrap two-up inner mar-t40">
-								<a href="#" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
-								<a href="#" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
 							</div>
 						</div>
 						<!--// 올리브 핫스페셜 -->
@@ -188,7 +188,7 @@
 								<ul class="swiper-wrapper menu-slider">
 									<li class="swiper-slide">
 										<p class="tit">순살바삭치킨</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu03.jpg" alt="순살바삭치킨"></div>
 											<div class="info-box">
 												<p class="txt">01 바삭바삭한 순살 후라이드 치킨</p>
@@ -198,7 +198,7 @@
 									</li>
 									<li class="swiper-slide">
 										<p class="tit">순살바삭치킨</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu03.jpg" alt="순살바삭치킨"></div>
 											<div class="info-box">
 												<p class="txt">02 바삭바삭한 순살 후라이드 치킨</p>
@@ -210,8 +210,8 @@
 								<div class="swiper-pagination"></div>
 							</div>
 							<div class="btn-wrap two-up inner mar-t40">
-								<a href="#" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
-								<a href="#" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
 							</div>
 						</div>
 						<!--// 올리브 통살 -->
@@ -222,7 +222,7 @@
 								<ul class="swiper-wrapper menu-slider">
 									<li class="swiper-slide">
 										<p class="tit">허니갈릭스</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu04.jpg" alt="허니갈릭스"></div>
 											<div class="info-box">
 												<p class="txt">01 달콤한 꿀마늘향 허니갈릭스</p>
@@ -232,7 +232,7 @@
 									</li>
 									<li class="swiper-slide">
 										<p class="tit">허니갈릭스</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu04.jpg" alt="허니갈릭스"></div>
 											<div class="info-box">
 												<p class="txt">02 달콤한 꿀마늘향 허니갈릭스</p>
@@ -244,8 +244,8 @@
 								<div class="swiper-pagination"></div>
 							</div>
 							<div class="btn-wrap two-up inner mar-t40">
-								<a href="#" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
-								<a href="#" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
 							</div>
 						</div>
 						<!--// 올리브 갈릭스 -->
@@ -256,7 +256,7 @@
 								<ul class="swiper-wrapper menu-slider">
 									<li class="swiper-slide">
 										<p class="tit">자메이카 통다리 구이</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu05.jpg" alt="자메이카 통다리 구이"></div>
 											<div class="info-box">
 												<p class="txt">01 자메이카 저크소스를 발라 더욱 맛있는</p>
@@ -266,7 +266,7 @@
 									</li>
 									<li class="swiper-slide">
 										<p class="tit">자메이카 통다리 구이</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu05.jpg" alt="자메이카 통다리 구이"></div>
 											<div class="info-box">
 												<p class="txt">02 자메이카 저크소스를 발라 더욱 맛있는</p>
@@ -278,8 +278,8 @@
 								<div class="swiper-pagination"></div>
 							</div>
 							<div class="btn-wrap two-up inner mar-t40">
-								<a href="#" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
-								<a href="#" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
 							</div>
 						</div>
 						<!--// 구이 -->
@@ -290,7 +290,7 @@
 								<ul class="swiper-wrapper menu-slider">
 									<li class="swiper-slide">
 										<p class="tit">허니갈릭스</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu06.jpg" alt="허니갈릭스"></div>
 											<div class="info-box">
 												<p class="txt">01 달콤한 꿀마늘향 허니갈릭스</p>
@@ -300,7 +300,7 @@
 									</li>
 									<li class="swiper-slide">
 										<p class="tit">허니갈릭스</p>
-										<a href="#">
+										<a href="#" onclick="javascript:return false;">
 											<div class="img-box"><img src="/images/main/img_menu06.jpg" alt="허니갈릭스"></div>
 											<div class="info-box">
 												<p class="txt">02 달콤한 꿀마늘향 허니갈릭스</p>
@@ -312,8 +312,8 @@
 								<div class="swiper-pagination"></div>
 							</div>
 							<div class="btn-wrap two-up inner mar-t40">
-								<a href="#" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
-								<a href="#" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-grayLine"><span><i class="ico ico-cart"></i>장바구니</span></a>
+								<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red btn-blackLine"><span><i class="ico ico-order"></i>바로주문</span></a>
 							</div>
 						</div>
 						<!--// 야식 -->
@@ -341,13 +341,13 @@
 						</div>
 						<div class="swiper-container store_list mar-t50">
 							<ul class="swiper-wrapper list">
-								<li class="swiper-slide on"><a href="#"><span>신대방1점</span></a></li>
-								<li class="swiper-slide"><a href="#"><span>가산디지털단지점</span></a></li>
-								<li class="swiper-slide"><a href="#"><span>신림3점</span></a></li>
-								<li class="swiper-slide"><a href="#"><span>구로디지털단지역점</span></a></li>
-								<li class="swiper-slide"><a href="#"><span>소사점</span></a></li>
-								<li class="swiper-slide"><a href="#"><span>인천점</span></a></li>
-								<li class="swiper-slide"><a href="#"><span>부산점</span></a></li>
+								<li class="swiper-slide on"><a href="#" onclick="javascript:return false;"><span>신대방1점</span></a></li>
+								<li class="swiper-slide"><a href="#" onclick="javascript:return false;"><span>가산디지털단지점</span></a></li>
+								<li class="swiper-slide"><a href="#" onclick="javascript:return false;"><span>신림3점</span></a></li>
+								<li class="swiper-slide"><a href="#" onclick="javascript:return false;"><span>구로디지털단지역점</span></a></li>
+								<li class="swiper-slide"><a href="#" onclick="javascript:return false;"><span>소사점</span></a></li>
+								<li class="swiper-slide"><a href="#" onclick="javascript:return false;"><span>인천점</span></a></li>
+								<li class="swiper-slide"><a href="#" onclick="javascript:return false;"><span>부산점</span></a></li>
 							</ul>
 						</div>
 					</div>
@@ -380,19 +380,19 @@
 							<p class="txt">더 풍부한 행복을 만들기 위해 고객의 입맛과 마음을 연구합니다.<br>당신의 행복을 키우는 BBQ</p>
 							<ul class="bestQuality-list">
 								<li class="item01">
-									<a href="#">
+									<a href="#" onclick="javascript:return false;">
 										<i class="ico ico-story01"></i>
 										<span>BBQ STORY</span>
 									</a>
 								</li>
 								<li class="item02">
-									<a href="#">
+									<a href="#" onclick="javascript:return false;">
 										<span>황금올리브이야기</span>
 										<i class="ico ico-story02"></i>
 									</a>
 								</li>
 								<li class="item03">
-									<a href="#">
+									<a href="#" onclick="javascript:return false;">
 										<i class="ico ico-story03"></i>
 										<span>최고의 맛</span>
 									</a>

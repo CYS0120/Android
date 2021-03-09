@@ -2,7 +2,7 @@
 '	========================================================================================
 '	G2 Setting
 '	========================================================================================
-	Const G2_SITE_MODE = "production" ' {local, test, production}, {87서버일때, bbq서버 test일때,
+	Const G2_SITE_MODE = "test" ' {local, test, production}, {87서버일때, bbq서버 test일때,
 
 	dim g2_bbq_a_url, g2_bbq_d_url, g2_bbq_m_url
 	dim login_direct_ok : login_direct_ok = "N" ' Y로 하면 "조준상" 으로 바로 로그인됨 / N으로 하면 입력하는 로직 (production 이 아닐때만.)

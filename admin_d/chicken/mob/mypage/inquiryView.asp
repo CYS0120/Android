@@ -90,7 +90,7 @@
 				<!--// Inquiry List -->
 				<!-- Button More -->
 				<div class="btn-wrap mar-t20">
-					<a href="#" class="btn btn-md btn-black w-100p btn_list_more"><span>목록</span></a>
+					<a href="#" onclick="javascript:return false;" class="btn btn-md btn-black w-100p btn_list_more"><span>목록</span></a>
 				</div>
 				<!--// Button More -->
 

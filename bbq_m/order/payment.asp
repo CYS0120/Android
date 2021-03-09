@@ -1070,17 +1070,18 @@ function calcTotalAmount() {
 
 		//bbq_mobile_type = "mobile"
 		if (bbq_mobile_type == "mobile") {
-			<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
-			<% else %>
-				window.open('', 'popupdanalauth', 'top=100, left=300, width=500px, height=600px, resizble=no, scrollbars=yes');
-				$("#o_form").attr("target", "popupdanalauth");
-			<% end if %>
-			$("#o_form").attr("action", "/pay/danal_auth/mobile/Ready.asp");
-			$("#o_form").submit();
+		    <% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
+                // document.location.href='https://1087.g2i.co.kr/pay/danal_auth/mobile/Ready.asp';
+                window.SGApp.openPopup('/pay/danal_auth/mobile/Ready.asp')
+            <% else %>
+                window.open('', 'popupdanalauth', 'top=100, left=300, width=500px, height=600px, resizble=no, scrollbars=yes');
+               $("#o_form").attr("target", "popupdanalauth");
+               $("#o_form").attr("action", "/pay/danal_auth/mobile/Ready.asp");
+               $("#o_form").submit();
+            <% end if %>
 		} else {
 			window.open('', 'popupdanalauth', 'top=100, left=300, width=500px, height=600px, resizble=no, scrollbars=yes');
 			$("#o_form").attr("target", "popupdanalauth");
-
 			$("#o_form").attr("action", "/pay/danal_auth/web/Ready.asp");
 			$("#o_form").submit();
 		}
@@ -1983,7 +1984,7 @@ function calcTotalAmount() {
                              <!--<button type="button" onclick="javascript:Giftcard_scan();" class="btn btn-sm btn-grayLine" style="line-height: 0 !important;"><img src="/images/order/barcode-scan.png" alt="barcode_scan" width="30px" height="30px"></button>-->
                              <button type="button" onclick="javascript:Giftcard_ListCount('list');" class="btn btn-sm btn-grayLine">상품권적용</button>
                         </dd>
-                    </dl>
+                    </dl>	       
 					<dl>
 						<dt >
 							<span>쿠폰 <em>( 사용가능 쿠폰 : <strong><%=ubound(resOGLFO.mCouponList)+1%> 장</strong> )</em></span>
@@ -3002,6 +3003,17 @@ function calcTotalAmount() {
 	<!--// Layer Popup -->
 
 	<script type="text/javascript">
+	    function setACheck(data) {
+            if(data == "Y") {
+                document.getElementById("Danal_adult_chk_button").style.display = "none";
+                document.pay_form.Danal_adult_chk_ok.value = "Y";
+                $('#pay_ok_go_btn', document).removeClass('btn-lightGray').addClass('btn-red');
+            }else{
+                document.pay_form.Danal_adult_chk_ok.value = "";
+                $('#pay_ok_go_btn', document).removeClass('btn-red').addClass('btn-lightGray');
+            }
+        }
+	    
 	    function Giftcard_Upload(data){
 	        if(data != ""){
 	            $("#giftPIN").val(data)
@@ -3184,8 +3196,13 @@ function calcTotalAmount() {
         }
         
         function Giftcard_scan(){
-            // document.location.href='https://1087.g2i.co.kr/barcode/barcode_scan.asp';
-            document.location.href='https://m.bbq.co.kr/barcode/barcode_scan.asp';
+	        // var link = 'https://1087.g2i.co.kr/barcode/barcode_scan.asp' // DEV
+	        var link = 'https://m.bbq.co.kr/barcode/barcode_scan.asp' // REAL
+	        <%' If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
+                // window.SGApp.openPopup(link)
+            <%' else %>
+                document.location.href=link;
+            <%' end if %>	
         }
         
         function giftcard_close(){
@@ -3232,6 +3249,9 @@ function calcTotalAmount() {
 	
 	$(document).ready(function (){
 	    Giftcard_ListCount()
+	    if(localStorage.getItem("Adult_yn") == "Y"){
+	        setACheck("Y");
+	    }
 	})
 	    //현금영수증 선택 영역 시작 , (test M_1156_0 황올한닭발튀김)
 	    var item = JSON.parse(sessionStorage.getItem("ss_branch_data"));

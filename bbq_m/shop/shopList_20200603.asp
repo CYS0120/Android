@@ -293,9 +293,9 @@
 				<h3 class="subTitle">최근 주문매장</h3>
 				<div class="find_shop_wrap">
 					<ul class="find_shop">
-						<li><a href="#" class="btn btn_middle btn-lightGray">선택</a></li>
-						<li><a href="/shop/shopView.asp?branch_id=1125003" class="find_shop_name">가산디지털단지점</a> <a href="#" class="btn btn-red btn_small4">올리브카페</a></li>
-						<li>서울특별시 금천구 디지털로 210(가산동) <a href="#" class="btn btn-red btn_small4">멤버십</a></li>
+						<li><a href="#" onclick="javascript:return false;" class="btn btn_middle btn-lightGray">선택</a></li>
+						<li><a href="/shop/shopView.asp?branch_id=1125003" onclick="javascript:return false;" class="find_shop_name">가산디지털단지점</a> <a href="#" onclick="javascript:return false;" class="btn btn-red btn_small4">올리브카페</a></li>
+						<li>서울특별시 금천구 디지털로 210(가산동) <a href="#" onclick="javascript:return false;" class="btn btn-red btn_small4">멤버십</a></li>
 						<li>
 							02-851-9282 
 							<button type="button" id="btn_map" class="" onclick=""><img src="/images/order/icon_map.png" alt="지도보기"></button>
@@ -306,7 +306,7 @@
 					</ul>
 
 					<ul class="find_shop">
-						<li><a href="#" class="btn btn_middle btn-lightGray">선택</a></li>
+						<li><a href="#" onclick="javascript:return false;" class="btn btn_middle btn-lightGray">선택</a></li>
 						<li><a href="/shop/shopView.asp?branch_id=1125003" class="find_shop_name">가산디지털단지점</a> <a href="" class="btn btn-red btn_small4">올리브카페</a></li>
 						<li>서울특별시 금천구 디지털로 210(가산동) <a href="" class="btn btn-red btn_small4">멤버십</a></li>
 						<li>

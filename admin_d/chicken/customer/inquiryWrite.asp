@@ -34,7 +34,7 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
 				<li>고객센터</li>
 			</ul>
 		</div>

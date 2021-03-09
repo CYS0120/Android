@@ -168,7 +168,7 @@
 					</dl>
 				</div>
 				<div class="mar-t70">
-					<a href="#" class="btn btn-lg btn-red w-100p">주문내역 확인</a>
+					<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-red w-100p">주문내역 확인</a>
 				</div>
 			</div>
 			<!-- //결제정보 -->

@@ -65,7 +65,7 @@
 									<div class="date">2018.11.07</div>
 								</div>
 								<div class="rig">
-									<a href="#" class="btn btn-sm btn-grayLine2">상세보기</a>
+									<a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine2">상세보기</a>
 								</div>
 							</div>
 						</div>
@@ -80,7 +80,7 @@
 									<div class="date">2018.11.07</div>
 								</div>
 								<div class="rig">
-									<a href="#" class="btn btn-sm btn-grayLine2">상세보기</a>
+									<a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine2">상세보기</a>
 								</div>
 							</div>
 						</div>
@@ -106,7 +106,7 @@
 
 			<!-- Button More -->
 			<div class="btn-wrap mar-t20 inner">
-				<a href="#" class="btn btn-md btn-black w-100p btn_list_more"><span>목록</span></a>
+				<a href="#" onclick="javascript:return false;" class="btn btn-md btn-black w-100p btn_list_more"><span>목록</span></a>
 			</div>
 			<!--// Button More -->
 

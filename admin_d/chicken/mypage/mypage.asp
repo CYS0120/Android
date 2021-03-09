@@ -26,7 +26,7 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
 				<li>마이페이지</li>
 			</ul>
 		</div>
@@ -102,7 +102,7 @@ jQuery(document).ready(function(e) {
 			<section class="section">
 				<div class="section-header">
 					<h3>주문내역</h3>
-					<a href="#" class="btn_more btn btn-sm btn-grayLine">더보기</a>
+					<a href="#" onclick="javascript:return false;" class="btn_more btn btn-sm btn-grayLine">더보기</a>
 				</div>
 				<div class="section-body">
 
@@ -132,10 +132,10 @@ jQuery(document).ready(function(e) {
 								<td>
 									2018.12.12<br/>
 									<p class="orderNum">BBQ00001565077</p>
-									<a href="#" class="btn btn-sm btn-grayLine">주문상세보기</a>
+									<a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine">주문상세보기</a>
 								</td>
 								<td class="img">
-									<a href="#"><img src="http://placehold.it/80x80"></a>
+									<a href="#" onclick="javascript:return false;"><img src="http://placehold.it/80x80"></a>
 								</td>
 								<td class="info ta-l">
 									<p class="icon">
@@ -152,10 +152,10 @@ jQuery(document).ready(function(e) {
 								<td>
 									2018.12.12<br/>
 									<p class="orderNum">BBQ00001565077</p>
-									<a href="#" class="btn btn-sm btn-grayLine">주문상세보기</a>
+									<a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine">주문상세보기</a>
 								</td>
 								<td class="img">
-									<a href="#"><img src="http://placehold.it/80x80"></a>
+									<a href="#" onclick="javascript:return false;"><img src="http://placehold.it/80x80"></a>
 								</td>
 								<td class="info ta-l">
 									<p class="icon">
@@ -169,7 +169,7 @@ jQuery(document).ready(function(e) {
 								<td>
 									배송중
 									<p class="mar-t5">
-										<a href="#" class="btn btn-sm btn-brown">배송조회</a>
+										<a href="#" onclick="javascript:return false;" class="btn btn-sm btn-brown">배송조회</a>
 									</p>
 								</td>
 							</tr>
@@ -184,7 +184,7 @@ jQuery(document).ready(function(e) {
 			<section class="section mar-t100">
 				<div class="section-header">
 					<h3>문의내역</h3>
-					<a href="#" class="btn_more btn btn-sm btn-grayLine">더보기</a>
+					<a href="#" onclick="javascript:return false;" class="btn_more btn btn-sm btn-grayLine">더보기</a>
 				</div>
 				<div class="section-body">
 
@@ -209,7 +209,7 @@ jQuery(document).ready(function(e) {
 								<td>1</td>
 								<td class="ta-l">
 									<span class="ico-branch red mar-r10">비비큐 치킨</span>
-									<a href="#">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+									<a href="#" onclick="javascript:return false;">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
 								</td>
 								<td>2018-12-20</td>
 								<td><span>답변전</span></td>
@@ -218,7 +218,7 @@ jQuery(document).ready(function(e) {
 								<td>1</td>
 								<td class="ta-l">
 									<span class="ico-branch orange mar-r10">올떡</span>
-									<a href="#">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+									<a href="#" onclick="javascript:return false;">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
 								</td>
 								<td>2018-12-20</td>
 								<td><span class="red">답변완료</span></td>
@@ -227,7 +227,7 @@ jQuery(document).ready(function(e) {
 								<td>1</td>
 								<td class="ta-l">
 									<span class="ico-branch yellow mar-r10">비비큐몰</span>
-									<a href="#">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+									<a href="#" onclick="javascript:return false;">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
 								</td>
 								<td>2018-12-20</td>
 								<td><span class="red">답변완료</span></td>

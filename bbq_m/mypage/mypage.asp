@@ -20,159 +20,134 @@
 
 <body>
 
-<div class="wrapper">
-
-	<%
-		PageTitle = "마이페이지"
-	%>
-
-	<!--#include virtual="/includes/header.asp"-->
+<div class="h-wrapper">
+		<!-- Header -->
+		<header class="h-subheader">
+			<h2><a href="/">마이페이지</a></h2>
+            <div class="h-btn-header-bra">
+				<button type="button" class="btn h-btn_header_cart" onClick="javascript:location.href='/order/cart.asp';"><span class="ico-only">장바구니</span><span class="count" id="cart_item_count"></span></button>
+			</div>
+			<div class="h-btn-header-nav2">
+				<a href="#" class="btn_header_menu">메뉴</a>
+			</div>
+		</header>
+		<!--// Header -->
 
 	<!-- Container -->
-	<div class="container">
-
-		<!-- Aside -->
-		<!--#include virtual="/includes/aside.asp"-->
+	<div class="h-container" style="padding-bottom: 0px !important;">
+        <!-- Aside -->
+		<div id="aside_div"></div>
 		<!--// Aside -->
-				
 		<!-- Content -->
-		<article class="content inbox1000">
-		
+		<article class="h-content">
+            <section class="mypage_area h-inbox1000">
+            	<ul class="mypage_top">
+            		<li>welcome</li>
+            		<li><button type="button" onclick="location.href='/mypage/memEdit.asp'" class="btn btn_mypage"><span class="ico-only">MY</span></button></li>
+            	</ul>
+
+            	<ul class="mypage_name">
+            		<li><span class="name"><%=Session("userName")%></span>님</li>
+            		<li>세상에서 가장 건강하고 맛있는  치킨 bbq 입니다.</li>
+            	</ul>
+
+            	<div class="mypage_info">
+            		<a href="./membership.asp"><span class="ico-only ico-info01" style="color:#fff;"><em class="h-ddack">딹</em>멤버십 안내</span></a>
+            	</div>
+
+            	<div class="mypage_box">
+            		<ul>
+            			<li onclick="location.href='/mypage/mileage.asp'"><div class="ico-point">포인트</div><p><span><%=FormatNumber(pPointBalance.mTotalPoint,0)%></span>P</p></li>
+            			<li onclick="location.href='/mypage/couponList.asp?couponList=coupon'"><div class="ico-cupon">쿠폰</div><p><span><%=pCouponList.mTotalCount%></span>개</p></li>
+            			<li onclick="location.href='/mypage/couponList.asp?couponList=giftcard'"><div class="icon_gift">상품권</div><p><span class="gc_red">0</span>개</p></li>
+            		</ul>
+            	</div>
+                <script type="text/javascript">
+					    var page = 1;
+					    var order_pageSize = 3;
+
+					    $(function(){
+						    getOrderList();
+					    });
+				    </script>
+            </section>
+		    <section class="mypage_list_area h-inbox1000 h-section">
+        	    <ul class="mypage_list">
+        		    <li><a href="/mypage/orderList.asp">주문내역</a></li>
+        	    </ul>
+                <div class="reorder_wrap">
+					<div class="orderList" id="order_list"></div>
+				</div>
+                <ul class="mypage_list">
+        		    <li><a href="/mypage/addManage.asp">배달지</a></li>
+        	    </ul>
+                <section class="section_recentOrder">
+                    <div>
+
+                    	<%
+                    		Dim aCmd : Set aCmd = Server.CreateObject("ADODB.Command")
+                    		Dim aRs : Set aRs = Server.CreateObject("ADODB.RecordSet")
+                    		Dim TotalCount
+
+                    		With aCmd
+                    			.ActiveConnection = dbconn
+                    			.NamedParameters = True
+                    			.CommandType = adCmdStoredProc
+                    			.CommandText = "bp_member_addr_select"
+
+                    			.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 50, Session("userIdNo"))
+                    			.Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
+
+                    			Set aRs = .Execute
+
+                    			TotalCount = .Parameters("@totalCount").Value
+                    		End With
+                    		Set aCmd = Nothing
+
+                    		If Not (aRs.BOF Or aRs.EOF) Then
+                    			aRs.MoveFirst
+                    			Do Until aRs.EOF
+                    	%>
+
+                    				<div class="addManage" id="addr_<%=aRs("addr_idx")%>">
+                    					<div class="name">
+                    						<%If aRs("is_main") = "Y" Then%>
+                    						<span class="red">[기본배달지]</span> <%End If%><%'=aRs("addr_name")%>
+                    					</div>
+                    					<ul class="info">
+                    						<li>(<%=aRs("zip_code")%>) <%=aRs("address_main")&" "&aRs("address_detail")%></li>
+                    					</ul>
+                    					<ul class="btn-wrap">
+                    						<li class="btn-left">
+                    							<% If aRs("is_main") <> "Y" Then %>
+                    								<button type="button" class="btn btn_small2 btn-brown" onClick="javascript: setMainAddress('<%=aRs("addr_idx")%>');">기본배달지 설정</button>
+                    							<% End If %>
+                    						</li>
+                    					</ul>
+                    				</div>
+                    	<%
+                    				aRs.MoveNext
+                    			Loop
+                    		End If
+                    		Set aRs = Nothing
+                    	%>
+                    </div>
+
+                </section>
+        		    
+            </section>
+            <section class="mypage_callCenter h-inbox1000">
+				<ul>
+					<li>
+						<dl><dt>고객센터</dt><dd>080-3436-0507</dd></dl>
+					</li>
+					<li>운영시간 10:00~18:00 (토요일, 공휴일은 휴무)</li>
+				</ul>
+			</section>
+            <section class="footer_btn h-inbox1000">
+				<button type="button" onClick="javascript:location.href='/api/logout.asp';" class="btn h-btn_logout">로그아웃</button>
+			</section>
 			<div class="section-wrap">
-
-				<!-- Membership Info -->
-				<section class="section section_membership">
-					<h3 class="blind">나의 쇼핑정보</h3>
-					<div class="memGrade gold"><!-- silver, bronze -->
-						<p><strong><%=Session("userName")%></strong> 고객님</p>
-						<p class="txt">세상에서 가장 건강하고 맛있는 치킨 bbq 입니다.</p>
-						<p class="btn_memGrade"><a href="/mypage/memEdit.asp" class="btn btn_small2 btn-grayLine">회원정보 변경</a></p>
-					</div>
-
-					<!-- 치킨캠프
-					<div class="ckcamp">
-						<a href="javascript:alert('준비중입니다.');"><span>치킨캠프 신청내역 확인하기</span></a>
-					</div>
-					 //치킨캠프 -->
-
-					<div class="myInfo-wrap">
-						<ul class="myInfo">
-							<li class="item_cupon" onclick="location.href='./couponList.asp'">
-								<div class="count"><span><%=pCouponList.mTotalCount%></span> 장 <img src="/images/mypage/icon_pluse.png"></div>
-							</li>
-							<li class="item_point" onclick="location.href='./mileage.asp'">
-								<div class="count"><span><%=FormatNumber(pPointBalance.mTotalPoint,0)%></span> P <img src="/images/mypage/icon_pluse.png"></div>
-							</li>
-							<li class="item_card" onclick="location.href='./cardList.asp'">
-								<div class="count"><span><%=UBound(pCardOwnerList.mCardDetail)+1%></span> 장 <img src="/images/mypage/icon_pluse.png"></div>
-							</li>
-						</ul>
-					</div>
-
-					<div class="btn-myinfo">
-						<a href="./membership.asp" class="btn btn_middle"><em class="ddack">딹</em>멤버십 안내</a>
-					</div>
-				</section>
-				<!--// Membership Info -->
-
-				<script type="text/javascript">
-					var page = 1;
-					var order_pageSize = 3;
-
-					$(function(){
-						getOrderList();
-					});
-				</script>
-
-
-				<!-- 최근 주문 -->
-				<section class="section_recentOrder">
-					<div class="section-header">
-						<h3>최근 주문 </h3>
-						<div class="rig"><a href="/mypage/orderList.asp" class="more">더보기</a></div>
-					</div>
-
-					<div class="reorder_wrap">
-						<div class="orderList" id="order_list"></div>
-					</div>
-				</section>
-				<!-- // 최근 주문 -->
-
-
-				<!-- 등록된 주소 -->
-				<section class="section_recentOrder">
-					<div class="section-header">
-						<h3>등록된 주소</h3>
-						<div class="rig"><a href="/mypage/addManage.asp" class="more">관리</a></div>
-					</div>
-					<div class="addManage_wrap">
-
-						<%
-							Dim aCmd : Set aCmd = Server.CreateObject("ADODB.Command")
-							Dim aRs : Set aRs = Server.CreateObject("ADODB.RecordSet")
-							Dim TotalCount
-
-							With aCmd
-								.ActiveConnection = dbconn
-								.NamedParameters = True
-								.CommandType = adCmdStoredProc
-								.CommandText = "bp_member_addr_select"
-
-								.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 50, Session("userIdNo"))
-								.Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
-
-								Set aRs = .Execute
-
-								TotalCount = .Parameters("@totalCount").Value
-							End With
-							Set aCmd = Nothing
-
-							If Not (aRs.BOF Or aRs.EOF) Then
-								aRs.MoveFirst
-								Do Until aRs.EOF
-						%>
-
-									<div class="addManage" id="addr_<%=aRs("addr_idx")%>">
-										<div class="name">
-											<%If aRs("is_main") = "Y" Then%>
-											<span class="red">[기본배달지]</span> <%End If%><%'=aRs("addr_name")%>
-										</div>
-										<ul class="info">
-											<li>(<%=aRs("zip_code")%>) <%=aRs("address_main")&" "&aRs("address_detail")%></li>
-										</ul>
-										<ul class="btn-wrap">
-											<li class="btn-left">
-												<% If aRs("is_main") <> "Y" Then %>
-													<button type="button" class="btn btn_small2 btn-brown" onClick="javascript: setMainAddress('<%=aRs("addr_idx")%>');">기본배달지 설정</button>
-												<% End If %>
-											</li>
-										</ul>
-									</div>
-						<%
-									aRs.MoveNext
-								Loop
-							End If
-							Set aRs = Nothing
-						%>
-					</div>
-
-				</section>
-				<!-- // 등록된 주소 -->
-
-
-				<!-- 고객센터 -->
-				<section class="section_mypage_callCenter">
-					<dl class="callCenter">
-						<dt>고객센터</dt>
-						<dd>
-							<strong>080-3436-0507</strong>
-							<p>운영시간 10:00~18:00 (토요일, 공휴일은 휴무)</p>
-						</dd>
-					</dl>
-				</section>
-				<!-- // 고객센터 -->
-
-
 				<form id="cart_form" name="cart_form" method="post" action="payment.asp" >
 					<input type="hidden" name="order_type" id="order_type" value="<%=order_type%>">
 					<input type="hidden" name="branch_id" id="branch_id" value="<%=branch_id%>">
@@ -319,7 +294,24 @@
 
 	</div>
 	<!--// Container -->
-
 	<!-- Footer -->
-	<!--#include virtual="/includes/footer.asp"-->
+	<!--#include virtual="/includes/footer_new.asp"-->
 	<!--// Footer -->
+<script>
+$(document).ready(function (){
+   $.ajax({
+         method: "post",
+         url: "/api/ajax/ajax_getGiftCard.asp",
+         data: {
+             callMode: "listCount",
+         },
+         dataType: "json",
+         success: function(res) {
+           if (res.result == 0) {
+             $(".gc_red").html(res.Count);               
+           }
+         }
+     });
+})
+  // 상품권 
+</script>

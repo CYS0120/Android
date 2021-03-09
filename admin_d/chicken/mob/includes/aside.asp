@@ -38,13 +38,13 @@
 					<!-- Aside Quick -->
 					<ul class="aside-quick">
 						<!--<li>
-							<a href="#">
+							<a href="#" onclick="javascript:return false;">
 								<img src="/images/common/ico_menu_btn1.png" alt="">
 								<span>주문조회</span>
 							</a>
 						</li>-->
 						<li>
-							<a href="#">
+							<a href="#" onclick="javascript:return false;">
 								<img src="/images/common/ico_menu_btn2.png" alt="">
 								<span>비비큐 카드</span>
 							</a>
@@ -120,8 +120,8 @@
 				<div class="aside-header">
 					<h2>FAMILY BRAND</h2>
 					<!--<ul class="brandMenu">
-						<li><a href="#">창업센터</a></li>
-						<li><a href="#">비비큐몰</a></li>
+						<li><a href="#" onclick="javascript:return false;">창업센터</a></li>
+						<li><a href="#" onclick="javascript:return false;">비비큐몰</a></li>
 					</ul>-->
 				</div>
 				<!--// Aside Header -->

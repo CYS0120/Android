@@ -322,7 +322,7 @@ jQuery(document).ready(function(e) {
 %>
 						<tr>
 							<td class="img">
-								<a href="#"><img src="<%=aRs("main_file_path")&aRs("main_file_name")%>" width="120px" height="120px" onerror="this.rc='http://placehold.it/120x120';"/></a>
+								<a href="#" onclick="javascript:return false;"><img src="<%=aRs("main_file_path")&aRs("main_file_name")%>" width="120px" height="120px" onerror="this.rc='http://placehold.it/120x120';"/></a>
 							</td>
 							<td class="info ta-l">
 								<div class="pdt-info div-table">
@@ -353,7 +353,7 @@ jQuery(document).ready(function(e) {
 						</tr>
 						<tr>
 							<td class="img">
-								<a href="#"><img src="http://placehold.it/120x120"/></a>
+								<a href="#" onclick="javascript:return false;"><img src="http://placehold.it/120x120"/></a>
 							</td>
 							<td class="info ta-l">
 								<div class="pdt-info div-table">

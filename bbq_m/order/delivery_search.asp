@@ -11,8 +11,10 @@
 
 	search_text = GetReqStr("search_text","")
 
+	'Response.write "addr_id : " &addr_idxx & " search_text: "  & search_text & " order_type:" & order_type & " member_idno:" & Session("userIdNo")
+	'Response.end
 	If order_type = "D" Then
-		If addr_idx <> "" And addr_data <> "" Then
+		If addr_idx <> "" And addr_data <> "" Then 
 			Set aJson = JSON.Parse(addr_data)
 
 			addr_idx = aJson.addr_idx

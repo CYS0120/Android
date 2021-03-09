@@ -79,7 +79,7 @@ jQuery(document).ready(function(e) {
 						<span>서울특별시 관악구 난리로66 무슨빌딩 5층</span>
 					</li>
 				</ul>
-				<a href="#" class="btn btn-sm btn-gray">변경</a>
+				<a href="#" onclick="javascript:return false;" class="btn btn-sm btn-gray">변경</a>
 			</section>
 			<!-- //상단 배달정보 -->
 
@@ -110,7 +110,7 @@ jQuery(document).ready(function(e) {
 					<tr>
 						<td class="chk"><label class="ui-checkbox no-txt"><input type="checkbox"><span></span></label></td>
 						<td class="img">
-							<a href="#"><img src="http://placehold.it/120x120"/></a>
+							<a href="#" onclick="javascript:return false;"><img src="http://placehold.it/120x120"/></a>
 						</td>
 						<td class="info ta-l">
 							<div class="pdt-info div-table">
@@ -144,7 +144,7 @@ jQuery(document).ready(function(e) {
 					<tr>
 						<td class="chk"><label class="ui-checkbox no-txt"><input type="checkbox"><span></span></label></td>
 						<td class="img">
-							<a href="#"><img src="http://placehold.it/120x120"/></a>
+							<a href="#" onclick="javascript:return false;"><img src="http://placehold.it/120x120"/></a>
 						</td>
 						<td class="info ta-l">
 							<div class="pdt-info div-table">
@@ -226,7 +226,7 @@ jQuery(document).ready(function(e) {
 			<!-- //장바구니 하단 정보 -->
 
 			<div class="btn-wrap two-up inner mar-t60">
-				<a href="#" class="btn btn-lg btn-redLine"><span>다른메뉴 더보기</span></a>
+				<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-redLine"><span>다른메뉴 더보기</span></a>
 				<button type="submit" class="btn btn-lg btn-red"><span>주문하기</span></button>
 			</div>
 

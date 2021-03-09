@@ -112,22 +112,6 @@
 <body>
 
 
-<style type="text/css">
-.topFixBanner {position:relative; background:#ffffff; text-align:center; padding:0 0 10px 0; width:100%}
-.topFixBanner .menu_list_search {position:relative; margin-top:15px;}
-.topFixBanner .menu_list_search > input {width:100%; border:1px solid #bebebe}
-.topFixBannerFixed {position:fixed; top:59px; z-index:9999;}
-.topFixBanner .menu_list_search span.re_text {position:absolute; font-size:1em; color:#777; font-weight:bold; right:15px; top:10px; display:none}
-.topFixBanner .menu_list_search span.re_search {padding-top:10px; display:block}
-
-.menu_accordion_fix {padding-top:60px;}
-.menu_accordion_fix_src {padding-top:160px;}
-
-@media (max-width:750px){
-.topFixBannerFixed {top:45px;}
-}
-</style>
-
 
 <div class="wrapper">
 
@@ -135,10 +119,20 @@
 		PageTitle = "메뉴"
 	%>
 
-	<!--#include virtual="/includes/header.asp"-->
+	<!-- Header -->
+    <header class="h-subheader">
+    	<h2><a href="/">메뉴</a></h2>
+        <div class="h-btn-header-bra">
+    		<button type="button" class="btn h-btn_header_cart" onClick="javascript:location.href='/order/cart.asp';"><span class="ico-only">장바구니</span><span class="count" id="cart_item_count"></span></button>
+    	</div>
+    	<div class="h-btn-header-nav">
+			<button type="button" onClick="javascript:history.back();" class="btn h-btn_header_back"><span class="ico-only">이전페이지</span></button>
+    	</div>
+    </header>
+    <!--// Header -->
 	
 	<!-- Container -->
-	<div class="container">
+	<div class="h-container" style="padding-bottom: 80px !important;">
 		<!-- Aside -->
 		<!--#include virtual="/includes/aside.asp"-->
 		<!--// Aside -->
@@ -248,7 +242,7 @@
 				<!-- // 상단 메뉴네비 -->
 
 
-				<div class="inbox1000 menu_list_search ">
+				<div class="h-inbox1000 menu_list_search ">
 					<input type="text" name="list_src" id="list_src"  onkeyup="list_search()" placeholder="검색어를 입력해 주십시오">
 					<span id="re_text" class="re_text" onclick="menu_list_reset(1)">X</span>
 					<span id="list_src_result" class="re_search"><span>
@@ -258,7 +252,7 @@
 
 
 			<!-- 메뉴 리스트 -->
-			<div class="menu_accordion inbox1000" >
+			<div class="menu_accordion h-inbox1000" >
 
 				
 				<!-- menu-list -->
@@ -389,8 +383,8 @@
 									</ul>
 
 									<div class="menuList_btn clearfix">
-										<button type="button" class="btn btn_list_cart btn_newImg" onClick="addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>', false);"><img src="/images/common/btn_add.png" alt="담아두기"> </button>
-										<a href="javascript: addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>', true);" class="btn btn_list_order btn_newImg"><img src="/images/common/btn_order.png" alt="주문하기"></a>
+										<button type="button" class="btn btn_list_cart btn_newImg" onClick="addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>', false);">장바구니 담기</button>
+										<a href="javascript: addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>', true);" class="btn btn_list_order btn_newImg">주문하기</a>
 									</div>
 								</div>
 
@@ -429,8 +423,8 @@
 	<!--// Container -->
 
 	<!-- Footer -->
-	<!--#include virtual="/includes/footer.asp"-->
-	<!--// Footer -->
+    <!--#include virtual="/includes/footer_new.asp"-->
+    <!--// Footer -->
 
 
 <!-- 아코디언 -->
@@ -533,11 +527,11 @@ function menu_list_cate_all_open()
 		}
 
 		if ( $( document ).scrollTop() > 0 ) {   // 위치 및 사이즈를 파악하여 미리 정한 css class를 add 또는 remove 합니다.
-			$( '.topFixBanner' ).addClass( 'topFixBannerFixed');
-			$( '.menu_accordion' ).addClass( menu_accordion_fix_string);
+			// $( '.topFixBanner' ).addClass( 'topFixBannerFixed');
+			// $( '.menu_accordion' ).addClass( menu_accordion_fix_string);
 		} else {
-			$( '.topFixBanner' ).removeClass( 'topFixBannerFixed');
-			$( '.menu_accordion' ).removeClass( menu_accordion_fix_string);
+			// $( '.topFixBanner' ).removeClass( 'topFixBannerFixed');
+			// $( '.menu_accordion' ).removeClass( menu_accordion_fix_string);
 		}
 	});
 </script>

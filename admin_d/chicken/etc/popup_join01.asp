@@ -59,14 +59,14 @@
 							<input type="checkbox" class="agree">
 							<span></span> BBQ 이용약관
 						</label>
-						<a href="#">전문 보기</a>
+						<a href="#" onclick="javascript:return false;">전문 보기</a>
 					</p>
 					<p>
 						<label class="ui-checkbox type2">
 							<input type="checkbox" class="agree">
 							<span></span> 개인정보 수집과 이용
 						</label>
-						<a href="#">전문 보기</a>
+						<a href="#" onclick="javascript:return false;">전문 보기</a>
 					</p>
 					<p>
 						<label class="ui-checkbox type2">

@@ -33,7 +33,7 @@
 		<header class="h-header">
 			<h1><a href="/">BBQ치킨</a></h1>
 			<div class="h-btn-header-nav">
-				<a href="#" class="btn_header_menu">메뉴</a>
+				<a href="#" onclick="javascript:return false;" class="btn_header_menu">메뉴</a>
 			</div>
 		</header>
 		<!--// Header -->
@@ -222,7 +222,7 @@
 				<li><a href="/shop/shopLocation.asp?dir_yn=Y" class="h-footer_icon_shop">매장</a></li>
 				<li><a href="/brand/eventList.asp" class="h-footer_icon_event">이벤트</a></li>
 				<li><a href="/order/group.asp" class="h-footer_icon_brand">단체주문</a></li>
-				<li><a href="#" class="h-btn_header_menu btn_header_menu">더보기</a></li>
+				<li><a href="#" onclick="javascript:return false;" class="h-btn_header_menu btn_header_menu">더보기</a></li>
 			</ul>
 		</footer>
 		<!-- // Footer -->

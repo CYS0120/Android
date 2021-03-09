@@ -90,28 +90,25 @@
 
 <div class="wrapper">
 
-<%
-	if order_type = "D" then
-		PageTitle = "주소 선택"
-	end if 
-
-	if order_type = "P" then
-		PageTitle = "매장 선택"
-	end if 
-%>
-
-<!--#include virtual="/includes/header.asp"-->
-
+<!-- Header -->
+<header class="h-subheader">
+    <h2><a href="/">주문하기</a></h2>
+    <div class="h-btn-header-bra">
+    	<button type="button" class="btn h-btn_header_cart" onClick="javascript:location.href='/order/cart.asp';"><span class="ico-only">장바구니</span><span class="count" id="cart_item_count"></span></button>
+    </div>
+    <div class="h-btn-header-nav">
+		<button type="button" onClick="javascript:history.back();" class="btn h-btn_header_back"><span class="ico-only">이전페이지</span></button>
+    </div>
+</header>
+<!--// Header -->
 <!-- Container -->
-<div class="container">
-
+<div class="h-container" style="padding-bottom: 80px !important;">
 	<!-- Aside -->
 	<!--#include virtual="/includes/aside.asp"-->
 	<!--// Aside -->
-		
 	<!-- Content -->
 	<article class="content inbox1000">
-
+        <div class="topFixBanner ty2">
 		<form id="cart_form" name="cart_form" method="post" action="payment.asp">
 			<input type="hidden" name="order_type" id="order_type" value="<%=order_type%>">
 			<input type="hidden" name="branch_id" id="branch_id" value="<%=branch_id%>">
@@ -124,47 +121,51 @@
 
 		<!-- 검색 -->
 		<% if order_type = "D" then %>
-			<div class="find_shopSearch search-box">
+			<div class="find_shopSearch h-inbox1000">
 				<form class="form" id="deliverysearch_form" name="deliverysearch_form" action="delivery_search.asp">
 					<input type="hidden" name="lat" id="lat" value="">
 					<input type="hidden" name="lng" id="lng" value="">
 					<input type="hidden" name="dir_yn" id="dir_yn" value="<%=dir_yn%>">
 					<input type="hidden" name="order_type" id="order_type" value="<%=order_type%>">
-					<input type="text" name="search_text" id="search_text" placeholder="배달지 검색">
+					<input type="text" name="search_text" id="search_text" placeholder="주소 검색하여 배달지 추가">
 					<button type="button" class="btn-sch" onclick="getAddr();"><img src="/images/order/btn_search.png" alt="검색"></button>
 				</form>
-
-				<div><a href="delivery_map.asp?order_type=<%=order_type%>" class="btn btn-gray btn_middle"><img src="/images/order/icon_location.png"> 현 위치 기반 주소 검색</a></div>
+                <form class="form" action="">
+                    <a href="delivery_map.asp?order_type=<%=order_type%>">
+					<input type="text" name="search_text" id="search_text" readonly placeholder="현 위치 기반 주소 검색">
+					<button type="button" class="btn-sch" onclick="getAddr();"><img src="/images/common_new/icon_location.png" alt="검색"></button>
+				    </a>
+                </form>
+				<!--//<div><a href="delivery_map.asp?order_type=<%=order_type%>" class="btn btn-gray btn_middle"><img src="/images/order/icon_location.png"> 현 위치 기반 주소 검색</a></div>-->
 			</div>
 		<% end if %>
 
 
 		<% if order_type = "P" then %>
-			<div class="find_shopSearch search-box">
+			<div class="find_shopSearch h-inbox1000">
 				<form class="form" id="deliverysearch_form" name="deliverysearch_form" action="delivery_P_list.asp">
 					<input type="hidden" name="lat" id="lat" value="">
 					<input type="hidden" name="lng" id="lng" value="">
 					<input type="hidden" name="dir_yn" id="dir_yn" value="<%=dir_yn%>">
 					<input type="hidden" name="order_type" id="order_type" value="<%=order_type%>">
-					<input type="text" name="search_text" id="search_text" placeholder="매장명 검색">
+					<input type="text" name="search_text" id="search_text" placeholder="주소 검색하여 매장명 검색">
 					<button type="button" class="btn-sch" onclick="getAddr()"><img src="/images/order/btn_search.png" alt="검색"></button>
 				</form>
-
-				<div><a href="/shop/shopLocation.asp?order_type=<%=order_type%>" class="btn btn-gray btn_middle"><img src="/images/order/icon_location.png"> 현 위치 기반 매장 검색</a></div>
+                <form class="form" action="">
+                    <a href="/shop/shopLocation.asp?order_type=<%=order_type%>">
+					<input type="text" name="search_text" id="search_text" readonly placeholder="현 위치 기반 주소 검색">
+					<button type="button" class="btn-sch" onclick="getAddr();"><img src="/images/common_new/icon_location.png" alt="검색"></button>
+				    </a>
+                </form>
+				<!--//<div><a href="/shop/shopLocation.asp?order_type=<%=order_type%>" class="btn btn-gray btn_middle"><img src="/images/order/icon_location.png"> 현 위치 기반 매장 검색</a></div>-->
 			</div>
 		<% end if %>
-
+        </div>
 		<!-- // 검색 -->
 
 		<input type="hidden" id="CART_IN_PRODIDX">
 
 		<%If CheckLogin() Then%>
-
-			<!-- 매장리스트 -->
-			<h3 class="subTitle">
-				<% if order_type = "D" then %>이전 배달지<% end if %>
-				<% if order_type = "P" then %>최근 주문매장<% end if %>
-			</h3>
 
 			<div class="find_shop_wrap" id="order_branch_list"></div>
 
@@ -1111,6 +1112,6 @@ function getAddr(){
 
 
 
-<!-- Footer -->
-<!--#include virtual="/includes/footer.asp"-->
-<!--// Footer -->
+	<!-- Footer -->
+	<!--#include virtual="/includes/footer_new.asp"-->
+	<!--// Footer -->

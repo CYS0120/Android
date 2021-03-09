@@ -194,11 +194,11 @@
 								<li class="node1 ss_pc_move_N" style="display:none"><a href="/mypage/couponList.asp" class="depth1"><img src="/images/common/icon_menu2.png"> 쿠폰/상품권</a></li>
 							<% else %>
 								<li class="node1 ss_pc_move_N"><a href="/mypage/orderListNonMem.asp" class="depth1"><img src="/images/common/icon_menu1.png"> 비회원 주문조회</a></li>
-								<li class="node1 ss_pc_move_N" style="display:none"><a href="javascript: void(0);" onclick="openLogin('mobile');" class="depth1"><img src="/images/common/icon_menu2.png"> 쿠폰등록/보관</a></li>
+								<li class="node1 ss_pc_move_N" style="display:none"><a href="#" onclick="openLogin('mobile');return false;" class="depth1"><img src="/images/common/icon_menu2.png"> 쿠폰등록/보관</a></li>
 							<% End If %>
 
 							<!--<li class="node1 ss_pc_move_N" style="display:none"><a href="#" onclick="javascript:lpOpen('.lp_eCoupon');" class="depth1"><img src="/images/common/icon_menu2.png"> e쿠폰등록/보관</a></li>-->
-							<li class="node1 ss_pc_move_N"><a href="#" class="depth1 btn_header_brand"><img src="/images/common/icon_menu3.png">  브랜드</a></li>
+							<li class="node1 ss_pc_move_N"><a href="#" onclick="javascript:return false;" class="depth1 btn_header_brand"><img src="/images/common/icon_menu3.png">  브랜드</a></li>
 							<li class="node1 ss_pc_move_N"><a href="/brand/bbq.asp" class="depth1"><img src="/images/common/icon_menu4.png">  브랜드스토리</a></li>
 							<li class="node1 ss_pc_move_N" style="display:none"><a href="/customer/faqList.asp" class="depth1"><img src="/images/common/icon_menu5.png">  고객센터</a>
 								<ul class="submenu">
@@ -218,12 +218,14 @@
 					</nav>				
 					<!--// Aside LNB -->
 					
-					<dl class="Aside_footer">
-						<dt><span>주식회사 </span>제너시스비비큐</dt>
+					<dl class="Aside_footer">				
+						<dt><span>주식회사 </span>제너시스비비큐</dt>						
 						<dd>서울시 송파구 중대로 64(문정동)<span>/</span>대표자 : 윤경주, 신계돈</dd>
 						<dd>통신판매업신고 : 2010-서울송파-1181호</dd>
 						<dd>사업자등록번호 : 207-81-43555</dd>
 						<dd>고객센터 : 080-3436-0507<span>/</span>창업문의 : 080-383-9000</dd>
+						<dd></dd>
+						<dt><span onClick="location.href='/etc/marketing.asp'">마케팅수신약관</span> / <span onClick="location.href='/etc/location.asp'">위치기반서비스약관</span> / <span onClick="location.href='/etc/privacy.asp'">개인정보처리방침</span></dd>
 						<dd>Copyright 2020 © GENESIS BBQ. All rights reserved.</dd>
 					</dl>
 
@@ -252,14 +254,14 @@
 				<!-- Aside Body -->
 				<div class="aside-body">
 					<ul class="familyBrand">
-						<li><a href="javascript:;" onClick="go_site('BBQMALL')"><img src="/images/common/logo_Brand01.png" alt="비비큐몰"></a></li>
+						<li><a href="#" onClick="go_site('BBQMALL');return false;"><img src="/images/common/logo_Brand01.png" alt="비비큐몰"></a></li>
 						<!--<li><a href="javascript:;" onClick="go_site('MBARBECUE')"><img src="/images/common/logo_Brand02.png" alt="Secret 참숯바비큐치킨"></a></li>-->
-						<li><a href="javascript:;" onClick="go_site('MUNINE')"><img src="/images/common/logo_Brand03.png" alt="우쿠야"></a></li>
-						<li><a href="javascript:;" onClick="go_site('MALLTOKK')"><img src="/images/common/logo_Brand04.png" alt="올떡"></a></li>
+						<li><a href="#" onClick="go_site('MUNINE');return false;"><img src="/images/common/logo_Brand03.png" alt="우쿠야"></a></li>
+						<li><a href="#" onClick="go_site('MALLTOKK');return false;"><img src="/images/common/logo_Brand04.png" alt="올떡"></a></li>
 						<!--<li><a href="javascript:;" onClick="go_site('MBELIEF')"><img src="/images/common/logo_Brand05.png" alt="소신"></a></li>-->
 						<!--li><a href="javascript:;" onClick="go_site('MWATAMI')"><img src="/images/common/logo_Brand06.png" alt="와타미"></a></li-->
-						<li><a href="javascript:;" onClick="go_site('MCKPLACE')"><img src="/images/common/logo_Brand07.png" alt="닭익는마을"></a></li>
-						<li><a href="javascript:;" onClick="go_site('MSTART')"><img src="/images/common/logo_Brand08.png" alt="창업전략연구소"></a></li>
+						<li><a href="#" onClick="go_site('MCKPLACE');return false;"><img src="/images/common/logo_Brand07.png" alt="닭익는마을"></a></li>
+						<li><a href="#" onClick="go_site('MSTART');return false;"><img src="/images/common/logo_Brand08.png" alt="창업전략연구소"></a></li>
 					</ul>
 				</div>
 				<!--// Aside Body -->

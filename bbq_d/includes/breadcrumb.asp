@@ -6,12 +6,12 @@
 				<li class="menu">
 					<%=category_name%>
 <!-- 
-					<a href="#">올리브 오리지널</a>
-					<a href="#">올리브 핫스페셜</a>
-					<a href="#">올리브 통살</a>
-					<a href="#">올리브 갈릭스</a>
-					<a href="#">구이</a>
-					<a href="#">세트메뉴</a>
+					<a href="#" onclick="javascript:return false;">올리브 오리지널</a>
+					<a href="#" onclick="javascript:return false;">올리브 핫스페셜</a>
+					<a href="#" onclick="javascript:return false;">올리브 통살</a>
+					<a href="#" onclick="javascript:return false;">올리브 갈릭스</a>
+					<a href="#" onclick="javascript:return false;">구이</a>
+					<a href="#" onclick="javascript:return false;">세트메뉴</a>
 -->
 				</li>
 			</ul>

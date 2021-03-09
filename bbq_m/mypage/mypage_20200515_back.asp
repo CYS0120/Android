@@ -253,7 +253,7 @@
 					<ul class="support">
 						<li><a href="/customer/faqList.asp">자주하는질문</a></li>
 						<li><a href="/customer/inquiryList.asp">고객의소리</a></li>
-						<!--<li><a href="#">e-쿠폰 등록</a></li>-->
+						<!--<li><a href="#" onclick="javascript:return false;">e-쿠폰 등록</a></li>-->
 						<li><a href="./membership.asp">멤버십 안내</a></li>
 					</ul>
 				</section>

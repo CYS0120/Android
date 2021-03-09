@@ -195,10 +195,10 @@
 				<div class="bbqStroy_time">
 					<h3>BBQ 연혁 및 수상내역</h3>
 					<div class="tab">
-						<a href="#" class="active">2020's</a>
-						<a href="#">2010's</a>
-						<a href="#">2000's</a>
-						<a href="#">1990's</a>
+						<a href="#" onclick="javascript:return false;" class="active">2020's</a>
+						<a href="#" onclick="javascript:return false;">2010's</a>
+						<a href="#" onclick="javascript:return false;">2000's</a>
+						<a href="#" onclick="javascript:return false;">1990's</a>
 					</div>
 					<div class="wrap">
 						

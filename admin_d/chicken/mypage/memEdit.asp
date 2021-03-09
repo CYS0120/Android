@@ -33,8 +33,8 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
-				<li><a href="#">마이페이지</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">마이페이지</a></li>
 				<li>회원정보 변경</li>
 			</ul>
 		</div>
@@ -258,7 +258,7 @@ jQuery(document).ready(function(e) {
 												(15230)<br/>
 												서울시 마포구 토정로12길 569-1
 											</td>
-											<td><a href="#" class="btn btn-sm btn-grayLine">수정</a></td>
+											<td><a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine">수정</a></td>
 										</tr>
 										<tr>
 											<td>
@@ -275,8 +275,8 @@ jQuery(document).ready(function(e) {
 												서울시 마포구 토정로12길 569-1
 											</td>
 											<td>
-												<a href="#" class="btn btn-sm btn-grayLine">수정</a>
-												<a href="#" class="btn btn-sm btn-grayLine">삭제</a>
+												<a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine">수정</a>
+												<a href="#" onclick="javascript:return false;" class="btn btn-sm btn-grayLine">삭제</a>
 											</td>
 										</tr>
 									</tbody>

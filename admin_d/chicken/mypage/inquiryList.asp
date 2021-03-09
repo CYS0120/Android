@@ -25,8 +25,8 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
-				<li><a href="#">마이페이지</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">마이페이지</a></li>
 				<li>문의내역</li>
 			</ul>
 		</div>
@@ -169,22 +169,22 @@ jQuery(document).ready(function(e) {
 					</div>
 					<div class="board-pager-wrap">
 						<div class="board-pager">
-							<a href="#" class="board-nav btn_first">처음</a>
-							<a href="#" class="board-nav btn_prev">이전</a>
+							<a href="#" onclick="javascript:return false;" class="board-nav btn_first">처음</a>
+							<a href="#" onclick="javascript:return false;" class="board-nav btn_prev">이전</a>
 							<ul class="board-page">
-								<li class="on"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#">6</a></li>
-								<li><a href="#">7</a></li>
-								<li><a href="#">8</a></li>
+								<li class="on"><a href="#" onclick="javascript:return false;">1</a></li>
+								<li><a href="#" onclick="javascript:return false;">2</a></li>
+								<li><a href="#" onclick="javascript:return false;">3</a></li>
+								<li><a href="#" onclick="javascript:return false;">4</a></li>
+								<li><a href="#" onclick="javascript:return false;">5</a></li>
+								<li><a href="#" onclick="javascript:return false;">6</a></li>
+								<li><a href="#" onclick="javascript:return false;">7</a></li>
+								<li><a href="#" onclick="javascript:return false;">8</a></li>
 							</ul>
-							<a href="#" class="board-nav btn_next">다음</a>
-							<a href="#" class="board-nav btn_last">마지막</a>
+							<a href="#" onclick="javascript:return false;" class="board-nav btn_next">다음</a>
+							<a href="#" onclick="javascript:return false;" class="board-nav btn_last">마지막</a>
 						</div>
-						<div class="btn-area"><a href="#" class="btn btn-red">문의하기</a></div>
+						<div class="btn-area"><a href="#" onclick="javascript:return false;" class="btn btn-red">문의하기</a></div>
 					</div>
 				</div>
 			</section>

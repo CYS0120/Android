@@ -49,7 +49,7 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
 				<li>매장찾기</li>
 			</ul>
 		</div>
@@ -77,9 +77,9 @@ jQuery(document).ready(function(e) {
 				<!--<div class="tab tab-type-shop">
 					<div class="in-sec">
 						<a href="#" class="on">전체</a>
-						<a href="#">익스프레스</a>
-						<a href="#">프리미엄</a>
-						<a href="#">주차장</a>
+						<a href="#" onclick="javascript:return false;">익스프레스</a>
+						<a href="#" onclick="javascript:return false;">프리미엄</a>
+						<a href="#" onclick="javascript:return false;">주차장</a>
 					</div>
 				</div>-->
 				<!-- //탭 -->
@@ -92,22 +92,22 @@ jQuery(document).ready(function(e) {
 						</div>
 					</div>
 					<div class="area on">
-						<a href="#" class="box" onClick="javascript:lpOpen2('.lp-popShop');">
+						<a href="#" class="box" onClick="javascript:lpOpen2('.lp-popShop');return false;">
 							<p class="subject">가산디지털단지점 올리브카페)</p>
 							<p class="add">서울특별시 금천구 디지털로 210 (가산동)</p>
 							<p class="tel">02-851-9282</p>
 						</a>
-						<a href="#" class="box" onClick="javascript:lpOpen2('.lp-popShop');">
+						<a href="#" class="box" onClick="javascript:lpOpen2('.lp-popShop');return false;">
 							<p class="subject">가산디지털단지점 올리브카페)</p>
 							<p class="add">서울특별시 금천구 디지털로 210 (가산동)</p>
 							<p class="tel">02-851-9282</p>
 						</a>
-						<a href="#" class="box" onClick="javascript:lpOpen2('.lp-popShop');">
+						<a href="#" class="box" onClick="javascript:lpOpen2('.lp-popShop');return false;">
 							<p class="subject">가산디지털단지점 올리브카페)</p>
 							<p class="add">서울특별시 금천구 디지털로 210 (가산동)</p>
 							<p class="tel">02-851-9282</p>
 						</a>
-						<a href="#" class="box" onClick="javascript:lpOpen2('.lp-popShop');">
+						<a href="#" class="box" onClick="javascript:lpOpen2('.lp-popShop');return false;">
 							<p class="subject">가산디지털단지점 올리브카페)</p>
 							<p class="add">서울특별시 금천구 디지털로 210 (가산동)</p>
 							<p class="tel">02-851-9282</p>

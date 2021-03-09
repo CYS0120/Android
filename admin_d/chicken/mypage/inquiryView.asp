@@ -39,8 +39,8 @@ jQuery(document).ready(function(e) {
 		<!-- BreadCrumb -->
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
-				<li><a href="#">bbq home</a></li>
-				<li><a href="#">마이페이지</a></li>
+				<li><a href="#" onclick="javascript:return false;">bbq home</a></li>
+				<li><a href="#" onclick="javascript:return false;">마이페이지</a></li>
 				<li>문의내역</li>
 			</ul>
 		</div>
@@ -151,7 +151,7 @@ jQuery(document).ready(function(e) {
 			<!--// My Inquiry -->
 
 			<div class="btn-wrap two-up inner mar-t60">
-				<a href="#" class="btn btn-lg btn-black"><span>목록</span></a>
+				<a href="#" onclick="javascript:return false;" class="btn btn-lg btn-black"><span>목록</span></a>
 			</div>
 
 		</article>
