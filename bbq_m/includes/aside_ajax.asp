@@ -15,8 +15,8 @@
 				<!-- Aside Login -->
 				<div class="aside-login" style="display:no1ne">
 					<div class="aside-top-btn">
-						<a href="/mypage/set.asp" class="btn_set"><img src="/images/common/icon_set.png" alt="설정"></a>
 						<button type="button" class="btn btn_aside_close"><span class="ico-only">메뉴닫기</span></button>
+						<a href="/mypage/set.asp" class="btn_set"><img src="/images/common/icon_set.png" alt="설정"></a>						
 					</div>
 
 					<div class="btn-wrap btn_loginBefore">
@@ -225,7 +225,7 @@
 						<dd>사업자등록번호 : 207-81-43555</dd>
 						<dd>고객센터 : 080-3436-0507<span>/</span>창업문의 : 080-383-9000</dd>
 						<dd></dd>
-						<dt><span onClick="location.href='/etc/marketing.asp'">마케팅수신약관</span> / <span onClick="location.href='/etc/location.asp'">위치기반서비스약관</span> / <span onClick="location.href='/etc/privacy.asp'">개인정보처리방침</span></dd>
+						<dt><a href="#" onClick="location.href='/etc/marketing.asp';return false;">마케팅수신약관</a> / <a href="#" onClick="location.href='/etc/location.asp';return false;">위치기반서비스약관</a> / <a href="#" onClick="location.href='/etc/privacy.asp';return false;">개인정보취급방침</a></dd>
 						<dd>Copyright 2020 © GENESIS BBQ. All rights reserved.</dd>
 					</dl>
 
