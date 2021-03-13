@@ -158,9 +158,9 @@ $(function(){
 						<li><span id="pay_amount_new"><%=FormatNumber(vMenuPrice, 0)%>원</span></li>
 					</ul>
 
-					<div class="btn-wrap two-up">
-						<button type="button" id="btn_cart_go" class="btn  btn_view_cart btn_cart_go" onClick="goCart();"><img src="/images/common/btn_add.png" alt="담아두기"></button>
-						<a href="javascript: goOrder()" class="btn  btn_view_cart"><img src="/images/common/btn_order.png" alt="주문하기"></a>
+					<div class="menuList_btn clearfix" style="position:unset;margin-top:20px">
+						<button type="button" class="btn btn_list_cart btn_newImg" style="height:40px;font-size:15px;" onClick="goCart();">장바구니 담기</button>
+						<button type="button" id="btn_order" class="btn btn_list_order btn_newImg" style="height:40px;font-size:15px;"onClick="goOrder();">주문하기</button>
 					</div>
 					<div id="asdf"></div>
 

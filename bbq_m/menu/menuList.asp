@@ -120,15 +120,7 @@
 	%>
 
 	<!-- Header -->
-    <header class="h-subheader">
-    	<h2><a href="/">메뉴</a></h2>
-        <div class="h-btn-header-bra">
-    		<button type="button" class="btn h-btn_header_cart" onClick="javascript:location.href='/order/cart.asp';"><span class="ico-only">장바구니</span><span class="count" id="cart_item_count"></span></button>
-    	</div>
-    	<div class="h-btn-header-nav">
-			<button type="button" onClick="javascript:history.back();" class="btn h-btn_header_back"><span class="ico-only">이전페이지</span></button>
-    	</div>
-    </header>
+		<!--#include virtual="/includes/header.asp"-->
     <!--// Header -->
 	
 	<!-- Container -->

@@ -21,17 +21,12 @@
 <body>
 
 <div class="h-wrapper">
-		<!-- Header -->
-		<header class="h-subheader">
-			<h2><a href="/">마이페이지</a></h2>
-            <div class="h-btn-header-bra">
-				<button type="button" class="btn h-btn_header_cart" onClick="javascript:location.href='/order/cart.asp';"><span class="ico-only">장바구니</span><span class="count" id="cart_item_count"></span></button>
-			</div>
-			<div class="h-btn-header-nav2">
-				<a href="#" class="btn_header_menu">메뉴</a>
-			</div>
-		</header>
-		<!--// Header -->
+<%
+	PageTitle = "마이페이지"
+%>
+	<!-- Header -->
+		<!--#include virtual="/includes/header.asp"-->
+	<!--// Header -->
 
 	<!-- Container -->
 	<div class="h-container" style="padding-bottom: 0px !important;">

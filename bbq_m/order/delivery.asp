@@ -89,18 +89,13 @@
 <body>
 
 <div class="wrapper">
-
+	<%
+		PageTitle = "주문하기"
+	%>
 <!-- Header -->
-<header class="h-subheader">
-    <h2><a href="/">주문하기</a></h2>
-    <div class="h-btn-header-bra">
-    	<button type="button" class="btn h-btn_header_cart" onClick="javascript:location.href='/order/cart.asp';"><span class="ico-only">장바구니</span><span class="count" id="cart_item_count"></span></button>
-    </div>
-    <div class="h-btn-header-nav">
-		<button type="button" onClick="javascript:history.back();" class="btn h-btn_header_back"><span class="ico-only">이전페이지</span></button>
-    </div>
-</header>
+	<!--#include virtual="/includes/header.asp"-->
 <!--// Header -->
+
 <!-- Container -->
 <div class="h-container" style="padding-bottom: 80px !important;">
 	<!-- Aside -->
@@ -175,7 +170,13 @@
 				</div>
 			</div>
 			<!-- // 매장리스트 -->
-
+		<% else %>
+			<div class="ta-c">
+				<img src="/images/order/character-img.png" width="50%" height="50%">				
+			</div>
+			<div class="ta-c">
+				<span>해당 내역이 없습니다.</span>
+			</div>
 		<% end if %>
 
 
@@ -858,7 +859,7 @@ function go_addr()
 
 function getAddr(){
 	if (document.deliverysearch_form.search_text.value == "") {
-		alert("검색어를 입력해주시기 바랍니다.");
+		alert("주소를 입력해주시기 바랍니다.");
 		return;
 	}
 

@@ -200,7 +200,7 @@
                         </div>
                     <%Else%>
                         <div class="h-welcome">
-                            <span class="h-main_name"><a href="#" onclick="javascript:return false;" class="h-btn_header_menu btn_header_menu">로그인</a></span>이 <br> 필요합니닭
+                            <span class="h-main_name"><a href="#" onclick="javascript:openLogin('mobile');return false;">로그인</a></span>이 <br> 필요합니닭
                         </div>
                     <%End If%>
 						<div class="h-main_point">

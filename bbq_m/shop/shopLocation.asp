@@ -326,7 +326,7 @@ function setMapOnAll(map) {
 			<!-- 상단 검색 -->
 			<div class="search_shop search-box inbox1000">
 				<div class="clearfix">
-					<span><img src="/images/common/icon_map.png"></span>
+					<span><img src="/images/common/icon_map.png" width="80%" height="80%"></span>
 					<form class="form">
 						<input type="hidden" name="lat" id="lat" value="">
 						<input type="hidden" name="lng" id="lng" value="">
@@ -335,9 +335,23 @@ function setMapOnAll(map) {
 						<button type="button" class="btn-sch" onclick="textSearch();"><img src="/images/order/btn_search.png" alt="검색"></button>
 					</form>
 				</div>
-				<div class="clearfix">
+				<div class="searchDivBox">
 					<!-- <p class="txt" style="width:82%">예) 서초동, 공장아파트, GS타워</p> -->
-					<p style="width:100%;text-align:center;padding-top:10px"><a href="/shop/shopLocation.asp?order_type=<%=request("order_type")%>&dir_yn=<%=request("dir_yn")%>" class="btn btn-gray btn_middle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/images/order/icon_location.png"> 현 위치 기반 매장 검색&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></p>
+					<!--
+					<p style="width:100%;text-align:center;padding-top:10px">
+						<a href="/shop/shopLocation.asp?order_type=<%=request("order_type")%>&dir_yn=<%=request("dir_yn")%>">
+						<span class="search_location"><img src="/images/order/icon_location.png"><span>위치 기반 매장 검색</span></span>
+						</a>
+					</p>
+					-->
+					<div class="searchWrap">
+						<div class="searchDivImgWrap" onclick='location.href="/shop/shopLocation.asp?order_type=<%=request("order_type")%>&dir_yn=<%=request("dir_yn")%>"'>
+							<span class="searchImgSpan">
+								<img src="/images/order/icon_location.png">
+							</span>
+							<span class="searchTextSpan">현위치 매장 검색</span>
+						</div>
+					</div>
 				</div>
 			</div>
 			<!-- //상단 검색 -->

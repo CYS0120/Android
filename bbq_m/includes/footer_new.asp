@@ -1,5 +1,6 @@
 ﻿<!-- Footer -->
-		<footer id="h-footer">		
+		<footer id="h-footer">	
+			<ul class="h-footer_line"></ul>	
 			<ul class="h-footer_icon">
 				<li><a href="/menu/menuList.asp?anc=103" class="h-footer_icon_menu">메뉴</a></li>
 				<li><a href="/shop/shopLocation.asp?dir_yn=Y" class="h-footer_icon_shop">매장</a></li>

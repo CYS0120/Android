@@ -1037,7 +1037,10 @@ function setDeliveryShopInfo(data) {
 					$("#order_list").append(ht);
 				} else {
 					if(page == 1) {
-						$("#order_list").html("<li class=\"orderX\">주문내역이 없습니다.</li>");
+						ht += "<li class='orderX ta-c'>주문내역이 없습니다.</li>";
+						ht += "<div class='ta-c'><img src='/images/order/character-img.png' width='50%' height='50%'><div>";
+
+						$("#order_list").html(ht);
 					}
 					$("#btn_more").hide();
 				}
@@ -1082,8 +1085,11 @@ function setDeliveryShopInfo(data) {
 
 					$("#order_branch_list").append(ht);
 				} else {
-					if(page == 1) {
-						$("#order_branch_list").html("<li class=\"orderX\">주문매장이 없습니다.</li>");
+					if(page == 1) {				
+						ht += "<li class='orderX ta-c'>주문매장이 없습니다.</li>";
+						ht += "<div class='ta-c'><img src='/images/order/character-img.png' width='50%' height='50%'><div>";
+
+						$("#order_branch_list").html(ht);
 					}
 					$("#btn_more").hide();
 				}
@@ -1146,7 +1152,10 @@ function setDeliveryShopInfo(data) {
 					$("#order_branch_list").append(ht);
 				} else {
 					if(page == 1) {
-						$("#order_branch_list").html("<li class=\"orderX\">주문매장이 없습니다.</li>");
+						ht += "<li class='orderX ta-c'>주문매장이 없습니다.</li>";
+						ht += "<div class='ta-c'><img src='/images/order/character-img.png' width='50%' height='50%'><div>";
+
+						$("#order_branch_list").html(ht);
 					}
 					$("#btn_more").hide();
 				}
