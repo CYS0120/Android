@@ -5,3 +5,5 @@
 <!--<meta name="viewport" id="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">-->
 <meta name="Keywords" content="브랜드, BBQ치킨">
 <meta name="Description" content="브랜드">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="pragma" content="no-cache">

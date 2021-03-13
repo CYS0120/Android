@@ -186,7 +186,7 @@
 
 					<!-- Aside LNB -->
 					<nav class="aside-lnb">
-						<ul class="lnb">
+						<ul class="lnb"> 
 							<!--<li class="node1"><a href="/mypage/orderListNonMem.asp" class="depth1">비회원 주문조회</a></li>-->
 							<% If CheckLogin() Then %>
 								<li class="node1 ss_pc_move_N"><a href="/mypage/mypage.asp" class="depth1"><img src="/images/common/icon_menu1.png"> 마이페이지</a></li>

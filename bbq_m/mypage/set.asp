@@ -385,7 +385,7 @@
 					<dt>약관</dt>
 					<dd><a href="/etc/marketing.asp">마케팅 수신 약관</a></dd>
 					<dd><a href="/etc/location.asp">위치기반서비스 약관</a></dd>
-					<dd><a href="/etc/privacy.asp">개인정보처리방침</a></dd>
+					<dd><a href="/etc/privacy.asp">개인정보취급방침</a></dd>
 				</dl>
 
 				<% If CheckLogin() Then %>
