@@ -205,13 +205,16 @@
                     <%End If%>
 						<div class="h-main_point">
 							<dl>
-								<dt><a href="/mypage/mileage.asp">포인트</a></dt><dd><span><%=FormatNumber(pMemberPoint.mSavePoint,0)%></span>&nbsp; P</dd>
+								<dt><a href="/mypage/mileage.asp">포인트</a></dt>
+								<dd><span><%=FormatNumber(pMemberPoint.mSavePoint,0)%></span>P&nbsp;&nbsp;</dd>
 							</dl>
 							<dl>
-								<dt><a href="/mypage/couponList.asp?couponList=coupon">쿠폰</a></dt><dd><span><%=pCouponList.mTotalCount%></span>개</dd>
+								<dt><a href="/mypage/couponList.asp?couponList=coupon">쿠폰</a></dt>
+								<dd><span><%=pCouponList.mTotalCount%></span>개</dd>
 							</dl>
 							<dl>
-								<dt><a href="/mypage/couponList.asp?couponList=giftcard">상품권</a></dt><dd><span class="gc_red">0</span>개</dd>
+								<dt><a href="/mypage/couponList.asp?couponList=giftcard">상품권</a></dt>
+								<dd><span class="gc_red">0</span>개</dd>
 							</dl>
 						</div>
 					</div>
