@@ -1029,14 +1029,13 @@ function link_move() {
 
 	</div>
 	<!--// Container -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<%=DAUM_MAP_API_KEY%>&libraries=services"></script>
 <script>
 
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 
 mapOption = {
 	center: new kakao.maps.LatLng(d_lat, d_lng), // 지도의 중심좌표
-	level: 1 // 지도의 확대 레벨
+	level: 3 // 지도의 확대 레벨
 };  
 
 // 지도를 생성합니다    
@@ -1090,7 +1089,8 @@ if (navigator.geolocation) {
 					getAddr();
 
 				// 마커를 클릭한 위치에 표시합니다 
-				marker.setPosition(latlng);
+				//marker.setPosition(latlng);
+				marker.setPosition(locPosition);
 				marker.setMap(map);
 
 				// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다

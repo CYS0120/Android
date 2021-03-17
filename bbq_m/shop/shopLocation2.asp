@@ -86,6 +86,10 @@ function setMapOnAll(map) {
 					var slideLocation = "";
 					var center = "";
 					var br_ids = "";
+					var mapCustomOverlay = new kakao.maps.CustomOverlay({});
+					
+					positions = [];
+					mapCustomOverlay.setMap(null);
 
 					/* 2021-03-14
 					image = {
@@ -152,7 +156,8 @@ function setMapOnAll(map) {
 							*/
 								
 								if(i == 0){
-									center = new google.maps.LatLng(json[i].wgs84_y,json[i].wgs84_x);
+									//center = new google.maps.LatLng(json[i].wgs84_y,json[i].wgs84_x);
+									center = new kakao.maps.LatLng(json[i].wgs84_y,json[i].wgs84_x);									
 									br_ids = json[i].branch_id;
 								}
 
@@ -206,23 +211,35 @@ function setMapOnAll(map) {
 
 							var mapContainer = document.getElementById('map'), // 지도를 표시할 div
 								mapOption = { 
-									center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-									level: 3 // 지도의 확대 레벨
+									center: center, // 지도의 중심좌표
+									level: 5 // 지도의 확대 레벨
 								};
 
 							var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
 							// 지도 위에 마커를 표시합니다
-							for (var i = 0, len = positions.length; i < len; i++) {
+							for (var i = 0; i < positions.length; i++) {
 								var gapX = (MARKER_WIDTH + SPRITE_GAP), // 스프라이트 이미지에서 마커로 사용할 이미지 X좌표 간격 값
 									originY = (MARKER_HEIGHT + SPRITE_GAP) * i, // 스프라이트 이미지에서 기본, 클릭 마커로 사용할 Y좌표 값
 									overOriginY = (OVER_MARKER_HEIGHT + SPRITE_GAP) * i, // 스프라이트 이미지에서 오버 마커로 사용할 Y좌표 값
 									normalOrigin = new kakao.maps.Point(0, originY), // 스프라이트 이미지에서 기본 마커로 사용할 영역의 좌상단 좌표
 									clickOrigin = new kakao.maps.Point(gapX, originY), // 스프라이트 이미지에서 마우스오버 마커로 사용할 영역의 좌상단 좌표
 									overOrigin = new kakao.maps.Point(gapX * 2, overOriginY); // 스프라이트 이미지에서 클릭 마커로 사용할 영역의 좌상단 좌표
-									
+								
+								// 커스텀 오버레이를 생성합니다
+								mapCustomOverlay = new kakao.maps.CustomOverlay({
+									map: map,
+									position: positions[i],
+									content: "<div><span class='count' id='cart_item_count' style='position:absolute; border-radius:100%; background:#f20000; line-height:22px; color:#fff; font-family:\"Roboto-Bold\"; text-align:center; width:22px; height:22px; font-size:12px;'>"+(i+1)+"</span></div>",
+									xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+									yAnchor: 1.1 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+								});
+
+								// 커스텀 오버레이를 지도에 표시합니다
+								mapCustomOverlay.setMap(map);								
+
 								// 마커를 생성하고 지도위에 표시합니다
-								addMarker(positions[i], normalOrigin, overOrigin, clickOrigin);
+								//addMarker(positions[i], normalOrigin, overOrigin, clickOrigin, map);
 							}
 
 
@@ -235,7 +252,7 @@ function setMapOnAll(map) {
 				}
 
 				// 마커를 생성하고 지도 위에 표시하고, 마커에 mouseover, mouseout, click 이벤트를 등록하는 함수입니다
-				function addMarker(position, normalOrigin, overOrigin, clickOrigin) {
+				function addMarker(position, normalOrigin, overOrigin, clickOrigin, map) {
 
 					// 기본 마커이미지, 오버 마커이미지, 클릭 마커이미지를 생성합니다
 					var normalImage = createMarkerImage(markerSize, markerOffset, normalOrigin),
@@ -451,7 +468,7 @@ function setMapOnAll(map) {
 							var container = document.getElementById('map');
 							var options = {
 								center: new kakao.maps.LatLng(uluru.lat, uluru.lng),
-								level: 3
+								level: 5
 							};
 
 							var map = new kakao.maps.Map(container, options);
@@ -470,7 +487,7 @@ function setMapOnAll(map) {
 						var container = document.getElementById('map');
 						var options = {
 							center: new kakao.maps.LatLng(uluru.lat, uluru.lng),
-							level: 3
+							level: 5
 						};
 
 						var map = new kakao.maps.Map(container, options);						
@@ -522,7 +539,7 @@ function setMapOnAll(map) {
 					</p>
 					-->
 					<div class="searchWrap">
-						<div class="searchDivImgWrap" onclick='location.href="/shop/shopLocation.asp?order_type=<%=request("order_type")%>&dir_yn=<%=request("dir_yn")%>"'>
+						<div class="searchDivImgWrap" onclick='location.href="/shop/shopLocation2.asp?order_type=<%=request("order_type")%>&dir_yn=<%=request("dir_yn")%>"'>
 							<span class="searchImgSpan">
 								<img src="/images/order/icon_location.png">
 							</span>

@@ -11,6 +11,9 @@ end if
 <!--#include virtual="/includes/styles.asp"-->
 <!--#include virtual="/includes/scripts.asp"-->
 <!--#include virtual="/api/ta/ta_top.asp"-->
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<%=DAUM_MAP_API_KEY%>&libraries=services,clusterer"></script>
+
 <script>
 	console.log('--- cart ---');
 </script>

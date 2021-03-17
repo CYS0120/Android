@@ -83,7 +83,7 @@
 				<p>5</p>
 				<span>결제완료</span>
 			</li>
-		<ul>
+		</ul>
 	</div>
 
 </div>
