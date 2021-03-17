@@ -121,6 +121,9 @@
 			<input type="hidden" id="CART_IN_PRODIDX">
 
 			<script type="text/javascript">
+			    $(document).ready(function (){
+                    localStorage.setItem("Adult_yn", "N");
+            	})
 				$('#order_type').val(sessionStorage.getItem("ss_order_type"));
 				$('#branch_id').val(sessionStorage.getItem("ss_branch_id"));
 				$('#branch_data').val(sessionStorage.getItem("ss_branch_data"));
