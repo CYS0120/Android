@@ -218,6 +218,10 @@
 							</dl>
 						</div>
 					</div>
+					<div>&nbsp;</div>
+					<div class="main_point_set">
+						<iframe width="100%" height="315" src="https://www.youtube.com/embed/_kq8h2L_o-4" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+					</div>					
 					<!-- // 포인트 -->
           <%'End if%>
 
