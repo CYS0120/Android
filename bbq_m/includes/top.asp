@@ -24,7 +24,6 @@ end if
 		$("#loding_div").fadeOut(500);
 	});
 </script>
-n
 <!-- Layer Popup : 알림창1 -->
 <div id="lp_alert" class="lp-wrapper type2" style="display: none;">
     <!-- LP Wrap -->
