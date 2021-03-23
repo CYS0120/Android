@@ -1,4 +1,5 @@
 <!--#include virtual="/api/include/utf8.asp"-->
+<!--#include virtual="/api/include/aspJSON1.18.asp"-->
 
 <!doctype html>
 <html lang="ko">
@@ -57,6 +58,38 @@
             			<li onclick="location.href='/mypage/couponList.asp?couponList=giftcard'"><div class="icon_gift">상품권</div><p><span class="gc_red">0</span>개</p></li>
             		</ul>
             	</div>
+<!--            	스탬프-->
+            	<%
+                    req_str = "{""companyCode"":""" & PAYCO_MEMBERSHIP_COMPANYCODE &""",""memberNo"":""" & Session("userIdNo") &""",""startYmd"":""20210322"",""endYmd"":""20210401"",""perPage"":""2"",""page"":""1""}"
+                    api_url = "/stamp/getHoldList"
+                    result = executeApi ("POST", "application/json", req_str, PAYCO_MEMBERSHIP_URL & api_url)
+                    'Response.Write result
+                    Set oJSON = New aspJSON
+                    oJSON.loadJSON(result)
+                    Set this = oJSON.data("result")
+	                TotalStamp = this.item("totalCount") '총 스탬프 갯수
+	                TotalStampCount = this.item("totalStampCount") '총 스탬프 응모권 갯수
+
+                    'Response.Write result
+
+                    For Each row In this.item("holdList")
+                    Set this1 = this.item("holdList").item(row)
+                    'Response.write "<br>[" & row & "]"
+                    'Response.write "<br>age : "  & this1.item("stampName") ' 스탬프명
+                    'Response.write "<br>age : "  & this1.item("stampCount") ' 스탬프 갯수
+                    Next
+                    If CheckLogin() Then
+			            If Session("userPhone") <> "" And Len(Session("userPhone")) > 10 Then
+				            temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
+				            vMobile = "0"&left(temp_mobile, 2)&"-"&mid(temp_mobile, 3, 4)&"-"&mid(temp_mobile, 7)
+			            End If
+		            End If
+            	%>
+            	<div class="mypage_box" style="margin-top: 10px; padding: 20px 0 0 30px; height: 100px; line-height: 50px; text-align: left; font-size: 18px;">
+            		<h1 style="font-size: 18px"><%=this1.item("stampName")%></h1>
+            		<span><%=Session("userName")%>, <%=vMobile%>, <%=this1.item("stampCount")%>개</span>
+            	</div>
+<!--            	스탬프끝-->
                 <script type="text/javascript">
 					    var page = 1;
 					    var order_pageSize = 3;

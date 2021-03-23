@@ -483,4 +483,13 @@
 		End If 
 '        Response.write "sms_msg : " & sms_msg
     End If
+
+    nowDate = Replace(Date(),"-","")
+    sql = " SELECT stampId_payco as stampId  FROM bt_event_mkt WHERE date_e >= "& nowDate &" AND date_s <= "& nowDate
+    Set Stamp = dbconn.Execute(Sql)
+    If Not (Stamp.BOF Or Stamp.EOF) Then
+    req_str = "{""companyCode"":""" & PAYCO_MEMBERSHIP_COMPANYCODE &""",""stampId"":""" & Stamp("stampId") &""",""memberNo"":""" & CUST_ID &""",""tradeType"":""MINUS"",""stampingCount"":""1""}"
+    api_url = "/stamp/tradeStamp"
+    result = executeApi ("POST", "application/json", req_str, PAYCO_MEMBERSHIP_URL & api_url)
+    End If
 %>
