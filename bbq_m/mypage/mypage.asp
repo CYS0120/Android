@@ -140,9 +140,10 @@
                 '스탬프 조회 끝
 
             	%>
-            	<div class="mypage_box" style="margin-top: 10px; padding: 20px 0 0 30px; height: 100px; line-height: 50px; text-align: left; font-size: 18px;">
-            		<h1 style="font-size: 18px"><%=this1.item("stampName")%></h1>
-            		<span><%=Session("userName")%>, <%=vMobile%>, <%=this_result.item("stampCount")%>개</span>
+            	<div class="mypage_box" style="margin-top: 10px; padding: 15px 0 15px 30px; height: 100px; line-height: 50px; text-align: left; font-size: 18px;">
+            		<p style="font-size: 18px">기간 : <%=MID(startYmd,5,2)%>/<%=RIGHT(startYmd,2)%> ~ <%=MID(endYmd,5,2)%>/<%=RIGHT(endYmd,2)%></p>
+            		<p style="font-size: 18px"><%=this1.item("stampName")%>&nbsp; <%=this_result.item("stampCount")%>장</p>
+            		<p style="font-size: 18px">치킨왕 누적 응모권 : <%=this_result.item("stampCount")%> 장</p>
             	</div>
 <!--            	스탬프끝-->
                 <script type="text/javascript">
