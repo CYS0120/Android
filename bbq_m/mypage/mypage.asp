@@ -60,7 +60,17 @@
             	</div>
 <!--            	스탬프-->
             	<%
-                    req_str = "{""companyCode"":""" & PAYCO_MEMBERSHIP_COMPANYCODE &""",""memberNo"":""" & Session("userIdNo") &""",""startYmd"":""20210322"",""endYmd"":""20210401"",""perPage"":""2"",""page"":""1""}"
+            	'유효스탬프 찾기
+                nowDate = Replace(Date(),"-","")
+                sql = " SELECT date_s as startYmd, date_e as endYmd FROM bt_event_mkt WHERE date_e >= "& nowDate &" AND date_s <= "& nowDate
+                Set Stamp = dbconn.Execute(Sql)
+                If Not (Stamp.BOF Or Stamp.EOF) Then
+                    startYmd = Stamp("startYmd") '스탬프 시작기간
+                    endYmd = Stamp("endYmd") '스탬프 종료기간
+                End If
+                '유효스탬프 찾기 끝
+            	'스탬프 조회
+                    req_str = "{""companyCode"":""" & PAYCO_MEMBERSHIP_COMPANYCODE &""",""memberNo"":""" & Session("userIdNo") &""",""startYmd"":"&startYmd&",""endYmd"":"&endYmd&",""perPage"":""2"",""page"":""1""}"
                     api_url = "/stamp/getHoldList"
                     result = executeApi ("POST", "application/json", req_str, PAYCO_MEMBERSHIP_URL & api_url)
                     'Response.Write result
@@ -75,19 +85,64 @@
                     For Each row In this.item("holdList")
                     Set this1 = this.item("holdList").item(row)
                     'Response.write "<br>[" & row & "]"
-                    'Response.write "<br>age : "  & this1.item("stampName") ' 스탬프명
-                    'Response.write "<br>age : "  & this1.item("stampCount") ' 스탬프 갯수
+                    'Response.write this1.item("stampName") ' 스탬프명
+                    'Response.write this1.item("stampCount") ' 스탬프 갯수
                     Next
+                '스탬프 조회 끝
+                '고객 핸드폰번호
                     If CheckLogin() Then
 			            If Session("userPhone") <> "" And Len(Session("userPhone")) > 10 Then
 				            temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
 				            vMobile = "0"&left(temp_mobile, 2)&"-"&mid(temp_mobile, 3, 4)&"-"&mid(temp_mobile, 7)
 			            End If
 		            End If
+                '고객 핸드폰번호 끝
+                '스탬프 비교
+		            CountQuery = " SELECT COUNT(*) as cnt FROM BT_EVENT_MKT_COUPON WHERE cust_id = '"& Session("userIdNo") &"' AND USE_YN = 'Y'"
+                    Set Stamp_Coupon = dbconn.Execute(CountQuery)
+                    Stamp_Coupon.movefirst
+
+		            If this1.item("stampCount") <> Stamp_Coupon("cnt") Then
+                        If this1.item("stampCount") > Stamp_Coupon("cnt") Then
+                            Mcount = Stamp_Coupon("cnt") - this1.item("stampCount")
+                            'Response.Write Replace(Mcount,"-","")
+                            sql = " SELECT stampId_payco as stampId  FROM bt_event_mkt WHERE date_e >= "& nowDate &" AND date_s <= "& nowDate
+                            Set Stamp = dbconn.Execute(Sql)
+                            If Not (Stamp.BOF Or Stamp.EOF) Then
+                            req_str = "{""companyCode"":""" & PAYCO_MEMBERSHIP_COMPANYCODE &""",""stampId"":""" & Stamp("stampId") &""",""memberNo"":""" & Session("userIdNo") &""",""tradeType"":""MINUS"",""stampingCount"":"&Replace(Mcount,"-","")&"}"
+                            api_url = "/stamp/tradeStamp"
+                            result = executeApi ("POST", "application/json", req_str, PAYCO_MEMBERSHIP_URL & api_url)
+                            End If
+                        ElseIf this1.item("stampCount") < Stamp_Coupon("cnt") Then
+                            Mcount = this1.item("stampCount") - Stamp_Coupon("cnt")
+                            'Response.Write Replace(Mcount,"-","")
+                            sql = " SELECT stampId_payco as stampId  FROM bt_event_mkt WHERE date_e >= "& nowDate &" AND date_s <= "& nowDate
+                            Set Stamp = dbconn.Execute(Sql)
+                            If Not (Stamp.BOF Or Stamp.EOF) Then
+                                req_str = "{""companyCode"":""" & PAYCO_MEMBERSHIP_COMPANYCODE &""",""stampId"":""" & Stamp("stampId") &""",""memberNo"":""" & Session("userIdNo") &""",""tradeType"":""PLUS"",""stampingCount"":"&Replace(Mcount,"-","")&"}"
+                                api_url = "/stamp/tradeStamp"
+                                result = executeApi ("POST", "application/json", req_str, PAYCO_MEMBERSHIP_URL & api_url)
+                            End If
+                        End If
+		            End If
+                '스탬프 비교 끝
+                '스탬프 조회
+                    req_str = "{""companyCode"":""" & PAYCO_MEMBERSHIP_COMPANYCODE &""",""memberNo"":""" & Session("userIdNo") &""",""startYmd"":"&startYmd&",""endYmd"":"&endYmd&",""perPage"":""2"",""page"":""1""}"
+                    api_url = "/stamp/getHoldList"
+                    result_stamp = executeApi ("POST", "application/json", req_str, PAYCO_MEMBERSHIP_URL & api_url)
+                    'Response.Write result_stamp
+                    Set oJSON = New aspJSON
+                    oJSON.loadJSON(result_stamp)
+                    Set this_stamp = oJSON.data("result")
+                    For Each row In this_stamp.item("holdList")
+                    Set this_result = this_stamp.item("holdList").item(row)
+                    Next
+                '스탬프 조회 끝
+
             	%>
             	<div class="mypage_box" style="margin-top: 10px; padding: 20px 0 0 30px; height: 100px; line-height: 50px; text-align: left; font-size: 18px;">
             		<h1 style="font-size: 18px"><%=this1.item("stampName")%></h1>
-            		<span><%=Session("userName")%>, <%=vMobile%>, <%=this1.item("stampCount")%>개</span>
+            		<span><%=Session("userName")%>, <%=vMobile%>, <%=this_result.item("stampCount")%>개</span>
             	</div>
 <!--            	스탬프끝-->
                 <script type="text/javascript">
