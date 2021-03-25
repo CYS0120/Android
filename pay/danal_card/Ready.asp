@@ -14,7 +14,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr"/>
 <link href="./css/style.css" type="text/css" rel="stylesheet" media="all" />
-<title>*** ½Å¿ëÄ«µå °áÁ¦ ¿äÃ»***</title>
+<title>*** ì‹ ìš©ì¹´ë“œ ê²°ì œ ìš”ì²­***</title>
 </head>
 <body>
 <%
@@ -56,7 +56,7 @@
             AMOUNT = ""
         End If
 
-		' Á¦ÁÖ/»ê°£ =========================================================================================
+		' ì œì£¼/ì‚°ê°„ =========================================================================================
         Set pCmd = Server.CreateObject("ADODB.Command")
         With pCmd
             .ActiveConnection = dbconn
@@ -147,25 +147,25 @@
     End Select
 
 
-	Dim REQ_DATA, RES_DATA				' º¯¼ö ¼±¾ð
+	Dim REQ_DATA, RES_DATA				' ë³€ìˆ˜ ì„ ì–¸
     
-	'*[ ÇÊ¼ö µ¥ÀÌÅÍ ]**************************************
+	'*[ í•„ìˆ˜ ë°ì´í„° ]**************************************
 	Set REQ_DATA	= CreateObject("Scripting.Dictionary")
 
     '******************************************************
-	'*  RETURNURL 	: CPCGIÆäÀÌÁöÀÇ Full URLÀ» ³Ö¾îÁÖ¼¼¿ä
-	'*  CANCELURL 	: BackURLÆäÀÌÁöÀÇ Full URLÀ» ³Ö¾îÁÖ¼¼¿ä
+	'*  RETURNURL 	: CPCGIíŽ˜ì´ì§€ì˜ Full URLì„ ë„£ì–´ì£¼ì„¸ìš”
+	'*  CANCELURL 	: BackURLíŽ˜ì´ì§€ì˜ Full URLì„ ë„£ì–´ì£¼ì„¸ìš”
 	'******************************************************/
     RETURNURL = GetCurrentHost& "/pay/danal_card/CPCGI.asp"& param_str
     CANCELURL = GetCurrentHost& "/pay/danal_card/Cancel.asp"
 
     '**************************************************
-    '* SubCP Á¤º¸
+    '* SubCP ì •ë³´
 	'**************************************************/
     REQ_DATA.Add "SUBCPID", SUBCPID
 
     '**************************************************
-	'* °áÁ¦ Á¤º¸
+	'* ê²°ì œ ì •ë³´
 	'**************************************************/
     REQ_DATA.Add "AMOUNT", AMOUNT
     REQ_DATA.Add "CURRENCY", "410"
@@ -175,25 +175,25 @@
     REQ_DATA.Add "OFFERPERIOD", ""
 
     '**************************************************
-	'* °í°´ Á¤º¸
+	'* ê³ ê° ì •ë³´
 	'**************************************************/
-    REQ_DATA.Add "USERNAME", USER_ID '// ±¸¸ÅÀÚ ÀÌ¸§
-    REQ_DATA.Add "USERID", USER_ID '// »ç¿ëÀÚ ID
-    REQ_DATA.Add "USEREMAIL", "" '// ¼Òº¸¹ý email¼ö½ÅÃ³
+    REQ_DATA.Add "USERNAME", USER_ID '// êµ¬ë§¤ìž ì´ë¦„
+    REQ_DATA.Add "USERID", USER_ID '// ì‚¬ìš©ìž ID
+    REQ_DATA.Add "USEREMAIL", "" '// ì†Œë³´ë²• emailìˆ˜ì‹ ì²˜
 
     '**************************************************
-	'* URL Á¤º¸
+	'* URL ì •ë³´
 	'**************************************************/
     REQ_DATA.Add "CANCELURL", CANCELURL
     REQ_DATA.Add "RETURNURL", RETURNURL
 
     '**************************************************
-	'* ±âº» Á¤º¸
+	'* ê¸°ë³¸ ì •ë³´
 	'**************************************************/
     REQ_DATA.Add "TXTYPE", "AUTH"
     REQ_DATA.Add "SERVICETYPE", "DANALCARD"
     REQ_DATA.Add "ISNOTI", "N"
-    REQ_DATA.Add "BYPASSVALUE", "this=is;a=test;bypass=value" '// BILLÀÀ´ä ¶Ç´Â Noti¿¡¼­ µ¹·Á¹ÞÀ» °ª. '&'¸¦ »ç¿ëÇÒ °æ¿ì °ªÀÌ Àß¸®°ÔµÇ¹Ç·Î À¯ÀÇ.
+    REQ_DATA.Add "BYPASSVALUE", "this=is;a=test;bypass=value" '// BILLì‘ë‹µ ë˜ëŠ” Notiì—ì„œ ëŒë ¤ë°›ì„ ê°’. '&'ë¥¼ ì‚¬ìš©í•  ê²½ìš° ê°’ì´ ìž˜ë¦¬ê²Œë˜ë¯€ë¡œ ìœ ì˜.
 
 ' ISDEBUG = TRUE
     if ISDEBUG Then
@@ -224,58 +224,7 @@
 		<!--#include file="Error.asp"-->
 <%
 	End if
-Dim giftcard_serial : giftcard_serial = Request("giftcard_serial")
-Dim brand_code : brand_code = Request("brand_code")
-Dim httpRequest
-
-If giftcard_serial <> "" Then
-' db »ç¿ëÃ³¸® (dbo.bt_giftcard)
-    Sql = "UPDATE bt_giftcard SET used_date = SYSDATETIME(), order_num = '"& order_num &"' WHERE giftcard_number = '"& giftcard_serial &"'"
-    dbconn.Execute(Sql)
-' »óÇ°±Ç Á¶È¸
-    Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-    httpRequest.Open "GET", "http://api.bbq.co.kr/GiftCard_2.svc/GetGiftCard/"& giftcard_serial, False
-    httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
-    httpRequest.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-    httpRequest.Send
-'»óÇ°±Ç Á¶È¸
-'Á¶È¸ »óÇ°±Ç text -> json
-    Set oJSON = New aspJSON
-    postResponse = "{""list"" : " & httpRequest.responseText & "}"
-    oJSON.loadJSON(postResponse)
-    Set this = oJSON.data("list")
-
-	'U_CD_BRAND = this.item("U_CD_BRAND") '»ç¿ëºê·£µåÄÚµå
-    'U_CD_PARTNER = this.item("U_CD_PARTNER") ' »ç¿ë¸ÅÀåÄÚµå
-	'U_CD_BRAND = "01" '»ç¿ëºê·£µåÄÚµå
-    'U_CD_PARTNER = "1146001" ' »ç¿ë¸ÅÀåÄÚµå
-    U_CD_BRAND = brand_code '»ç¿ëºê·£µåÄÚµå
-    U_CD_PARTNER = branch_id ' »ç¿ë¸ÅÀåÄÚµå
-    AMT = this.item("AMT") ' ±Ý¾×
-'Á¶È¸ »óÇ°±Ç text -> json
-
-' »óÇ°±Ç »ç¿ëÃ³¸® data set
-    data = "{"
-    data = data & """U_CD_BRAND"":""" & U_CD_BRAND & ""","
-    data = data & """U_CD_PARTNER"":""" & U_CD_PARTNER & ""","
-    data = data & """AMT"":""" & AMT & """"
-    data = data & "}"
-' »óÇ°±Ç »ç¿ëÃ³¸® data set
-    Set httpRequest = nothing ' ÃÊ±âÈ­
-' »óÇ°±Ç »ç¿ëÃ³¸®
-    Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-    httpRequest.Open "POST", "http://api.bbq.co.kr/GiftCard_2.svc/UseGiftCard/"& giftcard_serial, False
-    httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
-    httpRequest.SetRequestHeader "Content-Type", "application/raw"
-    httpRequest.Send data
-    Response.Write httpRequest.responseText
-    Response.Write data
-' »óÇ°±Ç »ç¿ëÃ³¸®
-
-End If
-
-
-    ' DB ´Ý±â
+    ' DB ë‹«ê¸°
     DBclose()
 %>
 </body>

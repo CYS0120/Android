@@ -1,5 +1,7 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
+<!--#include virtual="/api/include/aspJSON1.18.asp"-->
+
 <%
     Response.AddHeader "pragma","no-cache"
     Response.AddHeader "Expires","0"
@@ -90,6 +92,57 @@
 			end if
 			pRs.MoveNext
 		Loop
+
+		Dim httpRequest, Gift_Count
+    '상품권 취소
+    '사용 상품권 조회 (dbo.bt_giftcard)
+    CountQuery = " SELECT (SELECT COUNT(*) as cnt FROM BBQ.dbo.bt_giftcard WHERE order_num = '"& ORDER_ID &"') as cnt, u_cd_brand as U_CD_BRAND, u_cd_partner as U_CD_PARTNER, giftcard_amt as AMT, ok_num as OK_NUM, giftcard_number as Gift_Serial FROM BBQ.dbo.bt_giftcard WHERE order_num = '"& ORDER_ID &"'"
+    Set Gift_Count = dbconn.Execute(CountQuery)
+    If Not (Gift_Count.BOF Or Gift_Count.EOF) Then
+        Gift_Count.movefirst
+        If Gift_Count("cnt") > 0 Then
+            ' 상품권 취소처리 data set
+                data = "{"
+                data = data & """U_CD_BRAND"":""" & Gift_Count("U_CD_BRAND") & ""","
+                data = data & """U_CD_PARTNER"":""" & Gift_Count("U_CD_PARTNER") & ""","
+                data = data & """AMT"":""" & Gift_Count("AMT") & ""","
+                'data = data & """OK_NUM"":""" & Gift_Count("OK_NUM") & """"
+                data = data & """OK_NUM"":""" & Gift_Count("OK_NUM") & """"
+                data = data & "}"
+            ' 상품권 취소처리 data set
+                Set httpRequest = Nothing ' 초기화
+            ' 상품권 취소처리 API
+                Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+                httpRequest.Open "POST", "http://api.bbq.co.kr/GiftCard_2.svc/CancelGiftCard/"&Gift_Count("Gift_Serial"), False
+                httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
+                'httpRequest.SetRequestHeader "Content-Type", "application/raw"
+                httpRequest.Send data
+                'Response.Write httpRequest.ResponseText
+                'Response.Write data
+            ' 상품권 취소처리 API
+            'API VALUE text -> json
+                Set gJSON = New aspJSON
+                gpostResponse = "{""list"" : " & httpRequest.responseText & "}"
+                gJSON.loadJSON(gpostResponse)
+                Set this = gJSON.data("list")
+                RTN_CD = this.item("RTN_CD") ' 결과코드
+                RTN_MSG = this.item("RTN_MSG") ' 결과코드
+            'API VALUE text -> json
+                'Response.Write RTN_CD
+            '상품권 사용처리
+            If RTN_CD = "0000" Then
+                Sql = "UPDATE BBQ.dbo.bt_giftcard SET u_cd_brand = null, u_cd_partner = null, ok_num = null, order_num = null, used_date = null WHERE giftcard_number = '"& Gift_Count("Gift_Serial") &"'"
+                dbconn.Execute(Sql)
+                'Response.Write Sql
+            Else
+            	html_result = "FAIL|"&RTN_MSG
+				pg_RollBack = 1
+                Response.Write html_result
+                Response.End
+            End If
+            '상품권 사용처리
+        End If
+    End If
 
 		if pg_RollBack = 0 then
 			'결제수단 취소

@@ -7,12 +7,12 @@
 	
 	'/********************************************************************************
 	' *
-	' * ´Ù³¯ ÈÞ´ëÆù °áÁ¦
+	' * ë‹¤ë‚  íœ´ëŒ€í° ê²°ì œ
 	' *
-	' * - °áÁ¦ ¿äÃ» ÆäÀÌÁö
-	' *      CPÀÎÁõ ¹× °áÁ¦ Á¤º¸ Àü´Þ
+	' * - ê²°ì œ ìš”ì²­ íŽ˜ì´ì§€
+	' *      CPì¸ì¦ ë° ê²°ì œ ì •ë³´ ì „ë‹¬
 	' *
-	' * °áÁ¦ ½Ã½ºÅÛ ¿¬µ¿¿¡ ´ëÇÑ ¹®ÀÇ»çÇ×ÀÌ ÀÖÀ¸½Ã¸é ¼­ºñ½º°³¹ßÆÀÀ¸·Î ¿¬¶ô ÁÖ½Ê½Ã¿À.
+	' * ê²°ì œ ì‹œìŠ¤í…œ ì—°ë™ì— ëŒ€í•œ ë¬¸ì˜ì‚¬í•­ì´ ìžˆìœ¼ì‹œë©´ ì„œë¹„ìŠ¤ê°œë°œíŒ€ìœ¼ë¡œ ì—°ë½ ì£¼ì‹­ì‹œì˜¤.
 	' * DANAL Commerce Division Technique supporting Team
 	' * EMail : tech@danal.co.kr
 	' *
@@ -24,7 +24,7 @@
 <!--#include file="inc/function.asp"-->
 <html>
 <head>
-<title>´Ù³¯ ÈÞ´ëÆù °áÁ¦</title>
+<title>ë‹¤ë‚  íœ´ëŒ€í° ê²°ì œ</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
 </head>
@@ -34,16 +34,16 @@
 	
 	'/********************************************************************************
 	' *
-	' * [ Àü¹® ¿äÃ» µ¥ÀÌÅÍ ] *********************************************************
+	' * [ ì „ë¬¸ ìš”ì²­ ë°ì´í„° ] *********************************************************
 	' *
 	' ********************************************************************************/
 
-	'/***[ ÇÊ¼ö µ¥ÀÌÅÍ ]************************************/
+	'/***[ í•„ìˆ˜ ë°ì´í„° ]************************************/
 	Set ByPassValue = CreateObject("Scripting.Dictionary")
 	Set TransR = CreateObject("Scripting.Dictionary")
 
 	'/******************************************************
-	' ** ¾Æ·¡ÀÇ µ¥ÀÌÅÍ´Â °íÁ¤°ªÀÔ´Ï´Ù.( º¯°æÇÏÁö ¸¶¼¼¿ä )
+	' ** ì•„ëž˜ì˜ ë°ì´í„°ëŠ” ê³ ì •ê°’ìž…ë‹ˆë‹¤.( ë³€ê²½í•˜ì§€ ë§ˆì„¸ìš” )
 	' * Command		: ITEMSEND2
 	' * SERVICE		: TELEDIT
 	' * ItemCount		: 1
@@ -55,20 +55,20 @@
 	TransR.Add "OUTPUTOPTION", "DEFAULT"
 	
 	'/******************************************************
-	' * ID			: ´Ù³¯¿¡¼­ Á¦°øÇØ µå¸° ID( function ÆÄÀÏ ÂüÁ¶ )
-	' * PWD			: ´Ù³¯¿¡¼­ Á¦°øÇØ µå¸° PWD( function ÆÄÀÏ ÂüÁ¶ )
-	' * CPNAME		: CP ¸í
+	' * ID			: ë‹¤ë‚ ì—ì„œ ì œê³µí•´ ë“œë¦° ID( function íŒŒì¼ ì°¸ì¡° )
+	' * PWD			: ë‹¤ë‚ ì—ì„œ ì œê³µí•´ ë“œë¦° PWD( function íŒŒì¼ ì°¸ì¡° )
+	' * CPNAME		: CP ëª…
 	' ******************************************************/
 	TransR.Add "ID", ID
 	TransR.Add "PWD", PWD
-	CPName = "ºñºñÅ¥"
+	CPName = "ë¹„ë¹„í"
 	
 	'/******************************************************
-	' * ItemAmt		: °áÁ¦ ±Ý¾×( function ÆÄÀÏ ÂüÁ¶ )
-	' *      - ½ÇÁ¦ »óÇ°±Ý¾× Ã³¸®½Ã¿¡´Â Session ¶Ç´Â DB¸¦ ÀÌ¿ëÇÏ¿© Ã³¸®ÇØ ÁÖ½Ê½Ã¿À.
-	' *      - ±Ý¾× Ã³¸® ½Ã ±Ý¾×º¯Á¶ÀÇ À§ÇèÀÌ ÀÖ½À´Ï´Ù.
-	' * ItemName		: »óÇ°¸í
-	' * ItemCode		: ´Ù³¯¿¡¼­ Á¦°øÇØ µå¸° ItemCode
+	' * ItemAmt		: ê²°ì œ ê¸ˆì•¡( function íŒŒì¼ ì°¸ì¡° )
+	' *      - ì‹¤ì œ ìƒí’ˆê¸ˆì•¡ ì²˜ë¦¬ì‹œì—ëŠ” Session ë˜ëŠ” DBë¥¼ ì´ìš©í•˜ì—¬ ì²˜ë¦¬í•´ ì£¼ì‹­ì‹œì˜¤.
+	' *      - ê¸ˆì•¡ ì²˜ë¦¬ ì‹œ ê¸ˆì•¡ë³€ì¡°ì˜ ìœ„í—˜ì´ ìžˆìŠµë‹ˆë‹¤.
+	' * ItemName		: ìƒí’ˆëª…
+	' * ItemCode		: ë‹¤ë‚ ì—ì„œ ì œê³µí•´ ë“œë¦° ItemCode
 	' ******************************************************/
     AMOUNT = 0
     BRAND_ID = ""
@@ -113,7 +113,7 @@
 	    End If
 
 
-		' Á¦ÁÖ/»ê°£ =========================================================================================
+		' ì œì£¼/ì‚°ê°„ =========================================================================================
         Set pCmd = Server.CreateObject("ADODB.Command")
         With pCmd
             .ActiveConnection = dbconn
@@ -209,13 +209,13 @@
 	
 	TransR.Add "ItemInfo", ItemInfo
 	
-	'/***[ ¼±ÅÃ »çÇ× ]**************************************/
+	'/***[ ì„ íƒ ì‚¬í•­ ]**************************************/
 	'/******************************************************
-	' * SUBCP		: ´Ù³¯¿¡¼­ Á¦°øÇØµå¸° SUBCP ID
-	' * USERID		: »ç¿ëÀÚ ID
-	' * ORDERID		: CP ÁÖ¹®¹øÈ£
-	' * IsPreOtbill		: AuthKey ¼ö½Å À¯¹«(Y/N) (Àç½ÂÀÎ, ¿ùÀÚµ¿°áÁ¦¸¦ À§ÇÑ AuthKey ¼ö½ÅÀÌ ÇÊ¿äÇÑ °æ¿ì : Y)
-	' * IsSubscript		: ¿ù Á¤¾× °¡ÀÔ À¯¹«(Y/N) (¿ù Á¤¾× °¡ÀÔÀ» À§ÇÑ Ã¹ °áÁ¦ÀÎ °æ¿ì : Y)
+	' * SUBCP		: ë‹¤ë‚ ì—ì„œ ì œê³µí•´ë“œë¦° SUBCP ID
+	' * USERID		: ì‚¬ìš©ìž ID
+	' * ORDERID		: CP ì£¼ë¬¸ë²ˆí˜¸
+	' * IsPreOtbill		: AuthKey ìˆ˜ì‹  ìœ ë¬´(Y/N) (ìž¬ìŠ¹ì¸, ì›”ìžë™ê²°ì œë¥¼ ìœ„í•œ AuthKey ìˆ˜ì‹ ì´ í•„ìš”í•œ ê²½ìš° : Y)
+	' * IsSubscript		: ì›” ì •ì•¡ ê°€ìž… ìœ ë¬´(Y/N) (ì›” ì •ì•¡ ê°€ìž…ì„ ìœ„í•œ ì²« ê²°ì œì¸ ê²½ìš° : Y)
 	' ******************************************************/
 	TransR.Add "SUBCP", DANAL_H_SCPID
 	TransR.Add "USERID", USER_ID
@@ -225,19 +225,19 @@
 	
 	'/********************************************************************************
 	' *
-	' * [ CPCGI¿¡ HTTP POST·Î Àü´ÞµÇ´Â µ¥ÀÌÅÍ ] **************************************
+	' * [ CPCGIì— HTTP POSTë¡œ ì „ë‹¬ë˜ëŠ” ë°ì´í„° ] **************************************
 	' *
 	' ********************************************************************************/
 
-	'/***[ ÇÊ¼ö µ¥ÀÌÅÍ ]************************************/
+	'/***[ í•„ìˆ˜ ë°ì´í„° ]************************************/
 	Dim ByPassValue
 	
 	'/******************************************************
-	' * BgColor		: °áÁ¦ ÆäÀÌÁö Background Color ¼³Á¤
-	' * TargetURL		: ÃÖÁ¾ °áÁ¦ ¿äÃ» ÇÒ CPÀÇ CPCGI FULL URL
-	' * BackURL		: ¿¡·¯ ¹ß»ý ¹× Ãë¼Ò ½Ã ÀÌµ¿ ÇÒ ÆäÀÌÁöÀÇ FULL URL
-	' * IsUseCI		: CPÀÇ CI »ç¿ë ¿©ºÎ( Y or N )
-	' * CIURL		: CPÀÇ CI FULL URL
+	' * BgColor		: ê²°ì œ íŽ˜ì´ì§€ Background Color ì„¤ì •
+	' * TargetURL		: ìµœì¢… ê²°ì œ ìš”ì²­ í•  CPì˜ CPCGI FULL URL
+	' * BackURL		: ì—ëŸ¬ ë°œìƒ ë° ì·¨ì†Œ ì‹œ ì´ë™ í•  íŽ˜ì´ì§€ì˜ FULL URL
+	' * IsUseCI		: CPì˜ CI ì‚¬ìš© ì—¬ë¶€( Y or N )
+	' * CIURL		: CPì˜ CI FULL URL
 	' ******************************************************/
 	ByPassValue.Add "BgColor", "00"
 	ByPassValue.Add "TargetURL", GetCurrentHost& "/pay/danal/CPCGI.asp"& param_str
@@ -245,17 +245,17 @@
 	ByPassValue.Add "IsUseCI", "N"
 	ByPassValue.Add "CIURL", GetCurrentHost& "/images/common/logo_header_bbq.png"
 	
-	'/***[ ¼±ÅÃ »çÇ× ]**************************************/
+	'/***[ ì„ íƒ ì‚¬í•­ ]**************************************/
 
 	'/******************************************************
-	' * Email		: »ç¿ëÀÚ E-mail ÁÖ¼Ò - °áÁ¦ È­¸é¿¡ Ç¥±â 
-	' * IsCharSet	: CPÀÇ Webserver Character set
+	' * Email		: ì‚¬ìš©ìž E-mail ì£¼ì†Œ - ê²°ì œ í™”ë©´ì— í‘œê¸° 
+	' * IsCharSet	: CPì˜ Webserver Character set
 	' ******************************************************/
 	ByPassValue.Add "Email", ""
 	ByPassValue.Add "IsCharSet", "UTF-8"
 
 	'/******************************************************
-	' ** CPCGI¿¡ POST DATA·Î Àü´Þ µË´Ï´Ù.
+	' ** CPCGIì— POST DATAë¡œ ì „ë‹¬ ë©ë‹ˆë‹¤.
 	' **
 	' ******************************************************/
 	ByPassValue.Add "ByBuffer", "This value bypass to CPCGI Page"
@@ -286,7 +286,7 @@ MakeFormInput ByPassValue , null
 	Else
 		'/**************************************************************************
 		' *
-		' * °áÁ¦ ½ÇÆÐ¿¡ ´ëÇÑ ÀÛ¾÷
+		' * ê²°ì œ ì‹¤íŒ¨ì— ëŒ€í•œ ìž‘ì—…
 		' *
 		' **************************************************************************/
 		Result 		= Res.Item("Result")
@@ -300,48 +300,4 @@ MakeFormInput ByPassValue , null
 		<!--#include file = "Error.asp"-->
 <%
 	End IF
-
-Dim giftcard_serial : giftcard_serial = Request("giftcard_serial")
-Dim httpRequest
-
-If giftcard_serial <> "" Then
-// db »ç¿ëÃ³¸® (dbo.bt_giftcard)
-    Sql = "UPDATE bt_giftcard SET used_date = SYSDATETIME(), order_num = '"& order_num &"' WHERE giftcard_number = '"& giftcard_serial &"'"
-    dbconn.Execute(Sql)
-// »óÇ°±Ç Á¶È¸
-    Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-    httpRequest.Open "GET", "http://api.bbq.co.kr/GiftCard_2.svc/GetGiftCard/"& giftcard_serial, False
-    httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
-    httpRequest.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-    httpRequest.Send
-//»óÇ°±Ç Á¶È¸
-//Á¶È¸ »óÇ°±Ç text -> json
-    Set oJSON = New aspJSON
-    postResponse = "{""list"" : " & httpRequest.responseText & "}"
-    oJSON.loadJSON(postResponse)
-    Set this = oJSON.data("list")
-
-	U_CD_BRAND = this.item("U_CD_BRAND") //»ç¿ëºê·£µåÄÚµå
-    U_CD_PARTNER = this.item("U_CD_PARTNER") // »ç¿ë¸ÅÀåÄÚµå
-    AMT = this.item("AMT") // ±Ý¾×
-//Á¶È¸ »óÇ°±Ç text -> json
-
-// »óÇ°±Ç »ç¿ëÃ³¸® data set
-    data = "{"
-    data = data & """U_CD_BRAND"":""" & U_CD_BRAND & ""","
-    data = data & """U_CD_PARTNER"":""" & U_CD_PARTNER & ""","
-    data = data & """AMT"":""" & AMT & """"
-    data = data & "}"
-// »óÇ°±Ç »ç¿ëÃ³¸® data set
-    Set httpRequest = nothing // ÃÊ±âÈ­
-// »óÇ°±Ç »ç¿ëÃ³¸®
-    Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-    httpRequest.Open "POST", "http://api.bbq.co.kr/GiftCard_2.svc/UseGiftCard/"& giftcard_serial, False
-    httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
-    httpRequest.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-    httpRequest.Send data
-    //Response.Write httpRequest.responseText
-// »óÇ°±Ç »ç¿ëÃ³¸®
-
-End If
 %>

@@ -21,6 +21,8 @@ End If
             req_str = "{""companyCode"":""" & PAYCO_MEMBERSHIP_COMPANYCODE &""",""memberNo"":""" & bt_stamp("userIdNo") &""",""startYmd"":"&startYmd&",""endYmd"":"&endYmd&",""perPage"":""2"",""page"":""1""}"
             api_url = "/stamp/getHoldList"
             result = executeApi ("POST", "application/json", req_str, PAYCO_MEMBERSHIP_URL & api_url)
+            'Response.Write req_str
+            'Response.Write result
             Set oJSON = New aspJSON
             oJSON.loadJSON(result)
             Set this = oJSON.data("result")
