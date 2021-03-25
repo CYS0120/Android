@@ -481,12 +481,7 @@
         }
                 
         function Regi_GiftCard(){
-            showAlertMsg({
-               msg: "준비중입니다.",
-               ok: function() {
-               }
-           });
-            // lpOpen('.lp_RegiGiftCard');
+            lpOpen('.lp_RegiGiftCard');
         }
         
         function Giftcard_Upload(data){

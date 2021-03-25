@@ -3255,11 +3255,11 @@ function calcTotalAmount() {
 	})
 	    //현금영수증 선택 영역 시작 , (test M_1156_0 황올한닭발튀김)
 	    var item = JSON.parse(sessionStorage.getItem("ss_branch_data"));
-	        if(item.branch_id == 1146001){
+	        /*if(item.branch_id == 1146001){
 	            $('#test_giftcard').show()
 	        }else{
 	            $('#test_giftcard').hide()
-	        }
+	        }*/
         //현금영수증 선택 영역 끝
 
         //홈파티 Test 1248 = 홈파티 트레이 , 치본스테이크가 장바구니에 있으면 배달매장, 예약일자, 결제수단 등 표출 20201204
