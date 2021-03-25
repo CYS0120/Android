@@ -405,11 +405,11 @@
                                    rdata += "</ul>";
                                    rdata += "<dl class='info'>";
                                    rdata += "<dt>지류상품권"+ res.Count[i].giftcard_idx +"</dt>";
-                                   rdata += "<dd> 유효기간 : "+ res.Count[i].usedate_to +" ~ "+ res.Count[i].usedate_from + "<br/></dd>";
+                                   rdata += "<dd> 유효기간 : "+ res.Count[i].usedate_from +" ~ "+ res.Count[i].usedate_to + "<br/></dd>";
                                    rdata += "</dl>";
-                                   rdata += "<div class='txt2'>";
-                                   rdata += "<a onclick='javascript:Show_searchbox("+res.Count[i].giftcard_idx+");'> 선물하기 </a>";
-                                   rdata += "</div>";
+                                   // rdata += "<div class='txt2'>";
+                                   // rdata += "<a onclick='javascript:Show_searchbox("+res.Count[i].giftcard_idx+");'> 선물하기 </a>";
+                                   // rdata += "</div>";
                                    rdata += "</div>";
                                    $('#giftcard_Use_list').append(rdata);
                                }
@@ -565,13 +565,96 @@
         }
         
         function Giftcard_scan(){
-            document.location.href='https://1087.g2i.co.kr/barcode/barcode_scan.asp';
-            // document.location.href='https://m.bbq.co.kr/barcode/barcode_scan.asp';
+        // var link = 'https://1087.g2i.co.kr/barcode/barcode_scan.asp' // DEV
+            var link = 'https://m.bbq.co.kr/barcode/barcode_scan.asp' // REAL
+            <% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
+                window.SGApp.barCodeScan('');
+            <% else %>
+                document.location.href=link;
+            <% end if %>
         }
         
         function Show_searchbox(Idx){
             lpOpen('.lp_present');
             $('#giftcard_idx').val(Idx);
+        }
+
+        function Giftcard_Check() {
+            if ($("#giftPIN").val() == "") {
+                showAlertMsg({
+                    msg:"상품권 번호를 입력해주세요.",
+                });
+                return;
+            }
+            $.ajax({
+                method: "post",
+                url: "/api/ajax/ajax_getGiftCard.asp",
+                data: {
+                    callMode: "insert",
+                    giftPIN: $("#giftPIN").val(),
+                },
+                dataType: "json",
+                success: function(res) {
+                    if (res.result == 0) {
+                        showAlertMsg({
+                            msg:"정상 등록되었습니다.",
+                            ok: function(){
+                                $("#giftPIN").val("");
+                                reset_gift_select();
+                                Giftcard_ListCount();
+                                Giftcard_Direct_use(res.giftPIN);
+                                lpClose(".lp_paymentGiftcard");
+                            },
+                        });
+                    } else if(res.result == 1){
+                        showAlertMsg({
+                            msg:"이미 등록 된 상품권입니다.",
+                            ok: function(){
+                                $("#giftPIN").val("");
+                                reset_gift_select();
+                                lpClose(".lp_paymentGiftcard");
+                            },
+                        });
+                    } else if(res.result == 2){
+                         showAlertMsg({
+                             msg:"존재하지않는 상품권입니다.",
+                             ok: function(){
+                                 $("#giftPIN").val("");
+                                 reset_gift_select();
+                                 lpClose(".lp_paymentGiftcard");
+                             },
+                         });
+                     } else if(res.result == 3){
+                       showAlertMsg({
+                           msg:"이미 사용한 상품권입니다.",
+                           ok: function(){
+                               $("#giftPIN").val("");
+                               reset_gift_select();
+                               lpClose(".lp_paymentGiftcard");
+                           },
+                       });
+                   } else {
+                        showAlertMsg({
+                            msg: res.message
+                        });
+                    }
+                },
+                error: function(data, status, err) {
+                    showAlertMsg({
+                                msg: data + ' ' + status + ' ' + err,
+                        // msg: "에러가 발생하였습니다",
+                        ok: function() {
+                            // location.href = "/";
+                        }
+                    });
+                }
+
+            });
+        }
+
+        function barCodeData(barcode){
+            $("#giftPIN").val(barcode);
+             Giftcard_Check()
         }
         
         function searchId() {

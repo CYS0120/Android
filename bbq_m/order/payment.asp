@@ -3196,18 +3196,23 @@ function calcTotalAmount() {
         }
         
         function Giftcard_scan(){
-	        // var link = 'https://1087.g2i.co.kr/barcode/barcode_scan.asp' // DEV
-	        var link = 'https://m.bbq.co.kr/barcode/barcode_scan.asp' // REAL
-	        <%' If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
-                // window.SGApp.openPopup(link)
-            <%' else %>
+            // var link = 'https://1087.g2i.co.kr/barcode/barcode_scan.asp' // DEV
+            var link = 'https://m.bbq.co.kr/barcode/barcode_scan.asp' // REAL
+            <% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
+                window.SGApp.barCodeScan('');
+            <% else %>
                 document.location.href=link;
-            <%' end if %>	
+            <% end if %>
         }
         
         function giftcard_close(){
             lpClose('.lp_paymentGiftcard');
             reset_gift_select();
+        }
+
+        function barCodeData(barcode){
+            $("#giftPIN").val(barcode);
+             Giftcard_Check()
         }
         
         function reset_gift_select(){

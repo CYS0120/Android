@@ -605,58 +605,6 @@
 		dbconn.Execute(Sql)
 	End If 
 %>
-
-<%
-Dim giftcard_serial : giftcard_serial = Request("giftcard_serial")
-Dim brand_code : brand_code = Request("brand_code")
-Dim httpRequest
-
-If giftcard_serial <> "" Then
-' db 사용처리 (dbo.bt_giftcard)
-    Sql = "UPDATE bt_giftcard SET used_date = SYSDATETIME(), order_num = '"& order_num &"' WHERE giftcard_number = '"& giftcard_serial &"'"
-    dbconn.Execute(Sql)
-' 상품권 조회
-    Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-    httpRequest.Open "GET", "http://api.bbq.co.kr/GiftCard_2.svc/GetGiftCard/"& giftcard_serial, False
-    httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
-    httpRequest.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-    httpRequest.Send
-'상품권 조회
-'조회 상품권 text -> json
-    Set oJSON = New aspJSON
-    postResponse = "{""list"" : " & httpRequest.responseText & "}"
-    oJSON.loadJSON(postResponse)
-    Set this = oJSON.data("list")
-
-	'U_CD_BRAND = this.item("U_CD_BRAND") '사용브랜드코드
-    'U_CD_PARTNER = this.item("U_CD_PARTNER") ' 사용매장코드
-	'U_CD_BRAND = "01" '사용브랜드코드
-    'U_CD_PARTNER = "1146001" ' 사용매장코드
-    U_CD_BRAND = brand_code '사용브랜드코드
-    U_CD_PARTNER = branch_id ' 사용매장코드
-    AMT = this.item("AMT") ' 금액
-'조회 상품권 text -> json
-
-' 상품권 사용처리 data set
-    data = "{"
-    data = data & """U_CD_BRAND"":""" & U_CD_BRAND & ""","
-    data = data & """U_CD_PARTNER"":""" & U_CD_PARTNER & ""","
-    data = data & """AMT"":""" & AMT & """"
-    data = data & "}"
-' 상품권 사용처리 data set
-    Set httpRequest = nothing ' 초기화
-' 상품권 사용처리
-    Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-    httpRequest.Open "POST", "http://api.bbq.co.kr/GiftCard_2.svc/UseGiftCard/"& giftcard_serial, False
-    httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
-    httpRequest.SetRequestHeader "Content-Type", "application/raw"
-    httpRequest.Send data
-    Response.Write httpRequest.responseText
-    Response.Write data
-' 상품권 사용처리
-
-End If
-%>
 <script type="text/javascript">
 	alert("주문이 정상적으로 완료되었습니다.");
 	opener.location.href = "/order/orderComplete.asp?order_idx=<%=order_idx%>&pm=Phone";
