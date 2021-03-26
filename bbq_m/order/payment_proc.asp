@@ -1,4 +1,6 @@
 ﻿<!--#include virtual="/api/include/utf8.asp"-->
+<!--#include virtual="/api/include/aspJSON1.18.asp"-->
+
 <%
     Dim addr_idx, branch_id, cart_value, delivery_fee, pay_method, total_amount
     Dim addr_name, mobile, zip_code, address_main, address_detail, delivery_message
@@ -86,7 +88,6 @@
         Response.Write "{""result"":99, ""result_msg"":""영업시간내에 주문하여 주십시오.""}"
         Response.End
     End If
-
 
 	' 쿠폰금액 부분 비교
 	If CheckLogin() Then
@@ -403,6 +404,85 @@
     End With
 
     Set aCmd = Nothing
+    giftcard_serial = Request.Cookies("giftcard_serial")
+    brand_code = Request.Cookies("brand_code")
+
+    If giftcard_serial <> "" Then
+    ' 상품권 조회
+        Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+        httpRequest.Open "GET", "http://api.bbq.co.kr/GiftCard_2.svc/GetGiftCard/"& giftcard_serial, False
+        httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
+        httpRequest.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+        httpRequest.Send
+    '상품권 조회
+    '조회 상품권 text -> json
+        Set oJSON = New aspJSON
+        postResponse = "{""list"" : " & httpRequest.responseText & "}"
+        oJSON.loadJSON(postResponse)
+        Set this = oJSON.data("list")
+        U_CD_BRAND = brand_code '사용브랜드코드
+        U_CD_PARTNER = branch_id ' 사용매장코드
+        AMT = this.item("AMT") ' 금액
+    '조회 상품권 text -> json
+
+    ' 상품권 사용처리 data set
+        data = "{"
+        data = data & """U_CD_BRAND"":""" & U_CD_BRAND & ""","
+        data = data & """U_CD_PARTNER"":""" & U_CD_PARTNER & ""","
+        data = data & """AMT"":""" & AMT & """"
+        data = data & "}"
+    ' 상품권 사용처리 data set
+        Set httpRequest = nothing ' 초기화
+    ' 상품권 사용처리
+        Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+        httpRequest.Open "POST", "http://api.bbq.co.kr/GiftCard_2.svc/UseGiftCard/"& giftcard_serial, False
+        httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
+        'httpRequest.SetRequestHeader "Content-Type", "application/raw"
+        httpRequest.Send data
+        'Response.Write httpRequest.responseText
+        'Response.Write data
+    ' 상품권 사용처리
+    '조회 상품권 text -> json
+        Set gJSON = New aspJSON
+        gpostResponse = "{""list"" : " & httpRequest.responseText & "}"
+        gJSON.loadJSON(gpostResponse)
+        Set this = gJSON.data("list")
+
+        U_CD_BRAND = this.item("U_CD_BRAND") '사용브랜드코드
+        U_CD_PARTNER = this.item("U_CD_PARTNER") ' 사용매장코드
+        OK_NUM = this.item("OK_NUM") ' 승인번호
+        RTN_CD = this.item("RTN_CD") ' 결과코드
+        RTN_MSG = this.item("RTN_MSG") ' 결과코드
+
+    '조회 상품권 text -> json
+    '상품권 사용처리
+    If RTN_CD = "0000" Then
+        Set pCmd = Server.CreateObject("ADODB.Command")
+    		With pCmd
+    			.ActiveConnection = dbconn
+    			.NamedParameters = True
+    			.CommandType = adCmdStoredProc
+    			.CommandText = "bp_giftcard_status"
+
+    			.Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput,30,"giftcard_use")
+    			.Parameters.Append .CreateParameter("@order_num", adVarChar, adParamInput,100,order_num)
+    			.Parameters.Append .CreateParameter("@giftcard_number", adVarChar, adParamInput,100,giftcard_serial)
+    			.Parameters.Append .CreateParameter("@u_cd_brand", adVarChar, adParamInput,10,U_CD_BRAND)
+    			.Parameters.Append .CreateParameter("@u_cd_partner", adVarChar, adParamInput,50,U_CD_PARTNER)
+    			.Parameters.Append .CreateParameter("@ok_num", adVarChar, adParamInput,50,OK_NUM)
+    			.Execute
+    		End With
+    		Set pCmd = Nothing
+    Else
+    Response.Write "{""result"":99, ""result_msg"":"""& RTN_MSG &"""}"
+    Response.End
+    End If
+    '상품권 사용처리
+    '쿠키 제거
+    Response.Cookies("giftcard_serial") = ""
+    Response.Cookies("brand_code") = ""
+    '쿠키 제거
+    End If
 
     If order_idx = 0 Then
         Response.Write "{""result"":1, ""result_msg"":""주문이 실패하였습니다.""}"
