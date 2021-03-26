@@ -80,14 +80,17 @@
 	                TotalStamp = this.item("totalCount") '총 스탬프 갯수
 	                TotalStampCount = this.item("totalStampCount") '총 스탬프 응모권 갯수
 
+
                     'Response.Write result
 
-                    For Each row In this.item("holdList")
-                    Set this1 = this.item("holdList").item(row)
-                    'Response.write "<br>[" & row & "]"
-                    'Response.write this1.item("stampName") ' 스탬프명
-                    'Response.write this1.item("stampCount") ' 스탬프 갯수
-                    Next
+                    If TotalStamp > 0 Then
+                        For Each row In this.item("holdList")
+                        set this1 = this.item("holdList").item(row)
+                        'Response.write "<br>[" & row & "]"
+                        'Response.write this1.item("stampName") ' 스탬프명
+                        'Response.write this1.item("stampCount") ' 스탬프 갯수
+                        Next
+                    End If
                 '스탬프 조회 끝
                 '고객 핸드폰번호
                     If CheckLogin() Then
@@ -97,11 +100,11 @@
 			            End If
 		            End If
                 '고객 핸드폰번호 끝
+                If TotalStamp > 0 Then
                 '스탬프 비교
 		            CountQuery = " SELECT COUNT(*) as cnt FROM BT_EVENT_MKT_COUPON WHERE cust_id = '"& Session("userIdNo") &"' AND USE_YN = 'Y'"
                     Set Stamp_Coupon = dbconn.Execute(CountQuery)
                     Stamp_Coupon.movefirst
-
 		            If this1.item("stampCount") <> Stamp_Coupon("cnt") Then
                         If this1.item("stampCount") > Stamp_Coupon("cnt") Then
                             Mcount = Stamp_Coupon("cnt") - this1.item("stampCount")
@@ -125,6 +128,7 @@
                             End If
                         End If
 		            End If
+
                 '스탬프 비교 끝
                 '스탬프 조회
                     req_str = "{""companyCode"":""" & PAYCO_MEMBERSHIP_COMPANYCODE &""",""memberNo"":""" & Session("userIdNo") &""",""startYmd"":"&startYmd&",""endYmd"":"&endYmd&",""perPage"":""2"",""page"":""1""}"
@@ -150,6 +154,8 @@
             	</div>
             	<%
             	End If
+            	                    End If
+
             	%>
 <!--            	스탬프끝-->
                 <script type="text/javascript">
