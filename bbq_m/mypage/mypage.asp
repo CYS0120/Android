@@ -145,7 +145,7 @@
 
             	%>
             	<%
-                If Stamp_Coupon("cnt") > 0 Then
+                If TotalStamp > 0 Then
             	%>
             	<div class="mypage_box" style="margin-top: 10px; padding: 15px 0 15px 30px; height: 100px; line-height: 50px; text-align: left; font-size: 18px;">
             		<p style="font-size: 18px">기간 : <%=MID(startYmd,5,2)%>/<%=RIGHT(startYmd,2)%> ~ <%=MID(endYmd,5,2)%>/<%=RIGHT(endYmd,2)%></p>
