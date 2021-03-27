@@ -80,7 +80,6 @@
 	                TotalStamp = this.item("totalCount") '총 스탬프 갯수
 	                TotalStampCount = this.item("totalStampCount") '총 스탬프 응모권 갯수
 
-
                     'Response.Write result
 
                     If TotalStamp > 0 Then
@@ -142,19 +141,20 @@
                     Set this_result = this_stamp.item("holdList").item(row)
                     Next
                 '스탬프 조회 끝
-
             	%>
             	<%
-                If Stamp_Coupon("cnt") > 0 Then
+                'If TotalStampCount > 0 Then
             	%>
             	<div class="mypage_box" style="margin-top: 10px; padding: 15px 0 15px 30px; height: 100px; line-height: 50px; text-align: left; font-size: 18px;">
             		<p style="font-size: 18px">기간 : <%=MID(startYmd,5,2)%>/<%=RIGHT(startYmd,2)%> ~ <%=MID(endYmd,5,2)%>/<%=RIGHT(endYmd,2)%></p>
-            		<p style="font-size: 18px"><%=this1.item("stampName")%>&nbsp; <%=this_result.item("stampCount")%>장</p>
-            		<p style="font-size: 18px">치킨왕 누적 응모권 : <%=this_result.item("stampCount")%> 장</p>
+<!--            		<p style="font-size: 18px"><%=this1.item("stampName")%>&nbsp; <%=this_result.item("stampCount")%>장</p>-->
+            		<p style="font-size: 18px"><%=this1.item("stampName")%>&nbsp; <%=Stamp_Coupon("cnt")%>장</p>
+            		<!--<p style="font-size: 18px">치킨왕 누적 응모권 : <%=this_result.item("stampCount")%> 장</p>-->
+            		<p style="font-size: 18px">치킨왕 누적 응모권 : <%=Stamp_Coupon("cnt")%> 장</p>
             	</div>
             	<%
-            	End If
-            	                    End If
+            	'End If
+                End If
 
             	%>
 <!--            	스탬프끝-->
