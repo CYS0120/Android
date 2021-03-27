@@ -1,4 +1,4 @@
-﻿<%
+﻿ <%
     Class ApiCall
         Public req
         Private reqMethod
