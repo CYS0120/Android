@@ -220,9 +220,9 @@
 					</div>
 					<div>&nbsp;</div>
 					<div class="main_point_set">
-						<!--<iframe width="100%" height="315" src="https://www.youtube.com/embed/_kq8h2L_o-4" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>-->
-						<a href src="https://www.youtube.com/embed/85qAKX9eP-Q" target="_blank"><iframe id="idIframe" width="100%" height="315" src="https://www.youtube.com/embed/85qAKX9eP-Q" frameborder="0" onload="javascript:resetLink()"></iframe></a>
-						실시간 이벤트에 참여하기 위해서 유튜브 영상 제목을 클릭하신 후 유튜브 채팅에 참여하세요!!
+						<iframe width="100%" height="315" src="https://www.youtube.com/embed/_kq8h2L_o-4" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+						<!--<a href src="https://www.youtube.com/embed/uVN-x_lOvBA" target="_blank"><iframe id="idIframe" width="100%" height="315" src="https://www.youtube.com/embed/uVN-x_lOvBA" frameborder="0" onload="javascript:resetLink()"></iframe></a>
+						실시간 이벤트에 참여하기 위해서 유튜브 영상 제목을 클릭하신 후 유튜브 채팅에 참여하세요!!-->
 					</div>					
 					<!-- // 포인트 -->
           <%'End if%>
@@ -233,6 +233,112 @@
 			<!-- // Content -->
 		</div>
 		<!-- // Container -->
+
+
+		<%
+			Dim bCmd, bPopRs
+
+			Set bCmd = Server.CreateObject("ADODB.Command")
+			With bCmd
+				.ActiveConnection = dbconn
+				.NamedParameters = True
+				.CommandType = adCmdStoredProc
+				.CommandText = "bp_popup"
+				.Parameters.Append .CreateParameter("@BRAND_CODE", adVarchar, adParamInput, 5, SITE_BRAND_CODE)
+				.Parameters.Append .CreateParameter("@POPUP_KIND", adChar, adParamInput, 1, "L")
+				Set bPopRs = .Execute
+			End With
+			Set bCmd = Nothing			
+			If bPopRs.BOF Or bPopRs.EOF Then
+			Else
+				popup_idx	= bPopRs("popup_idx")
+				brand_code	= bPopRs("brand_code")
+				popup_width	= bPopRs("popup_width")
+				popup_height	= bPopRs("popup_height")
+				popup_close	= bPopRs("popup_close")
+				popup_title	= bPopRs("popup_title")
+				popup_img	= bPopRs("popup_img")
+
+				popup_img = FILE_SERVERURL & "/uploads/popup/" & popup_img
+
+				CookName	= "popup_" & popup_idx
+				If Request.Cookies(CookName) = "done" Then 
+				Else
+		%>
+
+		<!--윈도우 로드시 팝업-->
+		<aside class="popup">
+			<div class="inner" id="pop1">
+				<div class="area" style="width:<%=popup_width%>px;">
+					<img src="<%=popup_img%>" alt="POPUP">
+				</div>
+				<%If popup_close = "1" Then%>
+				<button type="button" class="today" onClick="PopupNoDispaly()">하루동안 보지않기 <i class="axi axi-close"></i></button>
+				<%End If%>
+				<button type="button" class="close _close" onClick="$('.popup').hide();">[닫기]</button>
+			</div>
+			<div class="popupbg"></div>
+		</aside>
+		<!--//윈도우 로드시 팝업-->
+
+		<script>
+			$(document).ready(function () {
+				$('.popup').show();
+			});
+			function PopupNoDispaly() {
+				setCookie("popup_<%=popup_idx%>", "done", 1);
+				$('.popup').hide();
+			}
+		</script>
+
+		<%
+			End If 
+		End If
+
+		Set bCmd = Server.CreateObject("ADODB.Command")
+		With bCmd
+			.ActiveConnection = dbconn
+			.NamedParameters = True
+			.CommandType = adCmdStoredProc
+			.CommandText = "bp_popup"
+			.Parameters.Append .CreateParameter("@BRAND_CODE", adVarchar, adParamInput, 5, SITE_BRAND_CODE)
+			.Parameters.Append .CreateParameter("@POPUP_KIND", adChar, adParamInput, 1, "N")
+			Set bPopRs = .Execute
+		End With
+		Set bCmd = Nothing			
+		If bPopRs.BOF Or bPopRs.EOF Then
+		Else
+			Do While Not bPopRs.EOF
+				popup_idx	= bPopRs("popup_idx")
+				popup_left	= bPopRs("popup_left")
+				popup_top	= bPopRs("popup_top")
+				popup_width	= bPopRs("popup_width")
+				popup_height	= bPopRs("popup_height")
+
+				CookName	= "popup_" & popup_idx
+				If Request.Cookies(CookName) = "done" Then 
+				Else
+		%>
+
+		<script Language="JavaScript">	
+			window.open('/api/popup.asp?PIDX=<%=popup_idx%>','popup_<%=popup_idx%>','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,status=no, left=<%=popup_left%>,top=<%=popup_top%>, width=<%=popup_width%>,height=<%=popup_height+25%>');
+		</script>
+
+		<%
+					End If 
+					bPopRs.MoveNext
+				Loop 
+			End If 
+		%>
+
+		<script>
+			function setCookie(name, value, expiredays) {
+				var todayDate = new Date();
+				todayDate.setDate(todayDate.getDate() + expiredays);
+				document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";"
+			}
+		</script>
+
 
         <!--#include virtual="/includes/app_push.asp"-->
 	    <!-- Footer -->
