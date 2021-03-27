@@ -7,6 +7,9 @@
 <meta name="Keywords" content="비비큐 소식, BBQ치킨">
 <meta name="Description" content="비비큐 소식 메인">
 <title>비비큐 소식 | BBQ치킨</title>
+
+<script src="/common/js/jquery.rwdImageMaps.js"></script>
+
 <script>
 jQuery(document).ready(function(e) {
 	
@@ -17,6 +20,9 @@ jQuery(document).ready(function(e) {
 			$(".wrapper").removeClass("scrolled");
 		}
 	});
+
+
+	$('img[usemap]').rwdImageMaps();
 	
 });
 
