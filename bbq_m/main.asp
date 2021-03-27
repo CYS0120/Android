@@ -221,7 +221,7 @@
 					<div>&nbsp;</div>
 					<div class="main_point_set">
 						<!--<iframe width="100%" height="315" src="https://www.youtube.com/embed/_kq8h2L_o-4" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>-->
-						<a href src="https://www.youtube.com/embed/Ko3kBzoTex0" target="_blank"><iframe id="idIframe" width="100%" height="315" src="https://www.youtube.com/embed/Ko3kBzoTex0" frameborder="0" onload="javascript:resetLink()"></iframe></a>
+						<a href src="https://www.youtube.com/embed/85qAKX9eP-Q" target="_blank"><iframe id="idIframe" width="100%" height="315" src="https://www.youtube.com/embed/85qAKX9eP-Q" frameborder="0" onload="javascript:resetLink()"></iframe></a>
 						실시간 이벤트에 참여하기 위해서 유튜브 영상 제목을 클릭하신 후 유튜브 채팅에 참여하세요!!
 					</div>					
 					<!-- // 포인트 -->
