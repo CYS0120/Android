@@ -6,6 +6,12 @@
 
 <!--#include virtual="/includes/top.asp"-->
 
+<script src="/common/js/libs/jquery.rwdImageMaps.js"></script>
+<script type="text/javascript">
+	$(document).ready(function (){
+		$('img[usemap]').rwdImageMaps();
+	});
+</script>
 </head>
 
 	<%
