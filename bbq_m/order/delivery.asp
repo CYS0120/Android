@@ -128,7 +128,7 @@
                 <form class="form" action="">
                     <a href="delivery_map.asp?order_type=<%=order_type%>">
 					<input type="text" name="search_text" id="search_text" readonly placeholder="현 위치 기반 주소 검색">
-					<button type="button" class="btn-sch" onclick="getAddr();"><img src="/images/common_new/icon_location.png" alt="검색"></button>
+					<button type="button" class="btn-sch"><img src="/images/common_new/icon_location.png" alt="검색"></button>
 				    </a>
                 </form>
 				<!--//<div><a href="delivery_map.asp?order_type=<%=order_type%>" class="btn btn-gray btn_middle"><img src="/images/order/icon_location.png"> 현 위치 기반 주소 검색</a></div>-->
@@ -149,7 +149,7 @@
                 <form class="form" action="">
                     <a href="/shop/shopLocation.asp?order_type=<%=order_type%>">
 					<input type="text" name="search_text" id="search_text" readonly placeholder="현 위치 기반 주소 검색">
-					<button type="button" class="btn-sch" onclick="getAddr();"><img src="/images/common_new/icon_location.png" alt="검색"></button>
+					<button type="button" class="btn-sch"><img src="/images/common_new/icon_location.png" alt="검색"></button>
 				    </a>
                 </form>
 				<!--//<div><a href="/shop/shopLocation.asp?order_type=<%=order_type%>" class="btn btn-gray btn_middle"><img src="/images/order/icon_location.png"> 현 위치 기반 매장 검색</a></div>-->
