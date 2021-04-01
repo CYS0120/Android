@@ -127,7 +127,7 @@ Const JUSO_API_KEY_XY = "U01TX0FVVEgyMDIwMTAwNjExNDc1MDExMDI1OTk="
 	Const SITE_DOMAINURL_WATAMI		= "http://www.watamikorea.com"		'와타미
 	Const SITE_DOMAINURL_CHICKEN_UNI	= "http://www.ckuniversity.com"		'치킨대학
 	Const SITE_DOMAINURL_START		= "https://www.bbqchangup.co.kr:446"		'창업센터
-	Const SITE_DOMAINURL_GLOBAL		= "https://www.bbqglobal.com"		'제너시스글로벌
+	Const SITE_DOMAINURL_GLOBAL		= "http://www.bbqglobal.com"		'제너시스글로벌
 	Const SITE_DOMAINURL_GROUP		= "http://www.genesiskorea.co.kr"		'제너시스그룹
 	Const SITE_DOMAINURL_BBQMALL	= "http://mall.bbq.co.kr"		'비비큐몰
 
