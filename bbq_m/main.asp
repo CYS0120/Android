@@ -208,9 +208,23 @@
 								<dt><a href="/mypage/mileage.asp">포인트</a></dt>
 								<dd><span><%=FormatNumber(pMemberPoint.mSavePoint,0)%></span>P&nbsp;&nbsp;</dd>
 							</dl>
+					<%
+						
+						'페이코 쿠폰 오류 발급으로 인한 코드 (쿠폰번호 - CP00002347, 유효기간- 2021.03.23-2021.04.23) 
+						Dim couponTotalCount 
+						couponTotalCount = pCouponList.mTotalCount
+						IF couponTotalCount > 0 Then
+							For i = 0 To UBound(pCouponList.mHoldList)
+								If pCouponList.mHoldList(i).mCouponId = "CP00002347" Then
+									couponTotalCount = couponTotalCount - 1
+								end if 	
+							Next
+						End If			
+						
+					%>							
 							<dl>
 								<dt><a href="/mypage/couponList.asp?couponList=coupon">쿠폰</a></dt>
-								<dd><span><%=pCouponList.mTotalCount%></span>개</dd>
+								<dd><span><%=couponTotalCount%></span>개</dd>
 							</dl>
 							<dl>
 								<dt><a href="/mypage/couponList.asp?couponList=giftcard">상품권</a></dt>

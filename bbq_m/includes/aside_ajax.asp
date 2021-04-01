@@ -89,10 +89,25 @@
 								<% 
 									Set pCouponList = CouponGetHoldList("NONE", "N", 100, 1) 
 								%>
+
+								<%
+									
+									'페이코 쿠폰 오류 발급으로 인한 코드 (쿠폰번호 - CP00002347, 유효기간- 2021.03.23-2021.04.23) 
+									Dim couponTotalCount 
+									couponTotalCount = pCouponList.mTotalCount
+									IF couponTotalCount > 0 Then
+										For i = 0 To UBound(pCouponList.mHoldList)
+											If pCouponList.mHoldList(i).mCouponId = "CP00002347" Then
+												couponTotalCount = couponTotalCount - 1
+											end if 	
+										Next
+									End If			
+									
+								%>								
 								<dl>
 									<dt>쿠폰 :</dt>
 									<dd>
-										<a href="/mypage/couponList.asp"><strong><%=pCouponList.mTotalCount%></strong> 장</a>
+										<a href="/mypage/couponList.asp"><strong><%=couponTotalCount%></strong> 장</a>
 									</dd>
 								</dl>
 							<% End If %>

@@ -50,11 +50,24 @@
             	<div class="mypage_info">
             		<a href="./membership.asp"><span class="ico-only ico-info01" style="color:#fff;"><em class="h-ddack">딹</em>멤버십 안내</span></a>
             	</div>
-
+				<%
+					
+					'페이코 쿠폰 오류 발급으로 인한 코드 (쿠폰번호 - CP00002347, 유효기간- 2021.03.23-2021.04.23) 
+					Dim couponTotalCount 
+					couponTotalCount = pCouponList.mTotalCount
+					IF couponTotalCount > 0 Then
+						For i = 0 To UBound(pCouponList.mHoldList)
+							If pCouponList.mHoldList(i).mCouponId = "CP00002347" Then
+								couponTotalCount = couponTotalCount - 1
+							end if 	
+						Next
+					End If			
+					
+				%>
             	<div class="mypage_box">
             		<ul>
             			<li onclick="location.href='/mypage/mileage.asp'"><div class="ico-point">포인트</div><p><span><%=FormatNumber(pPointBalance.mTotalPoint,0)%></span>P</p></li>
-            			<li onclick="location.href='/mypage/couponList.asp?couponList=coupon'"><div class="ico-cupon">쿠폰</div><p><span><%=pCouponList.mTotalCount%></span>개</p></li>
+            			<li onclick="location.href='/mypage/couponList.asp?couponList=coupon'"><div class="ico-cupon">쿠폰</div><p><span><%=couponTotalCount%></span>개</p></li>
             			<li onclick="location.href='/mypage/couponList.asp?couponList=giftcard'"><div class="icon_gift">상품권</div><p><span class="gc_red">0</span>개</p></li>
             		</ul>
             	</div>

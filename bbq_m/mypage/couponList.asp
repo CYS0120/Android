@@ -46,8 +46,19 @@
 
 			<!-- 사용가능쿠폰 -->
 			<section class="section section_couponUseOk">
-
-				<div class="coupon_head">사용 가능한 쿠폰 <strong><%=couponHoldList.mTotalCount%></strong>장</div>
+<%
+               '페이코 쿠폰 오류 발급으로 인한 코드 (쿠폰번호 - CP00002347, 유효기간- 2021.03.23-2021.04.23) 
+                Dim couponTotalCount 
+                couponTotalCount = couponHoldList.mTotalCount
+				IF couponTotalCount > 0 Then
+					For i = 0 To UBound(couponHoldList.mHoldList)
+						If couponHoldList.mHoldList(i).mCouponId = "CP00002347" Then
+							couponTotalCount = couponTotalCount - 1
+						end if 	
+					Next
+				End If
+%>
+				<div class="coupon_head">사용 가능한 쿠폰 <strong><%=couponTotalCount%></strong>장</div>
 				<div class="coupon_head" onclick="Regi_Coupon();">쿠폰 등록하기</div>
 
 				<div class="couponUseOk_wrap">
@@ -55,6 +66,10 @@
 						IF couponHoldList.mTotalCount > 0 Then
 							For i = 0 To UBound(couponHoldList.mHoldList)
 					%>
+                    <%
+                        '페이코 쿠폰 오류 발급으로 인한 코드 (쿠폰번호 - CP00002347, 유효기간- 2021.03.23-2021.04.23) 
+                        If couponHoldList.mHoldList(i).mCouponId <> "CP00002347" then
+                    %>
 					<div class="couponUseOk">
 						<div class="coupon">
 							<ul class="tit">
@@ -89,7 +104,9 @@
  -->
 						</div>
 					</div>
-
+                    <%
+                        End If
+                    %>
 					<%
 							Next
 						else %>
