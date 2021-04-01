@@ -179,6 +179,9 @@
 			If Session("userPhone") <> "" And Len(Session("userPhone")) > 10 Then
 				temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
 				vMobile = "0"&left(temp_mobile, 2)&"-"&mid(temp_mobile, 3, 4)&"-"&mid(temp_mobile, 7)
+            ElseIf Session("userPhone") <> "" And Len(Session("userPhone")) = 9 Then
+                temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
+				vMobile = left(temp_mobile, 3)&"-"&mid(temp_mobile, 4, 3)&"-"&mid(temp_mobile, 7, 10)
 			End If
 		End If
 		vZipCode = aJson.zip_code
@@ -192,6 +195,9 @@
 			If Session("userPhone") <> "" And Len(Session("userPhone")) > 10 Then
 				temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
 				vMobile = "0"&left(temp_mobile, 2)&"-"&mid(temp_mobile, 3, 4)&"-"&mid(temp_mobile, 7)
+            ElseIf Session("userPhone") <> "" And Len(Session("userPhone")) = 9 Then
+                temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
+				vMobile = left(temp_mobile, 3)&"-"&mid(temp_mobile, 4, 3)&"-"&mid(temp_mobile, 7, 10)
 			End If
 		End If
 		vAddress = bJson.branch_address
