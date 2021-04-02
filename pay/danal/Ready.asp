@@ -7,12 +7,12 @@
 	
 	'/********************************************************************************
 	' *
-	' * ë‹¤ë‚  íœ´ëŒ€í° ê²°ì œ
+	' * ´Ù³¯ ÈÞ´ëÆù °áÁ¦
 	' *
-	' * - ê²°ì œ ìš”ì²­ íŽ˜ì´ì§€
-	' *      CPì¸ì¦ ë° ê²°ì œ ì •ë³´ ì „ë‹¬
+	' * - °áÁ¦ ¿äÃ» ÆäÀÌÁö
+	' *      CPÀÎÁõ ¹× °áÁ¦ Á¤º¸ Àü´Þ
 	' *
-	' * ê²°ì œ ì‹œìŠ¤í…œ ì—°ë™ì— ëŒ€í•œ ë¬¸ì˜ì‚¬í•­ì´ ìžˆìœ¼ì‹œë©´ ì„œë¹„ìŠ¤ê°œë°œíŒ€ìœ¼ë¡œ ì—°ë½ ì£¼ì‹­ì‹œì˜¤.
+	' * °áÁ¦ ½Ã½ºÅÛ ¿¬µ¿¿¡ ´ëÇÑ ¹®ÀÇ»çÇ×ÀÌ ÀÖÀ¸½Ã¸é ¼­ºñ½º°³¹ßÆÀÀ¸·Î ¿¬¶ô ÁÖ½Ê½Ã¿À.
 	' * DANAL Commerce Division Technique supporting Team
 	' * EMail : tech@danal.co.kr
 	' *
@@ -24,7 +24,7 @@
 <!--#include file="inc/function.asp"-->
 <html>
 <head>
-<title>ë‹¤ë‚  íœ´ëŒ€í° ê²°ì œ</title>
+<title>´Ù³¯ ÈÞ´ëÆù °áÁ¦</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
 </head>
@@ -34,16 +34,16 @@
 	
 	'/********************************************************************************
 	' *
-	' * [ ì „ë¬¸ ìš”ì²­ ë°ì´í„° ] *********************************************************
+	' * [ Àü¹® ¿äÃ» µ¥ÀÌÅÍ ] *********************************************************
 	' *
 	' ********************************************************************************/
 
-	'/***[ í•„ìˆ˜ ë°ì´í„° ]************************************/
+	'/***[ ÇÊ¼ö µ¥ÀÌÅÍ ]************************************/
 	Set ByPassValue = CreateObject("Scripting.Dictionary")
 	Set TransR = CreateObject("Scripting.Dictionary")
 
 	'/******************************************************
-	' ** ì•„ëž˜ì˜ ë°ì´í„°ëŠ” ê³ ì •ê°’ìž…ë‹ˆë‹¤.( ë³€ê²½í•˜ì§€ ë§ˆì„¸ìš” )
+	' ** ¾Æ·¡ÀÇ µ¥ÀÌÅÍ´Â °íÁ¤°ªÀÔ´Ï´Ù.( º¯°æÇÏÁö ¸¶¼¼¿ä )
 	' * Command		: ITEMSEND2
 	' * SERVICE		: TELEDIT
 	' * ItemCount		: 1
@@ -55,20 +55,20 @@
 	TransR.Add "OUTPUTOPTION", "DEFAULT"
 	
 	'/******************************************************
-	' * ID			: ë‹¤ë‚ ì—ì„œ ì œê³µí•´ ë“œë¦° ID( function íŒŒì¼ ì°¸ì¡° )
-	' * PWD			: ë‹¤ë‚ ì—ì„œ ì œê³µí•´ ë“œë¦° PWD( function íŒŒì¼ ì°¸ì¡° )
-	' * CPNAME		: CP ëª…
+	' * ID			: ´Ù³¯¿¡¼­ Á¦°øÇØ µå¸° ID( function ÆÄÀÏ ÂüÁ¶ )
+	' * PWD			: ´Ù³¯¿¡¼­ Á¦°øÇØ µå¸° PWD( function ÆÄÀÏ ÂüÁ¶ )
+	' * CPNAME		: CP ¸í
 	' ******************************************************/
 	TransR.Add "ID", ID
 	TransR.Add "PWD", PWD
-	CPName = "ë¹„ë¹„í"
+	CPName = "ºñºñÅ¥"
 	
 	'/******************************************************
-	' * ItemAmt		: ê²°ì œ ê¸ˆì•¡( function íŒŒì¼ ì°¸ì¡° )
-	' *      - ì‹¤ì œ ìƒí’ˆê¸ˆì•¡ ì²˜ë¦¬ì‹œì—ëŠ” Session ë˜ëŠ” DBë¥¼ ì´ìš©í•˜ì—¬ ì²˜ë¦¬í•´ ì£¼ì‹­ì‹œì˜¤.
-	' *      - ê¸ˆì•¡ ì²˜ë¦¬ ì‹œ ê¸ˆì•¡ë³€ì¡°ì˜ ìœ„í—˜ì´ ìžˆìŠµë‹ˆë‹¤.
-	' * ItemName		: ìƒí’ˆëª…
-	' * ItemCode		: ë‹¤ë‚ ì—ì„œ ì œê³µí•´ ë“œë¦° ItemCode
+	' * ItemAmt		: °áÁ¦ ±Ý¾×( function ÆÄÀÏ ÂüÁ¶ )
+	' *      - ½ÇÁ¦ »óÇ°±Ý¾× Ã³¸®½Ã¿¡´Â Session ¶Ç´Â DB¸¦ ÀÌ¿ëÇÏ¿© Ã³¸®ÇØ ÁÖ½Ê½Ã¿À.
+	' *      - ±Ý¾× Ã³¸® ½Ã ±Ý¾×º¯Á¶ÀÇ À§ÇèÀÌ ÀÖ½À´Ï´Ù.
+	' * ItemName		: »óÇ°¸í
+	' * ItemCode		: ´Ù³¯¿¡¼­ Á¦°øÇØ µå¸° ItemCode
 	' ******************************************************/
     AMOUNT = 0
     BRAND_ID = ""
@@ -113,7 +113,7 @@
 	    End If
 
 
-		' ì œì£¼/ì‚°ê°„ =========================================================================================
+		' Á¦ÁÖ/»ê°£ =========================================================================================
         Set pCmd = Server.CreateObject("ADODB.Command")
         With pCmd
             .ActiveConnection = dbconn
@@ -209,13 +209,13 @@
 	
 	TransR.Add "ItemInfo", ItemInfo
 	
-	'/***[ ì„ íƒ ì‚¬í•­ ]**************************************/
+	'/***[ ¼±ÅÃ »çÇ× ]**************************************/
 	'/******************************************************
-	' * SUBCP		: ë‹¤ë‚ ì—ì„œ ì œê³µí•´ë“œë¦° SUBCP ID
-	' * USERID		: ì‚¬ìš©ìž ID
-	' * ORDERID		: CP ì£¼ë¬¸ë²ˆí˜¸
-	' * IsPreOtbill		: AuthKey ìˆ˜ì‹  ìœ ë¬´(Y/N) (ìž¬ìŠ¹ì¸, ì›”ìžë™ê²°ì œë¥¼ ìœ„í•œ AuthKey ìˆ˜ì‹ ì´ í•„ìš”í•œ ê²½ìš° : Y)
-	' * IsSubscript		: ì›” ì •ì•¡ ê°€ìž… ìœ ë¬´(Y/N) (ì›” ì •ì•¡ ê°€ìž…ì„ ìœ„í•œ ì²« ê²°ì œì¸ ê²½ìš° : Y)
+	' * SUBCP		: ´Ù³¯¿¡¼­ Á¦°øÇØµå¸° SUBCP ID
+	' * USERID		: »ç¿ëÀÚ ID
+	' * ORDERID		: CP ÁÖ¹®¹øÈ£
+	' * IsPreOtbill		: AuthKey ¼ö½Å À¯¹«(Y/N) (Àç½ÂÀÎ, ¿ùÀÚµ¿°áÁ¦¸¦ À§ÇÑ AuthKey ¼ö½ÅÀÌ ÇÊ¿äÇÑ °æ¿ì : Y)
+	' * IsSubscript		: ¿ù Á¤¾× °¡ÀÔ À¯¹«(Y/N) (¿ù Á¤¾× °¡ÀÔÀ» À§ÇÑ Ã¹ °áÁ¦ÀÎ °æ¿ì : Y)
 	' ******************************************************/
 	TransR.Add "SUBCP", DANAL_H_SCPID
 	TransR.Add "USERID", USER_ID
@@ -225,19 +225,19 @@
 	
 	'/********************************************************************************
 	' *
-	' * [ CPCGIì— HTTP POSTë¡œ ì „ë‹¬ë˜ëŠ” ë°ì´í„° ] **************************************
+	' * [ CPCGI¿¡ HTTP POST·Î Àü´ÞµÇ´Â µ¥ÀÌÅÍ ] **************************************
 	' *
 	' ********************************************************************************/
 
-	'/***[ í•„ìˆ˜ ë°ì´í„° ]************************************/
+	'/***[ ÇÊ¼ö µ¥ÀÌÅÍ ]************************************/
 	Dim ByPassValue
 	
 	'/******************************************************
-	' * BgColor		: ê²°ì œ íŽ˜ì´ì§€ Background Color ì„¤ì •
-	' * TargetURL		: ìµœì¢… ê²°ì œ ìš”ì²­ í•  CPì˜ CPCGI FULL URL
-	' * BackURL		: ì—ëŸ¬ ë°œìƒ ë° ì·¨ì†Œ ì‹œ ì´ë™ í•  íŽ˜ì´ì§€ì˜ FULL URL
-	' * IsUseCI		: CPì˜ CI ì‚¬ìš© ì—¬ë¶€( Y or N )
-	' * CIURL		: CPì˜ CI FULL URL
+	' * BgColor		: °áÁ¦ ÆäÀÌÁö Background Color ¼³Á¤
+	' * TargetURL		: ÃÖÁ¾ °áÁ¦ ¿äÃ» ÇÒ CPÀÇ CPCGI FULL URL
+	' * BackURL		: ¿¡·¯ ¹ß»ý ¹× Ãë¼Ò ½Ã ÀÌµ¿ ÇÒ ÆäÀÌÁöÀÇ FULL URL
+	' * IsUseCI		: CPÀÇ CI »ç¿ë ¿©ºÎ( Y or N )
+	' * CIURL		: CPÀÇ CI FULL URL
 	' ******************************************************/
 	ByPassValue.Add "BgColor", "00"
 	ByPassValue.Add "TargetURL", GetCurrentHost& "/pay/danal/CPCGI.asp"& param_str
@@ -245,17 +245,17 @@
 	ByPassValue.Add "IsUseCI", "N"
 	ByPassValue.Add "CIURL", GetCurrentHost& "/images/common/logo_header_bbq.png"
 	
-	'/***[ ì„ íƒ ì‚¬í•­ ]**************************************/
+	'/***[ ¼±ÅÃ »çÇ× ]**************************************/
 
 	'/******************************************************
-	' * Email		: ì‚¬ìš©ìž E-mail ì£¼ì†Œ - ê²°ì œ í™”ë©´ì— í‘œê¸° 
-	' * IsCharSet	: CPì˜ Webserver Character set
+	' * Email		: »ç¿ëÀÚ E-mail ÁÖ¼Ò - °áÁ¦ È­¸é¿¡ Ç¥±â 
+	' * IsCharSet	: CPÀÇ Webserver Character set
 	' ******************************************************/
 	ByPassValue.Add "Email", ""
 	ByPassValue.Add "IsCharSet", "UTF-8"
 
 	'/******************************************************
-	' ** CPCGIì— POST DATAë¡œ ì „ë‹¬ ë©ë‹ˆë‹¤.
+	' ** CPCGI¿¡ POST DATA·Î Àü´Þ µË´Ï´Ù.
 	' **
 	' ******************************************************/
 	ByPassValue.Add "ByBuffer", "This value bypass to CPCGI Page"
@@ -286,7 +286,7 @@ MakeFormInput ByPassValue , null
 	Else
 		'/**************************************************************************
 		' *
-		' * ê²°ì œ ì‹¤íŒ¨ì— ëŒ€í•œ ìž‘ì—…
+		' * °áÁ¦ ½ÇÆÐ¿¡ ´ëÇÑ ÀÛ¾÷
 		' *
 		' **************************************************************************/
 		Result 		= Res.Item("Result")
