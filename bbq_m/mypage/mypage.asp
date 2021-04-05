@@ -51,18 +51,18 @@
             		<a href="./membership.asp"><span class="ico-only ico-info01" style="color:#fff;"><em class="h-ddack">딹</em>멤버십 안내</span></a>
             	</div>
 				<%
-					
-					'페이코 쿠폰 오류 발급으로 인한 코드 (쿠폰번호 - CP00002347, 유효기간- 2021.03.23-2021.04.23) 
-					Dim couponTotalCount 
-					couponTotalCount = pCouponList.mTotalCount
-					IF couponTotalCount > 0 Then
-						For i = 0 To UBound(pCouponList.mHoldList)
-							If pCouponList.mHoldList(i).mCouponId = "CP00002347" Then
-								couponTotalCount = couponTotalCount - 1
-							end if 	
-						Next
-					End If			
-					
+
+               '페이코 쿠폰 오류 발급으로 인한 코드 (쿠폰번호 - CP00002347, 유효기간- 2021.03.23-2021.04.23)
+                Dim couponTotalCount
+                couponTotalCount = pCouponList.mTotalCount
+				IF couponTotalCount > 0 Then
+					For i = 0 To UBound(pCouponList.mHoldList)
+						If pCouponList.mHoldList(i).mCouponId = "CP00002347" Then
+							couponTotalCount = couponTotalCount - 1
+						end if
+					Next
+				End If
+
 				%>
             	<div class="mypage_box">
             		<ul>
@@ -75,11 +75,13 @@
             	<%
             	'유효스탬프 찾기
                 nowDate = Replace(Date(),"-","")
-                sql = " SELECT date_s as startYmd, date_e as endYmd FROM bt_event_mkt WHERE date_e >= "& nowDate &" AND date_s <= "& nowDate
+                sql = " SELECT date_s as startYmd, date_e as endYmd, event_idx FROM bt_event_mkt WHERE date_e >= '"& nowDate &"' AND date_s <= '"& nowDate&"' "
                 Set Stamp = dbconn.Execute(Sql)
+				event_idx = 0
                 If Not (Stamp.BOF Or Stamp.EOF) Then
                     startYmd = Stamp("startYmd") '스탬프 시작기간
                     endYmd = Stamp("endYmd") '스탬프 종료기간
+					event_idx =  Stamp("event_idx") '이벤트 아이디
                 End If
                 '유효스탬프 찾기 끝
             	'스탬프 조회
@@ -114,7 +116,7 @@
                 '고객 핸드폰번호 끝
                 If TotalStamp > 0 Then
                 '스탬프 비교
-		            CountQuery = " SELECT COUNT(*) as cnt FROM BT_EVENT_MKT_COUPON WHERE cust_id = '"& Session("userIdNo") &"' AND USE_YN = 'Y'"
+		            CountQuery = " SELECT SUM(CASE WHEN EVENT_ID = '"& event_idx &"' THEN 1 ELSE 0 END) AS CNT, COUNT(*) as TOT_cnt FROM BT_EVENT_MKT_COUPON WITH(NOLOCK) WHERE cust_id = '"& Session("userIdNo") &"' AND USE_YN = 'Y'"
                     Set Stamp_Coupon = dbconn.Execute(CountQuery)
                     Stamp_Coupon.movefirst
 		            If this1.item("stampCount") <> Stamp_Coupon("cnt") Then
@@ -163,7 +165,7 @@
 <!--            		<p style="font-size: 18px"><%=this1.item("stampName")%>&nbsp; <%=this_result.item("stampCount")%>장</p>-->
             		<p style="font-size: 18px"><%=this1.item("stampName")%>&nbsp; <%=Stamp_Coupon("cnt")%>장</p>
             		<!--<p style="font-size: 18px">치킨왕 누적 응모권 : <%=this_result.item("stampCount")%> 장</p>-->
-            		<p style="font-size: 18px">치킨왕 누적 응모권 : <%=Stamp_Coupon("cnt")%> 장</p>
+            		<p style="font-size: 18px">치킨왕 누적 응모권 : <%=Stamp_Coupon("TOT_cnt")%> 장</p>
             	</div>
             	<%
             	'End If
