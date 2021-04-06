@@ -408,6 +408,9 @@
     brand_code = Request.Cookies("brand_code")
 
     If giftcard_serial <> "" Then
+        Response.Cookies("giftcardSerial") = giftcard_serial
+        Response.Cookies("brandCode") = brand_code
+        Response.Cookies("branchId") = branch_id
         ' 상품권 조회
         Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
         httpRequest.Open "GET", "http://api.bbq.co.kr/GiftCard_2.svc/GetGiftCard/"& giftcard_serial, False
@@ -428,64 +431,8 @@
 
         ' 상품권 사용처리 data set
         If U_YN = "N" Then
-            data = "{"
-            data = data & """U_CD_BRAND"":""" & U_CD_BRAND & ""","
-            data = data & """U_CD_PARTNER"":""" & U_CD_PARTNER & ""","
-            data = data & """AMT"":""" & AMT & """"
-            data = data & "}"
-            ' 상품권 사용처리 data set
-            Set httpRequest = nothing ' 초기화
-            ' 상품권 사용처리
-            Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-            httpRequest.Open "POST", "http://api.bbq.co.kr/GiftCard_2.svc/UseGiftCard/"& giftcard_serial, False
-            httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
-            'httpRequest.SetRequestHeader "Content-Type", "application/raw"
-            httpRequest.Send data
-            'Response.Write httpRequest.responseText
-            'Response.Write data
-            ' 상품권 사용처리
-            '조회 상품권 text -> json
-            Set gJSON = New aspJSON
-            gpostResponse = "{""list"" : " & httpRequest.responseText & "}"
-            gJSON.loadJSON(gpostResponse)
-            Set this1 = gJSON.data("list")
-
-            U_CD_BRAND = this1.item("U_CD_BRAND") '사용브랜드코드
-            U_CD_PARTNER = this1.item("U_CD_PARTNER") ' 사용매장코드
-            OK_NUM = this1.item("OK_NUM") ' 승인번호
-            RTN_CD = this1.item("RTN_CD") ' 결과코드
-            RTN_MSG = this1.item("RTN_MSG") ' 결과코드
-
-            '조회 상품권 text -> json
-            '상품권 사용처리
-            If RTN_CD = "0000" Then
-                Set pCmd = Server.CreateObject("ADODB.Command")
-    		        With pCmd
-    			        .ActiveConnection = dbconn
-    			        .NamedParameters = True
-    			        .CommandType = adCmdStoredProc
-    			        .CommandText = "bp_giftcard_status"
-
-    			        .Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput,30,"giftcard_use")
-    			        .Parameters.Append .CreateParameter("@order_num", adVarChar, adParamInput,100,order_num)
-    			        .Parameters.Append .CreateParameter("@giftcard_number", adVarChar, adParamInput,100,giftcard_serial)
-    			        .Parameters.Append .CreateParameter("@u_cd_brand", adVarChar, adParamInput,10,U_CD_BRAND)
-    			        .Parameters.Append .CreateParameter("@u_cd_partner", adVarChar, adParamInput,50,U_CD_PARTNER)
-    			        .Parameters.Append .CreateParameter("@ok_num", adVarChar, adParamInput,50,OK_NUM)
-    			        .Execute
-    		        End With
-    		    Set pCmd = Nothing
-            Else
-                Response.Write "{""result"":99, ""result_msg"":"""& RTN_MSG &"""}"
-                Response.End
-            End If
-            '상품권 사용처리
-            '쿠키 제거
-            Response.Cookies("giftcard_serial") = ""
-            Response.Cookies("brand_code") = ""
-            '쿠키 제거
         Else
-            Response.Write "{""result"":99, ""result_msg"":""상품권 사용에 실패하였습니다.""}"
+            Response.Write "{""result"":99, ""result_msg"":""상품권이 유효하지 않습니다.""}"
             Response.End
         End If
     End If

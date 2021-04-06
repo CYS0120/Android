@@ -8,7 +8,10 @@
 	End If 
 	SAMSUNG_USEFG = "N"		'이벤트 메뉴가 있는지 체크
 	'===== 삼성이벤트 때문에 생성
-
+    '쿠키 제거
+    Response.Cookies("giftcard_serial") = ""
+    Response.Cookies("brand_code") = ""
+    '쿠키 제거
 	order_type = GetReqStr("order_type","")
 	Dim addr_idx : addr_idx = GetReqStr("addr_idx","")
 	Dim branch_id : branch_id = GetReqStr("branch_id","")
