@@ -909,9 +909,9 @@ gift_prod = GetReqStr("gift_prod","")
 giftproductcode = GetReqStr("giftproductcode","")
 giftproductclasscode = GetReqStr("giftproductclasscode","")
 If gift_prod <> "" Then
-'reg_ip = Request.ServerVariables("REMOTE_ADDR")
-'order_idx = GetReqStr("order_idx","")
-'Response.Write order_idx
+    'reg_ip = Request.ServerVariables("REMOTE_ADDR")
+    'order_idx = GetReqStr("order_idx","")
+    'Response.Write order_idx
     Set aCmd = Server.CreateObject("ADODB.Command")
         With aCmd
             .ActiveConnection = dbconn
@@ -970,7 +970,7 @@ End If
 				Temp_Order_Qty = Order_qty
 
 				total_amount = total_amount + (pRs("menu_price") * Order_qty)
-				If Temp_EVENT_POINT > 0 And ""&event_point_productcd = ""&pRs("menu_idx") Then '이벤트 포인트 사용한 경우
+				If Temp_EVENT_POINT > 0 And ""&event_point_productcd = ""&pRs("menu_idx") or giftproductcode = ""  Then '이벤트 포인트 사용한 경우
 
 					Set pItem = New clsProductList
 					If pRs("upper_order_detail_idx") = 0 Then
@@ -1005,7 +1005,7 @@ End If
 					Temp_Order_Qty = Temp_Order_Qty - 1
 					Temp_EVENT_POINT = 0
 				End If
-				If Temp_Order_Qty > 0 Then 
+				If Temp_Order_Qty > 0 Then
 					Set pItem = New clsProductList
 					If pRs("upper_order_detail_idx") = 0 Then
 						pitem.mProductClassCd = "M"

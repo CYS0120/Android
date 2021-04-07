@@ -10,6 +10,7 @@
 	'===== 삼성이벤트 때문에 생성
     '쿠키 제거
     Response.Cookies("giftcard_serial") = ""
+    Response.Cookies("giftcardSerial") = ""
     Response.Cookies("brand_code") = ""
     '쿠키 제거
 	order_type = GetReqStr("order_type","")
@@ -1079,9 +1080,11 @@ function calcTotalAmount() {
 
 		//bbq_mobile_type = "mobile"
 		if (bbq_mobile_type == "mobile") {
-		    <% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
+		    <% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
                 // document.location.href='https://1087.g2i.co.kr/pay/danal_auth/mobile/Ready.asp';
                 window.SGApp.openPopup('/pay/danal_auth/mobile/Ready.asp')
+            <% elseIf instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Then %>
+                webkit.messageHandlers.openPopup.postMessage('/pay/danal_auth/mobile/Ready.asp');
             <% else %>
                 window.open('', 'popupdanalauth', 'top=100, left=300, width=500px, height=600px, resizble=no, scrollbars=yes');
                $("#o_form").attr("target", "popupdanalauth");

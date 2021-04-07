@@ -157,7 +157,7 @@
             Else
             %>
             <script type="text/javascript">
-                alert("쿠폰 사용에 실패하였습니다.");
+                alert("상품권 사용에 실패하였습니다.");
                 location.href = "/";
             </script>
              <%
@@ -172,7 +172,7 @@
         Else
         %>
             <script type="text/javascript">
-                alert("쿠폰 사용에 실패하였습니다.");
+                alert("상품권 사용에 실패하였습니다.");
                 location.href = "/";
             </script>
              <%
