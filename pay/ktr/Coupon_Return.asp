@@ -62,6 +62,7 @@
 		pay_amt = aRs("pay_amt")
 		delivery_fee = aRs("delivery_fee")
 		branch_id = aRs("branch_id")
+		brand_code = aRs("brand_code")
 		branch_name = aRs("branch_name")
 		branch_phone = aRs("branch_phone")
 		branch_tel = aRs("branch_tel")
@@ -83,8 +84,6 @@
 	Set aRs = Nothing
 
     giftcard_serial = Request.Cookies("giftcardSerial")
-    brand_code = Request.Cookies("brandCode")
-    branch_id = Request.Cookies("branchId")
     If giftcard_serial <> "" Then
         ' 상품권 조회
         Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
@@ -133,9 +132,9 @@
             OK_NUM = this1.item("OK_NUM") ' 승인번호
             RTN_CD = this1.item("RTN_CD") ' 결과코드
             RTN_MSG = this1.item("RTN_MSG") ' 결과코드
-            Response.Write U_CD_BRAND& "<BR>111"
-            Response.Write U_CD_PARTNER& "<BR>222"
-            Response.Write order_num& "<BR>333"
+            'Response.Write U_CD_BRAND& "브랜드코드<BR>"
+            'Response.Write U_CD_PARTNER& "매장코드<BR>"
+            'Response.Write order_num& "주문번호<BR>"
             '조회 상품권 text -> json
             '상품권 사용처리
             If RTN_CD = "0000" Then

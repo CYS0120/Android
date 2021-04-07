@@ -409,8 +409,6 @@
 
     If giftcard_serial <> "" Then
         Response.Cookies("giftcardSerial") = giftcard_serial
-        Response.Cookies("brandCode") = brand_code
-        Response.Cookies("branchId") = branch_id
         ' 상품권 조회
         Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
         httpRequest.Open "GET", "http://api.bbq.co.kr/GiftCard_2.svc/GetGiftCard/"& giftcard_serial, False

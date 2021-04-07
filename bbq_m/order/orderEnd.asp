@@ -71,6 +71,7 @@
 		pay_amt = aRs("pay_amt")
 		delivery_fee = aRs("delivery_fee")
 		branch_id = aRs("branch_id")
+		brand_code = aRs("brand_code")
 		branch_name = aRs("branch_name")
 		branch_phone = aRs("branch_phone")
 		branch_tel = aRs("branch_tel")
@@ -146,8 +147,6 @@
 	dbconn.Execute(Sql)
 
 	giftcard_serial = Request.Cookies("giftcardSerial")
-    brand_code = Request.Cookies("brandCode")
-    branch_id = Request.Cookies("branchId")
     If giftcard_serial <> "" Then
         ' 상품권 조회
         Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
