@@ -2013,11 +2013,11 @@ function calcTotalAmount() {
                             <button type="button" onclick="javascript:lpOpen('.lp_paymentCoupon');" class="btn btn-sm btn-grayLine">쿠폰적용</button>
 						</dd>
 					</dl>
-					<dl>
 					<%
-					    End If
+                        End If
                     End If
                     %>
+					<dl>
 						<dt>
 							<span style="width:100%; display:block;">포인트 <em>( 사용가능 포인트 : <strong><%=FormatNumber(resOGLFO.mTotalPoint,0)%>P</strong> )</em></span>
 						</dt>
