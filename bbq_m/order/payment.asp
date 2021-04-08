@@ -3244,17 +3244,11 @@ function calcTotalAmount() {
                 dataType: "json",
                 success: function(res) {
                     if (res.result == 0) {
-                        /*showAlertMsg({
-                           msg:"쿠폰리스트 불러오기 성공" + res.Count[0].giftcard_idx
-                        });*/
                     }
                     
                 },
                 error: function(data, status, err) {
                     console.log("error : " + err);
-                   /* showAlertMsg({
-                        msg: "쿠폰리스트를 불러오지 못했습니다."
-                    });*/
                 }
 
             });

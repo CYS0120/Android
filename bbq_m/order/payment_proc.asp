@@ -970,7 +970,7 @@ End If
 				Temp_Order_Qty = Order_qty
 
 				total_amount = total_amount + (pRs("menu_price") * Order_qty)
-				If Temp_EVENT_POINT > 0 And ""&event_point_productcd = ""&pRs("menu_idx") or giftproductcode = ""  Then '이벤트 포인트 사용한 경우
+				If Temp_EVENT_POINT > 0 And ""&event_point_productcd = ""&pRs("menu_idx") Then '이벤트 포인트 사용한 경우
 
 					Set pItem = New clsProductList
 					If pRs("upper_order_detail_idx") = 0 Then
@@ -980,7 +980,8 @@ End If
 						pitem.mProductClassCd = "S"
 						pItem.mProductClassNm = "사이드"
 					End If
-                    If pRs("menu_idx") = giftproductcode Then
+					'giftproductcode가 문자열로 들어오기에 int형 menu_idx를 문자열화 시킨 후 비교
+                    If Cstr(pRs("menu_idx")) = giftproductcode Then
                         If giftproductclasscode = "M" Then
 						    pItem.mProductClassNm = "메인"
                         ElseIf giftproductclasscode = "S" Then
@@ -1014,7 +1015,8 @@ End If
 						pitem.mProductClassCd = "S"
 						pItem.mProductClassNm = "사이드"
 					End If
-                    If CInt(pRs("menu_idx")) = CInt(giftproductcode) Then
+					'giftproductcode가 문자열로 들어오기에 int형 menu_idx를 문자열화 시킨 후 비교
+                    If Cstr(pRs("menu_idx")) = giftproductcode Then
                         If giftproductclasscode = "M" Then
 						    pItem.mProductClassNm = "메인"
                         ElseIf giftproductclasscode = "S" Then

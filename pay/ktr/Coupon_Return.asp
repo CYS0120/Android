@@ -300,8 +300,8 @@
 %>
 				<script type="text/javascript">
 					alert("멤버십 처리 도중 오류가 발생했습니다.");
-					// opener.location.href = "/";
-					// window.close();
+					opener.location.href = "/";
+					window.close();
 				</script>
 <%
 				Response.End
