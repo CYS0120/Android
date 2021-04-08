@@ -1996,7 +1996,11 @@ function calcTotalAmount() {
                              <!--<button type="button" onclick="javascript:Giftcard_scan();" class="btn btn-sm btn-grayLine" style="line-height: 0 !important;"><img src="/images/order/barcode-scan.png" alt="barcode_scan" width="30px" height="30px"></button>-->
                              <button type="button" onclick="javascript:Giftcard_ListCount('list');" class="btn btn-sm btn-grayLine">상품권적용</button>
                         </dd>
-                    </dl>	       
+                    </dl>
+                    <%
+                    If ECOUPON_POINTEVENT_YN = "N" Then 'E쿠폰을 사용하는 경우는 숨김
+                        If POINTEVENT_VIEW_YN = "Y" Then
+                    %>
 					<dl>
 						<dt >
 							<span>쿠폰 <em>( 사용가능 쿠폰 : <strong><%=ubound(resOGLFO.mCouponList)+1%> 장</strong> )</em></span>
@@ -2010,6 +2014,10 @@ function calcTotalAmount() {
 						</dd>
 					</dl>
 					<dl>
+					<%
+					    End If
+                    End If
+                    %>
 						<dt>
 							<span style="width:100%; display:block;">포인트 <em>( 사용가능 포인트 : <strong><%=FormatNumber(resOGLFO.mTotalPoint,0)%>P</strong> )</em></span>
 						</dt>
