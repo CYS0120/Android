@@ -1999,7 +1999,6 @@ function calcTotalAmount() {
                     </dl>
                     <%
                     If ECOUPON_POINTEVENT_YN = "N" Then 'E쿠폰을 사용하는 경우는 숨김
-                        If POINTEVENT_VIEW_YN = "Y" Then
                     %>
 					<dl>
 						<dt >
@@ -2014,7 +2013,6 @@ function calcTotalAmount() {
 						</dd>
 					</dl>
 					<%
-                        End If
                     End If
                     %>
 					<dl>
@@ -2181,52 +2179,57 @@ function calcTotalAmount() {
 	If SGPayOn <> True Then
 		vUseSGPAY = "N"
 	End If
+   ' 페이코인 당일 이벤트
+   paycoin_event = ""
+   if left(date(), 10) = "2021-04-08" then
+      paycoin_event = "<div alt=""페이백 찬스!!"" style=""position: relative; top:2px; left:2px; font-size:8px; color:red;"">결제시 최대 20,000원 페이백!</div>"
+   end if
 
-	'If vUseDANAL = "Y" Or vUsePAYCO = "Y" Then
-	If vUseDANAL = "Y" Or vUsePAYCO = "Y" Or vUseSGPAY = "Y" Or vUsePAYCOIN = "Y" Then		'SGPAY 추가(사용 가맹점 여부에 따라 노출/비노출) / Sewoni31™ / 2019.12.09
+   'If vUseDANAL = "Y" Or vUsePAYCO = "Y" Then
+   If vUseDANAL = "Y" Or vUsePAYCO = "Y" Or vUseSGPAY = "Y" Or vUsePAYCOIN = "Y" Then      'SGPAY 추가(사용 가맹점 여부에 따라 노출/비노출) / Sewoni31™ / 2019.12.09
 %>
-					<dl class="online">
-						<dt>일반결제</dt>
-						<dd>
-							<ul>
-								<% if cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) then %>
-									<% If vUsePAYCOIN = "Y" Then %>
-										<li><button type="button" id="payment_paycoin" onclick="javascript:setPayMethod('Paycoin');" class="payment_choiceSel"><img src="../images/order/paycoin_event_label2.png" alt="페이코인 50%" class="payco"/>&nbsp;페이코인</button></li>
-									<% end if %>
-								<% end if %>
+       <dl class="online">
+          <dt>일반결제</dt>
+          <dd>
+             <ul>
+                <% if cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) then %>
+                   <% If vUsePAYCOIN = "Y" Then %>
+                      <li><button type="button" id="payment_paycoin" onclick="javascript:setPayMethod('Paycoin');" class="payment_choiceSel"><img src="../images/order/paycoin_event_label2.png" alt="페이코인 50%" class="payco"/>&nbsp;페이코인</button></li>
+                   <% end if %>
+                <% end if %>
 
-								<% If vCPID <> "" And vUseDANAL = "Y" Then %>
-									<li><button type="button" id="payment_card" onclick="javascript:setPayMethod('Card');" class="payment_choiceSel">신용카드</button></li>
-									<li><button type="button" id="payment_phone" onclick="javascript:setPayMethod('Phone');" class="payment_choiceSel">휴대전화 결제</button></li>
-								<% end if %>
+                <% If vCPID <> "" And vUseDANAL = "Y" Then %>
+                   <li><button type="button" id="payment_card" onclick="javascript:setPayMethod('Card');" class="payment_choiceSel">신용카드</button></li>
+                   <li><button type="button" id="payment_phone" onclick="javascript:setPayMethod('Phone');" class="payment_choiceSel">휴대전화 결제</button></li>
+                <% end if %>
 
-								<% If vUseSGPAY = "Y" Then %>
-									<li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel">BBQ PAY</button></li>
-								<% end if %>
+                <% If vUseSGPAY = "Y" Then %>
+                   <li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel">BBQ PAY</button></li>
+                <% end if %>
 
-								<%
-									If SAMSUNG_USEFG = "Y" Then 
-									Else 
-										If vUsePAYCO = "Y" Then
-								%>
-											<li><button type="button" id="payment_payco" onclick="javascript:setPayMethod('Payco');" class="payment_choiceSel">페이코</button></li>
-								<%
-										End If
-									End If
-								%>
+                <%
+                   If SAMSUNG_USEFG = "Y" Then
+                   Else
+                      If vUsePAYCO = "Y" Then
+                %>
+                         <li><button type="button" id="payment_payco" onclick="javascript:setPayMethod('Payco');" class="payment_choiceSel">페이코</button></li>
+                <%
+                      End If
+                   End If
+                %>
 
-								<% if cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) then %>
-								<% else %>
-									<% If vUsePAYCOIN = "Y" Then %>
-										<li><button type="button" id="payment_paycoin" onclick="javascript:setPayMethod('Paycoin');" class="payment_choiceSel">페이코인</button></li>
-									<% end if %>
-								<% end if %>
+                <% if cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) then %>
+                <% else %>
+                   <% If vUsePAYCOIN = "Y" Then %>
+                      <li><button type="button" id="payment_paycoin" onclick="javascript:setPayMethod('Paycoin');" class="payment_choiceSel"><%=paycoin_event%>페이코인</button></li>
+                   <% end if %>
+                <% end if %>
 
-							</ul>
-						</dd>
-					</dl>
+             </ul>
+          </dd>
+       </dl>
 <%
-	End If
+   End If
 %>
 
 
