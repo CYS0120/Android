@@ -86,7 +86,7 @@ response.write smartcon_Result.m_EventCode & "<BR>"
 
             Dim vMenuIdx, vMenuTitle, vMenuName, vMenuPrice, vMainFilePath, vMainFileName
             If Not (aRs.BOF Or aRs.EOF) Then
-                RESULT_MSG = "사용가능한 쿠폰입니다."
+                RESULT_MSG = "사용가능한 모바일 상품권입니다."
                 vMenuIdx = aRs("menu_idx")
                 vMenuName = aRs("menu_name")
                 vMenuPrice = aRs("menu_price")
@@ -122,7 +122,7 @@ response.write smartcon_Result.m_EventCode & "<BR>"
 						aRs.MoveFirst
 
 						if ErrCode <> 0 then 
-							Response.Write "{""result"":1,""message"":""해당하는 쿠폰은 이미 등록 되어있습니다.""}"
+							Response.Write "{""result"":1,""message"":""해당하는 모바일 상품권은 이미 등록 되어있습니다.""}"
 							response.end 
 						end if 
 					End If
@@ -134,11 +134,11 @@ response.write smartcon_Result.m_EventCode & "<BR>"
                 menuItem = "M$$"&vMenuIdx&"$$0$$"&vMenuPrice&"$$"&vMenuName&"$$"&vMainFilePath&vMainFileName&"$$"&txtPIN
                 Response.Write "{""result"":0,""message"":""" & RESULT_MSG & """,""menuItem"":""" & menuItem &"""}"
             Else
-                Response.Write "{""result"":1,""message"":""해당하는 쿠폰이 없습니다.""}"
+                Response.Write "{""result"":1,""message"":""해당하는 모바일 상품권이 없습니다.""}"
             End If
             Response.End
         Else
-            Response.Write "{""result"":3,""message"":""" & "쿠폰정보가 존재하지 않습니다." & """}"
+            Response.Write "{""result"":3,""message"":""" & "모바일 상품권 정보가 존재하지 않습니다." & """}"
             Response.End
         End If
     Else

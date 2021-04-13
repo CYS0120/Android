@@ -124,7 +124,7 @@
 		beer_yn = fNullCheck(aRs("beer_yn"), "N", "")
 	End If
 
-	'E 쿠폰이 있을 경우 해당 매장이 쿠폰 사용하는 매장인지 조회
+	'모바일 상품권이 있을 경우 해당 매장이 모바일 상품권 사용하는 매장인지 조회
 	Dim CouponYNCheck : CouponYNCheck = "Y"
 
 	Dim iLen : iLen = cJson.length
@@ -236,7 +236,7 @@
 %>
 
 <script type="text/javascript">
-	showAlertMsg({msg:"해당 매장은 쿠폰사용이 불가능한 매장입니다.", ok: function(){
+	showAlertMsg({msg:"해당 매장은 모바일 상품권 사용이 불가능한 매장입니다.", ok: function(){
 		document.location.href='cart.asp';
 	}});
 </script>
@@ -532,7 +532,7 @@ function setCouponUse(obj) {
 }
 
 function reset_coupon_apply(obj) {
-	// 할인쿠폰 적용 부분 제외...
+	// 할인 모바일 상품권 적용 부분 제외...
 	$("#c_No").val('');
 	$("#c_Id").val('');
 	$("#discount_amount").val('0');
@@ -541,7 +541,7 @@ function reset_coupon_apply(obj) {
 }
 
 function coupon_apply() {
-	// 할인쿠폰 적용
+	// 할인 모바일 상품권 적용
 	if ($("#c_Id").val() != "") {
 		$("#coupon_no").val($("#c_No").val());
 		$("#coupon_id").val($("#c_Id").val());
@@ -592,7 +592,7 @@ function coupon_apply() {
                         calcTotalAmount();
                 },
                 error: function(xhr) {
-                    showAlertMsg({msg:"쿠폰 적용에 실패하였습니다."});
+                    showAlertMsg({msg:"모바일 상품권 적용에 실패하였습니다."});
                 }
             });
 	    }
@@ -909,7 +909,7 @@ function calcTotalAmount() {
 		$("#payment_later").removeClass("on");
 		$("#payment_cash").removeClass("on");
 
-		if ( (order_amt + delivery) == 0 && ecoupon_amt > 0 ){	//결제할 금액이 없으나 E쿠폰금액이 있다면
+		if ( (order_amt + delivery) == 0 && ecoupon_amt > 0 ){	//결제할 금액이 없으나 모바일 상품권 금액이 있다면
 			$("#pay_method").val("ECoupon");
 		}else{
 			$("#pay_method").val("Point");
@@ -1238,7 +1238,7 @@ function calcTotalAmount() {
 			// 후불 결제는 바로처림
 			case "Point":  // 전액포인트 결제
 			case "Later":
-			case "ECoupon":  // 전액E쿠폰
+			case "ECoupon":  // 모바일 상품권
 			case "Cash":
 				$('#paytype').val(pay_method);
 				// window.open("","pgp",pgPopupOption);
@@ -1468,7 +1468,7 @@ function calcTotalAmount() {
 						Dim ecoupon_amt
 						ecoupon_amt = 0
 
-						For i = 0 To iLen - 1	'이쿠폰 사용여부 체크
+						For i = 0 To iLen - 1	'모바일 상품권 사용여부 체크
 							CouponPin = cJson.get(i).value.pin
 							If CouponPin <> "" Then
 								ECOUPON_POINTEVENT_YN = "Y"
@@ -1492,7 +1492,7 @@ function calcTotalAmount() {
 
 							ProdUnitPrice = cJson.get(i).value.price
 							CouponPin = cJson.get(i).value.pin
-							If ECOUPON_POINTEVENT_YN = "Y" Then		'이쿠폰 사용시 포인트 사용못하게 처리
+							If ECOUPON_POINTEVENT_YN = "Y" Then		'모바일 상품권 사용시 포인트 사용못하게 처리
 								If CouponPin <> "" Then 
 									ecoupon_amt = ecoupon_amt + ProdUnitPrice
 									ProdUnitPrice = 0
@@ -1542,7 +1542,7 @@ function calcTotalAmount() {
 
 
 							' 15000 처리때문에 넣음
-							' e-쿠폰은 0원으로 보이기에 원래 가격을 가져와야됨.
+							' 모바일 상품권은 0원으로 보이기에 원래 가격을 가져와야됨.
 							vMenuPrice = 0
 							vAdultPrice = 0
 
@@ -1596,7 +1596,7 @@ function calcTotalAmount() {
 										<%=cJson.get(i).value.nm%>
 
 										<% If CouponPin <> "" Then %>
-											<font color='red'>[E-쿠폰]</font>
+											<font color='red'>[모바일 상품권]</font>
 										<%		End If %>
 									</dt>
 									<dd class="cart_choice">&nbsp;<span>기본 : <span><%=FormatNumber(ProdUnitPrice,0)%></span>원</span><!-- <%=cJson.get(i).value.qty%> --></dd>
@@ -1620,7 +1620,7 @@ function calcTotalAmount() {
 													row_tot_price = row_tot_price + (cJson.get(i).value.side.get(skey).price * cJson.get(i).value.side.get(skey).qty)
 
 													' 15000 처리때문에 넣음
-													' e-쿠폰은 0원으로 보이기에 원래 가격을 가져와야됨.
+													' 모바일 상품권은 0원으로 보이기에 원래 가격을 가져와야됨.
 													vMenuPrice = 0													
 													vAdultPrice = 0
 													
@@ -1965,10 +1965,10 @@ function calcTotalAmount() {
 			<!-- 쿠폰 및 포인트 사용 -->
 			<div class="section-wrap section-payment" id="coupon_area">
 				<div class="section-header order_head">
-					<h3>쿠폰 및 포인트 사용</h3>
+					<h3>모바일 상품권 및 포인트 사용</h3>
 				</div>
 				<div class="area border">
-					<%		If ECOUPON_POINTEVENT_YN = "N" Then 'E쿠폰을 사용하는 경우는 숨김
+					<%		If ECOUPON_POINTEVENT_YN = "N" Then '모바일 상품권을 사용하는 경우는 숨김
 								If POINTEVENT_VIEW_YN = "Y" Then 
 					%>
 					<dl>
@@ -1998,18 +1998,18 @@ function calcTotalAmount() {
                         </dd>
                     </dl>
                     <%
-                    If ECOUPON_POINTEVENT_YN = "N" Then 'E쿠폰을 사용하는 경우는 숨김
+                    If ECOUPON_POINTEVENT_YN = "N" Then '모바일 상품권을 사용하는 경우는 숨김
                     %>
 					<dl>
 						<dt >
-							<span>쿠폰 <em>( 사용가능 쿠폰 : <strong><%=ubound(resOGLFO.mCouponList)+1%> 장</strong> )</em></span>
+							<span>모바일 상품권 <em>( 사용가능 모바일 상품권 : <strong><%=ubound(resOGLFO.mCouponList)+1%> 장</strong> )</em></span>
 						</dt>
 						<dd>
 							<input type="hidden" id="coupon_no" name="coupon_no">
 							<input type="hidden" id="coupon_id" name="coupon_id">
 							<input type="text" id="coupon_amt" name="coupon_amt" value="0" numberOnly readonly style="width:150px; margin-right:5px"> 
 							<input type="text" id="coupon_amt_prod" name="coupon_amt_prod" value="0" numberOnly readonly style="width:150px; margin-right:5px; display:none;"> 
-                            <button type="button" onclick="javascript:lpOpen('.lp_paymentCoupon');" class="btn btn-sm btn-grayLine">쿠폰적용</button>
+                            <button type="button" onclick="javascript:lpOpen('.lp_paymentCoupon');" class="btn btn-sm btn-grayLine">모바일 상품권 적용</button>
 						</dd>
 					</dl>
 					<%
@@ -2342,7 +2342,7 @@ function calcTotalAmount() {
 
 
 
-	<!-- Layer Popup : 쿠폰적용 -->
+	<!-- Layer Popup : 모바일 상품권 적용 -->
 	<div id="LP_paymentCoupon" class="lp-wrapper lp_paymentCoupon">
 
 		<!-- LP Wrap -->
@@ -2350,7 +2350,7 @@ function calcTotalAmount() {
 
 			<!-- LP Header -->
 			<div class="lp-header">
-				<h2>쿠폰적용</h2>
+				<h2>모바일 상품권 적용</h2>
 			</div>
 			<!--// LP Header -->
 			<!-- LP Container -->
@@ -2381,7 +2381,7 @@ function calcTotalAmount() {
 						<section class="section section_orderCoupon">
 							<div class="section-header order_head">
 								<!-- <h3 class="fl">상품별 쿠폰 적용</h3> -->
-								<div class="fr mar-t10">( 사용가능 쿠폰 : <strong class="red"><% If CheckLogin() Then response.write ubound(resOGLFO.mCouponList)+1 end if  %> 장</strong> )</div>
+								<div class="fr mar-t10">( 사용가능 모바일 상품권 : <strong class="red"><% If CheckLogin() Then response.write ubound(resOGLFO.mCouponList)+1 end if  %> 장</strong> )</div>
 							</div>
 							<%
 								'For i = 0 To iLen - 1
@@ -2419,7 +2419,7 @@ function calcTotalAmount() {
 											If CheckLogin() Then
 											If UBound(resOGLFO.mCouponList)+1 >= 1 Then
 										%>
-											<option value="">적용할 쿠폰을 선택해주세요.</option>
+											<option value="">적용할 모바일 상품권을 선택해주세요.</option>
 										<%
 											For j = 0 To UBound(resOGLFO.mCouponList)
 										%>
@@ -2431,7 +2431,7 @@ function calcTotalAmount() {
 										<%
 											Else
 										%>
-										<option value="">적용할 쿠폰이 없습니다.</option>
+										<option value="">적용할 모바일 상품권이 없습니다.</option>
 									<%
 										End If
 										End If
