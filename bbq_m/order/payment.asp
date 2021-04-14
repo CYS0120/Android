@@ -168,6 +168,7 @@
 
 	If Not IsNumeric(vDeliveryFee) Then vDeliveryFee = 0
 	'배송비 프로모션 2021-04-10
+	DSP_DeliveryFee = vDeliveryFee
 	Delivery_Event vDeliveryFee
     if DSP_DeliveryFee <> vDeliveryFee then
         DSP_DeliveryFee = "<strike style='color:#e31937'>" & FormatNumber(DSP_DeliveryFee,0) & "</strike>&nbsp;" & FormatNumber(vDeliveryFee,0)
@@ -889,7 +890,7 @@ function calcTotalAmount() {
 
 	$("#calc_tot_amt").text(addCommas(order_amt)+"원");
 <%If order_type = "D" Then%>
-	$("#calc_deli_fee").text(addCommas(delivery)+"원");
+	// $("#calc_deli_fee").text(addCommas(delivery)+"원");
 <%End If%>
     if(discount > 0){
 	    $("#calc_dc_amt").text("- "+addCommas(discount)+"원");
