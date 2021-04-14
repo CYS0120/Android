@@ -1,4 +1,5 @@
 <!--#include virtual="/api/include/utf8.asp"-->
+<!--#include virtual="/order/Event_Set.asp"-->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <%
 	'===== 삼성이벤트 때문에 생성
@@ -166,6 +167,8 @@
 	Next
 
 	If Not IsNumeric(vDeliveryFee) Then vDeliveryFee = 0
+	'배송비 프로모션 2021-04-10
+	Delivery_Event vDeliveryFee
 
 	If order_type = "P" Then vDeliveryFee = 0
 
