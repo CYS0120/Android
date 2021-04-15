@@ -1,6 +1,6 @@
 ﻿<!--#include virtual="/api/include/utf8.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
-
+<!--#include virtual="/order/Event_Set.asp"-->
 <%
     Dim addr_idx, branch_id, cart_value, delivery_fee, pay_method, total_amount
     Dim addr_name, mobile, zip_code, address_main, address_detail, delivery_message
@@ -151,6 +151,9 @@
 	End If 
 
 	If Not IsNumeric(vDeliveryFee) Then vDeliveryFee = 0
+	'배송비 프로모션 2021-04-10
+    Delivery_Event vDeliveryFee
+
 	If order_type = "P" Then vDeliveryFee = 0
 	Set aRs = Nothing
 

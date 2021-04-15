@@ -1,4 +1,5 @@
 <!--#include virtual="/api/include/utf8.asp"-->
+<!--#include virtual="/order/Event_Set.asp"-->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <%
 	'===== 삼성이벤트 때문에 생성
@@ -166,6 +167,12 @@
 	Next
 
 	If Not IsNumeric(vDeliveryFee) Then vDeliveryFee = 0
+	'배송비 프로모션 2021-04-10
+	DSP_DeliveryFee = vDeliveryFee
+	Delivery_Event vDeliveryFee
+    if DSP_DeliveryFee <> vDeliveryFee then
+        DSP_DeliveryFee = "<strike style='color:#e31937'>" & FormatNumber(DSP_DeliveryFee,0) & "</strike>&nbsp;" & FormatNumber(vDeliveryFee,0)
+    end if
 
 	If order_type = "P" Then vDeliveryFee = 0
 
@@ -883,7 +890,7 @@ function calcTotalAmount() {
 
 	$("#calc_tot_amt").text(addCommas(order_amt)+"원");
 <%If order_type = "D" Then%>
-	$("#calc_deli_fee").text(addCommas(delivery)+"원");
+	// $("#calc_deli_fee").text(addCommas(delivery)+"원");
 <%End If%>
     if(discount > 0){
 	    $("#calc_dc_amt").text("- "+addCommas(discount)+"원");
@@ -2264,7 +2271,7 @@ function calcTotalAmount() {
 						<%If order_type = "D" Then%>
 						<dl class="tr">
 							<dt class="td">배달비</dt>
-							<dd class="td" id="calc_deli_fee"><%=FormatNumber(vDeliveryFee,0)%>원</dd>
+							<dd class="td" id="calc_deli_fee"><%=DSP_DeliveryFee%>원</dd>
 						</dl>
 						<%End If%>
 						<%If vAdd_price_yn = "Y" And add_total_price > 0 Then%>
