@@ -7,7 +7,7 @@
   Response.Cookies("bbq_app_type").Expires = DateAdd("yyyy", 1, now())
   end if
 
-  if trim(Session("userId")) = "" and Request.Cookies("refresh_token") <> "" then
+  if trim(Session("userId")) = "" or Request.Cookies("refresh_token") <> "" then
     access_token = Request.Cookies("access_token")
     access_token_secret = Request.Cookies("access_token_secret")
     refresh_token = Request.Cookies("refresh_token")
@@ -16,8 +16,10 @@
     auto_login_yn = Request.Cookies("auto_login_yn")
 
     multi_domail_login_url = "/api/loginToken.asp?access_token="& access_token &"&access_token_secret="& access_token_secret &"&refresh_token="& refresh_token &"&token_type="& token_type &"&expires_in="& expires_in &"&auto_login_yn="& auto_login_yn &"&domain="& domain &"&rtnUrl="& rtnUrl
-
+    If Request.Cookies("loginCheck") = "" Then
+        Response.Cookies("loginCheck") = "Y"
     Response.Redirect multi_domail_login_url
+    End If
   end if
 %>
 

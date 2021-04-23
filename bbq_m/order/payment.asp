@@ -3043,7 +3043,7 @@ function calcTotalAmount() {
                 $('#pay_ok_go_btn', document).removeClass('btn-red').addClass('btn-lightGray');
             }
         }
-	    
+
 	    function Giftcard_Upload(data){
 	        if(data != ""){
 	            $("#giftPIN").val(data)
