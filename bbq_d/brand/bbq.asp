@@ -1,4 +1,4 @@
-<!--#include virtual="/api/include/utf8.asp"-->
+﻿<!--#include virtual="/api/include/utf8.asp"-->
 
 <!doctype html>
 <html lang="ko">
@@ -303,9 +303,21 @@ jQuery(document).ready(function(e) {
 							<div class="area active">
 
 								<div class="box">
+									<h4>2021</h4>
+									<ul>
+										<li>4월 ‘국가브랜드대상’ 브랜드치킨전문점 부문(중앙일보/대한민국 국가브랜드 선정 위원회)[3년 연속]</li>
+										<li>4월 대한민국 100대 브랜드 27위(브랜드스탁)</li>
+										<li>3월 제23회 ‘대한민국 브랜드 스타’ 치킨 부문 브랜드 가치 1위(브랜드스탁)[7년 연속]</li>
+										<li>3월 대한민국 명품브랜드 대상(한국경제신문)[BBQ, 우쿠야, 올떡 2년연속]</li>
+										<li>2월 KCAB 한국소비자 평가 최고의 브랜드 대상(동아일보)</li>
+										<li>1월 고객이 가장 추천하는 브랜드 대상(중앙일보)</li>
+									</ul>
+								</div>
+
+								<div class="box">
 									<h4>2020</h4>
 									<ul>
-										<li>07월 매경 100대 프랜차이즈 수상(BBQ/올떡/우쿠야)
+										<li>07월 매경 100대 프랜차이즈 수상(BBQ/올떡/우쿠야)</li>
 										<li>06월 근로자의 날 유공 정부포상 수상</li>
 										<li>06월 대한민국 창업대상 수상</li>
 										<li>05월 국가브랜드 대상 수상</li>
