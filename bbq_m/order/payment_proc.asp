@@ -1153,6 +1153,11 @@ End If
 	End If 
 '	End If
 
+	IF errCode <> 0 THEN
+		Response.Write "{""result"":1, ""result_msg"":""" & errMsg & """}"
+		Response.End
+	END IF
+
 	' 페이코인 50% 이벤트시 상태값 바꿈.
 	if pay_method = "Paycoin" And cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) Then
 		Sql = " UPDATE bt_order SET membership_status = 20 WHERE order_idx="& order_idx
@@ -1176,5 +1181,6 @@ End If
 		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다. 다시 시도해 주세요.""}"
 		Response.End
 	End If 
+
     Response.Write "{""result"":0, ""result_msg"":""주문이 저장되었습니다."", ""order_idx"":"& order_idx &",""order_num"":""" & order_num & """}"
 %>
