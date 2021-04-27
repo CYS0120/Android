@@ -1,6 +1,6 @@
 ﻿<!--#include virtual="/api/include/utf8.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
-
+<!--#include virtual="/order/Event_Set.asp"-->
 <%
     Dim addr_idx, branch_id, cart_value, delivery_fee, pay_method, total_amount
     Dim addr_name, mobile, zip_code, address_main, address_detail, delivery_message
@@ -151,6 +151,9 @@
 	End If 
 
 	If Not IsNumeric(vDeliveryFee) Then vDeliveryFee = 0
+	'배송비 프로모션 2021-04-10
+    Delivery_Event vDeliveryFee
+
 	If order_type = "P" Then vDeliveryFee = 0
 	Set aRs = Nothing
 
@@ -1150,6 +1153,11 @@ End If
 	End If 
 '	End If
 
+	IF errCode <> 0 THEN
+		Response.Write "{""result"":1, ""result_msg"":""" & errMsg & """}"
+		Response.End
+	END IF
+
 	' 페이코인 50% 이벤트시 상태값 바꿈.
 	if pay_method = "Paycoin" And cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) Then
 		Sql = " UPDATE bt_order SET membership_status = 20 WHERE order_idx="& order_idx
@@ -1173,5 +1181,6 @@ End If
 		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다. 다시 시도해 주세요.""}"
 		Response.End
 	End If 
+
     Response.Write "{""result"":0, ""result_msg"":""주문이 저장되었습니다."", ""order_idx"":"& order_idx &",""order_num"":""" & order_num & """}"
 %>

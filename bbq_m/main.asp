@@ -7,7 +7,19 @@
   Response.Cookies("bbq_app_type").Expires = DateAdd("yyyy", 1, now())
   end if
 
-  if trim(Session("userId")) = "" and Request.Cookies("refresh_token") <> "" then
+  if trim(Session("userId")) = "" or Request.Cookies("refresh_token") <> "" then
+    access_token = Request.Cookies("access_token")
+    access_token_secret = Request.Cookies("access_token_secret")
+    refresh_token = Request.Cookies("refresh_token")
+    token_type = Request.Cookies("token_type")
+    expires_in = Request.Cookies("expires_in")
+    auto_login_yn = Request.Cookies("auto_login_yn")
+
+    multi_domail_login_url = "/api/loginToken.asp?access_token="& access_token &"&access_token_secret="& access_token_secret &"&refresh_token="& refresh_token &"&token_type="& token_type &"&expires_in="& expires_in &"&auto_login_yn="& auto_login_yn &"&domain="& domain &"&rtnUrl="& rtnUrl
+    If Request.Cookies("loginCheck") = "" Then
+        Response.Cookies("loginCheck") = "Y"
+    Response.Redirect multi_domail_login_url
+    End If
   end if
 %>
 
@@ -177,7 +189,7 @@
 					<ul class="h-main_order">
 						<li><div class="h-main_order01"><a href="/order/delivery.asp?order_type=D">배달주문</a></div></li>
 						<li><div class="h-main_order02"><a href="/order/delivery.asp?order_type=P">포장주문</a></div></li>
-						<li><div class="h-main_order03"><a href="/coupon_use.asp">쿠폰주문</a></div></li>
+						<li><div class="h-main_order03"><a href="/coupon_use.asp">모바일 상품권주문</a></div></li>
 						<li><div class="h-main_order04"><a href="https://service.smartbag.kr:18060/81000/brand_giftshop/BRA200721108465763" target="_blank">선물하기</a></div></li>
 					</ul>
 					<!-- // 메뉴 -->
@@ -223,7 +235,7 @@
 						
 					%>							
 							<dl>
-								<dt><a href="/mypage/couponList.asp?couponList=coupon">쿠폰</a></dt>
+								<dt><a href="/mypage/couponList.asp?couponList=coupon">모바일 상품권</a></dt>
 								<dd><span><%=couponTotalCount%></span>개</dd>
 							</dl>
 							<dl>

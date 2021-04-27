@@ -7,8 +7,8 @@
 <!--#include virtual="/includes/top.asp"-->
 <!--#include virtual="/api/include/requireLogin.asp"-->
 
-<meta name="Keywords" content="쿠폰, BBQ치킨">
-<meta name="Description" content="쿠폰">
+<meta name="Keywords" content="모바일 상품권, BBQ치킨">
+<meta name="Description" content="모바일 상품권">
 <title>쿠폰 | BBQ치킨</title>
 
 </head>
@@ -17,7 +17,7 @@
 
 <div class="tab-type4">
 	<ul class="tab">
-		<li id="tab_coupon" ><a onclick="change_tab('coupon')">쿠폰</a></li>
+		<li id="tab_coupon" ><a onclick="change_tab('coupon')">모바일 상품권</a></li>
 		<li id="tab_giftcard" ><a onclick="change_tab('giftcard')">상품권</a></li>
 	</ul>
 </div>
@@ -58,8 +58,8 @@
 					Next
 				End If
 %>
-				<div class="coupon_head">사용 가능한 쿠폰 <strong><%=couponTotalCount%></strong>장</div>
-				<div class="coupon_head" onclick="Regi_Coupon();">쿠폰 등록하기</div>
+				<div class="coupon_head">사용 가능한 모바일 상품권 <strong><%=couponTotalCount%></strong>장</div>
+				<div class="coupon_head" onclick="Regi_Coupon();">모바일 상품권 등록하기</div>
 
 				<div class="couponUseOk_wrap">
 					<%
@@ -113,7 +113,7 @@
 
 					<!-- 등록된 쿠폰 없을때 -->
 					<div class="coupon_empty">
-						<p>등록된 e쿠폰이<br>없습니다.</p>
+						<p>등록된 모바일 상품권이<br>없습니다.</p>
 					</div>
 					<!-- // 등록된 쿠폰 없을때 -->
 					
@@ -216,7 +216,7 @@
 		<div class="lp-wrap inbox1000">
 			<!-- LP Header -->
 			<div class="lp-header">
-				<h2>쿠폰 등록</h2>
+				<h2>모바일 상품권 등록</h2>
 			</div>
 			<!--// LP Header -->
 			<!-- LP Container -->
@@ -224,9 +224,9 @@
 				<!-- LP Content -->
 				<div class="lp-content ">
 					<form action="">
-						<!-- 쿠폰 등록 -->
+						<!-- 모바일 상품권 등록 -->
 						 <section class="eCoupon_wrap">
-							<h3>쿠폰  번호를<br>입력하여 주세요.</h3>
+							<h3>모바일 상품권  번호를<br>입력하여 주세요.</h3>
 							<form action="" class="form">
 								<ul class="area">
 									<li><input type="text" id="txtPIN_save" name="txtPIN_save" placeholder="쿠폰 번호 입력" class="w-100p" maxlength="12"></li>
@@ -234,7 +234,7 @@
                                 </ul>
                             </form>
                             <p>
-                                <strong><span>*</span> 쿠폰 입력이 잘 안될 때 확인 해주세요.</strong>
+                                <strong><span>*</span> 모바일 상품권 입력이 잘 안될 때 확인 해주세요.</strong>
                                 알파벳 ( I ) → 숫자 ( 1 ), 알파벳 ( O ) → 숫자 ( 0 ) 로 변경하여 정확히 확인 후 입력해 주세요.
                             </p>
 						</section>
@@ -358,7 +358,7 @@
 	</div>
 <%
     if request("couponList") = "" then 
-        couponList = "coupon" '기본 쿠폰으로..
+        couponList = "coupon" '기본 모바일 상품권으로..
     else 
         couponList = request("couponList")
     end if 
@@ -444,7 +444,7 @@
                 error: function(data, status, err) {
                     console.log("error : " + err);
                     showAlertMsg({
-                        msg: "쿠폰리스트를 불러오지 못했습니다."
+                        msg: "모바일 상품권 리스트를 불러오지 못했습니다."
                     });
                 }
 
@@ -456,7 +456,7 @@
         }
         function eCoupon_Check() {
             if ($("#txtPIN_save").val() == "") {
-                alert('E-쿠폰 번호를 입력해주세요.');
+                alert('모바일 상품권 번호를 입력해주세요.');
                 return;
             }
             $.ajax({
