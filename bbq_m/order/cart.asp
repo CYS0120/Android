@@ -134,7 +134,7 @@
 			</script>
 
 			<div class="inbox1000" style="margin-top:20px">
-				<span style="color:red;weight:bold">※ 주류는 배달 메뉴로 이동 시 자동 삭제되오니 이점 유의하시기 바랍니다.</span>
+				<span style="color:red;weight:bold">※ 수제맥주 세트는 배달 메뉴로 이동 시 자동 삭제되오니 이점 유의하시기 바랍니다.</span>
 			</div>
 			
 			<div class="page_title inbox1000">

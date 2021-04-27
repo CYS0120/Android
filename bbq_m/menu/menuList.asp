@@ -371,6 +371,12 @@
 							aRs.MoveFirst
 
 							Do Until aRs.EOF
+
+								' 배달이면서 수제 맥주 일경우 미노출 : 20210427 추가 (수제맥주 세트)
+								IF order_type = "D" and aRs("KIND_SEL") = "115" Then
+									anc_display = "N"
+								End if 
+
 								if aRs("menu_type") = "B" then ' B : 일반메뉴(M으로 변경해야됨) / S : 사이드메뉴
 									vMenuType_plus = "M"
 								else
@@ -388,8 +394,8 @@
 									</ul>
 
 									<div class="menuList_btn clearfix">
-										<button type="button" class="btn btn_list_cart btn_newImg" onClick="addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>$$<%=aRs("KIND_SEL")%>', false);">장바구니 담기</button>
-										<a href="javascript: addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>$$<%=aRs("KIND_SEL")%>', true);" class="btn btn_list_order btn_newImg">주문하기</a>
+										<button type="button" class="btn btn_list_cart btn_newImg" onClick="addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>$$$$<%=aRs("KIND_SEL")%>', false);">장바구니 담기</button>
+										<a href="javascript: addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>$$$$<%=aRs("KIND_SEL")%>', true);" class="btn btn_list_order btn_newImg">주문하기</a>
 									</div>
 								</div>
 

@@ -81,8 +81,9 @@
 	vMenuPrice	= bMenuRs("menu_price")
 	THUMB_FILEPATH	= bMenuRs("THUMB_FILEPATH")	'
 	THUMB_FILENAME	= bMenuRs("THUMB_FILENAME")	'
+	kindSel	= bMenuRs("kind_sel")	'
 
-	Dim menuItem : menuItem = "M$$"&vMenuIdx&"$$"&opt_idx&"$$"&vMenuPrice&"$$"&vMenuName&"$$"&SERVER_IMGPATH&THUMB_FILEPATH&THUMB_FILENAME
+	Dim menuItem : menuItem = "M$$"&vMenuIdx&"$$"&opt_idx&"$$"&vMenuPrice&"$$"&vMenuName&"$$"&SERVER_IMGPATH&THUMB_FILEPATH&THUMB_FILENAME"$$$$"&kindSel
 	Session("SAMSUNG_EVENT") = menu_idx		'이벤트 상품 코드
 %>
 

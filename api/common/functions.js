@@ -247,9 +247,8 @@ function addCartMenu(data) {
             jdata.nm = item[4];
             jdata.qty = 1;
             jdata.img = item[5];
-            // jdata.pin = item[6];
-            jdata.pin = "";
-            jdata.kindSel = item[6];
+            jdata.pin = item[6];
+            jdata.kindSel = item[7];
             jdata.side = {};
             saveCartMenu(key, JSON.stringify(jdata));
         }
@@ -288,9 +287,7 @@ function addCartSide(key, data) {
                 jdata.nm = item[4];
                 jdata.qty = 1;
                 jdata.img = item[5];
-	            // jdata.pin = item[6];
-                jdata.pin = "";
-                jdata.kindSel = item[6];
+	            jdata.pin = item[6];                
             } else {
                 jdata.qty = jdata.qty + 1;
             }

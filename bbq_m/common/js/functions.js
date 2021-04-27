@@ -917,7 +917,7 @@ function setDeliveryShopInfo(data) {
 						$.each(ordList, function(k, v) {
 
 							menuKey = "M_"+ v.menu_idx +"_"+ v.menu_option_idx
-							menuItem = "M$$"+ v.menu_idx +"$$"+ v.menu_option_idx +"$$"+ v.menu_price +"$$"+ v.menu_name +"$$"+ SERVER_IMGPATH_str + v.thumb_file_path + v.thumb_file_name
+							menuItem = "M$$"+ v.menu_idx +"$$"+ v.menu_option_idx +"$$"+ v.menu_price +"$$"+ v.menu_name +"$$"+ SERVER_IMGPATH_str + v.thumb_file_path + v.thumb_file_name + "$$$$" + v.kind_sel
 
 							removeCartMenu(menuKey);
 							removeCartSideAll(menuKey);

@@ -104,7 +104,7 @@ window.onload =function () {
 				cRs.MoveFirst
 				Do Until cRs.EOF
 %>
-									<li class="swiper-slide" value="M$$<%=cRs("menu_idx")%>$$<%=cRs("menu_option_idx")%>$$<%=cRs("menu_price")%>$$<%=cRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=cRs("thumb_file_path")&cRs("thumb_file_name")%>">
+									<li class="swiper-slide" value="M$$<%=cRs("menu_idx")%>$$<%=cRs("menu_option_idx")%>$$<%=cRs("menu_price")%>$$<%=cRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=cRs("thumb_file_path")&cRs("thumb_file_name")%>$$$$<%=cRs("KIND_SEL")%>">
 										<p class="tit"><%=cRs("menu_name")%></p>
 										<a href="/menu/menuView.asp?midx=<%=cRs("menu_idx")%>">
 											<div class="img-box"><img src="<%=SERVER_IMGPATH%><%=cRs("thumb_file_path")&cRs("thumb_file_name")%>" width="750px" height="660px" onerror="this.src='/images/main/img_menu01.jpg';" alt="<%=cRs("menu_name")%>"></div>
