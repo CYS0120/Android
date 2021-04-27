@@ -277,6 +277,22 @@
 <% End If %>
  -->
 
+<script >
+	// 20210427 수제맥주 관련 
+	$(function(){
+		// 배달은 맥주 관련 판매 안함!! 그래서 삭제..
+		var len = sessionStorage.length;
+		for(var i=0; i < len; i++) {
+			var key = sessionStorage.key(i);
+			if (sessionStorageException(key) == false) continue;
+			// 맥주는 배달만. 가능..
+			if (JSON.parse(sessionStorage.getItem(key)).kindSel == "115") {
+				sessionStorage.removeItem(key);
+			}														
+		}
+	});
+</script>
+
 <% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 
 	<script>
@@ -491,6 +507,7 @@
 		}
 
 //		after_control_new('<%=order_type%>'); // 시간 
+
 	})
 
 	function go_next_page()
@@ -874,8 +891,8 @@ function getAddr(){
 			<script language="javascript">
 				$(function (){
 					$("#btn_map").click(function (){
-					$("#mapWrap").toggle();
-				  });
+						$("#mapWrap").toggle();
+					});
 				});
 			</script>
 			<!-- // 매장리스트 -->
@@ -945,7 +962,7 @@ function getAddr(){
 												if (getAllCartMenuCount() > 0) {
 													location.href="/order/cart.asp";
 												} else {
-													location.href="/menu/menuList.asp";
+													location.href="/menu/menuList.asp?order_type=<%=order_type%>";
 												}
 											}
 										},
@@ -960,7 +977,7 @@ function getAddr(){
 									sessionStorage.removeItem("ss_addr_data");
 
 									showAlertMsg({msg:res.message+"  메뉴리스트로 이동합니다", ok: function(){
-										location.href='/menu/menuList.asp';
+										location.href='/menu/menuList.asp?order_type=<%=order_type%>';
 									}});
 								}
 							},
@@ -1040,7 +1057,7 @@ function getAddr(){
 											if (getAllCartMenuCount() > 0) {
 												location.href="/order/cart.asp";
 											} else {
-												location.href="/menu/menuList.asp";
+												location.href="/menu/menuList.asp?order_type=<%=order_type%>";
 											}
 										}
 									},
@@ -1058,7 +1075,7 @@ function getAddr(){
 								sessionStorage.removeItem("ss_addr_data");
 
 								showAlertMsg({msg:res.message+"  메뉴리스트로 이동합니다", ok: function(){
-									location.href='/menu/menuList.asp';
+									location.href='/menu/menuList.asp?order_type=<%=order_type%>';
 								}});
 							}
 						},

@@ -47,6 +47,38 @@ function ChangeUse(){
 		}
 	});
 }
+
+function ChangeUseYn(){
+	if ($.trim($('#item_idx').val()) == ""){
+		alert("상세 분류를 선택하여 주세요.");
+		return;
+	}
+
+	if ($.trim($('#use_yn').val()) == ""){
+		alert("사용여부를 선택하여 주세요.");
+		return;
+	}
+
+	$('#MODE').val('DETAILUSEYN');
+	$.ajax({
+		async: false,
+		type: "POST",
+		url: "menu_code_proc.asp",
+		data: $("#inputfrm").serialize(),
+		dataType : "text",
+		success: function(data) {
+			//if (data.split("^")[0] == "Y") {
+			//	document.location.reload();
+			//}else{
+				alert(data.split("^")[1]);
+			//}
+		},
+		error: function(data, status, err) {
+			alert(err + '서버와의 통신이 실패했습니다.');
+		}
+	});
+}
+
 function ChangeCode(){
 	$('#MODE').val('UPNAME');
 	$.ajax({
@@ -124,6 +156,13 @@ function movedown() {
 	    $('#linum'+CheckIdx).before($('#linum'+CheckIdx).next());
 	}
 }
+function setClassType(pIdx, pItemIdx, pName, pUseYn){
+	$('#CheckIdx').val(pIdx);
+	$('#itemIdx').val(pItemIdx);
+	$('#MCODENAME').val(pName);
+	$('#use_yn').val(pUseYn);
+	
+}
 </script>
 </head>
 <body>
@@ -187,7 +226,7 @@ function movedown() {
 						<input type="hidden" id="MODE" name="MODE">
 						<input type="hidden" name="code_gb" value="M">
 						<input type="hidden" name="BRAND_CODE" value="<%=BRAND_CODE%>">
-						<input type="hidden" name="item_idx" value="<%=item_idx%>">
+						<input type="hidden" name="item_idx" id="item_idx" value="<%=item_idx%>">
 						<div class="manage_title">
 							<span>
 								<select name="code_kind" onChange="document.location.href='?BCD=<%=BCD%>&CKIND='+this.value" style="width:200px">
@@ -217,19 +256,22 @@ function movedown() {
 								<tr>
 									<th>
 										<ul>
-<%		If Not FncIsBlank(item_idx) Then 
+<%
+		If Not FncIsBlank(item_idx) Then 
 			Sql = "Select * From bt_code_detail Where item_idx = " & item_idx & " Order By code_ord"
 			Set Dlist = conn.Execute(Sql)
 			If Not Dlist.Eof Then
 				num = 1
 				Do While Not Dlist.eof
 					code_idx	= Dlist("code_idx")
+					item_idx	= Dlist("item_idx")
 					code_name	= Dlist("code_name")
 					code_ord	= Dlist("code_ord")
+					use_yn	= Dlist("use_yn")
 %>
 											<li id="linum<%=code_idx%>">
 												<input type="hidden" name="code_idx" value="<%=code_idx%>">
-												<label><input type="radio" name="selcode" onClick="$('#CheckIdx').val('<%=code_idx%>')"><%=num%>. <%=code_name%> [<%=code_idx%>]</label>
+												<label><input type="radio" name="selcode" onClick="setClassType('<%=code_idx%>','<%=item_idx%>','<%=code_name%>','<%=use_yn%>')"><%=num%>. <%=code_name%> [<%=code_idx%>]</label>
 											</li>
 <%					Dlist.MoveNext
 					num = num + 1
@@ -239,6 +281,7 @@ function movedown() {
 										</ul>
 									</th>
 									<input type="hidden" name="CheckIdx" id="CheckIdx">
+									<input type="hidden" name="itemIdx" id="itemIdx">
 									<td>
 										<ul>
 											<li>
@@ -250,7 +293,7 @@ function movedown() {
 											</li>
 											<li>
 												<span>2.선택항목을</span>
-												<input type="text" name="MCODENAME" class="btn_white">
+												<input type="text" name="MCODENAME" id="MCODENAME" class="btn_white">
 												<input type="button" value="수정" class ="btn_gray_line" onClick="ChangeCode()">
 												<span>&nbsp;or&nbsp;</span>
 												<input type="button" value="삭제" class ="btn_gray_line" onClick="DeleteCode()">
@@ -259,6 +302,15 @@ function movedown() {
 												<span>3.신규항목을</span>
 												<input type="text" name="WCODENAME" class="btn_white">
 												<input type="button" value="등록" class ="btn_gray_line" onClick="InsertCode()">
+											</li>
+											<li>
+												<span>4.신규항목을</span>
+												<select id="use_yn" name="use_yn">
+													<option value="">선택</option>
+													<option value="Y">Y</option>
+													<option value="N">N</option>
+												</select>
+												<input type="button" value="수정" class ="btn_gray_line" onClick="ChangeUseYn()">
 											</li>
 										</ul>
 									</td>

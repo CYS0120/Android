@@ -131,13 +131,13 @@ function ChangeOrder(MENU_IDX, FVAL){
 	page = InjRequest("page")
 	If page = "" Then page = 1
 
-	SqlFrom	= " From bt_menu "
+	SqlFrom	= " From bt_menu m "
 '	If CD = "B" Then '닭익는 마을은 세가지 모두
 '		SqlWhere	= " WHERE brand_code IN ('"& FncBrandDBCode("BA") &"','"& FncBrandDBCode("BB") &"','"& FncBrandDBCode("BC") &"') And del_yn = 'N' "
 '	Else
 		SqlWhere	= " WHERE brand_code='"& FncBrandDBCode(CD) &"' And del_yn = 'N' "
 '	End If 
-	If Not FncIsBlank(USE) Then SqlWhere = SqlWhere & " And use_yn = '" & USE & "'"
+	If Not FncIsBlank(USE) Then SqlWhere = SqlWhere & " And m.use_yn = '" & USE & "'"
 	If Not FncIsBlank(MTP) Then SqlWhere = SqlWhere & " And menu_type = '" & MTP & "'"
 	
 	If Not FncIsBlank(SW) Then 
@@ -224,13 +224,13 @@ function ChangeOrder(MENU_IDX, FVAL){
 								<input type="hidden" id="SIDX" name="SIDX">
 <%
 	If total_num > 0 Then 
-		Sql = "SELECT Top "&num_per_page&" menu_idx, menu_type, menu_name, menu_price, gubun_sel, sort, use_yn, code_name as kind_name " & vbCrLf
-		Sql = Sql & SqlFrom & " M left Join bt_code_detail D ON M.kind_sel = D.code_idx" & SqlWhere & vbCrLf
+		Sql = "SELECT Top "&num_per_page&" menu_idx, menu_type, menu_name, menu_price, gubun_sel, sort, m.use_yn, code_name as kind_name " & vbCrLf
+		Sql = Sql & SqlFrom & " left Join bt_code_detail D ON M.kind_sel = D.code_idx" & SqlWhere & vbCrLf
 		Sql = Sql & " And menu_idx Not In " & vbCrLf
 		Sql = Sql & "(SELECT TOP " & ((page - 1) * num_per_page) & " menu_idx "& SqlFrom & SqlWhere & vbCrLf
 		Sql = Sql & SqlOrder & ")" & vbCrLf
 		Sql = Sql & SqlOrder
-		'response.write Sql & "<BR>"
+		
 		Set Rlist = conn.Execute(Sql)
 		If Not Rlist.Eof Then 
 			num	= total_num - first

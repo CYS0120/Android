@@ -11,6 +11,7 @@
 	PageTitle = "매장 찾기"
 	Dim dir_yn : dir_yn = Request("dir_yn")
 	Dim search_text : search_text = Request("search_text")
+	Dim order_type : order_type = Request("order_type")
 %>
 
 	<!--#include virtual="/includes/header.asp"-->
@@ -241,7 +242,7 @@
 											if (getAllCartMenuCount() > 0) {
 												location.href="/order/cart.asp";
 											} else {
-												location.href="/menu/menuList.asp";
+												location.href="/menu/menuList.asp?order_type=<%=order_type%>";
 											}
 										}
 									},
@@ -261,7 +262,7 @@
 								sessionStorage.removeItem("ss_addr_data");
 
 								showAlertMsg({msg:res.message+"  메뉴리스트로 이동합니다", ok: function(){
-									location.href='/menu/menuList.asp';
+									location.href='/menu/menuList.asp?order_type=<%=order_type%>';
 								}});
 							}
 						},

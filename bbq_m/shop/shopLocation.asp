@@ -312,7 +312,7 @@
 											if (getAllCartMenuCount() > 0) {
 												location.href="/order/cart.asp";
 											} else {
-												location.href="/menu/menuList.asp";
+												location.href="/menu/menuList.asp?order_type=<%=request("order_type")%>";
 											}
 										}
 									},
@@ -330,7 +330,7 @@
 								sessionStorage.removeItem("ss_addr_data");
 
 								showAlertMsg({msg:res.message+"  메뉴리스트로 이동합니다", ok: function(){
-									location.href='/menu/menuList.asp';
+									location.href='/menu/menuList.asp?order_type=<%=request("order_type")%>';
 								}});
 							}
 						},

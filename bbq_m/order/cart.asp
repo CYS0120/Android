@@ -1,6 +1,7 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 
 <%
+
 	order_type = GetReqStr("order_type","")
 	branch_id = GetReqStr("branch_id","")
 	branch_data = GetReqStr("branch_data","")
@@ -132,7 +133,10 @@
 				$('#spent_time').val(sessionStorage.getItem("ss_spent_time"));
 			</script>
 
-
+			<div class="inbox1000" style="margin-top:20px">
+				<span style="color:red;weight:bold">※ 주류는 배달 메뉴로 이동 시 자동 삭제되오니 이점 유의하시기 바랍니다.</span>
+			</div>
+			
 			<div class="page_title inbox1000">
 				<p>담은메뉴</p>
 <!--				수정-->
@@ -146,7 +150,7 @@
 				<div id="cart_list"></div><!-- /common/js/function.js -->
 
 				<div class="alignC">
-					<button type="button" onclick="location.href='/menu/menuList.asp';" class="btn btn_middle btn-gray btn_pluse"><img src="/images/order/icon_pluse.png"> 더 담으러 가기</button>
+					<button type="button" onclick="goMenuList();" class="btn btn_middle btn-gray btn_pluse"><img src="/images/order/icon_pluse.png"> 더 담으러 가기</button>
 				</div>
 
 
@@ -1008,6 +1012,10 @@
 			$("#CART_IN_PRODIDX").val(cartprodidx);
 		});
 		// 2019-05-23 이벤트로 인해 생성
+
+		function goMenuList(){
+			location.href='/menu/menuList.asp?order_type='+sessionStorage.getItem("ss_order_type");
+		}
 	</script>
 
 

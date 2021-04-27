@@ -772,7 +772,7 @@
 												// lpClose('.lp_shopSearch');
 												//	setSelectedStore();
 												//	document.cart_form.submit();
-												location.href="/menu/menuList.asp";
+												location.href="/menu/menuList.asp?order_type=<%=order_type%>";
 											}
 										},
 										error: function(xhr) {
@@ -785,7 +785,7 @@
 									sessionStorage.setItem("ss_branch_data", br_data);
 
 									showAlertMsg({msg:res.message+"  메뉴리스트로 이동합니다", ok: function(){
-										location.href='/menu/menuList.asp';
+										location.href='/menu/menuList.asp?order_type=<%=order_type%>';
 									}});
 								}
 							},

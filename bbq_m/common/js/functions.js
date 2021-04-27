@@ -356,57 +356,13 @@ function drawCartPage(page){
 
 //			console.log(it);
 
-            ht += "<div class=\"order_menu\">\n";
-            ht += "<ul id='cart_list_"+ mkey +"' class='cart_list' >";
-            ht += "	<li class='cart_img'><img src='"+it.img+"'></li>";
-            ht += "	<li class='cart_info'>";
-            ht += "		<dl>";
-            ht += "			<dt>";
-            ht += "			"+it.nm+"";
-			if (it.pin != ''){
-				ht += " <font color='red'>[E-쿠폰]</font>\n";
+			if (sessionStorage.getItem("ss_order_type") == "D"){
+				if (it.kindSel != "115"){
+					ht = getCartList(it, mkey, key, it_amt, page, side_amt_new );
+				}
+			} else {
+				ht = getCartList(it, mkey, key, it_amt, page, side_amt_new );
 			}
-
-            if(page == "C") {
-                ht += "<button type=\"button\" class=\"btn-del\" onClick=\"removeCartMenu('"+key+"'); getMenuRecom(); \">삭제</button>\n";
-            }
-            ht += "			</dt>";
-            ht += "			<dd class='cart_choice'>&nbsp;<span>기본 : <span>"+numberWithCommas(Number(it.price))+"</span>원</span></dd>";
-
-            if(it.hasOwnProperty("side")) {
-                for(var skey in it.side) {
-					if(it.side.hasOwnProperty(skey)) {
-						var side = it.side[skey];
-						var skey = side.type +"_"+ side.idx +"_"+ side.opt
-
-						side_amt_new += (Number(side.price) * Number(side.qty));
-						side_amt += (Number(side.price) * Number(side.qty));
-
-			            ht += "			<dd class='cart_choice'>";
-			            ht += "			"+ side.nm +"<span><span>"+numberWithCommas(Number(side.price))+"</span>원</span>";
-			            ht += "			<input type='hidden' id='S_"+ side.idx +"_hide' name='S_"+ side.idx +"_hide' class='side_hide_class' sidx='"+ side.idx +"' value='"+ skey +"'>";
-			            ht += "			</dd>";
-					}
-                }
-            }
-
-
-            ht += "			<dd class='cart_num'>";
-            ht += "				<span>"+ numberWithCommas(Number(it_amt + side_amt_new)) +"</span>원";
-            ht += "				<span class='form-pm2'>";
-            ht += "					<button class='minus' onclick=\"goCartTxt('"+ mkey +"', -1);\" type='button'>-</button>";
-            ht += "					<input id='new_qty_"+ mkey +"' type='text' value='"+it.qty+"' readonly />";
-            ht += "					<button class='plus' onclick=\"goCartTxt('"+ mkey +"', 1);\" type='button'>-</button>";
-            ht += "				</span>";
-            ht += "			</dd>";
-            ht += "		</dl>";
-            ht += "	</li>";
-            ht += "</ul>";
-            ht += "</div>";
-
-
-
-
 
 //            ht += "<div class=\"order_menu\">\n";
 //            ht += "\t<div class=\"div-table\">\n";
@@ -469,6 +425,57 @@ function drawCartPage(page){
 //        $("#item_amount").text(numberWithCommas(menu_amt+side_amt)+"원");
         $("#total_amount").html(numberWithCommas(menu_amt+side_amt+delivery_amt)+"<span>원</span>");
     }
+}
+
+function getCartList(it, mkey, key, it_amt, page, side_amt_new) {
+	ht = "<div class=\"order_menu\">\n";
+	ht += "<ul id='cart_list_"+ mkey +"' class='cart_list' >";
+	ht += "	<li class='cart_img'><img src='"+it.img+"'></li>";
+	ht += "	<li class='cart_info'>";
+	ht += "		<dl>";
+	ht += "			<dt>";
+	ht += "			"+it.nm+"";
+	if (it.pin != ''){
+		ht += " <font color='red'>[E-쿠폰]</font>\n";
+	}
+
+	if(page == "C") {
+		ht += "<button type=\"button\" class=\"btn-del\" onClick=\"removeCartMenu('"+key+"'); getMenuRecom(); \">삭제</button>\n";
+	}
+	ht += "			</dt>";
+	ht += "			<dd class='cart_choice'>&nbsp;<span>기본 : <span>"+numberWithCommas(Number(it.price))+"</span>원</span></dd>";
+
+	if(it.hasOwnProperty("side")) {
+		for(var skey in it.side) {
+			if(it.side.hasOwnProperty(skey)) {
+				var side = it.side[skey];
+				var skey = side.type +"_"+ side.idx +"_"+ side.opt
+
+				side_amt_new += (Number(side.price) * Number(side.qty));
+				side_amt += (Number(side.price) * Number(side.qty));
+
+				ht += "			<dd class='cart_choice'>";
+				ht += "			"+ side.nm +"<span><span>"+numberWithCommas(Number(side.price))+"</span>원</span>";
+				ht += "			<input type='hidden' id='S_"+ side.idx +"_hide' name='S_"+ side.idx +"_hide' class='side_hide_class' sidx='"+ side.idx +"' value='"+ skey +"'>";
+				ht += "			</dd>";
+			}
+		}
+	}
+
+
+	ht += "			<dd class='cart_num'>";
+	ht += "				<span>"+ numberWithCommas(Number(it_amt + side_amt_new)) +"</span>원";
+	ht += "				<span class='form-pm2'>";
+	ht += "					<button class='minus' onclick=\"goCartTxt('"+ mkey +"', -1);\" type='button'>-</button>";
+	ht += "					<input id='new_qty_"+ mkey +"' type='text' value='"+it.qty+"' readonly />";
+	ht += "					<button class='plus' onclick=\"goCartTxt('"+ mkey +"', 1);\" type='button'>-</button>";
+	ht += "				</span>";
+	ht += "			</dd>";
+	ht += "		</dl>";
+	ht += "	</li>";
+	ht += "</ul>";
+	ht += "</div>";
+	return ht;
 }
 
 function getMenuRecom()

@@ -10,6 +10,7 @@
 
 <%
 	Dim anc : anc = Request("anc")
+	Dim order_type : order_type = GetReqStr("order_type","D")
 %>
 <script type="text/javascript">
 	var cartPage = "";
@@ -111,8 +112,6 @@
 
 <body>
 
-
-
 <div class="wrapper">
 
 	<%
@@ -134,6 +133,8 @@
 			Dim cate_name_str : cate_name_str = "모든 비비큐치킨" ' 초기설정
 			Dim cate_idx_arr
 			Dim cate_name_arr
+			Dim category_use_yn
+			Dim category_idx
 
 			Set aCmd = Server.CreateObject("ADODB.Command")
 
@@ -153,8 +154,20 @@
 				Do Until aRs.EOF
 					If cate_idx_str <> "" Then split_str = "S||S"
 
-					cate_idx_str = cate_idx_str & split_str & aRs("category_idx")
-					cate_name_str = cate_name_str & split_str & aRs("category_name")
+					category_use_yn = aRs("category_use_yn")
+					category_idx = aRs("category_idx")
+
+					if category_use_yn = "Y" then
+						if order_type = "P" then 
+							cate_idx_str = cate_idx_str & split_str & aRs("category_idx")
+							cate_name_str = cate_name_str & split_str & aRs("category_name")
+						else
+							if category_idx <> "115" then
+								cate_idx_str = cate_idx_str & split_str & aRs("category_idx")
+								cate_name_str = cate_name_str & split_str & aRs("category_name")
+							end if 
+						end if 
+					end if 
 
 					aRs.MoveNext
 				Loop
@@ -375,8 +388,8 @@
 									</ul>
 
 									<div class="menuList_btn clearfix">
-										<button type="button" class="btn btn_list_cart btn_newImg" onClick="addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>', false);">장바구니 담기</button>
-										<a href="javascript: addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>', true);" class="btn btn_list_order btn_newImg">주문하기</a>
+										<button type="button" class="btn btn_list_cart btn_newImg" onClick="addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>$$<%=aRs("KIND_SEL")%>', false);">장바구니 담기</button>
+										<a href="javascript: addMenuNGo('<%=vMenuType_plus%>$$<%=aRs("menu_idx")%>$$<%=aRs("menu_option_idx")%>$$<%=aRs("menu_price")%>$$<%=aRs("menu_name")%>$$<%=SERVER_IMGPATH%><%=aRs("thumb_file_path")&aRs("thumb_file_name")%>$$<%=aRs("KIND_SEL")%>', true);" class="btn btn_list_order btn_newImg">주문하기</a>
 									</div>
 								</div>
 

@@ -112,6 +112,23 @@
 
 		Response.Write "Y^적용 되었습니다"
 		Response.End
+	ElseIf MODE = "DETAILUSEYN" Then
+		'일반 분류 선택관리 디테일 사용여부 수정
+		CheckIdx	= InjRequest("CheckIdx")
+		item_idx	= InjRequest("item_idx")
+		use_yn	= InjRequest("use_yn")
+
+		If FncIsBlank(item_idx) Then 
+			Response.Write "E^데이터를 먼저 생성해 주세요"
+			Response.End
+		End If 
+
+		Sql = "	update bt_code_detail set use_yn = '"& use_yn &"' Where code_idx='"& CheckIdx &"' and item_idx='"& item_idx &"' "
+		conn.Execute(Sql)
+
+		Response.Write "Y^적용 되었습니다"
+		Response.End
+
 	Else
 		Response.Write "E^잘못된 접근방식입니다"
 		Response.End
