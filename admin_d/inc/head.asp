@@ -7,8 +7,7 @@ Set Rlist = conn.Execute(Sql)
 If NOT Rlist.eof Then 
 	ALLOW_IP = Rlist("INCLUDE_IP")
 END IF
-response.write ALLOW_IP
-response.end
+
 If ALLOW_IP = 0 Then 
 	Response.Redirect "https://www.bbq.co.kr"
 End If
