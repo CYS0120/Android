@@ -200,7 +200,11 @@
 		else 
 '	        Response.Redirect PAYCO_AUTH_URL & "/oauth2/authorize?redirect_uri=" & Server.URLEncode(redirect_uri) & "&appYn=N&logoYn=Y&titleYn=N"
 '			Response.Redirect PAYCO_AUTH_URL & "/login/select?redirect_uri=" & Server.URLEncode(redirect_uri) & "&state=test1234&appYn=N&loginExtraJson=eyJ2aWV3QXV0b0xvZ2luIjp0cnVlfQ=="
-			Response.Redirect PAYCO_AUTH_URL & "/oauth2/authorize-with-sns?redirect_uri=" & Server.URLEncode(redirect_uri) & "&state=test1234&appYn=N&loginExtraJson=eyJ2aWV3QXV0b0xvZ2luIjp0cnVlfQ=="
-		end if 
+            If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS" )> 0 then
+			    Response.Redirect PAYCO_AUTH_URL & "/oauth2/authorize?redirect_uri=" & Server.URLEncode(redirect_uri) & "&state=test1234&appYn=N&loginExtraJson=eyJ2aWV3QXV0b0xvZ2luIjp0cnVlfQ=="
+            Else
+			    Response.Redirect PAYCO_AUTH_URL & "/oauth2/authorize-with-sns?redirect_uri=" & Server.URLEncode(redirect_uri) & "&state=test1234&appYn=N&loginExtraJson=eyJ2aWV3QXV0b0xvZ2luIjp0cnVlfQ=="
+            End If
+		end if
     End If
 %>
