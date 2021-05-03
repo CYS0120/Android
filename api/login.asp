@@ -200,11 +200,13 @@
 		else 
 '	        Response.Redirect PAYCO_AUTH_URL & "/oauth2/authorize?redirect_uri=" & Server.URLEncode(redirect_uri) & "&appYn=N&logoYn=Y&titleYn=N"
 '			Response.Redirect PAYCO_AUTH_URL & "/login/select?redirect_uri=" & Server.URLEncode(redirect_uri) & "&state=test1234&appYn=N&loginExtraJson=eyJ2aWV3QXV0b0xvZ2luIjp0cnVlfQ=="
-	        if Request.Cookies("bbq_app_type") = "bbqiOS" then
-			    Response.Redirect PAYCO_AUTH_URL & "/oauth2/authorize?redirect_uri=" & Server.URLEncode(redirect_uri) & "&state=test1234&appYn=N&loginExtraJson=eyJ2aWV3QXV0b0xvZ2luIjp0cnVlfQ=="
-            Else
+	        '아이폰 스토어 업로드용 sns간편로그인 분기처리
+	        'if Request.Cookies("bbq_app_type") = "bbqiOS" then
+			'    Response.Redirect PAYCO_AUTH_URL & "/oauth2/authorize?redirect_uri=" & Server.URLEncode(redirect_uri) & "&state=test1234&appYn=N&loginExtraJson=eyJ2aWV3QXV0b0xvZ2luIjp0cnVlfQ=="
+            'Else
 			    Response.Redirect PAYCO_AUTH_URL & "/oauth2/authorize-with-sns?redirect_uri=" & Server.URLEncode(redirect_uri) & "&state=test1234&appYn=N&loginExtraJson=eyJ2aWV3QXV0b0xvZ2luIjp0cnVlfQ=="
-            End If
+            'End If
+            '아이폰 스토어 업로드용 sns간편로그인 분기처리 끝
 		end if
     End If
 %>
