@@ -63,6 +63,7 @@
 
 	add_price	= InjRequest("add_price")
 	adult_yn	= InjRequest("adult_yn")
+	adult_price	= InjRequest("adult_price")
 
 	If FncIsBlank(menu_name) Or FncIsBlank(menu_price) Then 
 		Response.Write "E^기본적인 정보를 입력해 주세요"
@@ -80,13 +81,13 @@
 			"		use_yn, del_yn, sort, origin, calorie, sugars, protein, saturatedfat, natrium, allergy,  " & _
 			"		exp1_yn, exp1_url, exp2_yn, exp2_title, exp2_imgurl, exp3_yn, exp3_title, exp3_imgurl,  " & _
 			"		exp4_yn, exp4_title, exp4_imgurl, exp5_yn, exp5_title, exp5_imgurl, " & _
-			"		reg_user_idx, reg_date, reg_ip, add_price, adult_yn	) " & _
+			"		reg_user_idx, reg_date, reg_ip, add_price, adult_yn, adult_price	) " & _
 			"	Values('"& brand_code &"','"& menu_type &"','"& menu_name &"','"& menu_name_e &"','"& menu_price &"','"& menu_desc &"','"& kind_sel &"','"& poscode &"','"& menu_title &"', " & _
 			"		'"& gubun_sel &"','"& option_yn &"','"& sale_shop &"','"& online_yn &"','"& smart_age &"','"& smart_taste &"', " & _
 			"		'"& use_yn &"','N',( Select Isnull(Max(sort),0)+1 From bt_menu Where brand_code='"& brand_code &"'),'"& origin &"','"& calorie &"','"& sugars &"','"& protein &"','"& saturatedfat &"','"& natrium &"','"& allergy &"', " & _
 			"		'"& exp1_yn &"','"& exp1_url &"','"& exp2_yn &"','"& exp2_title &"','"& exp2_imgurl &"','"& exp3_yn &"','"& exp3_title &"','"& exp3_imgurl &"', " & _
 			"		'"& exp4_yn &"','"& exp4_title &"','"& exp4_imgurl &"','"& exp5_yn &"','"& exp5_title &"','"& exp5_imgurl &"', " & _
-			"		'"& SITE_ADM_CD &"',GetDate(),'"& REG_IP &"','"& add_price &"','"& adult_yn &"')	"
+			"		'"& SITE_ADM_CD &"',GetDate(),'"& REG_IP &"','"& add_price &"','"& adult_yn &"','"& adult_price &"')	"
 		conn.Execute(Sql)
 		Sql = "	Select Max(menu_idx) As menu_idx From bt_menu"
 		Set MaxID = conn.Execute(Sql)
@@ -125,7 +126,7 @@
 		Response.Write "Y^등록 되었습니다"
 		Response.End
 	Else
-		Sql = "	Update bt_menu Set brand_code='"& brand_code &"', menu_type='"& menu_type &"', menu_name='"& menu_name &"', menu_name_e='"& menu_name_e &"', menu_price='"& menu_price &"', menu_desc='"& menu_desc &"', kind_sel='"& kind_sel &"', poscode='"& poscode &"', menu_title='"& menu_title &"', gubun_sel='"& gubun_sel &"', option_yn='"& option_yn &"', sale_shop='"& sale_shop &"', online_yn='"& online_yn &"', smart_age='"& smart_age &"', smart_taste='"& smart_taste &"', use_yn='"& use_yn &"', origin='"& origin &"', calorie='"& calorie &"', sugars='"& sugars &"', protein='"& protein &"', saturatedfat='"& saturatedfat &"', natrium='"& natrium &"', allergy='"& allergy &"', exp1_yn='"& exp1_yn &"', exp1_url='"& exp1_url &"', exp2_yn='"& exp2_yn &"', exp2_title='"& exp2_title &"', exp2_imgurl='"& exp2_imgurl &"', exp3_yn='"& exp3_yn &"', exp3_title='"& exp3_title &"', exp3_imgurl='"& exp3_imgurl &"', exp4_yn='"& exp4_yn &"', exp4_title='"& exp4_title &"', exp4_imgurl='"& exp4_imgurl &"', exp5_yn='"& exp5_yn &"', exp5_title='"& exp5_title &"', exp5_imgurl='"& exp5_imgurl &"', mod_user_idx='"& SITE_ADM_CD &"', mod_date=GetDate(), mod_ip='"& REG_IP &"', add_price='"& add_price &"', adult_yn='"& adult_yn &"' Where menu_idx = " & MIDX
+		Sql = "	Update bt_menu Set brand_code='"& brand_code &"', menu_type='"& menu_type &"', menu_name='"& menu_name &"', menu_name_e='"& menu_name_e &"', menu_price='"& menu_price &"', menu_desc='"& menu_desc &"', kind_sel='"& kind_sel &"', poscode='"& poscode &"', menu_title='"& menu_title &"', gubun_sel='"& gubun_sel &"', option_yn='"& option_yn &"', sale_shop='"& sale_shop &"', online_yn='"& online_yn &"', smart_age='"& smart_age &"', smart_taste='"& smart_taste &"', use_yn='"& use_yn &"', origin='"& origin &"', calorie='"& calorie &"', sugars='"& sugars &"', protein='"& protein &"', saturatedfat='"& saturatedfat &"', natrium='"& natrium &"', allergy='"& allergy &"', exp1_yn='"& exp1_yn &"', exp1_url='"& exp1_url &"', exp2_yn='"& exp2_yn &"', exp2_title='"& exp2_title &"', exp2_imgurl='"& exp2_imgurl &"', exp3_yn='"& exp3_yn &"', exp3_title='"& exp3_title &"', exp3_imgurl='"& exp3_imgurl &"', exp4_yn='"& exp4_yn &"', exp4_title='"& exp4_title &"', exp4_imgurl='"& exp4_imgurl &"', exp5_yn='"& exp5_yn &"', exp5_title='"& exp5_title &"', exp5_imgurl='"& exp5_imgurl &"', mod_user_idx='"& SITE_ADM_CD &"', mod_date=GetDate(), mod_ip='"& REG_IP &"', add_price='"& add_price &"', adult_yn='"& adult_yn &"', adult_price='"& adult_price &"' Where menu_idx = " & MIDX
 		conn.Execute(Sql)
 
 		If Not FncIsBlank(THUMB_IMG) Then

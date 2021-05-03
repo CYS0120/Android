@@ -84,6 +84,7 @@
 		poscode		= Rinfo("poscode")
 		add_price		= Rinfo("add_price") '제주/도서산간추가금액 2020-08-25 추가
 		adult_yn		= Rinfo("adult_yn") '주류
+		adult_price		= Rinfo("adult_price") '주류가격
 
 		If adult_yn <> "Y" And adult_yn <> "H" Then
 			adult_yn = "N"
@@ -129,6 +130,18 @@
 <head>
 <!-- #include virtual="/inc/head.asp" -->
 <script type="text/javascript">
+
+function click_beer(obj)
+{
+	if (obj.value == "Y" || obj.value == "H")
+	{
+		$("#adult_price").val($("#menu_price").val());
+	}
+	else
+	{
+		$("#adult_price").val(0);
+	}
+}
 function InputCheck(){
 	var f = document.inputfrm;
 	if (f.menu_name.value == ""){alert("메뉴명을 입력해주세요.");f.menu_name.focus();return;}
@@ -415,6 +428,12 @@ function DivChange(BCD){
 					<div class="menu_edit">
 						<table>
 							<tr>
+								<th>메뉴코드</th>
+								<td><span style="font-weight:bold;"><%=MIDX%></span></td>
+								<th></th>
+								<td></td>
+							</tr>
+							<tr>
 								<th>사용여부</th>
 								<td>
 									<ul>
@@ -470,7 +489,7 @@ function DivChange(BCD){
 							</tr>
 							<tr>
 								<th>상품가격</th>
-								<td><input type="number" name="menu_price" value="<%=menu_price%>" onkeyup="onlyNum(this);" placeholder="상품가격(숫자만) 입력"></td>
+								<td><input type="number" name="menu_price" id="menu_price" value="<%=menu_price%>" onkeyup="onlyNum(this);" placeholder="상품가격(숫자만) 입력"></td>
 								<th>카피문구</th>
 								<td><input type="text" name="menu_title" value="<%=menu_title%>" placeholder="문구입력"></td>
 							</tr>
@@ -557,13 +576,13 @@ function DivChange(BCD){
 								<th>주류여부</th>
 								<td>
 									<ul>
-										<li><label><input name="adult_yn" type="radio" value="Y" <%If adult_yn="Y" Then%> checked<%End If%>>일반주류</label></li>
-										<li><label><input name="adult_yn" type="radio" value="H" <%If adult_yn="H" Then%> checked<%End If%>>수제주류</label></li>
-										<li><label><input name="adult_yn" type="radio" value="N" <%If adult_yn="N" Then%> checked<%End If%>>X</label></li>
+										<li><label><input name="adult_yn" onclick="click_beer(this);" type="radio" value="Y" <%If adult_yn="Y" Then%> checked<%End If%>>일반주류</label></li>
+										<li><label><input name="adult_yn" onclick="click_beer(this);" type="radio" value="H" <%If adult_yn="H" Then%> checked<%End If%>>수제주류</label></li>
+										<li><label><input name="adult_yn" onclick="click_beer(this);" type="radio" value="N" <%If adult_yn="N" Then%> checked<%End If%>>X</label></li>
 									</ul>
 								</td>
-								<th></th>
-								<td></td>
+								<th>주류금액</th>
+								<td><input type="number" name="adult_price" id="adult_price" value="<%=adult_price%>" onkeyup="onlyNum(this);" placeholder="주류가격(숫자만) 입력"></td>
 							</tr>
 
 

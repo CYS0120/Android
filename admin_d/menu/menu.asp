@@ -195,7 +195,8 @@ function ChangeOrder(MENU_IDX, FVAL){
                         <table style="width:100%;">
                             <colgroup>
                                 <col width="3%">
-                                <col width="5%">
+                                <col width="2%">
+                                <col width="3%">
                                 <%If CD="A" Then%><col width="10%"><%End If%>
                                 <col width="10%">
                                 <col width="11%">
@@ -208,6 +209,7 @@ function ChangeOrder(MENU_IDX, FVAL){
                                 <tr>
                                     <th>NO</th>
                                     <th>선택</th>
+                                    <th>고유번호</th>
                                     <%If CD="A" Then%><th>메뉴형태</th><%End If%>
 									<th>
 										<a href="?CD=<%=CD%>&SM=<%=SM%>&SW=<%=Server.UrlEncode(SW)%>&LNUM=<%=LNUM%>&USE=<%=USE%>&MTP=<%=MTP%>&ORD=MU"><img src="/img/up_arrow.png" alt="" class="img_arrow"></a>
@@ -278,6 +280,7 @@ function ChangeOrder(MENU_IDX, FVAL){
 								<tr>
                                     <td><span><%=num%></span></td>
                                     <td><input type="radio" name="SELIDX" value="<%=menu_idx%>" onClick="$('#SIDX').val(this.value)"></td>
+                                    <td><span><%=menu_idx%></span></td>
                                     <%If CD="A" Then%><td><span><%=menu_type_TXT%></span></td><%End If%>
                                     <td><span><%=kind_name%></span></td>
                                     <td><span><%=gubun_txt%></span></td>
