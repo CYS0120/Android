@@ -193,10 +193,11 @@
 						<li><div class="h-main_order04"><a href="https://service.smartbag.kr:18060/81000/brand_giftshop/BRA200721108465763" target="_blank">선물하기</a></div></li>
 						<!--<li><div class="h-main_order04"><a href="https://dev-bbq.multicon.co.kr:7443" target="_blank">선물하기</a></div></li>-->
 					</ul>
+					<ul class="h-footer_line"></ul>
 					<!-- // 메뉴 -->
 
 					<!-- // 배너추가 -->
-					<a href="/brand/eventView.asp?eidx=1435&event=OPEN" class="oneBanner"><img src="/images/main_new/tmp2_event.jpg" alt=""/></a>
+					<!--<a href="/brand/eventView.asp?eidx=1435&event=OPEN" class="oneBanner"><img src="/images/main_new/tmp2_event.jpg" alt=""/></a>-->
 					<!-- 배너추가// -->   
 
           <% 'If Session("userIdNo") <> "" Then %>
