@@ -10,6 +10,8 @@
 
 <%
 	Dim anc : anc = Request("anc")
+	if anc = "103" then anc = "117"
+	'if len(anc) = 0 then anc = "117"
 	Dim order_type : order_type = GetReqStr("order_type","D")
 %>
 <script type="text/javascript">
@@ -69,6 +71,7 @@
 	function menu_go(anc)
 	{
 		$('.menuBox').hide(0);
+		if (anc == "") anc = $("button[name=btnMenuCate]:first").data('cateid');
 		save_anc = anc; // 선택된 카테고리 저장.
 
 		// 검색관련된것 초기화
@@ -76,12 +79,12 @@
 		$('#list_src_result').html('').hide(0);
 		$('#re_text').hide(0);
 
-		if (anc == "") {
-			// 103은 인기메뉴.
-			$('.menuBox').not('.menu_cate_103').not('.menu_cate_58').show(0);
-		} else {
+		// if (anc == "") {
+		// 	// 103은 인기메뉴.
+		// 	$('.menuBox').not('.menu_cate_103').not('.menu_cate_58').show(0);
+		// } else {
 			$('.menu_cate_'+ anc).show(0);
-		}
+		// }
 	}
 
 	function menu_list_reset(gubun)
@@ -129,8 +132,8 @@
 		<!--// Aside -->
 
 		<%
-			Dim cate_idx_str : cate_idx_str = "103" ' 초기설정
-			Dim cate_name_str : cate_name_str = "모든 비비큐치킨" ' 초기설정
+			Dim cate_idx_str ': cate_idx_str = "103" ' 초기설정
+			Dim cate_name_str ': cate_name_str = "모든 비비큐치킨" ' 초기설정
 			Dim cate_idx_arr
 			Dim cate_name_arr
 			Dim category_use_yn
@@ -195,10 +198,12 @@
 				 <div class="menu_nav_wrap">
 					<nav class="menu_nav2">
 						<div class="swiper-wrapper">
-							<span class="<% if anc = "" then %>				on <% end if %> swiper-slide2"><button type="button" id="" onclick="menu_go(''); ">전체</button></span>
+						<% if false then '전체메뉴보기 빼기 %>
+							<span class="<% if anc = "" then %>				on <% end if %> swiper-slide2"><button type="button" name="btnMenuCate" data-cateid="" onclick="menu_go(''); ">전체</button></span>
+						<% end if '전체메뉴보기 빼기 %>
 
 							<% For i=0 To UBound(cate_idx_arr) %>
-								<span class="<% if anc = cate_idx_arr(i) then %>		on <% end if %> swiper-slide2"><button type="button" id="" onclick="menu_go('<%=cate_idx_arr(i)%>'); "><%=cate_name_arr(i)%></button></span>
+								<span class="<% if anc = cate_idx_arr(i) then %>		on <% end if %> swiper-slide2"><button type="button" name="btnMenuCate" data-cateid="<%=cate_idx_arr(i)%>" onclick="menu_go('<%=cate_idx_arr(i)%>'); "><%=cate_name_arr(i)%></button></span>
 							<% Next %>
 						</div>
 					</nav>
@@ -349,7 +354,6 @@
 							End With
 
 							Set aCmd = Nothing
-
 						end if 
 
 						' 전체메뉴일경우
