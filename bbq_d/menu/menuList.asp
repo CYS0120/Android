@@ -39,8 +39,8 @@ jQuery(document).ready(function(e) {
 <%
 	' Dim category_idx : category_idx = GetReqNum("cidx",117)
 	' Dim category_name : category_name = GetReqStr("cname","페이코인 이벤트")
-	Dim category_idx : category_idx = ""
-	Dim category_name : category_name = ""
+	Dim category_idx : category_idx = GetReqNum("cidx","")
+	Dim category_name : category_name = GetReqStr("cname","")
 
 	Dim aCmd, aRs
 %>
