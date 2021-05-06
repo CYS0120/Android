@@ -117,9 +117,11 @@
 		aRs.MoveFirst
 
 		Do Until aRs.EOF
+			if cstr(aRs("category_use_yn")) = "Y" then
 %>
 							<li class="node2"><a href="/menu/menuList.asp?cidx=<%=aRs("category_idx")%>&cname=<%=server.Urlencode(aRs("category_name"))%>" class="depth2"><%=aRs("category_name")%></a></li>
 <%
+			end if
 			aRs.MoveNext
 		Loop
 	End If

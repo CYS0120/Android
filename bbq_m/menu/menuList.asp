@@ -11,7 +11,7 @@
 <%
 	Dim anc : anc = Request("anc")
 	if anc = "103" then anc = "117"
-	'if len(anc) = 0 then anc = "117"
+	if len(anc) = 0 then anc = "117"
 	Dim order_type : order_type = GetReqStr("order_type","D")
 %>
 <script type="text/javascript">

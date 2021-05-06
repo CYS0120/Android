@@ -37,8 +37,10 @@ jQuery(document).ready(function(e) {
 </script>
 </head>
 <%
-	Dim category_idx : category_idx = GetReqNum("cidx",0)
-	Dim category_name : category_name = GetReqStr("cname","모든 비비큐치킨")
+	' Dim category_idx : category_idx = GetReqNum("cidx",117)
+	' Dim category_name : category_name = GetReqStr("cname","페이코인 이벤트")
+	Dim category_idx : category_idx = ""
+	Dim category_name : category_name = ""
 
 	Dim aCmd, aRs
 %>
@@ -66,7 +68,9 @@ jQuery(document).ready(function(e) {
 				<div class="section-body">
 					<!-- 메뉴 탭 -->
 					<ul class="menu-tab">
+						<% if false then %>
 						<li <%If category_idx = 0 Then Response.Write "class='on'"%> ><a href="/menu/menuList.asp">모든 비비큐치킨</a></li>
+						<% end if %>
 <%
 	Set aCmd = Server.CreateObject("ADODB.Command")
 
@@ -84,9 +88,15 @@ jQuery(document).ready(function(e) {
 		aRs.MoveFirst
 
 		Do Until aRs.EOF
+			if cstr(aRs("category_use_yn")) = "Y" then
+				if category_idx = "" then
+					category_idx = cstr(aRs("category_idx"))
+					category_name = cstr(aRs("category_name"))
+				end if
 %>
 						<li <%If cstr(category_idx) = cstr(aRs("category_idx")) Then Response.Write "class='on'"%>><a href="/menu/menuList.asp?cidx=<%=aRs("category_idx")%>&cname=<%=server.UrlEncode(aRs("category_name"))%>"><%=aRs("category_name")%></a></li>
 <%
+			end if
 			aRs.MoveNext
 		Loop
 	End If
