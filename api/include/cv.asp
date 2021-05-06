@@ -93,9 +93,9 @@ Const PAYCO_MERCHANTCODE_CHICKEN_UNI = "M000168"
 
 
 Const GOOGLE_MAP_API_KEY = "AIzaSyAySOVfqHAHc71tG7grwX55uLdpWClDrsk"
-'Const DAUM_MAP_API_KEY = "e06d49f224fc7567a2980bcbc9f9a5b6"
-Const DAUM_MAP_API_KEY = "e3981fb812323bce66ab6ee54c3e2b6e"
-'Const DAUM_MAP_API_KEY = "6a7ddf2158c3999872a5bce67a04b2cf"
+'Const DAUM_MAP_API_KEY = "1968197676652e5ced4413ab2ef26016"
+Const DAUM_MAP_API_KEY = "e06d49f224fc7567a2980bcbc9f9a5b6"
+'Const DAUM_MAP_API_KEY = "e3981fb812323bce66ab6ee54c3e2b6e"
 Const JUSO_API_KEY = "U01TX0FVVEgyMDIwMDcxNDExMTY1NDEwOTk1MDg="
 Const JUSO_API_KEY_XY = "U01TX0FVVEgyMDIwMTAwNjExNDc1MDExMDI1OTk="
 
@@ -127,7 +127,7 @@ Const JUSO_API_KEY_XY = "U01TX0FVVEgyMDIwMTAwNjExNDc1MDExMDI1OTk="
 	Const SITE_DOMAINURL_WATAMI		= "http://www.watamikorea.com"		'와타미
 	Const SITE_DOMAINURL_CHICKEN_UNI	= "http://www.ckuniversity.com"		'치킨대학
 	Const SITE_DOMAINURL_START		= "https://www.bbqchangup.co.kr:446"		'창업센터
-	Const SITE_DOMAINURL_GLOBAL		= "https://www.bbqglobal.com"		'제너시스글로벌
+	Const SITE_DOMAINURL_GLOBAL		= "http://www.bbqglobal.com"		'제너시스글로벌
 	Const SITE_DOMAINURL_GROUP		= "http://www.genesiskorea.co.kr"		'제너시스그룹
 	Const SITE_DOMAINURL_BBQMALL	= "http://mall.bbq.co.kr"		'비비큐몰
 

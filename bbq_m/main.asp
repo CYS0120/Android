@@ -190,14 +190,15 @@
 						<li><div class="h-main_order01"><a href="/order/delivery.asp?order_type=D">배달주문</a></div></li>
 						<li><div class="h-main_order02"><a href="/order/delivery.asp?order_type=P">포장주문</a></div></li>
 						<li><div class="h-main_order03"><a href="/coupon_use.asp">모바일 상품권주문</a></div></li>
-						<li><div class="h-main_order04"><a href="https://service.smartbag.kr:18060/81000/brand_giftshop/BRA200721108465763" target="_blank">선물하기</a></div></li>
-						<!--<li><div class="h-main_order04"><a href="https://dev-bbq.multicon.co.kr:7443" target="_blank">선물하기</a></div></li>-->
+						<!--<li><div class="h-main_order04"><a href="https://service.smartbag.kr:18060/81000/brand_giftshop/BRA200721108465763" target="_blank">선물하기</a></div></li>-->
+						<li><div class="h-main_order04"><a href="https://dev-bbq.multicon.co.kr:7443" target="_blank">선물하기</a></div></li>
 					</ul>
-					<ul class="h-footer_line"></ul>
+					<ul class="h-footer_line">
+					</ul>
 					<!-- // 메뉴 -->
 
 					<!-- // 배너추가 -->
-					<!--<a href="/brand/eventView.asp?eidx=1435&event=OPEN" class="oneBanner"><img src="/images/main_new/tmp2_event.jpg" alt=""/></a>-->
+					<!-- <a href="/brand/eventView.asp?eidx=1435&event=OPEN" class="oneBanner"><img src="/images/main_new/tmp2_event.jpg" alt=""/></a> -->
 					<!-- 배너추가// -->   
 
           <% 'If Session("userIdNo") <> "" Then %>
@@ -251,11 +252,13 @@
 						</div>
 					</div>
 					<div>&nbsp;</div>
+					<!--
 					<div class="main_point_set">
 						<iframe width="100%" height="315" src="https://www.youtube.com/embed/_kq8h2L_o-4" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-						<!--<a href src="https://www.youtube.com/embed/uVN-x_lOvBA" target="_blank"><iframe id="idIframe" width="100%" height="315" src="https://www.youtube.com/embed/uVN-x_lOvBA" frameborder="0" onload="javascript:resetLink()"></iframe></a>
-						실시간 이벤트에 참여하기 위해서 유튜브 영상 제목을 클릭하신 후 유튜브 채팅에 참여하세요!!-->
-					</div>					
+					</div>
+					-->
+					<!--<a href src="https://www.youtube.com/embed/uVN-x_lOvBA" target="_blank"><iframe id="idIframe" width="100%" height="315" src="https://www.youtube.com/embed/uVN-x_lOvBA" frameborder="0" onload="javascript:resetLink()"></iframe></a>
+						실시간 이벤트에 참여하기 위해서 유튜브 영상 제목을 클릭하신 후 유튜브 채팅에 참여하세요!!-->					
 					<!-- // 포인트 -->
           <%'End if%>
 
