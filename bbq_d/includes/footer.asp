@@ -104,4 +104,11 @@ $(function(){
 	</div>
 </div>
 
+<span itemscope="" itemtype="http://schema.org/Organization">
+<link itemprop="url" href="https://www.bbq.co.kr">
+<a itemprop="sameAs" href="https://www.youtube.com/user/BBQMobile"></a>
+<a itemprop="sameAs" href="https://blog.naver.com/blogbbq"></a>
+<a itemprop="sameAs" href="https://www.instagram.com/bbq.chicken.insta"></a>
+</span>
+
 <!--#include virtual="/api/ta/ta_footer.asp"-->
