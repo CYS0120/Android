@@ -15,6 +15,7 @@
 	USEEDATE	= InjRequest("USEEDATE")
 	TOTCNT		= InjRequest("TOTCNT")
 	CD_PARTNER	= InjRequest("CD_PARTNER")
+	DC_YN	= InjRequest("DC_YN")
 	If FncIsBlank(CPNNAME) Or FncIsBlank(TOTCNT) Then 
 		Response.Write "E^정보를 모두 입력해 주세요"
 		Response.End
@@ -26,6 +27,7 @@
 	If FncIsBlank(TOTCNT) Then TOTCNT = 1
 	If FncIsBlank(CD_PARTNER) Then CD_PARTNER = "00000"
 	If FncIsBlank(EXPDATE) Then EXPDATE = 0
+	If FncIsBlank(DC_YN) Then DC_YN = "N"
 
 	If AUTO_CREATE = "N" Then 
 		If FncIsBlank(USESDATE) Or FncIsBlank(USEEDATE) Then 
@@ -47,7 +49,7 @@
 
 		.ActiveConnection = conn
 		.CommandTimeout = 3000
-		.CommandText = BBQHOME_DB &".DBO.s_Common_Coupon_CPNPub_2"
+		.CommandText = BBQHOME_DB &".DBO.s_Common_Coupon_CPNPub_3"
 		.CommandType = adCmdStoredProc
 
 		.Parameters.Append .CreateParameter("@CPNID",adInteger,adParamInput,0, CPNID)
@@ -63,6 +65,7 @@
 		.Parameters.Append .CreateParameter("@STATUS",adInteger,adParamInput,0, STATUS)
 		.Parameters.Append .CreateParameter("@TOTCNT",adInteger,adParamInput,0, TOTCNT)
 		.Parameters.Append .CreateParameter("@AUTO_CREATE",advarchar,adParamInput,1, AUTO_CREATE)
+		.Parameters.Append .CreateParameter("@DC_YN",advarchar,adParamInput,1, DC_YN)
 
 		.Parameters.Append .CreateParameter("@RETURNCODE",adInteger, adParamOutPut)
 		.Parameters.Append .CreateParameter("@OUTCPNID",adInteger, adParamOutPut)

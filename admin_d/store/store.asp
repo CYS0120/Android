@@ -189,24 +189,27 @@ function ExcelDown(){
 										상태
 									</th>
 									<th>
-										멤버십사용여부
+										멤버십
 									</th>
 									<th>
-										좌표여부
+										좌표
 									</th>
 <%	IF BRAND_CODE = "01" THEN %>
 									<th>배달료</th>
 									<th>
-										온라인주문여부
+										온라인주문
 									</th>
 									<th>
-										다날 여부
+										다날
 									</th>
 									<th>
-										페이코인 여부
+										페이코인
 									</th>
 									<th>
-										페이코 여부
+										페이코
+									</th>
+									<th>
+										KB간편결제
 									</th>
 <%	END IF %>
 									<th>관리</th>
@@ -220,6 +223,7 @@ function ExcelDown(){
     	Sql = Sql & " , CASE WHEN LEN(ISNULL(danal_h_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS DANAL_YN " & vbCrLf
     	Sql = Sql & " , CASE WHEN LEN(ISNULL(paycoin_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS PAYCOIN_YN " & vbCrLf
     	Sql = Sql & " , CASE WHEN LEN(ISNULL(payco_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS PAYCO_YN " & vbCrLf
+    	Sql = Sql & " , CASE WHEN LEN(ISNULL(SGPAY_MERCHANT, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS SGPAY_YN " & vbCrLf
     	Sql = Sql & " , CASE WHEN ISNULL(WGS84_X, 0) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS WGS84 " & vbCrLf
 		Sql = Sql & SqlFrom & SqlWhere & vbCrLf
 		Sql = Sql & " And BRANCH_ID Not In " & vbCrLf
@@ -257,6 +261,7 @@ function ExcelDown(){
 				DANAL_YN = Rlist("DANAL_YN")
 				PAYCOIN_YN = Rlist("PAYCOIN_YN")
 				PAYCO_YN = Rlist("PAYCO_YN")
+				SGPAY_YN = Rlist("SGPAY_YN")
 				WGS84 = Rlist("WGS84")
 
 '				branch_services_name = ""
@@ -302,6 +307,7 @@ function ExcelDown(){
 									<td><%=DANAL_YN%></td>
 									<td><%=PAYCOIN_YN%></td>
 									<td><%=PAYCO_YN%></td>
+									<td><%=SGPAY_YN%></td>
 <%	END IF %>
 									<td><input type="button" value="수정" class="btn_white" onClick="document.location.href='store_info.asp?CD=<%=CD%>&BRCD=<%=BRANCH_ID%>'"></td>
 								</tr>

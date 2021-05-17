@@ -1,7 +1,43 @@
 ﻿<!-- #include virtual="/inc/config.asp" -->
 <!-- #include virtual="/inc/head.asp" -->
 <%
-	TITLE = "등록"
+	CPNID	= InjRequest("CPNID")
+	if len(CPNID) = 0 then 
+		TITLE = "등록"
+		PAGE_STATUS = 0
+		READONLY = ""
+	else
+		TITLE = "변경 [" & CPNID & "]"
+		PAGE_STATUS = 1
+		READONLY = "READONLY"
+	end if
+
+	' 기본 연동방식
+	AUTO_CREATE = "Y"
+
+	if PAGE_STATUS > 0 then
+		Sql = "	SELECT CPNID, CPNNAME, CPNTYPE, MENUID, OPTIONID, DISCOUNT, EXPDATE, USESDATE, USEEDATE, STATUS, REGDATE, USECNT, TOTCNT, CD_PARTNER, AUTO_CREATE, DC_YN, DBO.FN_MENU_INFO(MENUID,OPTIONID) AS MENUNAME_K " & _
+			"	FROM BBQ_HOME.DBO.T_CPN WITH (NOLOCK) WHERE CPNID = '" & CPNID & "'"
+		Set Cinfo = conn.Execute(Sql)
+		If Cinfo.Eof Then
+			Response.Write "존재하지 않는 쿠폰정보입니다."
+			Response.End 
+		End If 
+		CPNNAME = Cinfo("CPNNAME")
+		CPNTYPE = Cinfo("CPNTYPE")
+		MENUID = Cinfo("MENUID")
+		OPTIONID = Cinfo("OPTIONID")
+		MENUNAME = Cinfo("MENUNAME_K")
+		EXPDATE = Cinfo("EXPDATE")
+		USESDATE = Cinfo("USESDATE")
+		USEEDATE = Cinfo("USEEDATE")
+		STATUS = Cinfo("STATUS")
+		CD_PARTNER = Cinfo("CD_PARTNER")
+		DC_YN = Cinfo("DC_YN")
+		AUTO_CREATE = Cinfo("AUTO_CREATE")
+		TOTCNT = Cinfo("TOTCNT")
+	end if	
+
 %>
 <input type="hidden" name="CPNID" value="<%=CPNID%>">
 <script>
@@ -48,7 +84,7 @@ function chkWord(obj, maxByte) {
 	</colgroup>
 	<tr>
 		<th>쿠폰명</th>
-		<td><input type="text" name="CPNNAME" id="CPNNAME" value="<%=CPNNAME%>" style="width:40%" onkeyup="chkWord(this,48)"></td>
+		<td><input type="text" name="CPNNAME" id="CPNNAME" value="<%=CPNNAME%>" <%=READONLY%> style="width:90%" onkeyup="chkWord(this,48)"></td>
 	</tr>
 	<tr>
 		<th>쿠폰상품</th>
@@ -62,7 +98,7 @@ function chkWord(obj, maxByte) {
 			Do While Not Mlist.Eof
 				
 %>
-				<option value="<%=Mlist("MENU_IDX")%>"><%=Mlist("MENU_NAME")%></option>
+				<option value="<%=Mlist("MENU_IDX")%>" <% IF Mlist("MENU_IDX") = MENUID then %> selected <% end if %>><%=Mlist("MENU_NAME")%></option>
 <%
 				Mlist.MoveNext
 			Loop
@@ -100,11 +136,20 @@ function chkWord(obj, maxByte) {
 	Set Clist = conn.Execute(Sql)
 	If Not Clist.eof Then
 		Do While Not Clist.eof	%>
-				<option value="<%=Clist("CD_PARTNER")%>"<%If Clist("CD_PARTNER") = CD_PARTNER Then%> selected<%End If%>><%=Clist("NM_PARTNER")%></option>
+				<option value="<%=Clist("CD_PARTNER")%>" <% If Clist("CD_PARTNER") = CD_PARTNER Then%> selected <%End If%>><%=Clist("NM_PARTNER")%></option>
 <%			Clist.MoveNext
 		Loop
 	End If  
 %>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<th>할인여부 (*현재 할인에 따른 구분사용 구현X)</th>
+		<td>
+			<select name="DC_YN" id="DC_YN" style="width:40%">
+				<option value="N" <% If DC_YN = "N" Or DC_YN = "" Then Response.write "SELECTED" %>>일반판매</option>
+				<option value="Y" <% If DC_YN = "Y" Then Response.write "SELECTED" %>>할인판매</option>
 			</select>
 		</td>
 	</tr>

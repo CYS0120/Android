@@ -15,11 +15,12 @@
 <head>
 <!-- #include virtual="/inc/head.asp" -->
 <script>
-function Coupon_pop(){
+function Coupon_pop(cpnid){
 	$.ajax({
 		async: true,
 		type: "POST",
 		url: "coupon_prm_info_div.asp",
+		data: {cpnid:cpnid},
 		cache: false,
 		dataType: "html",
 		success: function (data) {
@@ -87,7 +88,7 @@ function CheckInput(){
             
             <div class="sitemap_wrap">
                 <!--content-->
-                <div class="manager_popup_area" style="height:350px;">
+                <div class="manager_popup_area" style="height:400px;">
 					<form name="coupon_info" id="coupon_info" method="post">
 					<div id="coupon_info_div">
 
@@ -235,7 +236,7 @@ function CheckInput(){
 %>
 							<tr>
 								<td><span><%=num%></span></td>
-								<td><span><%=CPNID%></span></td>
+								<td><span style="cursor:pointer" onClick="javascript:Coupon_pop('<%=CPNID%>')"><%=CPNID%></span></td>
 								<td><span><%=NM_PARTNER%></span></td>
 								<td><span><a href="coupon_prm_pin.asp?cpnid=<%=CPNID%>"><%=CPNNAME%></a></span></td>
 								<td><span><%=USESDATE%> ~ <%=USEEDATE%></span></td>
@@ -257,7 +258,7 @@ function CheckInput(){
 					<div class="list_foot">
 <!-- #include virtual="/inc/paging.asp" -->
 						<div style="display:inline-block;float:right;">
-							<button type="button" onClick="Coupon_pop()" class="btn_red125">등록</button>
+							<button type="button" onClick="Coupon_pop('')" class="btn_red125">등록</button>
 						</div>
 					</div>
 				</div>
