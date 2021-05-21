@@ -299,6 +299,20 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         print(userInfo)
         
         UIApplication.shared.applicationIconBadgeNumber = 0
+        let deviceId = UIDevice.current.identifierForVendor!.uuidString
+        
+        //푸시 분기처리
+        var push_type : String = ""
+        if userInfo["PUSHTYPE"] != nil {
+            push_type = userInfo["PUSHTYPE"] as! String
+        }
+        
+        if push_type != "" {
+            if let url = URL(string: "https://m.bbq.co.kr/main.asp?pushtype=" + push_type) {
+                UIApplication.shared.open(url, options: [:])
+            }
+        }
+
         
         completionHandler()
     }
