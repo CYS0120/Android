@@ -654,6 +654,8 @@
                         showAlertMsg({
                             msg: res.message
                         });
+
+                        openLogin('mobile');
                     }
                 },
                 error: function(data, status, err) {

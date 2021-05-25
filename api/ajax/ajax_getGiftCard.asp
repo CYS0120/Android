@@ -11,6 +11,8 @@
         mmidno = Session("userIdNo")
     Else
         mmidno = "P"&Session.sessionid
+        Response.Write "{""result"":5,""message"":""회원정보를 잃었습니다. 다시 로그인 시도하여 주시기 바랍니다.""}"
+        response.end
     End If
 '회원 IDno 가져오기 꿑
 
