@@ -7,7 +7,7 @@
 <script src="/common/js/global.js?ver=202001007122020"></script>
 <script src="/common/js/libs/swiper.min.js?ver=202001007122020"></script>
 <script src="/api/common/functions.js?ver=202001007122020"></script>
-<script src="/common/js/functions.js?ver=20210222122020"></script>
+<script src="/common/js/functions.js?ver=20210526122020"></script>
 <script src="/common/js/proj4js-combined.js?ver=202001007122020"></script>
 <% IF FALSE THEN %>
 <script src="/common/js/libs/jquery.mobile.custom.min.js?ver=202001007122020"></script>

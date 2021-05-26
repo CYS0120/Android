@@ -466,9 +466,17 @@ function getCartList(it, mkey, key, it_amt, page, side_amt_new) {
 	ht += "			<dd class='cart_num'>";
 	ht += "				<span>"+ numberWithCommas(Number(it_amt + side_amt_new)) +"</span>원";
 	ht += "				<span class='form-pm2'>";
-	ht += "					<button class='minus' onclick=\"goCartTxt('"+ mkey +"', -1);\" type='button'>-</button>";
-	ht += "					<input id='new_qty_"+ mkey +"' type='text' value='"+it.qty+"' readonly />";
-	ht += "					<button class='plus' onclick=\"goCartTxt('"+ mkey +"', 1);\" type='button'>-</button>";
+	if (it.pin != '') {
+		ht += "					<button class='minus' type='button'>-</button>";
+		ht += "					<input id='new_qty_"+ mkey +"' type='text' value='"+it.qty+"' readonly />";
+		ht += "					<button class='plus' type='button'>-</button>";
+	}
+	else
+	{
+		ht += "					<button class='minus' onclick=\"goCartTxt('"+ mkey +"', -1);\" type='button'>-</button>";
+		ht += "					<input id='new_qty_"+ mkey +"' type='text' value='"+it.qty+"' readonly />";
+		ht += "					<button class='plus' onclick=\"goCartTxt('"+ mkey +"', 1);\" type='button'>-</button>";
+		}
 	ht += "				</span>";
 	ht += "			</dd>";
 	ht += "		</dl>";
