@@ -68,12 +68,11 @@
 		If ret_PaymentTime = "" Or ret_PaymentNo = "" Or ret_TxId = "" Then
 			resultMsg = "취소되었습니다."
 			Call Write_Log("sgpay_return.asp is canceled : " & CStr(resultMsg))
+			'Set resMC = OrderCancelListForOrder(order_idx)
 
-			Set resMC = OrderCancelListForOrder(order_idx)
-
-			If resMC.mCode = 0 Then
-				sgpayDone = True
-			End If
+			'If resMC.mCode = 0 Then
+			'	sgpayDone = True
+			'End If
 			%>
 			<html>
 				<head>
@@ -186,23 +185,9 @@
 			vPayco_Seller = aRs("payco_seller")
 			vPayco_Cpid = aRs("payco_cpid")
 			vPayco_Itemcd = aRs("payco_itemcd")
+			vSgpay_merchant = aRs("sgpay_merchant")
 
-			If TESTMODE <> "Y" Then
-				sellerKey				=	vPayco_Seller'"S0FSJE"									'(필수) 가맹점 코드 - 파트너센터에서 알려주는 값으로, 초기 연동 시 PAYCO에서 쇼핑몰에 값을 전달한다.
-				cpId					=	vPayco_Cpid'"PARTNERTEST"								'(필수) 상점ID, 30자 이내
-				productId				=	vPayco_Itemcd'"PROD_EASY"									'(필수) 상품ID, 50자 이내
-			Else 
-				If branch_id = "1146001" Then
-					sellerKey				=	vPayco_Seller'"S0FSJE"									'(필수) 가맹점 코드 - 파트너센터에서 알려주는 값으로, 초기 연동 시 PAYCO에서 쇼핑몰에 값을 전달한다.
-					cpId					=	vPayco_Cpid'"PARTNERTEST"								'(필수) 상점ID, 30자 이내
-					productId				=	vPayco_Itemcd'"PROD_EASY"									'(필수) 상품ID, 50자 이내
-				Else
-					sellerKey				=	"S0FSJE"									'(필수) 가맹점 코드 - 파트너센터에서 알려주는 값으로, 초기 연동 시 PAYCO에서 쇼핑몰에 값을 전달한다.
-					cpId					=	"PARTNERTEST"								'(필수) 상점ID, 30자 이내
-					productId				=	"PROD_EASY"									'(필수) 상품ID, 50자 이내
-				End If
-			End If 
-			If vPayco_Seller = "" Then
+			If vSgpay_merchant = "" Then
 				shopInfoError = True
 				ErrMessage = "매장정보가 잘못되었습니다."
 
@@ -421,7 +406,8 @@
 		'결제 인증 후 내부 오류가 있어 승인은 받지 않았습니다. 오류내역을 여기에 표시하세요. 예) 재고 수량이 부족합니다.
 		Call Write_Log("sgpay_return.asp Error : " & ErrMessage)
 
-		Set resMC = OrderCancelListForOrder(order_idx)
+		Response.redirect "sgpay_cancel.asp?order_num="&order_num&"&tid="&ret_TxId
+		'Set resMC = OrderCancelListForOrder(order_idx)
 
 		If resMC.mCode = 0 Then
 			paycoDone = True
