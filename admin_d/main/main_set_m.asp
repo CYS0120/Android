@@ -13,6 +13,29 @@
 <script type="text/javascript">
 function InputCheck(){
 	var f = document.inputfrm;
+	// alert(f.IMGNUM.value);
+	if (f.IMGNUM.value == "W1") {
+		if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
+	} else if (f.IMGNUM.value == "W2") {
+		if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
+		if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
+	} else if (f.IMGNUM.value == "W3") {
+		if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
+		if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
+		if (document.getElementById("txtToDate_3").value == ""){alert("3번 배너 종료일자를 입력해주세요.");f.txtToDate_3.focus(); return false;}
+	} else if (f.IMGNUM.value == "W4") {
+		if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
+		if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
+		if (document.getElementById("txtToDate_3").value == ""){alert("3번 배너 종료일자를 입력해주세요.");f.txtToDate_3.focus(); return false;}
+		if (document.getElementById("txtToDate_4").value == ""){alert("4번 배너 종료일자를 입력해주세요.");f.txtToDate_4.focus(); return false;}
+	} else if (f.IMGNUM.value == "W5") {
+		if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
+		if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
+		if (document.getElementById("txtToDate_3").value == ""){alert("3번 배너 종료일자를 입력해주세요.");f.txtToDate_3.focus(); return false;}
+		if (document.getElementById("txtToDate_4").value == ""){alert("4번 배너 종료일자를 입력해주세요.");f.txtToDate_4.focus(); return false;}
+		if (document.getElementById("txtToDate_5").value == ""){alert("5번 배너 종료일자를 입력해주세요.");f.txtToDate_5.focus(); return false;}
+	}		
+
 	$.ajax({
 		async: true,
 		type: "POST",
@@ -30,6 +53,7 @@ function InputCheck(){
 		}
 	});
 }
+
 function DivShow(GB){
 	$('.section_main_img').hide();
 	if (GB == "W1"){
@@ -56,6 +80,91 @@ function DivShow(GB){
 		$('#DivM1').show();
 	}
 }
+
+function DateYn(GB, check_){
+	var today = new Date().toISOString().substring(0,10);
+
+	if (GB == "W1"){
+		if (check_.checked == true) {
+			document.getElementById("txtDate_1").style.display = "block";
+			document.getElementById("date_yn_1").value = "Y";
+			document.getElementById('txtFromDate_1').value = today;
+			document.getElementById('txtToDate_1').value = null;
+		} else {
+			document.getElementById("txtDate_1").style.display = "none";
+			document.getElementById("date_yn_1").value = "N";
+			document.getElementById('txtToDate_1').value = "9999-12-31";
+		}
+	}else if (GB == "W2"){
+		if (check_.checked == true) {
+			document.getElementById("txtDate_2").style.display = "block";
+			document.getElementById("date_yn_2").value = "Y";
+			document.getElementById('txtFromDate_2').value = today;
+			document.getElementById('txtToDate_2').value = null;
+		} else {
+			document.getElementById("txtDate_2").style.display = "none";
+			document.getElementById("date_yn_2").value = "N";
+			document.getElementById('txtToDate_2').value = "9999-12-31";
+		}
+	}else if (GB == "W3"){
+		if (check_.checked == true) {
+			document.getElementById("txtDate_3").style.display = "block";
+			document.getElementById("date_yn_3").value = "Y";
+			document.getElementById('txtFromDate_3').value = today;
+			document.getElementById('txtToDate_3').value = null;
+		} else {
+			document.getElementById("txtDate_3").style.display = "none";
+			document.getElementById("date_yn_3").value = "N";
+			document.getElementById('txtToDate_3').value = "9999-12-31";
+		}
+	}else if (GB == "W4"){
+		if (check_.checked == true) {
+			document.getElementById("txtDate_4").style.display = "block";
+			document.getElementById("date_yn_4").value = "Y";
+			document.getElementById('txtFromDate_4').value = today;
+			document.getElementById('txtToDate_4').value = null;
+		} else {
+			document.getElementById("txtDate_4").style.display = "none";
+			document.getElementById("date_yn_4").value = "N";
+			document.getElementById('txtToDate_4').value = "9999-12-31";
+		}
+	}else if (GB == "W5"){
+		if (check_.checked == true) {
+			document.getElementById("txtDate_5").style.display = "block";
+			document.getElementById("date_yn_5").value = "Y";
+			document.getElementById('txtFromDate_5').value = today;
+			document.getElementById('txtToDate_5').value = null;
+		} else {
+			document.getElementById("txtDate_5").style.display = "none";
+			document.getElementById("date_yn_5").value = "N";
+			document.getElementById('txtToDate_5').value = "9999-12-31";
+		}
+	}
+}
+
+
+    $(function() {
+        $.datepicker.setDefaults({
+            dateFormat: 'yy-mm-dd'
+            , minDate: 0
+            ,showMonthAfterYear: true
+            ,yearSuffix: "년"
+            ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+            ,dayNamesMin: ['일','월','화','수','목','금','토']
+        });
+
+		$("#txtFromDate_1").datepicker();
+        $("#txtToDate_1").datepicker();
+		$("#txtFromDate_2").datepicker();
+        $("#txtToDate_2").datepicker();
+		$("#txtFromDate_3").datepicker();
+        $("#txtToDate_3").datepicker();
+		$("#txtFromDate_4").datepicker();
+        $("#txtToDate_4").datepicker();
+		$("#txtFromDate_5").datepicker();
+        $("#txtToDate_5").datepicker();
+    });
+
 </script>
 </head>
 <body>
@@ -135,9 +244,14 @@ function DivShow(GB){
 	DISPW4 = "none"
 	DISPW5 = "none"
 	DISPM1 = "none"
+	DISPDATE1 = "none"
+	DISPDATE2 = "none"
+	DISPDATE3 = "none"
+	DISPDATE4 = "none"
+	DISPDATE5 = "none"
 
 	brand_code = FncBrandDBCode(CD)
-	Sql = "Select main_kind, main_img, main_text, link_url, link_target, BAN_ORD From bt_main_img_m Where brand_code='"& brand_code &"' Order By main_kind"
+	Sql = "Select main_kind, main_img, main_text, link_url, link_target, BAN_ORD, date_s, date_e, date_yn From bt_main_img_m Where brand_code='"& brand_code &"' Order By main_kind"
 	Set Rlist = conn.Execute(Sql)
 	If Rlist.eof Then 
 		IMGNUM	= "WN"
@@ -150,36 +264,54 @@ function DivShow(GB){
 			link_target	= Rlist("link_target")
 			BAN_ORD		= Rlist("BAN_ORD")
 			IMGNUM		= main_kind
+			date_s		= left(Rlist("date_s"),4) & "-" & mid(Rlist("date_s"),5,2) & "-" & right(Rlist("date_s"),2)
+			date_e		= left(Rlist("date_e"),4) & "-" & mid(Rlist("date_e"),5,2) & "-" & right(Rlist("date_e"),2)
+			date_yn		= Rlist("date_yn")
 			If main_kind = "W1" Then 
 				WMAINIMG1 = main_img
 				WMAINTEXT1 = main_text
 				WLINKURL1 = link_url
 				WLINKTARGET1 = link_target
 				WBAN_ORD1 = BAN_ORD
+				txtFromDate_1 = date_s
+				txtToDate_1 = date_e
+				date_yn_1 = date_yn
 			ElseIf main_kind = "W2" Then 
 				WMAINIMG2 = main_img
 				WMAINTEXT2 = main_text
 				WLINKURL2 = link_url
 				WLINKTARGET2 = link_target
 				WBAN_ORD2 = BAN_ORD
+				txtFromDate_2 = date_s
+				txtToDate_2 = date_e
+				date_yn_2 = date_yn
 			ElseIf main_kind = "W3" Then 
 				WMAINIMG3 = main_img
 				WMAINTEXT3 = main_text
 				WLINKURL3 = link_url
 				WLINKTARGET3 = link_target
 				WBAN_ORD3 = BAN_ORD
+				txtFromDate_3 = date_s
+				txtToDate_3 = date_e
+				date_yn_3 = date_yn
 			ElseIf main_kind = "W4" Then 
 				WMAINIMG4 = main_img
 				WMAINTEXT4 = main_text
 				WLINKURL4 = link_url
 				WLINKTARGET4 = link_target
 				WBAN_ORD4 = BAN_ORD
+				txtFromDate_4 = date_s
+				txtToDate_4 = date_e
+				date_yn_4 = date_yn
 			ElseIf main_kind = "W5" Then 
 				WMAINIMG5 = main_img
 				WMAINTEXT5 = main_text
 				WLINKURL5 = link_url
 				WLINKTARGET5 = link_target
 				WBAN_ORD5 = BAN_ORD
+				txtFromDate_5 = date_s
+				txtToDate_5 = date_e
+				date_yn_5 = date_yn
 			ElseIf main_kind = "M1" Then 
 				MMAINIMG1 = main_img
 				MMAINTEXT1 = main_text
@@ -212,6 +344,22 @@ function DivShow(GB){
 		DISPW1 = ""
 	ElseIf IMGNUM = "M1" Then  
 		DISPM1 = ""
+	End If
+
+	If date_yn_1 = "Y" Then
+		DISPDATE1 = ""
+	End If
+	If date_yn_2 = "Y" Then
+		DISPDATE2 = ""
+	End If
+	If date_yn_3 = "Y" Then
+		DISPDATE3 = ""
+	End If
+	If date_yn_4 = "Y" Then
+		DISPDATE4 = ""
+	End If
+	If date_yn_5 = "Y" Then
+		DISPDATE5 = ""
 	End If
 
 	UploadDir	= FncGetUploadDir(CD)
@@ -284,6 +432,22 @@ function DivShow(GB){
 								</div>
 							</td>
 						</tr>
+<%					If CD = "A" Then %>
+						<tr>
+							<td>
+								<div>
+									<span>배너 등록 기간&nbsp;&nbsp;&nbsp;</span>
+									<input type="hidden" id="date_yn_1" name="date_yn_1" value="<%=date_yn_1%>">
+									<input type="checkbox" id="date_check_1"<%If date_yn_1="Y" Then%> checked<%End IF%> onChange="DateYn('W1', this);"> 기간조회
+								</div>
+								<div id="txtDate_1" name="txtDate_1" style="display:<%=DISPDATE1%>;">
+									<input type="text" id="txtFromDate_1" name="txtFromDate_1" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtFromDate_1%>">
+									~
+									<input type="text" id="txtToDate_1" name="txtToDate_1" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtToDate_1%>">
+								</div>
+							</td>
+						</tr>
+<%					End If %>
 						<tr>
 							<td>
 								<div><span>메인 텍스트(1번)</span></div>
@@ -330,6 +494,22 @@ function DivShow(GB){
 								</div>
 							</td>
 						</tr>
+<%					If CD = "A" Then %>
+						<tr>
+							<td>
+								<div>
+									<span>배너 등록 기간</span>
+									<input type="hidden" id="date_yn_2" name="date_yn_2" value="<%=date_yn_2%>">
+									<input type="checkbox" id="date_check_2"<%If date_yn_2="Y" Then%> checked<%End IF%> onChange="DateYn('W2', this);"> 기간조회
+								</div>
+								<div id="txtDate_2" name="txtDate_2" style="display:<%=DISPDATE2%>;">
+									<input type="text" id="txtFromDate_2" name="txtFromDate_2" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtFromDate_2%>">
+									~
+									<input type="text" id="txtToDate_2" name="txtToDate_2" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtToDate_2%>">
+								</div>
+							</td>
+						</tr>
+<%					End If %>
 						<tr>
 							<td>
 								<div><span>메인 텍스트(2번)</span></div>
@@ -376,6 +556,22 @@ function DivShow(GB){
 								</div>
 							</td>
 						</tr>
+<%					If CD = "A" Then %>
+						<tr>
+							<td>
+								<div>
+									<span>배너 등록 기간</span>
+									<input type="hidden" id="date_yn_3" name="date_yn_3" value="<%=date_yn_3%>">
+									<input type="checkbox" id="date_check_3"<%If date_yn_3="Y" Then%> checked<%End IF%> onChange="DateYn('W3', this);"> 기간조회
+								</div>
+								<div id="txtDate_3" name="txtDate_3" style="display:<%=DISPDATE3%>;">
+									<input type="text" id="txtFromDate_3" name="txtFromDate_3" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtFromDate_3%>">
+									~
+									<input type="text" id="txtToDate_3" name="txtToDate_3" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtToDate_3%>">
+								</div>
+							</td>
+						</tr>
+<%					End If %>
 						<tr>
 							<td>
 								<div><span>메인 텍스트(3번)</span></div>
@@ -423,6 +619,22 @@ function DivShow(GB){
 								</div>
 							</td>
 						</tr>
+<%					If CD = "A" Then %>
+						<tr>
+							<td>
+								<div>
+									<span>배너 등록 기간</span>
+									<input type="hidden" id="date_yn_4" name="date_yn_4" value="<%=date_yn_4%>">
+									<input type="checkbox" id="date_check_4"<%If date_yn_4="Y" Then%> checked<%End IF%> onChange="DateYn('W4', this);"> 기간조회
+								</div>
+								<div id="txtDate_4" name="txtDate_4" style="display:<%=DISPDATE4%>;">
+									<input type="text" id="txtFromDate_4" name="txtFromDate_4" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtFromDate_4%>">
+									~
+									<input type="text" id="txtToDate_4" name="txtToDate_4" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtToDate_4%>">
+								</div>
+							</td>
+						</tr>
+<%					End If %>
 						<tr>
 							<td>
 								<div><span>메인 텍스트(4번)</span></div>
@@ -470,6 +682,22 @@ function DivShow(GB){
 								</div>
 							</td>
 						</tr>
+<%					If CD = "A" Then %>
+						<tr>
+							<td>
+								<div>
+									<span>배너 등록 기간</span>
+									<input type="hidden" id="date_yn_5" name="date_yn_5" value="<%=date_yn_5%>">
+									<input type="checkbox" id="date_check_5"<%If date_yn_5="Y" Then%> checked<%End IF%> onChange="DateYn('W5', this);"> 기간조회
+								</div>
+								<div id="txtDate_5" name="txtDate_5" style="display:<%=DISPDATE5%>;">
+									<input type="text" id="txtFromDate_5" name="txtFromDate_5" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtFromDate_5%>">
+									~
+									<input type="text" id="txtToDate_5" name="txtToDate_5" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtToDate_5%>">
+								</div>
+							</td>
+						</tr>
+<%					End If %>
 						<tr>
 							<td>
 								<div><span>메인 텍스트(5번)</span></div>

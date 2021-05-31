@@ -42,13 +42,16 @@
 				link_url	= InjRequest("WLINKURL1")
 				link_target	= InjRequest("WLINKTARGET1")
 				BAN_ORD		= InjRequest("WBAN_ORD1")
+				date_s		= replace(InjRequest("txtFromDate_1"), "-", "")
+				date_e		= replace(InjRequest("txtToDate_1"), "-", "")
+				date_yn		= InjRequest("date_yn_1")
 				If FncIsBlank(link_target) Then link_target = "S"
 				If Not FncIsBlank(main_img) Then 
-					Sql = "Update bt_main_img_m Set main_img='"& main_img &"', main_text='"& main_text &"', link_url='"& link_url &"', link_target='"& link_target &"', BAN_ORD='"& BAN_ORD &"' Where brand_code='"& brand_code &"' And main_kind='"& main_kind &"'"
+					Sql = "Update bt_main_img_m Set main_img='"& main_img &"', main_text='"& main_text &"', link_url='"& link_url &"', link_target='"& link_target &"', BAN_ORD='"& BAN_ORD &"', date_s='"& date_s &"', date_e='"& date_e &"', date_yn='"& date_yn &"' Where brand_code='"& brand_code &"' And main_kind='"& main_kind &"'"
 					conn.Execute Sql, Uplow
 					If Uplow > 0 Then 
 					Else 
-						Sql = "Insert Into bt_main_img_m(brand_code, main_kind, main_img, main_text, link_url, link_target) values('"& brand_code &"','"& main_kind &"','"& main_img &"','"& main_text &"','"& link_url &"','"& link_target &"')"
+						Sql = "Insert Into bt_main_img_m(brand_code, main_kind, main_img, main_text, link_url, link_target, date_s, date_e, date_yn) values('"& brand_code &"','"& main_kind &"','"& main_img &"','"& main_text &"','"& link_url &"','"& link_target &"','"& date_s &"','"& date_e &"','"& date_yn &"')"
 						conn.Execute(Sql)
 					End If
 				End If
@@ -66,13 +69,16 @@
 				link_url	= InjRequest("WLINKURL2")
 				link_target	= InjRequest("WLINKTARGET2")
 				BAN_ORD		= InjRequest("WBAN_ORD2")
+				date_s		= replace(InjRequest("txtFromDate_2"), "-", "")
+				date_e		= replace(InjRequest("txtToDate_2"), "-", "")
+				date_yn		= InjRequest("date_yn_2")
 				If FncIsBlank(link_target) Then link_target = "S"
 				If Not FncIsBlank(main_img) Then 
-					Sql = "Update bt_main_img_m Set main_img='"& main_img &"', main_text='"& main_text &"', link_url='"& link_url &"', link_target='"& link_target &"', BAN_ORD='"& BAN_ORD &"' Where brand_code='"& brand_code &"' And main_kind='"& main_kind &"'"
+					Sql = "Update bt_main_img_m Set main_img='"& main_img &"', main_text='"& main_text &"', link_url='"& link_url &"', link_target='"& link_target &"', BAN_ORD='"& BAN_ORD &"', date_s='"& date_s &"', date_e='"& date_e &"', date_yn='"& date_yn &"' Where brand_code='"& brand_code &"' And main_kind='"& main_kind &"'"
 					conn.Execute Sql, Uplow
 					If Uplow > 0 Then 
 					Else 
-						Sql = "Insert Into bt_main_img_m(brand_code, main_kind, main_img, main_text, link_url, link_target) values('"& brand_code &"','"& main_kind &"','"& main_img &"','"& main_text &"','"& link_url &"','"& link_target &"')"
+						Sql = "Insert Into bt_main_img_m(brand_code, main_kind, main_img, main_text, link_url, link_target, date_s, date_e, date_yn) values('"& brand_code &"','"& main_kind &"','"& main_img &"','"& main_text &"','"& link_url &"','"& link_target &"','"& date_s &"','"& date_e &"','"& date_yn &"')"
 						conn.Execute(Sql)
 					End If
 				End If
@@ -90,13 +96,16 @@
 				link_url	= InjRequest("WLINKURL3")
 				link_target	= InjRequest("WLINKTARGET3")
 				BAN_ORD		= InjRequest("WBAN_ORD3")
+				date_s		= replace(InjRequest("txtFromDate_3"), "-", "")
+				date_e		= replace(InjRequest("txtToDate_3"), "-", "")
+				date_yn		= InjRequest("date_yn_3")
 				If FncIsBlank(link_target) Then link_target = "S"
 				If Not FncIsBlank(main_img) Then 
-					Sql = "Update bt_main_img_m Set main_img='"& main_img &"', main_text='"& main_text &"', link_url='"& link_url &"', link_target='"& link_target &"', BAN_ORD='"& BAN_ORD &"' Where brand_code='"& brand_code &"' And main_kind='"& main_kind &"'"
+					Sql = "Update bt_main_img_m Set main_img='"& main_img &"', main_text='"& main_text &"', link_url='"& link_url &"', link_target='"& link_target &"', BAN_ORD='"& BAN_ORD &"', date_s='"& date_s &"', date_e='"& date_e &"', date_yn='"& date_yn &"' Where brand_code='"& brand_code &"' And main_kind='"& main_kind &"'"
 					conn.Execute Sql, Uplow
 					If Uplow > 0 Then 
 					Else 
-						Sql = "Insert Into bt_main_img_m(brand_code, main_kind, main_img, main_text, link_url, link_target) values('"& brand_code &"','"& main_kind &"','"& main_img &"','"& main_text &"','"& link_url &"','"& link_target &"')"
+						Sql = "Insert Into bt_main_img_m(brand_code, main_kind, main_img, main_text, link_url, link_target, date_s, date_e, date_yn) values('"& brand_code &"','"& main_kind &"','"& main_img &"','"& main_text &"','"& link_url &"','"& link_target &"','"& date_s &"','"& date_e &"','"& date_yn &"')"
 						conn.Execute(Sql)
 					End If
 				End If
@@ -114,13 +123,16 @@
 				link_url	= InjRequest("WLINKURL4")
 				link_target	= InjRequest("WLINKTARGET4")
 				BAN_ORD		= InjRequest("WBAN_ORD4")
+				date_s		= replace(InjRequest("txtFromDate_4"), "-", "")
+				date_e		= replace(InjRequest("txtToDate_4"), "-", "")
+				date_yn		= InjRequest("date_yn_4")
 				If FncIsBlank(link_target) Then link_target = "S"
 				If Not FncIsBlank(main_img) Then 
-					Sql = "Update bt_main_img_m Set main_img='"& main_img &"', main_text='"& main_text &"', link_url='"& link_url &"', link_target='"& link_target &"', BAN_ORD='"& BAN_ORD &"' Where brand_code='"& brand_code &"' And main_kind='"& main_kind &"'"
+					Sql = "Update bt_main_img_m Set main_img='"& main_img &"', main_text='"& main_text &"', link_url='"& link_url &"', link_target='"& link_target &"', BAN_ORD='"& BAN_ORD &"', date_s='"& date_s &"', date_e='"& date_e &"', date_yn='"& date_yn &"' Where brand_code='"& brand_code &"' And main_kind='"& main_kind &"'"
 					conn.Execute Sql, Uplow
 					If Uplow > 0 Then 
 					Else 
-						Sql = "Insert Into bt_main_img_m(brand_code, main_kind, main_img, main_text, link_url, link_target) values('"& brand_code &"','"& main_kind &"','"& main_img &"','"& main_text &"','"& link_url &"','"& link_target &"')"
+						Sql = "Insert Into bt_main_img_m(brand_code, main_kind, main_img, main_text, link_url, link_target, date_s, date_e, date_yn) values('"& brand_code &"','"& main_kind &"','"& main_img &"','"& main_text &"','"& link_url &"','"& link_target &"','"& date_s &"','"& date_e &"','"& date_yn &"')"
 						conn.Execute(Sql)
 					End If
 				End If
@@ -138,13 +150,16 @@
 				link_url	= InjRequest("WLINKURL5")
 				link_target	= InjRequest("WLINKTARGET5")
 				BAN_ORD		= InjRequest("WBAN_ORD5")
+				date_s		= replace(InjRequest("txtFromDate_5"), "-", "")
+				date_e		= replacE(InjRequest("txtToDate_5"), "-", "")
+				date_yn		= InjRequest("date_yn_5")
 				If FncIsBlank(link_target) Then link_target = "S"
 				If Not FncIsBlank(main_img) Then 
-					Sql = "Update bt_main_img_m Set main_img='"& main_img &"', main_text='"& main_text &"', link_url='"& link_url &"', link_target='"& link_target &"', BAN_ORD='"& BAN_ORD &"' Where brand_code='"& brand_code &"' And main_kind='"& main_kind &"'"
+					Sql = "Update bt_main_img_m Set main_img='"& main_img &"', main_text='"& main_text &"', link_url='"& link_url &"', link_target='"& link_target &"', BAN_ORD='"& BAN_ORD &"', date_s='"& date_s &"', date_e='"& date_e &"', date_yn='"& date_yn &"' Where brand_code='"& brand_code &"' And main_kind='"& main_kind &"'"
 					conn.Execute Sql, Uplow
 					If Uplow > 0 Then 
 					Else 
-						Sql = "Insert Into bt_main_img_m(brand_code, main_kind, main_img, main_text, link_url, link_target) values('"& brand_code &"','"& main_kind &"','"& main_img &"','"& main_text &"','"& link_url &"','"& link_target &"')"
+						Sql = "Insert Into bt_main_img_m(brand_code, main_kind, main_img, main_text, link_url, link_target, date_s, date_e, date_yn) values('"& brand_code &"','"& main_kind &"','"& main_img &"','"& main_text &"','"& link_url &"','"& link_target &"','"& date_s &"','"& date_e &"','"& date_yn &"')"
 						conn.Execute(Sql)
 					End If
 				End If
