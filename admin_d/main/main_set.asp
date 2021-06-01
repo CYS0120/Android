@@ -444,7 +444,7 @@ function DateYn(GB, check_){
 								<div>
 									<span>배너 등록 기간&nbsp;&nbsp;&nbsp;</span>
 									<input type="hidden" id="date_yn_1" name="date_yn_1" value="<%=date_yn_1%>">
-									<input type="checkbox" id="date_check_1"<%If date_yn_1="Y" Then%> checked<%End IF%> onChange="DateYn('W1', this);"> 기간조회
+									<input type="checkbox" id="date_check_1"<%If date_yn_1="Y" Then%> checked<%End IF%> onChange="DateYn('W1', this);"> 기간설정
 								</div>
 								<div id="txtDate_1" name="txtDate_1" style="display:<%=DISPDATE1%>;">
 									<input type="text" id="txtFromDate_1" name="txtFromDate_1" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtFromDate_1%>">
@@ -506,7 +506,7 @@ function DateYn(GB, check_){
 								<div>
 									<span>배너 등록 기간</span>
 									<input type="hidden" id="date_yn_2" name="date_yn_2" value="<%=date_yn_2%>">
-									<input type="checkbox" id="date_check_2"<%If date_yn_2="Y" Then%> checked<%End IF%> onChange="DateYn('W2', this);"> 기간조회
+									<input type="checkbox" id="date_check_2"<%If date_yn_2="Y" Then%> checked<%End IF%> onChange="DateYn('W2', this);"> 기간설정
 								</div>
 								<div id="txtDate_2" name="txtDate_2" style="display:<%=DISPDATE2%>;">
 									<input type="text" id="txtFromDate_2" name="txtFromDate_2" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtFromDate_2%>">
@@ -568,7 +568,7 @@ function DateYn(GB, check_){
 								<div>
 									<span>배너 등록 기간</span>
 									<input type="hidden" id="date_yn_3" name="date_yn_3" value="<%=date_yn_3%>">
-									<input type="checkbox" id="date_check_3"<%If date_yn_3="Y" Then%> checked<%End IF%> onChange="DateYn('W3', this);"> 기간조회
+									<input type="checkbox" id="date_check_3"<%If date_yn_3="Y" Then%> checked<%End IF%> onChange="DateYn('W3', this);"> 기간설정
 								</div>
 								<div id="txtDate_3" name="txtDate_3" style="display:<%=DISPDATE3%>;">
 									<input type="text" id="txtFromDate_3" name="txtFromDate_3" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtFromDate_3%>">
@@ -631,7 +631,7 @@ function DateYn(GB, check_){
 								<div>
 									<span>배너 등록 기간</span>
 									<input type="hidden" id="date_yn_4" name="date_yn_4" value="<%=date_yn_4%>">
-									<input type="checkbox" id="date_check_4"<%If date_yn_4="Y" Then%> checked<%End IF%> onChange="DateYn('W4', this);"> 기간조회
+									<input type="checkbox" id="date_check_4"<%If date_yn_4="Y" Then%> checked<%End IF%> onChange="DateYn('W4', this);"> 기간설정
 								</div>
 								<div id="txtDate_4" name="txtDate_4" style="display:<%=DISPDATE4%>;">
 									<input type="text" id="txtFromDate_4" name="txtFromDate_4" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtFromDate_4%>">
@@ -694,7 +694,7 @@ function DateYn(GB, check_){
 								<div>
 									<span>배너 등록 기간</span>
 									<input type="hidden" id="date_yn_5" name="date_yn_5" value="<%=date_yn_5%>">
-									<input type="checkbox" id="date_check_5"<%If date_yn_5="Y" Then%> checked<%End IF%> onChange="DateYn('W5', this);"> 기간조회
+									<input type="checkbox" id="date_check_5"<%If date_yn_5="Y" Then%> checked<%End IF%> onChange="DateYn('W5', this);"> 기간설정
 								</div>
 								<div id="txtDate_5" name="txtDate_5" style="display:<%=DISPDATE5%>;">
 									<input type="text" id="txtFromDate_5" name="txtFromDate_5" class="text" maxlength=10 style="ime-mode:disabled;width:100px;text-align:center;padding-left:0px;" value="<%=txtFromDate_5%>">
