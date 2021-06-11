@@ -243,7 +243,7 @@
 		Case "Sgpay":
 		pay_type_title = "BBQ PAY"
 		pay_type_name = "간편결제"
-		payMethodCode = "51"
+		payMethodCode = "42"
 		Case "ECoupon":
 		pay_type_title = "E 쿠폰"
 		pay_type_name = "E 쿠폰"
