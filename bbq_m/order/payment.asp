@@ -1,6 +1,27 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <!--#include virtual="/order/Event_Set.asp"-->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+.event_layer {
+    font-family: 맑은 고딕;
+    font-size: 10pt;
+    background-color: red;
+    color: white;
+    position: absolute;
+    left: 16px;
+    /* opacity: 0.5; */
+    transform: rotate(-20deg);
+    font-weight: bold;
+    letter-spacing: 1px;
+    width: 46px;
+    margin-top: 8px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    padding-bottom: 22px;
+    border-radius: 49%;
+}
+</style>
 <%
 	'===== 삼성이벤트 때문에 생성
 	If CheckLogin() Then
@@ -2286,7 +2307,7 @@ function calcTotalAmount() {
                 <% end if %>
 
                 <% If vUseSGPAY = "Y" Then %>
-                   <li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel on">BBQ PAY</button></li>
+                   <li><div><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel on">BBQ PAY</button><span class="event_layer">event</span></div></li>
                 <% end if %>
 
                 <%
