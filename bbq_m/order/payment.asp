@@ -1220,6 +1220,7 @@ function calcTotalAmount() {
 	}
 
 	function goPay() {
+		var win_pay = null;
 		var pay_method = $("#pay_method").val();
 
 		$("#o_form input[name=pay_method]").val(pay_method);
@@ -1238,7 +1239,7 @@ function calcTotalAmount() {
 			case "Card":
 				<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 				<% else %>
-					window.open("","pgp",pgPopupOption);
+					win_pay = window.open("","pgp",pgPopupOption);
 					$("#o_form").attr("target", "pgp");
 				<% end if %>
 
@@ -1252,9 +1253,9 @@ function calcTotalAmount() {
 				<% else %>
 				
 					if (bbq_mobile_type == "mobile") {
-						window.open("","pgp",pgPopupOption);
+						win_pay = window.open("","pgp",pgPopupOption);
 					} else {
-						window.open("","pgp",pgPhonePopupOption);
+						win_pay = window.open("","pgp",pgPhonePopupOption);
 					}
 					$("#o_form").attr("target", "pgp");
 				<% end if %>
@@ -1271,7 +1272,7 @@ function calcTotalAmount() {
 				} else {
 					<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 					<% else %>
-						window.open('', 'popupPayco', 'top=100, left=300, width=727px, height=512px, resizble=no, scrollbars=yes');
+						win_pay = window.open('', 'popupPayco', 'top=100, left=300, width=727px, height=512px, resizble=no, scrollbars=yes');
 						$("#o_form").attr("target", "popupPayco");
 					<% end if %>
 
@@ -1287,7 +1288,7 @@ function calcTotalAmount() {
 				} else {
 					<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 					<% else %>
-						window.open('', 'popupPaycoin', 'top=100, left=400, width=600px, height=600px, resizble=no, scrollbars=yes');
+						win_pay = window.open('', 'popupPaycoin', 'top=100, left=400, width=600px, height=600px, resizble=no, scrollbars=yes');
 						$("#o_form").attr("target", "popupPaycoin");
 					<% end if %>
 
@@ -1300,7 +1301,7 @@ function calcTotalAmount() {
 			case "Sgpay":
 				<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 				<% else %>
-					window.open("","popupSgpay",pgPopupOption);
+					win_pay = window.open("","popupSgpay",pgPopupOption);
 					$("#o_form").attr("target", "popupSgpay");
 				<% end if %>
 
@@ -1320,6 +1321,11 @@ function calcTotalAmount() {
 				$("#o_form").submit();
 				setTimeout("ClickCheck = 0", 1000);
 				break;
+		}
+
+		if (win_pay == null || typeof(win_pay) == "undefined" || (win_pay == null && win_pay.outerWidth == 0) || (win_pay != null && win_pay.outerHeight == 0) || win_pay.test == "undefined")
+		{
+			alert("팝업 차단 기능이 설정되어있습니다\n\n차단 기능을 해제(팝업허용) 한 후 다시 이용해 주십시오.\n\n만약 팝업 차단 기능을 해제하지 않으면\n정상적인 주문이 이루어지지 않습니다.");
 		}
 	}
 
