@@ -21,12 +21,17 @@
 	Dim addr_data : addr_data = GetReqStr("addr_data","")
 	Dim branch_data : branch_data = GetReqStr("branch_data","")
 	Dim spent_time : spent_time = GetReqStr("spent_time","")
+	Dim is_SGPay_Event : is_SGPay_Event = "N"
+	
 
 	' 테스트 매장일경우 강제로 페이코인 이벤트 ㄱㄱ
 	If branch_id = "1146001" Then 
 		paycoin_start_date = "2020-11-24" ' 2020-07-24
 		paycoin_end_date = "2020-12-31" ' 2020-08-01
+
 	End If 
+		sgpay_start_date = "2021-06-11" 
+		sgpay_end_date = "2021-06-12"
 
 	Dim bCmd, bMenuRs
 
@@ -62,6 +67,7 @@
 		alert("매장선택이 안되어있습니다. 매장선택부터 해주시기 바랍니다.");
 		document.location.href='/order/selection.asp?order_type=D';
 	}
+		
 </script>
 
 <%
@@ -124,6 +130,37 @@
 		vAdd_price_yn = aRs("add_price_yn")
 		beer_yn = fNullCheck(aRs("beer_yn"), "N", "")
 	End If
+
+	If vUseSGPAY = "Y" Then
+			set sgPayRs=server.createobject("adodb.recordset")
+			Set sgPayCmd = Server.CreateObject("ADODB.Command")
+
+			with sgPayCmd
+				.ActiveConnection = dbconn
+				.CommandText = BBQHOME & ".DBO.UP_EVENT_SGPAY_CHECK"
+				.CommandType = adCmdStoredProc
+
+				.Parameters.Append .CreateParameter("@USERID",advarchar,adParamInput,50, Session("userIdNo"))
+				.Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
+				.Parameters.Append .CreateParameter("@ERRMSG", advarchar, adParamOutput, 500)
+				sgPayRs.CursorLocation = adUseClient
+				sgPayRs.Open sgPayCmd
+
+			errCode =.Parameters("@ERRCODE").Value
+			errMsg =.Parameters("@ERRMSG").Value
+			End With
+			
+			Set sgPayCmd = Nothing
+
+		If errCode = 0 Then
+			'If branch_id = "1146001" Then
+				is_SGPay_Event = "Y"
+			'End If	
+		End If
+
+		'Response.write is_SGPay_Event + "-" + vUseSGPAY
+		'Response.end
+	End If	
 
 	'모바일 상품권이 있을 경우 해당 매장이 모바일 상품권 사용하는 매장인지 조회
 	Dim CouponYNCheck : CouponYNCheck = "Y"
@@ -343,6 +380,7 @@ function setMaxPoint() {
 		pay_amt -= getUseEventPoint();
 		pay_amt -= getPaycoinPoint();
 		pay_amt -= getOtherCardUsePoint("");
+		pay_amt -= getSGPayEventAmt();
 
 		if ( pay_amt % 100 > 0 ){
 			pay_amt = parseInt(pay_amt / 100) * 100;
@@ -426,6 +464,7 @@ function getGiftcardAmt() {
 
 	return gc_amt;
 }
+
 
 function setCouponUse(obj) {
 	
@@ -784,6 +823,7 @@ function getAllUsePoint() {
 	discount += getOtherCardUsePoint("");
 	discount += getPaycoinPoint();
 	discount += getGiftcardAmt();
+	discount += getSGPayEventAmt();
 
 	return discount;
 }
@@ -850,7 +890,7 @@ function getPaycoinPoint()
 	if ($("#pay_method").val() == "Paycoin") {
 //		pay_amt = Number(removeCommas($.trim($("#pay_amt").val())));
 //		pay_amt = getTotalAmount();
-		pay_amt = getTotalAmount() - getOtherCardUsePoint("") - getSaveUsePoint() - getCouponAmt() - getUseEventPoint();
+		pay_amt = getTotalAmount() - getOtherCardUsePoint("") - getSaveUsePoint() - getCouponAmt() - getUseEventPoint() - getSGPayEventAmt();
 		pay_amt_total = Math.round(Number(pay_amt/2));
 
 		// 최대 만원 (10,000) 까지 할인.
@@ -866,6 +906,32 @@ function getPaycoinPoint()
 
 	return pay_amt_total;
 }
+
+function getSGPayEventAmt()
+{
+	<% if cdate(date) >= cdate(sgpay_start_date) and cdate(date) <= cdate(sgpay_end_date) then %>
+	<% else %>
+		return 0;
+	<% end if %>
+
+
+
+	if ($("#pay_method").val() == "Sgpay") {
+
+		<%If is_SGPay_Event = "Y" Then %>
+			pay_amt_total = 5000;				
+		<%End If %>
+
+	} else {
+		pay_amt_total = 0;
+	}
+
+	//alert(pay_amt_total + <%=branch_id%> +"-" + "<%=is_SGPay_Event%>" + "-" + "<%=vUseSGPAY %>");
+	$("#sgpay_event_amt").val(pay_amt_total);
+
+	return pay_amt_total;
+}
+
 
 function calcTotalAmount() {
 	var order_amt = removeCommas($.trim($("#total_amt").val()));
@@ -947,7 +1013,7 @@ function calcTotalAmount() {
 			//return;
 		<% End If %>
 
-		if(getTotalAmount() - getOtherCardUsePoint("") - getSaveUsePoint() - getCouponAmt() - getUseEventPoint() - getPaycoinPoint() < 0) {
+		if(getTotalAmount() - getOtherCardUsePoint("") - getSaveUsePoint() - getCouponAmt() - getUseEventPoint() - getPaycoinPoint() - getSGPayEventAmt() < 0) {
 			showAlertMsg({msg:"결제금액이 잘못되었습니다."});
 			return;
 		}
@@ -1431,6 +1497,7 @@ function calcTotalAmount() {
 			<input type="hidden" name="save_point" id="save_point">
 			<input type="hidden" name="bbq_card" id="bbq_card">
 			<input type="hidden" name="paycoin_event_amt" id="paycoin_event_amt">
+			<input type="hidden" name="sgpay_event_amt" id="sgpay_event_amt">
 			<input type="hidden" name="vAdd_price_yn" id="add_price_yn" value="<%=vAdd_price_yn%>">
 
             <input type="hidden" id="giftproductcode" name="giftproductcode">
@@ -1757,8 +1824,9 @@ function calcTotalAmount() {
 				<% response.end %>
 			<% end if %>
 
-			<% if adult_Y_Price > totalAmount/2 then %>
-				<script type="text/javascript">
+			<!-- 주류메뉴 체크시 이벤트 금액을 전체 금액에 포함시킴 2021.0524 -->
+			<% if adult_Y_Price > (totalAmount + ecoupon_amt ) / 2 then %>
+				<script type="text/javascript">					
 					alert("주류메뉴의 총가격이 전체주문금액의 50%를 넘을수 없습니다.");
 					history.back();
 				</script>
@@ -2184,7 +2252,8 @@ function calcTotalAmount() {
 
 	'SGPAY 노출/비노출 처리 / Sewoni31™ / 2020.01.21
 	If SGPayOn <> True Then
-		vUseSGPAY = "N"
+		'vUseSGPAY = "N"
+		vUseSGPAY = "Y"
 	End If
    ' 페이코인 당일 이벤트
    paycoin_event = ""
@@ -2211,7 +2280,7 @@ function calcTotalAmount() {
                 <% end if %>
 
                 <% If vUseSGPAY = "Y" Then %>
-                   <li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel">BBQ PAY</button></li>
+                   <li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel on">BBQ PAY</button></li>
                 <% end if %>
 
                 <%

@@ -58,12 +58,14 @@
 	giftcard_amt = GetReqNum("giftcard_amt",0)
     paycoin_event_amt = GetReqNum("paycoin_event_amt",0)
 	paycoin_event_amt = Replace(paycoin_event_amt,",","")
+	sgpay_event_amt = GetReqNum("sgpay_event_amt",0)
+	sgpay_event_amt = Replace(sgpay_event_amt,",","")
 
 	SAMSUNG_USEFG = GetReqStr("SAMSUNG_USEFG","")
 
 	total_amount = CDbl(total_amount) + CDbl(ecoupon_amt)	'E 쿠폰금액을 총금액으로 더함
 	discount_amt = CDbl(discount_amt) + CDbl(ecoupon_amt)	'E 쿠폰금액을 할인금액으로 더함
-	Calc_Discount_amt = Calc_Discount_amt + CDbl(ecoupon_amt) + CDbl(giftcard_amt) + CDbl(paycoin_event_amt)
+	Calc_Discount_amt = Calc_Discount_amt + CDbl(ecoupon_amt) + CDbl(giftcard_amt) + CDbl(paycoin_event_amt) + CDbl(sgpay_event_amt)
 
     ' 20201211 예약일자, 예약시간 추가
 	reserv_date = GetReqStr("nowDate","") ' 예약일자
@@ -158,7 +160,7 @@
 	Set aRs = Nothing
 
 	If CDbl(delivery_fee) <> CDbl(vDeliveryFee) Then
-		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.""}"
+		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.1""}"
 		Response.End
 	End If
 
@@ -183,7 +185,7 @@
 		End With
 		Set bCmd = Nothing			
 		If bMenuRs.BOF Or bMenuRs.EOF Then
-			Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.""}"
+			Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.2""}"
 			Response.End
 		End If
 		vMenuTPrice	= bMenuRs("menu_price") * SESS_menu_qty
@@ -236,7 +238,7 @@
 				End With
 				Set bCmd = Nothing			
 				If bMenuRs.BOF Or bMenuRs.EOF Then
-					Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.""}"
+					Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.3""}"
 					Response.End
 				End If
 				vMenuTPrice	= bMenuRs("menu_price") * SESS_menu_qty
@@ -255,13 +257,13 @@
 '증정상품이 있다면 CART_TOTAL_PRICE에 해당 증정상품 가격 추가
 
 	If CDbl(CART_TOTAL_PRICE) <> CDbl(total_amount) Then 
-		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.""}"
+		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.4""}"
 		Response.End
 	End If
 
 	'포인트 체크
 	If CDbl(save_point) > CDbl(Session("sess_avap")) Then 
-		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.""}"
+		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.5""}"
 		Response.End
 	End If
 
@@ -297,6 +299,34 @@
 '			End If
 '		End If 
 '	Next
+
+	For i = 0 To iLen - 1
+		CouponPin = cJson.get(i).value.pin
+		If CouponPin <> "" Then 
+			Set aCmd = Server.CreateObject("ADODB.Command")
+			With aCmd
+				.ActiveConnection = dbconn
+				.NamedParameters = True
+				.CommandType = adCmdStoredProc
+				.CommandText = "bt_member_coupon_update"
+
+				.Parameters.Append .CreateParameter("@c_code", adVarChar, adParamInput, 200, CouponPin)
+				.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, Session("userIdNo"))
+				.Parameters.Append .CreateParameter("@use_yn", adChar, adParamInput, 1, "Y")
+				.Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
+				.Parameters.Append .CreateParameter("@ERRMSG", adVarChar, adParamOutput, 500)
+				.Execute
+
+				ERRCODE = .Parameters("@ERRCODE").Value
+				ERRMSG = .Parameters("@ERRMSG").Value
+			End With
+			Set aCmd = Nothing
+			If ERRCODE = 1 Then 
+				Response.Write "{""result"":1, ""result_msg"":"""& ERRMSG &"""}"
+				Response.End
+			End If
+		End If 
+	Next
 
 	If event_point > 0 Then 
 		Set aCmd = Server.CreateObject("ADODB.Command")
@@ -349,7 +379,7 @@
     End If
 
        If  reserv_date <> "" Or reserv_time <> "" Then
-        	branch_id = "7451401"
+        	branch_id = "7451401" '1146001
         End If
 
     Set aCmd = Server.CreateObject("ADODB.Command")
@@ -405,6 +435,7 @@
         errMsg = .Parameters("@ERRMSG").Value
 
     End With
+
 
     Set aCmd = Nothing
     giftcard_serial = GetReqStr("giftcard_id","")
@@ -658,6 +689,30 @@
 		Set pCmd = Nothing
 	End If 
 
+
+	'If sgpay_event_amt > 0 and branch_id = "1146001" Then
+	If sgpay_event_amt > 0 Then
+		Set pCmd = Server.CreateObject("ADODB.Command")
+		With pCmd
+			.ActiveConnection = dbconn
+			.NamedParameters = True
+			.CommandType = adCmdStoredProc
+			.CommandText = "bp_payment_detail_insert"
+
+			.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput,,order_idx)
+			.Parameters.Append .CreateParameter("@pay_method", adVarChar, adParamInput, 20, "EVENTPOINT")
+			.Parameters.Append .CreateParameter("@pay_transaction_id", adVarChar, adParamInput, 50, "") 'event_point_productcd)
+			.Parameters.Append .CreateParameter("@pay_cp_id", adVarChar, adParamInput, 50, "")  '적립/충전'
+			.Parameters.Append .CreateParameter("@pay_subcp", adVarChar, adParamInput, 50, "")
+			.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput, , sgpay_event_amt)
+			.Parameters.Append .CreateParameter("@pay_approve_num", adVarChar, adParamInput, 50, "")
+			.Parameters.Append .CreateParameter("@pay_result_code", adVarChar, adParamInput, 10, 0)
+			.Parameters.Append .CreateParameter("@pay_err_msg", adVarChar, adParamInput, 1000, "")
+			.Parameters.Append .CreateParameter("@pay_result", adLongVarWChar, adParamInput, 2147483647, "")
+			.Execute
+		End With
+		Set pCmd = Nothing
+	End If 
 
 
 	'이벤트 포인트가 있다면 결제수단으로 먼저 저장
