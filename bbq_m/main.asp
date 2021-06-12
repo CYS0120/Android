@@ -145,8 +145,8 @@
 						<li>
 
 						<%
-							Set bCmd = Server.CreateObject("ADODB.Command")
-							With bCmd
+							Set aCmd = Server.CreateObject("ADODB.Command")
+							With aCmd
 								.ActiveConnection = dbconn
 								.NamedParameters = True
 								.CommandType = adCmdStoredProc
@@ -155,7 +155,7 @@
 								.Parameters.Append .CreateParameter("@top", adVarchar, adParamInput, 10, "10")
 								Set bRs = .Execute
 							End With
-							Set bCmd = Nothing
+							Set aCmd = Nothing
 						%>	
 
 							<div id="h-main_con_popular_roll" class="h-main_con_popular_roll">	
@@ -207,9 +207,9 @@
             '// 회원정보 
             'If CheckLogin() Then 
                 Set pMemberPoint = PointGetPointBalance("SAVE", "0") '// 포인트
-                Set pCouponList = CouponGetHoldList("NONE", "N", 100, 1) '// 쿠폰
+                'Set pCouponList = CouponGetHoldList("NONE", "N", 100, 1) '// 쿠폰
             'End If
-          %>
+          %>	  
 					<div class="h-main_point_set">
                     <%
                         If CheckLogin() Then
@@ -226,25 +226,42 @@
 							<dl>
 								<dt><a href="/mypage/mileage.asp">포인트</a></dt>
 								<dd><span><%=FormatNumber(pMemberPoint.mSavePoint,0)%></span>P&nbsp;&nbsp;</dd>
-							</dl>
-					<%
-						
-						'페이코 쿠폰 오류 발급으로 인한 코드 (쿠폰번호 - CP00002347, 유효기간- 2021.03.23-2021.04.23) 
-						Dim couponTotalCount 
-						couponTotalCount = pCouponList.mTotalCount
-						IF couponTotalCount > 0 Then
-							For i = 0 To UBound(pCouponList.mHoldList)
-								If pCouponList.mHoldList(i).mCouponId = "CP00002347" Then
-									couponTotalCount = couponTotalCount - 1
-								end if 	
-							Next
-						End If			
-						
-					%>							
+							</dl>	
+
+							<%
+								If CheckLogin() Then
+
+									Dim aCmd, aRs
+
+									Set aCmd = Server.CreateObject("ADODB.Command")
+
+									With aCmd
+										.ActiveConnection = dbconn
+										.NamedParameters = True
+										.CommandType = adCmdStoredProc
+										.CommandText = "bt_member_coupon_select"
+										.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, Session("userIdNo"))
+										.Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput, 20, "LIST")
+										.Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
+
+										Set aRs = .Execute
+										EcoupontotalCount = .Parameters("@totalCount").Value
+									End With
+									Set aCmd = Nothing 
+							%>
 							<dl>
 								<dt><a href="/mypage/couponList.asp?couponList=coupon">모바일 상품권</a></dt>
-								<dd><span><%=couponTotalCount%></span>개</dd>
-							</dl>
+								<dd><span><%=EcoupontotalCount%></span>개</dd>
+							</dl>								
+							<%Else%>
+							<dl>
+								<dt><a href="/mypage/couponList.asp?couponList=coupon">모바일 상품권</a></dt>
+								<dd><span>0</span>개</dd>
+							</dl>							
+							<%
+								Set aRs = Nothing
+								End If
+							%>	
 							<dl>
 								<dt><a href="/mypage/couponList.asp?couponList=giftcard">상품권</a></dt>
 								<dd><span class="gc_red">0</span>개</dd>
@@ -252,11 +269,11 @@
 						</div>
 					</div>
 					<div>&nbsp;</div>
-					<!--
+
 					<div class="main_point_set">
-						<iframe width="100%" height="315" src="https://www.youtube.com/embed/_kq8h2L_o-4" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+						<iframe width="100%" height="184" src="https://www.youtube.com/embed/NW-6kSg_UvM" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 					</div>
-					-->
+
 					<!--<a href src="https://www.youtube.com/embed/uVN-x_lOvBA" target="_blank"><iframe id="idIframe" width="100%" height="315" src="https://www.youtube.com/embed/uVN-x_lOvBA" frameborder="0" onload="javascript:resetLink()"></iframe></a>
 						실시간 이벤트에 참여하기 위해서 유튜브 영상 제목을 클릭하신 후 유튜브 채팅에 참여하세요!!-->					
 					<!-- // 포인트 -->
