@@ -30,6 +30,7 @@ Class PosResult_Coop
 
     Sub CouponCall(Url, AuthKey, OperType, CouponNum, BranchCode, AuthPrice, AuthDate, BrandAuthCode, OriginalAuthCode, ProductCode)
 
+        Url = "https://authapi.inumber.co.kr/AuthUse"
         if OperType = "info" then
             ProcessType = "L0"
         elseif OperType = "use" then

@@ -95,7 +95,7 @@ Class eCouponCoop
 		Set oRs=server.createobject("ADODB.RecordSet")
 		Set oCmd = Server.CreateObject("ADODB.Command")
 
-		KTR_Result = 0
+		Coop_Result = 0
 
 		with oCmd
 			.ActiveConnection = dbconn

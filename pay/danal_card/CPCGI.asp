@@ -48,7 +48,8 @@
     
 	dim cl_eCoupon : set cl_eCoupon = new eCoupon
 	dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
-    
+    Dim CouponUseCheck : CouponUseCheck = "N"
+    Dim coupon_pin : coupon_pin = ""
     If gubun = "Order" Then
         order_idx = Request.Cookies("ORDER_IDX")
 
@@ -61,10 +62,8 @@
 
         returnUrl = "/order/orderComplete.asp"
 
-        i_order_idx = CLng(order_idx)
+        'i_order_idx = CLng(order_idx)
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-1','0','danal_card-000')"
-		dbconn.Execute(Sql)    
 
         ' 주문내에 e쿠폰 번호로 업체 체크 ##################
 		Set pinCmd = Server.CreateObject("ADODB.Command")
@@ -73,44 +72,73 @@
 			.CommandText = "bp_order_detail_select_ecoupon"
 			.CommandType = adCmdStoredProc
 
-			.Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , i_order_idx)
+			'.Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , i_order_idx)
+            .Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , order_idx)
 			Set pinRs = .Execute
 		End With
-		Set pinCmd = Nothing
 
-        prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
-        Set pinRs = Nothing
-
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-2','0','danal_card-000')"
-		dbconn.Execute(Sql)        
-
-        If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
-            eCouponType = "Coop"
+        If IsNull(pinRs("coupon_pin")) = True Then
+            coupon_pin = ""
         Else 
-            eCouponType = "KTR"
+            coupon_pin = Cstr(pinRs("coupon_pin"))
+        End If    
+
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-1','0','danal_card-000 "&coupon_pin&"')"
+		dbconn.Execute(Sql)    
+
+        If Len(coupon_pin) > 0 Then
+            prefix_coupon_no = LEFT(trim(coupon_pin), 1)
+
+            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-2','0','danal_card-000 "&prefix_coupon_no&"')"
+            dbconn.Execute(Sql)        
+
+            If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+                eCouponType = "Coop"
+            Else 
+                eCouponType = "KTR"
+            End If
+
+            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-3','0','danal_card-000 "&prefix_coupon_no&"')"
+            dbconn.Execute(Sql)   
+
+            Dim Msg : Msg =""
+            If eCouponType = "Coop" Then
+                cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
+
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-4','0','danal_card-000 "&eCouponType&"')"
+                dbconn.Execute(Sql)   
+
+                if cl_eCouponCoop.m_cd = "0" then
+                    CouponUseCheck = "N"                
+                else
+                    CouponUseCheck = "Y"
+                    Msg = cl_eCouponCoop.m_message
+                end if
+
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-5','0','danal_card-000 "&cl_eCouponCoop.m_cd&"-"&Msg&"-"&CouponUseCheck&"')"
+                dbconn.Execute(Sql)              
+            Else
+                cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn     
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-4','0','danal_card-000 "&eCouponType&"')"
+                dbconn.Execute(Sql)  
+
+                if cl_eCoupon.m_cd = "0" then
+                    CouponUseCheck = "N"
+                else
+                    CouponUseCheck = "Y"
+                    Msg = cl_eCoupon.m_message                
+                end if
+
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-5','0','danal_card-000 "&cl_eCoupon.m_cd&"-"&Msg&"-"&CouponUseCheck&"')"
+                dbconn.Execute(Sql)              
+            End If 
         End If
-
-		Dim CouponUseCheck : CouponUseCheck = "N"
-
-        If eCouponType = "Coop" Then
-            cl_eCouponCoop.Coop_Check_Order_Coupon i_order_idx, dbconn
-            if cl_eCouponCoop.m_cd = "0" then
-                CouponUseCheck = "N"
-            else
-                CouponUseCheck = "Y"
-            end if
-        Else
-            cl_eCoupon.KTR_Check_Order_Coupon i_order_idx, dbconn                  
-            if cl_eCoupon.m_cd = "0" then
-                CouponUseCheck = "N"
-            else
-                CouponUseCheck = "Y"
-            end if
-        End If 
+        Set pinCmd = Nothing
+        Set pinRs = Nothing
 
 		If CouponUseCheck = "Y" Then 
 			Result 		= "COUPON"
-'			ErrMsg 		= "주문내용에 이미 사용된 쿠폰이 있습니다."
+			ErrMsg 		= Msg
 			AbleBack 	= false
 			BackURL 	= "javascript:self.close();"
 %>
@@ -239,7 +267,7 @@
     Set RET_MAP = str2data( RET_STR )
 
     RET_RETURNCODE = RET_MAP.Item("RETURNCODE")
-    RET_RETURNMSG = ""		'RET_MAP.Item("RETURNMSG")
+    RET_RETURNMSG = Msg		'RET_MAP.Item("RETURNMSG")
 
     '//*****  신용카드 인증결과 확인 *****************
     IF RET_RETURNCODE <> "0000" Then
