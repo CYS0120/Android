@@ -44,7 +44,8 @@
 	end if 
 
     pay_idx = 0
-
+    i_order_idx = 0
+    
 	dim cl_eCoupon : set cl_eCoupon = new eCoupon
 	dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
     
@@ -62,6 +63,9 @@
 
         i_order_idx = CLng(order_idx)
 
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-1','0','danal_card-000')"
+		dbconn.Execute(Sql)    
+
         ' 주문내에 e쿠폰 번호로 업체 체크 ##################
 		Set pinCmd = Server.CreateObject("ADODB.Command")
 		with pinCmd
@@ -76,6 +80,9 @@
 
         prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
         Set pinRs = Nothing
+
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-2','0','danal_card-000')"
+		dbconn.Execute(Sql)        
 
         If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
             eCouponType = "Coop"

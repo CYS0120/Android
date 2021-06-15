@@ -195,7 +195,7 @@
 						<li><div class="h-main_order02"><a href="/order/delivery.asp?order_type=P">포장주문</a></div></li>
 						<li><div class="h-main_order03"><a href="/coupon_use.asp">모바일 상품권주문</a></div></li>
 						<!--<li><div class="h-main_order04"><a href="https://service.smartbag.kr:18060/81000/brand_giftshop/BRA200721108465763" target="_blank">선물하기</a></div></li>-->
-						<li><div class="h-main_order04"><a href="https://dev-bbq.multicon.co.kr:7443" target="_blank">선물하기</a></div></li>
+						<li><div class="h-main_order04"><a href="https://service.smartbag.kr:18060/81000/brand_giftshop/BRA200721108465763" target="_blank">선물하기</a></div></li>
 					</ul>
 					<ul class="h-footer_line">
 					</ul>

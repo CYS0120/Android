@@ -29,7 +29,6 @@
 	dbconn.Execute(Sql)
 
 	dim pg_RollBack : pg_RollBack = 0
-	dim pg_Coop_RollBack : pg_Coop_RollBack = 0	
 	dim cl_eCoupon : set cl_eCoupon = new eCoupon
 	dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
 
@@ -231,7 +230,7 @@
 		Case "Sgpay":
 		pay_type_title = "BBQ PAY"
 		pay_type_name = "간편결제"
-		payMethodCode = "51"
+		payMethodCode = "42"
 		Case "ECoupon":
 		pay_type_title = "E 쿠폰"
 		pay_type_name = "E 쿠폰"
@@ -458,7 +457,7 @@
 					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','Coupon_Return-13')"
 					dbconn.Execute(Sql)
 				else
-					pg_Coop_RollBack = 1
+					pg_RollBack = 1
 					exit do
 				end if
 			else 
@@ -484,11 +483,14 @@
 	dbconn.Execute(Sql)
 
 	if pg_RollBack = 1 then
-		cl_eCoupon.KTR_Rollback order_idx, dbconn
-
-		' 마이 쿠폰 취소
-		Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where order_idx='"& order_idx &"' "
-		dbconn.Execute(Sql)
+		if eCouponType = "Coop" then
+			cl_eCouponCoop.Coop_Rollback order_idx, dbconn
+		else 
+			cl_eCoupon.KTR_Rollback order_idx, dbconn
+		end if 
+			' 마이 쿠폰 취소
+			Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where order_idx='"& order_idx &"' "
+			dbconn.Execute(Sql)
 %>
 				<script type="text/javascript">
 					alert("이미 사용된 쿠폰이 존재합니다!!");
@@ -499,23 +501,6 @@
 				</script>
 <%
 		Response.End
-		
-	else if  pg_Coop_RollBack = 1 then
-		cl_eCouponCoop.Coop_Rollback order_idx, dbconn			
-
-		' 마이 쿠폰 취소
-		Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where order_idx='"& order_idx &"' "
-		dbconn.Execute(Sql)
-%>
-				<script type="text/javascript">
-					alert("이미 사용된 쿠폰이 존재합니다!!");
-
-					opener.clearCart();
-					opener.location.href = "/";
-					window.close();
-				</script>
-<%
-		Response.End		
 	end if
 
 	Set aCmd = Server.CreateObject("ADODB.Command")
