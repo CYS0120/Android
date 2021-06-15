@@ -115,7 +115,6 @@
 	End If
 	' // 쿠폰금액 부분 비교
 
-
     If order_type = "P" And addr_idx = "" Then addr_idx = 0
     ' Response.Write cart_value
 
@@ -163,6 +162,7 @@
 		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.1""}"
 		Response.End
 	End If
+
 
 	'총금액 계산
 	CART_TOTAL_PRICE = 0
@@ -300,6 +300,21 @@
 '		End If 
 '	Next
 
+    Dim order_item, order_idx, order_num, errCode, errMsg, order_channel
+
+    Dim mmid, mmtype, mmidno
+
+    If Session("userIdNo") <> "" Then
+        mmid = Session("userIdx")
+        mmtype = "Member"
+        mmidno = Session("userIdNo")
+    Else
+        Randomize Timer
+        mmid = 0
+        mmtype = "NonMember"
+        mmidno = "P"&Session.sessionid
+    End If
+
 	For i = 0 To iLen - 1
 		CouponPin = cJson.get(i).value.pin
 		If CouponPin <> "" Then 
@@ -311,7 +326,7 @@
 				.CommandText = "bt_member_coupon_update"
 
 				.Parameters.Append .CreateParameter("@c_code", adVarChar, adParamInput, 200, CouponPin)
-				.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, Session("userIdNo"))
+				.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, mmidno)
 				.Parameters.Append .CreateParameter("@use_yn", adChar, adParamInput, 1, "Y")
 				.Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
 				.Parameters.Append .CreateParameter("@ERRMSG", adVarChar, adParamOutput, 500)
@@ -336,7 +351,7 @@
 			.CommandType = adCmdStoredProc
 			.CommandText = "bp_event_point_select"
 
-			.Parameters.Append .CreateParameter("@member_idx", adInteger, adParamInput, , Session("userIdx"))
+			.Parameters.Append .CreateParameter("@member_idx", adInteger, adParamInput, , mmid)
 			.Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
 			.Execute
 
@@ -349,22 +364,7 @@
 		End If 
 
 		Calc_Discount_amt = Calc_Discount_amt + CDbl(event_point)
-	End If 
-
-    Dim order_item, order_idx, order_num, errCode, errMsg, order_channel
-
-    Dim mmid, mmtype, mmidno
-
-    If Session("userIdNo") <> "" Then
-        mmid = Session("userIdx")
-        mmtype = "Member"
-        mmidno = Session("userIdNo")
-    Else
-        Randomize Timer
-        mmid = 0
-        mmtype = "NonMember"
-        mmidno = "P"&Session.sessionid
-    End If
+	End If 	
 
     If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Then
         order_channel = "6"

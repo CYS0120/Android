@@ -1,5 +1,6 @@
 ﻿<!--#include virtual="/api/include/utf8.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
+<!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/order/class_order_db.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
 
@@ -14,6 +15,7 @@
 
 	Dim order_idx : order_idx = Request("order_idx")
 	Dim paytype : paytype = Request("pm")
+	Dim eCouponType : eCouponType = ""
 
 	If IsEmpty(order_idx) Or IsNull(order_idx) Or Trim(order_idx) = "" Or Not IsNumeric(order_idx) Then order_idx = ""
 
@@ -43,6 +45,7 @@
 
 	dim pg_RollBack : pg_RollBack = 0
 	dim cl_eCoupon : set cl_eCoupon = new eCoupon
+	dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
 
 	dim db_call : set db_call = new Order_DB_Call
 	db_call.DB_Order_State dbconn, order_idx, "P", paytype
@@ -393,28 +396,54 @@
 			Do Until pinRs.EOF
 				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"','"& coupon_amt &"','orderComplete-11')"
 				dbconn.Execute(Sql)
+				
+				prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
+				If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+					eCouponType = "Coop"
+				Else 
+					eCouponType = "KTR"
+				End If
 
-				cl_eCoupon.KTR_Use_Pin pinRs("coupon_pin"), order_num, branch_id, branch_name, dbconn
+				If eCouponType = "Coop" Then
+					cl_eCouponCoop.Coop_Use_Pin pinRs("coupon_pin"), order_num, branch_id, branch_name, dbconn
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','orderComplete-12')"
-				dbconn.Execute(Sql)
-
-				if cl_eCoupon.m_cd = "0" then
-					db_call.DB_Payment_Insert order_idx, "ECOUPON", pinRs("coupon_pin"), "", "", pinRs("menu_price"), "", 0, "", ""
-
-					' 마이 쿠폰사용
-					Sql = "update bt_member_coupon set use_yn='Y', last_use_date=getdate(), order_idx='"& order_idx &"' where c_code='"& pinRs("coupon_pin") &"' "
+					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','orderComplete-12')"
 					dbconn.Execute(Sql)
 
+					if cl_eCouponCoop.m_cd = "0" then
+						db_call.DB_Payment_Insert order_idx, "ECOUPON", pinRs("coupon_pin"), "", "", pinRs("menu_price"), "", 0, "", ""
 
+						' 마이 쿠폰사용
+						Sql = "update bt_member_coupon set use_yn='Y', last_use_date=getdate(), order_idx='"& order_idx &"' where c_code='"& pinRs("coupon_pin") &"' "
+						dbconn.Execute(Sql)
 
-					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','orderComplete-13')"
+						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','orderComplete-13')"
+						dbconn.Execute(Sql)
+
+					else
+						pg_RollBack = 1
+					end if
+				Else
+					cl_eCoupon.KTR_Use_Pin pinRs("coupon_pin"), order_num, branch_id, branch_name, dbconn
+
+					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','orderComplete-12')"
 					dbconn.Execute(Sql)
 
-				else
-					pg_RollBack = 1
-				end if
+					if cl_eCoupon.m_cd = "0" then
+						db_call.DB_Payment_Insert order_idx, "ECOUPON", pinRs("coupon_pin"), "", "", pinRs("menu_price"), "", 0, "", ""
 
+						' 마이 쿠폰사용
+						Sql = "update bt_member_coupon set use_yn='Y', last_use_date=getdate(), order_idx='"& order_idx &"' where c_code='"& pinRs("coupon_pin") &"' "
+						dbconn.Execute(Sql)
+
+						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','orderComplete-13')"
+						dbconn.Execute(Sql)
+
+					else
+						pg_RollBack = 1
+					end if
+
+				End If
 				pinRs.MoveNext
 			Loop
 

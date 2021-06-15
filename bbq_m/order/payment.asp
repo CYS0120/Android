@@ -1,27 +1,6 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <!--#include virtual="/order/Event_Set.asp"-->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<style>
-.event_layer {
-    font-family: 맑은 고딕;
-    font-size: 10pt;
-    background-color: red;
-    color: white;
-    position: absolute;
-    left: 16px;
-    /* opacity: 0.5; */
-    transform: rotate(-20deg);
-    font-weight: bold;
-    letter-spacing: 1px;
-    width: 46px;
-    margin-top: 8px;
-    height: 20px;
-    text-align: center;
-    vertical-align: middle;
-    padding-bottom: 22px;
-    border-radius: 49%;
-}
-</style>
 <%
 	'===== 삼성이벤트 때문에 생성
 	If CheckLogin() Then
@@ -88,7 +67,6 @@
 		alert("매장선택이 안되어있습니다. 매장선택부터 해주시기 바랍니다.");
 		document.location.href='/order/selection.asp?order_type=D';
 	}
-		
 </script>
 
 <%
@@ -935,22 +913,27 @@ function getSGPayEventAmt()
 		return 0;
 	<% end if %>
 
+	sgpay_event_amt = 0;
 
+	//var sgpayprice = Number($("#pay_amt").val());
+	//할인된 금액 기준 12,000
+	var total_amt = Number($("#total_amt").val()-5000);
+	
+	if ($("#pay_method").val() == "Sgpay" && total_amt >= 12000 ) {
 
-	if ($("#pay_method").val() == "Sgpay") {
-
+		//alert(sgpayprice + "-" + total_amt);
 		<%If is_SGPay_Event = "Y" Then %>
-			pay_amt_total = 5000;				
+			sgpay_event_amt = 5000;			
 		<%End If %>
 
 	} else {
-		pay_amt_total = 0;
+		sgpay_event_amt = 0;
 	}
 
 	//alert(pay_amt_total + <%=branch_id%> +"-" + "<%=is_SGPay_Event%>" + "-" + "<%=vUseSGPAY %>");
-	$("#sgpay_event_amt").val(pay_amt_total);
+	$("#sgpay_event_amt").val(sgpay_event_amt);
 
-	return pay_amt_total;
+	return sgpay_event_amt;
 }
 
 
@@ -2306,8 +2289,8 @@ function calcTotalAmount() {
                    <li><button type="button" id="payment_phone" onclick="javascript:setPayMethod('Phone');" class="payment_choiceSel">휴대전화 결제</button></li>
                 <% end if %>
 
-                <% If vUseSGPAY = "Y" Then %>
-                   <li><div><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel on">BBQ PAY</button><span class="event_layer">event</span></div></li>
+                <% If vUseSGPAY = "Y" AND CheckLogin() Then %>
+                   <li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel" style="border-color: #e31937;">BBQ PAY</button></li>
                 <% end if %>
 
                 <%
@@ -2329,13 +2312,12 @@ function calcTotalAmount() {
                 <% end if %>
 
              </ul>
+
           </dd>
        </dl>
 <%
    End If
 %>
-
-
 					<dl class="spot">
 						<dt>현장결제</dt>
 						<dd>

@@ -3,13 +3,13 @@
     Session.CodePage = "65001"
     Response.CharSet = "UTF-8"
     Response.AddHeader "Pragma", "no-cache"
-	Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' í¬ë¡¬ 80ì´ìŠˆ
+	Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' Å©·Ò 80ÀÌ½´
     Response.CacheControl = "no-cache"
     ' Response.CharSet = "euc-kr"
 
-	session.lcid	= 1042	'ë‚ ì§œí˜•ì‹ í•œêµ­ í˜•ì‹ìœ¼ë¡œ 
+	session.lcid	= 1042	'³¯Â¥Çü½Ä ÇÑ±¹ Çü½ÄÀ¸·Î 
 
-    ' // TODO : ë””ë²„ê·¸ë¥¼ ìœ„í•´ ë§Œë“¤ì–´ ë†“ì€ ì½”ë“œ
+    ' // TODO : µð¹ö±×¸¦ À§ÇØ ¸¸µé¾î ³õÀº ÄÚµå
     IS_DEBUG = false
 %>
 <!--#include virtual="/api/include/g2.asp"-->
