@@ -1,12 +1,13 @@
 <!--#include virtual="/api/include/utf8.asp"-->
-<!--#include virtual="/api/include/ktr_exchange_proc.asp"-->
+<!--#include virtual="/api/include/coop_exchange_proc.asp"-->
 <%
 	'Dim txtPIN : txtPIN = Request("txtPIN")
 	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
 
 	' 111566019243 < 조성배차장님이 주신 테스트 쿠폰
-	txtPIN = GetReqStr("txtPIN","")
-	PIN_save = GetReqStr("PIN_save","")
+    Dim txtPIN, PIN_save 
+    txtPIN = GetReqStr("txtPIN","")
+    PIN_save = GetReqStr("PIN_save","")
 
 	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
 	Else 
@@ -14,37 +15,39 @@
 		Response.End 
 	End If
 
-'	If CheckLogin() Then
-'		USER_ID = Session("userId")
-'	Else
-'		Response.Write "{""result"":1,""message"":""로그인 후 이용가능합니다.""}"
-'		Response.End 
-''		USER_ID = "P"& Session.sessionid
-'	End If
+	'If CheckLogin() Then
+	'	USER_ID = Session("userId")
+	'Else
+	'	Response.Write "{""result"":1,""message"":""로그인 후 이용가능합니다.""}"
+	'	Response.End 
+	''	USER_ID = "P"& Session.sessionid
+	'End If
 
     USER_IP = GetIPADDR()
+    
+    Url = COOP_API_URL     
+    AuthKey = COOP_AUTH_KEY
+    CompCode = COOP_COMPANY_CODE
+    BranchCode = "0000"
+    AuthPrice = "0"
+    AuthDate = Replace(Date, "-", "") & Replace(FormatDateTime(Time(), 4), ":","") & Right(Time(), 2)
+    ProductCode = "0000"
 
-    SET smartcon_Result = NEW PosResult
-    smartcon_Result.Smartcon_Proc "info", txtPIN, "bbq_ecoupon","bbq_ecoupon","bbqsite",Replace(Date, "-", ""), Replace(FormatDateTime(Time(), 4), ":","") & Right(Time(), 2), ""
-    RESULT = smartcon_Result.m_StatusCode
-    RESULT_MSG = smartcon_Result.m_ErrorMessage
+    'response.write AuthDate
 
-    IF FALSE THEN ' 테스트
-response.write smartcon_Result.m_ProductCode & "<BR>"
-response.write smartcon_Result.m_StatusCode & "<BR>"
-response.write smartcon_Result.m_ErrorCode & "<BR>"
-response.write smartcon_Result.m_ErrorMessage & "<BR>"
-response.write smartcon_Result.m_AdmitNum & "<BR>"
-response.write smartcon_Result.m_UsedBranchCode & "<BR>"
-response.write smartcon_Result.m_UsedBranchName & "<BR>"
-response.write smartcon_Result.m_UsedDate & "<BR>"
-response.write smartcon_Result.m_UsedTime & "<BR>"
-response.write smartcon_Result.m_EventCode & "<BR>"
-    END IF
+    SET coopCoupon_Result = NEW PosResult_Coop
+    'coopCoupon_Result.CouponCall Url, AuthKey, ProcessType, CouponType, CompCode, txtPIN, BranchCode, PosNum, AuthPrice, AuthDate, "", "", ProductCode
+    coopCoupon_Result.CouponCall Url, AuthKey, "info", txtPIN, BranchCode, AuthPrice, AuthDate, "", "", ProductCode
+    RESULT = coopCoupon_Result.m_ResultCode
+    RESULT_MSG = coopCoupon_Result.m_ResultMsg
+    RESULT_PRODUCT_CODE = coopCoupon_Result.m_ResultProductCode
+    ERROR = coopCoupon_Result.m_ErrorCode
+
+'response.write RESULT & "-" & RESULT_PRODUCT_CODE & "-" & ERROR
 
     Dim cmd, rs
 
-    if smartcon_Result.m_StatusCode = "000" Then
+    if RESULT = "0000" Then
 
         Set cmd = Server.CreateObject("ADODB.Command")
         With cmd
@@ -53,7 +56,7 @@ response.write smartcon_Result.m_EventCode & "<BR>"
             .CommandType = adCmdStoredProc
             .CommandText = BBQHOME_DB & ".DBO.UP_COUPON_INFO_NEW"
 
-            .Parameters.Append .CreateParameter("@CPNID", adVarChar, adParamInput, 20, smartcon_Result.m_ProductCode)
+            .Parameters.Append .CreateParameter("@CPNID", adVarChar, adParamInput, 20, RESULT_PRODUCT_CODE)
 
             Set oRs = .Execute
 
@@ -142,7 +145,7 @@ response.write smartcon_Result.m_EventCode & "<BR>"
             Response.End
         End If
     Else
-        Response.Write "{""result"":1,""message"":""" & smartcon_Result.ErrorCode(smartcon_Result.m_ErrorCode) & """}"
+        Response.Write "{""result"":1,""message"":""" & coopCoupon_Result.ErrorCode(coopCoupon_Result.m_ErrorCode) & """}"
         Response.End
     end if
 

@@ -28,7 +28,7 @@
 	<footer id="footer">
 		
 		<ul class="footer_icon">
-			<li><a href="/menu/menuList.asp?anc=103" class="footer_icon_menu">메뉴</a></li>
+			<li><a href="/menu/menuList.asp" class="footer_icon_menu">메뉴</a></li>
 			<li><a href="/shop/shopLocation.asp?dir_yn=Y" class="footer_icon_shop">매장</a></li>
 			<li><a href="/brand/eventList.asp" class="footer_icon_event">이벤트</a></li>
 			<li><a href="/order/group.asp" class="footer_icon_brand">단체주문</a></li>
@@ -114,39 +114,6 @@
 
 	<script>
 
-		function eCoupon_Check() {
-			if ($("#txtPIN").val() == "") {
-				alert('E-쿠폰 번호를 입력해주세요.');
-				return;
-			}
-			$.ajax({
-				method: "post",
-				url: "/api/ajax/ajax_getEcoupon.asp",
-				data: {
-					txtPIN: $("#txtPIN").val()
-				},
-				dataType: "json",
-				success: function(res) {
-					showAlertMsg({
-						msg: res.message,
-						ok: function() {
-							if (res.result == 0) {
-								var menuItem = res.menuItem;
-								addCartMenu(menuItem);
-								location.href = "/order/cart.asp";
-							}
-						}
-					});
-				},
-				error: function(data, status, err) {
-					showAlertMsg({
-						msg: data + ' ' + status + ' ' + err
-					});
-				}
-
-			});
-		}
-
 //		$(window).load(function() {
 		$(document).ready(function() {
 			$('#aside_menu_div').hide(0).css({ width : '100%', height : '100%' })
@@ -180,6 +147,13 @@
 			<% end if %>
 		});
 	</script>
+    <span itemscope="" itemtype="http://schema.org/Organization">
+    <link itemprop="url" href="https://m.bbq.co.kr">
+    <a itemprop="sameAs" href="https://www.instagram.com/bbq_offi/"></a>
+    <a itemprop="sameAs" href="https://m.youtube.com/user/BBQMobile"></a>
+    <a itemprop="sameAs" href="https://m.blog.naver.com/blogbbq"></a>
+    <a itemprop="sameAs" href="https://m.tv.naver.com/bbq/home"></a>
+    </span>
 
 </div>
 

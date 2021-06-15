@@ -28,7 +28,7 @@
 	<footer id="footer">
 		
 		<ul class="footer_icon">
-			<li><a href="/menu/menuList.asp?anc=103" class="footer_icon_menu">메뉴</a></li>
+			<li><a href="/menu/menuList.asp" class="footer_icon_menu">메뉴</a></li>
 			<li><a href="/shop/shopLocation.asp?dir_yn=Y" class="footer_icon_shop">매장</a></li>
 			<li><a href="/brand/eventList.asp" class="footer_icon_event">이벤트</a></li>
 			<li><a href="/order/group.asp" class="footer_icon_brand">단체주문</a></li>
@@ -115,7 +115,7 @@
 
 		function eCoupon_Check() {
 			if ($("#txtPIN").val() == "") {
-				alert('E-쿠폰 번호를 입력해주세요.');
+				alert('모바일 상품권 번호를 입력해주세요.');
 				return;
 			}
 			$.ajax({

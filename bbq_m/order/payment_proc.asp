@@ -313,7 +313,7 @@
         mmid = 0
         mmtype = "NonMember"
         mmidno = "P"&Session.sessionid
-    End If
+    End If 
 
 	For i = 0 To iLen - 1
 		CouponPin = cJson.get(i).value.pin

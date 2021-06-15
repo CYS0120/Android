@@ -1,5 +1,6 @@
 <!--#include file="sgpay.inc.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
+<!--#include virtual="/pay/coupon_use_coop.asp"-->
 <%
 	'-----------------------------------------------------------------------------
 	' 이 문서는 text/html 형태의 데이터를 반환합니다.
@@ -68,11 +69,12 @@
 		If ret_PaymentTime = "" Or ret_PaymentNo = "" Or ret_TxId = "" Then
 			resultMsg = "취소되었습니다."
 			Call Write_Log("sgpay_return.asp is canceled : " & CStr(resultMsg))
-			'Set resMC = OrderCancelListForOrder(order_idx)
 
-			'If resMC.mCode = 0 Then
-			'	sgpayDone = True
-			'End If
+			Set resMC = OrderCancelListForOrder(order_idx)
+
+			If resMC.mCode = 0 Then
+				sgpayDone = True
+			End If
 			%>
 			<html>
 				<head>
@@ -185,9 +187,23 @@
 			vPayco_Seller = aRs("payco_seller")
 			vPayco_Cpid = aRs("payco_cpid")
 			vPayco_Itemcd = aRs("payco_itemcd")
-			vSgpay_merchant = aRs("sgpay_merchant")
 
-			If vSgpay_merchant = "" Then
+			If TESTMODE <> "Y" Then
+				sellerKey				=	vPayco_Seller'"S0FSJE"									'(필수) 가맹점 코드 - 파트너센터에서 알려주는 값으로, 초기 연동 시 PAYCO에서 쇼핑몰에 값을 전달한다.
+				cpId					=	vPayco_Cpid'"PARTNERTEST"								'(필수) 상점ID, 30자 이내
+				productId				=	vPayco_Itemcd'"PROD_EASY"									'(필수) 상품ID, 50자 이내
+			Else 
+				If branch_id = "1146001" Then
+					sellerKey				=	vPayco_Seller'"S0FSJE"									'(필수) 가맹점 코드 - 파트너센터에서 알려주는 값으로, 초기 연동 시 PAYCO에서 쇼핑몰에 값을 전달한다.
+					cpId					=	vPayco_Cpid'"PARTNERTEST"								'(필수) 상점ID, 30자 이내
+					productId				=	vPayco_Itemcd'"PROD_EASY"									'(필수) 상품ID, 50자 이내
+				Else
+					sellerKey				=	"S0FSJE"									'(필수) 가맹점 코드 - 파트너센터에서 알려주는 값으로, 초기 연동 시 PAYCO에서 쇼핑몰에 값을 전달한다.
+					cpId					=	"PARTNERTEST"								'(필수) 상점ID, 30자 이내
+					productId				=	"PROD_EASY"									'(필수) 상품ID, 50자 이내
+				End If
+			End If 
+			If vPayco_Seller = "" Then
 				shopInfoError = True
 				ErrMessage = "매장정보가 잘못되었습니다."
 
@@ -232,14 +248,47 @@
 	Set pRs = Nothing
 
 	' 주문내에 e쿠폰 사용여부 체크 ##################
-	Dim CouponUseCheck : CouponUseCheck = "N"
 	dim cl_eCoupon : set cl_eCoupon = new eCoupon
-	cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn
-	if cl_eCoupon.m_cd = "0" then
-		CouponUseCheck = "N"
-	else
-		CouponUseCheck = "Y"
-	end if
+    dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
+
+	Set pinCmd = Server.CreateObject("ADODB.Command")
+	with pinCmd
+		.ActiveConnection = dbconn
+		.CommandText = "bp_order_detail_select_ecoupon"
+		.CommandType = adCmdStoredProc
+
+		.Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , order_idx)
+		Set pinRs = .Execute
+	End With
+	Set pinCmd = Nothing
+
+	prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
+	Set pinRs = Nothing
+
+	If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+		eCouponType = "Coop"
+	Else 
+		eCouponType = "KTR"
+	End If
+
+	Dim CouponUseCheck : CouponUseCheck = "N"
+
+	If eCouponType = "Coop" Then
+		cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
+		if cl_eCouponCoop.m_cd = "0" then
+			CouponUseCheck = "N"
+		else
+			CouponUseCheck = "Y"
+		end if
+	Else
+		cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
+		if cl_eCoupon.m_cd = "0" then
+			CouponUseCheck = "N"
+		else
+			CouponUseCheck = "Y"
+		end if
+	End If 
+
 
 	If (Not CStr(ret_Amount) = CStr(AMOUNT)) or (Not CStr(ret_TradeNo) = CStr(order_num)) Then		'위에서 파라메터로 받은 ret_Amount 값과 주문값이 같은지 비교합니다. 
 																			'( 연동 실패를 테스트 하시려면 값을 주문값을 ret_Amount 값과 틀리게 설정하세요. )
@@ -406,8 +455,7 @@
 		'결제 인증 후 내부 오류가 있어 승인은 받지 않았습니다. 오류내역을 여기에 표시하세요. 예) 재고 수량이 부족합니다.
 		Call Write_Log("sgpay_return.asp Error : " & ErrMessage)
 
-		Response.redirect "sgpay_cancel.asp?order_num="&order_num&"&tid="&ret_TxId
-		'Set resMC = OrderCancelListForOrder(order_idx)
+		Set resMC = OrderCancelListForOrder(order_idx)
 
 		If resMC.mCode = 0 Then
 			paycoDone = True

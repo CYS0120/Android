@@ -19,6 +19,7 @@
 <!--#include virtual="/api/include/db_open.asp"-->
 <!--#include virtual="/api/include/func.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
+<!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include file="./inc/function.asp"-->
 <%
     Session.CodePage = 949
@@ -51,6 +52,7 @@
 	End Sub
 
 	dim cl_eCoupon : set cl_eCoupon = new eCoupon
+    dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
 
     gubun = Request.Cookies("GUBUN")
 
@@ -73,14 +75,47 @@
 
         returnUrl = "/order/orderComplete.asp"
  
+        ' 주문내에 e쿠폰 번호로 업체 체크 ##################
+		Set pinCmd = Server.CreateObject("ADODB.Command")
+		with pinCmd
+			.ActiveConnection = dbconn
+			.CommandText = "bp_order_detail_select_ecoupon"
+			.CommandType = adCmdStoredProc
+
+			.Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , order_idx)
+			Set pinRs = .Execute
+		End With
+		Set pinCmd = Nothing
+
+        prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
+        Set pinRs = Nothing
+
+        If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+            eCouponType = "Coop"
+        Else 
+            eCouponType = "KTR"
+        End If
+
+
         ' 주문내에 e쿠폰 사용여부 체크 ##################
 		Dim CouponUseCheck : CouponUseCheck = "N"
-        cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn
-        if cl_eCoupon.m_cd = "0" then
-            CouponUseCheck = "N"
-        else
-            CouponUseCheck = "Y"
-        end if
+
+        If eCouponType = "Coop" Then
+            cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
+            if cl_eCouponCoop.m_cd = "0" then
+                CouponUseCheck = "N"
+            else
+                CouponUseCheck = "Y"
+            end if
+
+        Else
+            cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
+            if cl_eCoupon.m_cd = "0" then
+                CouponUseCheck = "N"
+            else
+                CouponUseCheck = "Y"
+            end if
+        End If 
 
 		If CouponUseCheck = "Y" Then 
 			Result 		= "COUPON"

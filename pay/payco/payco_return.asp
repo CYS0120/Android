@@ -9,6 +9,7 @@
 <!--#include virtual="/api/membership.asp"-->
 <!--#include virtual="/api/barcode/barcode.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
+<!--#include virtual="/pay/coupon_use_coop.asp"-->
 <%
 	'-----------------------------------------------------------------------------
 	' PAYCO 주문완료시 호출되는 가맹점 SERVICE API 페이지 샘플 ( ASP )
@@ -263,12 +264,43 @@
 	' 주문내에 e쿠폰 사용여부 체크 ##################
 	Dim CouponUseCheck : CouponUseCheck = "N"
 	dim cl_eCoupon : set cl_eCoupon = new eCoupon
-	cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn
-	if cl_eCoupon.m_cd = "0" then
-		CouponUseCheck = "N"
-	else
-		CouponUseCheck = "Y"
-	end if
+	dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
+
+	Set pinCmd = Server.CreateObject("ADODB.Command")
+	with pinCmd
+		.ActiveConnection = dbconn
+		.CommandText = "bp_order_detail_select_ecoupon"
+		.CommandType = adCmdStoredProc
+
+		.Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , order_idx)
+		Set pinRs = .Execute
+	End With
+	Set pinCmd = Nothing
+
+	prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
+	Set pinRs = Nothing
+
+	If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+		eCouponType = "Coop"
+	Else 
+		eCouponType = "KTR"
+	End If
+
+	If eCouponType = "Coop" Then
+		cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
+		if cl_eCouponCoop.m_cd = "0" then
+			CouponUseCheck = "N"
+		else
+			CouponUseCheck = "Y"
+		end if
+	Else
+		cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
+		if cl_eCoupon.m_cd = "0" then
+			CouponUseCheck = "N"
+		else
+			CouponUseCheck = "Y"
+		end if
+	End If 
 
 	If (Not CStr(certify_TotalPaymentAmt) = CStr(AMOUNT)) or (Not CStr(certify_sellerOrderReferenceKey) = CStr(order_num)) Then		'위에서 파라메터로 받은 certify_TotalPaymentAmt 값과 주문값이 같은지 비교합니다. 
 																			'( 연동 실패를 테스트 하시려면 값을 주문값을 certify_TotalPaymentAmt 값과 틀리게 설정하세요. )

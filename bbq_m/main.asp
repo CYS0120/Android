@@ -184,7 +184,11 @@
 						</li>
 					</ul>
 					<!-- // 실시간 인기 -->
-
+					<ul>
+						<div class="main_point_set">
+							<iframe width="100%" height="186" src="https://www.youtube.com/embed/NW-6kSg_UvM" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+						</div>
+					</ul>
 					<!-- 메뉴 -->
 					<ul class="h-main_order">
 						<li><div class="h-main_order01"><a href="/order/delivery.asp?order_type=D">배달주문</a></div></li>
@@ -269,10 +273,6 @@
 						</div>
 					</div>
 					<div>&nbsp;</div>
-
-					<div class="main_point_set">
-						<iframe width="100%" height="184" src="https://www.youtube.com/embed/NW-6kSg_UvM" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-					</div>
 
 					<!--<a href src="https://www.youtube.com/embed/uVN-x_lOvBA" target="_blank"><iframe id="idIframe" width="100%" height="315" src="https://www.youtube.com/embed/uVN-x_lOvBA" frameborder="0" onload="javascript:resetLink()"></iframe></a>
 						실시간 이벤트에 참여하기 위해서 유튜브 영상 제목을 클릭하신 후 유튜브 채팅에 참여하세요!!-->					

@@ -64,10 +64,32 @@
 				End If
 
 				%>
+
+                <%
+                    Dim aCmdEcoupon, aRsEcoupon, EcoupontotalCount
+
+                    Set aCmdEcoupon = Server.CreateObject("ADODB.Command")
+
+                    With aCmdEcoupon
+                        .ActiveConnection = dbconn
+                        .NamedParameters = True
+                        .CommandType = adCmdStoredProc
+                        .CommandText = "bt_member_coupon_select"
+                        .Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, Session("userIdNo"))
+                        .Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput, 20, "LIST")
+                        .Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
+
+                        Set aRsEcoupon = .Execute
+
+						EcoupontotalCount = .Parameters("@totalCount").Value
+                    End With
+                    Set aCmdEcoupon = Nothing   
+
+				%>				
             	<div class="mypage_box">
             		<ul>
             			<li onclick="location.href='/mypage/mileage.asp'"><div class="ico-point">포인트</div><p><span><%=FormatNumber(pPointBalance.mTotalPoint,0)%></span>P</p></li>
-            			<li onclick="location.href='/mypage/couponList.asp?couponList=coupon'"><div class="ico-cupon">모바일 상품권</div><p><span><%=couponTotalCount%></span>개</p></li>
+            			<li onclick="location.href='/mypage/couponList.asp?couponList=coupon'"><div class="ico-cupon">모바일 상품권</div><p><span><%=EcoupontotalCount%></span>개</p></li>
             			<li onclick="location.href='/mypage/couponList.asp?couponList=giftcard'"><div class="icon_gift">상품권</div><p><span class="gc_red">0</span>개</p></li>
             		</ul>
             	</div>

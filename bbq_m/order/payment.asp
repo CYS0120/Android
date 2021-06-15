@@ -2976,7 +2976,7 @@ function calcTotalAmount() {
 			$("#payment_payco").prop("disabled", true).hide();
 			$("#payco_txt").prop("disabled", true).hide();
 			$("#coupon_area").prop("disabled", true).hide();
-            var nowTime = new Date()
+            var nowTime = new Date(); 
             var nowHour = nowTime.getHours();
             var nowMinute = nowTime.getMinutes();
             if(nowMinute <= 29){

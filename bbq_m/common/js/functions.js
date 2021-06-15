@@ -1,5 +1,16 @@
 ﻿var domain = "mobile";
 
+function getProduct(menu_idx) {
+    $.ajax({
+        method: "post",
+        url: "/api/ajax/ajax_getProduct.asp",
+        data: {"menu_idx": menu_idx},
+        success: function(data) {
+
+        }
+    });
+}
+
 // Address 정보 가져오기
 function getAddress(addr_idx) {
     $.ajax({
@@ -352,7 +363,7 @@ function drawCartPage(page){
             menu_amt += (Number(it.price) * Number(it.qty));
 
             var ht = "";
-			var mkey = it.type +"_"+ it.idx +"_"+ it.opt
+			var mkey = it.type +"_"+ it.idx +"_"+ it.opt +"_"+ it.pin
 
 //			console.log(it);
 
@@ -436,7 +447,7 @@ function getCartList(it, mkey, key, it_amt, page, side_amt_new) {
 	ht += "			<dt>";
 	ht += "			"+it.nm+"";
 	if (it.pin != ''){
-		ht += " <font color='red'>[E-쿠폰]</font>\n";
+		ht += " <font color='red'>[모바일 상품권]</font>\n";
 	}
 
 	if(page == "C") {
@@ -449,7 +460,7 @@ function getCartList(it, mkey, key, it_amt, page, side_amt_new) {
 		for(var skey in it.side) {
 			if(it.side.hasOwnProperty(skey)) {
 				var side = it.side[skey];
-				var skey = side.type +"_"+ side.idx +"_"+ side.opt
+				var skey = side.type +"_"+ side.idx +"_"+ side.opt +"_"+ side.pin;
 
 				side_amt_new += (Number(side.price) * Number(side.qty));
 				side_amt += (Number(side.price) * Number(side.qty));
@@ -524,7 +535,7 @@ function getMenuRecom()
 					$.each(cart_recom_list, function(k, v) 
 					{
 						opt_idx = 0;
-						menuKey = "M_"+ v.menu_idx +"_"+ opt_idx;
+						menuKey = "M_"+ v.menu_idx +"_"+ opt_idx+"_"+ side.pin;
 						menuItem = "M$$"+ v.menu_idx +"$$"+ opt_idx +"$$"+ v.menu_price +"$$"+ v.menu_name +"$$"+ g2_bbq_img_url + v.THUMB_FILEPATH + v.THUMB_FILENAME;
 
 						ht += "	<div class='menuBox' id='recom_div_"+ menuKey +"'>";
@@ -624,7 +635,7 @@ function setSideChange(key) {
         ht += "\t<dt>"+item.nm+"</dt>\n";
         ht += "\t<dd>\n";
 		if (item.pin != ''){
-			ht += "\t\t<font color='red'>[E-쿠폰]</font>\n";
+			ht += "\t\t<font color='red'>[모바일 상품권]</font>\n";
 		}else{
 
 			ht += "\t\t<span class=\"form-pm\">\n";
@@ -1291,4 +1302,195 @@ function chkWord_new_val(val, maxByte, returnyn) {
 			return true;
 		}
 	}
+}
+
+function eCoupon_Check(saveYN) {
+	targetUrl = "/api/ajax/ajax_getEcoupon.asp";
+	couponCode = $("#txtPIN_save").val()
+
+	if (couponCode == "") {
+		alert('모바일 상품권 번호를 입력해주세요.');
+		return;
+	}
+
+	if (couponCode.charAt(0) == "6" || couponCode.charAt(0) == "8"){
+		targetUrl = "/api/ajax/ajax_getEcouponCoop.asp";
+	}
+
+	$.ajax({
+		method: "post",
+		url: targetUrl,
+		data: {
+			"txtPIN": couponCode,
+			"PIN_save": saveYN
+		},
+		dataType: "json",
+		success: function(res) {
+			if (res.result == 0) {
+				showConfirmMsg({
+					msg:"정상 등록되었습니다.", 
+					ok: function(){
+					 lpClose('.lp_RegiCoupon');
+					 
+					},
+					cancel:function() {
+					 lpClose('.lp_RegiCoupon');
+					}
+				});
+			} else {
+				showAlertMsg({
+					msg: res.message
+				});
+			}
+		},
+		error: function(data, status, err) {
+//							msg: data + ' ' + status + ' ' + err
+			showAlertMsg({
+				msg: "에러가 발생하였습니다",
+				ok: function() {
+					location.href = "/";
+				}
+			});
+		}
+
+	});
+}
+
+function eCoupon_Check_GoCart_NoPinCode(saveYN, url) {		
+	var couponCode = $("#txtPIN").val();
+	var targetUrl = "/api/ajax/ajax_getEcoupon.asp";
+	var jsonData = {
+		"txtPIN": couponCode,
+		"PIN_save": saveYN
+	};
+
+	if (couponCode == "") {
+		alert('E-쿠폰 번호를 입력해주세요.');
+		return;
+	}
+
+	if (couponCode.charAt(0) == "6" || couponCode.charAt(0) == "8"){
+		targetUrl = "/api/ajax/ajax_getEcouponCoop.asp";
+	}
+
+	eCoupon_Check_Json_url(targetUrl, jsonData, url);
+}
+
+function eCoupon_Register_GoCart(saveYN) {		
+	var couponCode = $("#txtPIN").val();
+	var targetUrl = "/api/ajax/ajax_getEcoupon.asp";
+	var jsonData = {
+		"txtPIN": couponCode,
+		"PIN_save": saveYN
+	};
+
+	if (couponCode == "") {
+		alert('E-쿠폰 번호를 입력해주세요.');
+		return;
+	}
+
+	if (couponCode.charAt(0) == "6" || couponCode.charAt(0) == "8"){
+		targetUrl = "/api/ajax/ajax_getEcouponCoop.asp";
+	}
+
+	eCoupon_Check_Json(targetUrl, jsonData);
+}
+
+function eCoupon_Check_GoCart(saveYN, pinCode) {		
+	var couponCode = pinCode;
+	var targetUrl = "/api/ajax/ajax_getEcoupon.asp";
+	var jsonData = {
+		"txtPIN": couponCode,
+		"PIN_save": saveYN
+	};
+
+	if (couponCode == "") {
+		alert('E-쿠폰 번호를 입력해주세요.');
+		return;
+	}
+
+	if (couponCode.charAt(0) == "6" || couponCode.charAt(0) == "8"){
+		targetUrl = "/api/ajax/ajax_getEcouponCoop.asp";
+	}
+
+	eCoupon_Check_Json(targetUrl, jsonData);
+}
+
+function eCoupon_Check_Json(targetUrl, jsonData) {
+	$.ajax({
+		method: "post",
+		url: targetUrl,
+		data: jsonData,
+		dataType: "json",
+		success: function(res) {
+			showAlertMsg({
+				msg: res.message,
+				ok: function() {
+					if (res.result == 0) {
+						var menuItem = res.menuItem;
+						addCartMenu(menuItem);
+						location.href = "/order/cart.asp";
+					}
+				}
+			});
+		},
+		error: function(data, status, err) {
+			showAlertMsg({
+				msg: data + ' ' + status + ' ' + err
+			});
+		}
+
+	});						
+}
+
+function eCoupon_Check_Json_url(targetUrl, jsonData, url) {
+	$.ajax({
+		method: "post",
+		url: targetUrl,
+		data: jsonData,
+		dataType: "json",
+		success: function(res) {
+			showAlertMsg({
+				msg: res.message,
+				ok: function() {
+					if (res.result == 0) {
+						var menuItem = res.menuItem;
+						//addCartMenu(menuItem);
+					}
+				}
+			});
+		},
+		error: function(data, status, err) {
+			showAlertMsg({
+				msg: data + ' ' + status + ' ' + err
+			});
+		}
+	});
+
+	if (url != ""){
+		setTimeout(function(){
+			location.href = url;
+		}, 2000); 	
+	}
+					
+}
+
+function eCoupon_del_plus(txtPIN_str) {
+	showConfirmMsg({msg:"쿠폰을 삭제하시겠습니까?", ok: function(){
+		$.ajax({
+			method: "post",
+			url: "/api/ajax/ajax_delEcoupon.asp",
+			data: {txtPIN: txtPIN_str},
+			dataType: "json",
+			success: function(res) {
+				if(res.result == 0) {
+					showAlertMsg({msg:res.message, ok: function(){
+						$('#coupon_list_'+ txtPIN_str).remove();
+					}})
+				} else {
+					showAlertMsg({msg:res.message});
+				}
+			}
+		});
+	}});
 }

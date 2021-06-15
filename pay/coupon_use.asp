@@ -73,11 +73,11 @@ Class eCoupon
 
 		with oCmd
 			.ActiveConnection = dbconn
-			.CommandText = "BBQ.DBO.bp_order_detail_select_ecoupon"
+			.CommandText = "BBQ.DBO.bp_order_detail_select_ecoupon_by_partner"
 			.CommandType = adCmdStoredProc
 
 			.Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , order_idx)
-
+			.Parameters.Append .CreateParameter("@CD_PARTNER", advarchar, adParamInput, 10, "20000")
 			oRs.CursorLocation = adUseClient
 			oRs.Open oCmd
 		End with

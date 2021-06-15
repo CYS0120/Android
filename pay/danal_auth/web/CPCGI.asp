@@ -7,6 +7,7 @@
 <!--#include virtual="/api/include/db_open.asp"-->
 <!--#include virtual="/api/include/func.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
+<!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include file="./inc/function.asp"-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>

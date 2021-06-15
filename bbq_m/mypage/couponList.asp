@@ -17,8 +17,9 @@
 
 <div class="tab-type4">
 	<ul class="tab">
-		<li id="tab_coupon" ><a onclick="change_tab('coupon')">모바일 상품권</a></li>
-		<li id="tab_giftcard" ><a onclick="change_tab('giftcard')">상품권</a></li>
+		<li id="tab_coupon" ><a onclick="change_tab('coupon')">할인/증정쿠폰</a></li>
+        <li id="tab_Ecoupon" ><a onclick="change_tab('Ecoupon')">모바일상품권</a></li>
+		<li id="tab_giftcard" ><a onclick="change_tab('giftcard')">지류상품권</a></li>
 	</ul>
 </div>
 
@@ -58,11 +59,12 @@
 					Next
 				End If
 %>
-				<div class="coupon_head">사용 가능한 모바일 상품권 <strong><%=couponTotalCount%></strong>장</div>
-				<div class="coupon_head" onclick="Regi_Coupon();">모바일 상품권 등록하기</div>
+				<div class="coupon_head">사용 가능한 할인/증정쿠폰권 <strong><%=couponTotalCount%></strong>장</div>
+				<!--<div class="coupon_head" onclick="Regi_Coupon();">모바일 상품권 등록하기</div>-->
 
-				<div class="couponUseOk_wrap">
-					<%
+				<!-- <div class="couponUseOk_wrap"> -->
+                <div class="coupon">
+ 					<%
 						IF couponHoldList.mTotalCount > 0 Then
 							For i = 0 To UBound(couponHoldList.mHoldList)
 					%>
@@ -71,7 +73,7 @@
                         If couponHoldList.mHoldList(i).mCouponId <> "CP00002347" then
                     %>
 					<div class="couponUseOk">
-						<div class="coupon">
+						<div>
 							<ul class="tit">
 								<li class="device"><span class="ico-branch red">비비큐치킨</span></li>
 								<li class="day"><span>D - <%=DateDiff("d", Date, left(couponHoldList.mHoldList(i).mValidEndDate,4)&"-"&mid(couponHoldList.mHoldList(i).mValidEndDate,5,2)&"-"&mid(couponHoldList.mHoldList(i).mValidEndDate,7,2))%></span></li>
@@ -113,7 +115,7 @@
 
 					<!-- 등록된 쿠폰 없을때 -->
 					<div class="coupon_empty">
-						<p>등록된 모바일 상품권이<br>없습니다.</p>
+						<p>등록된 할인/증정 쿠폰이<br>없습니다.</p>
 					</div>
 					<!-- // 등록된 쿠폰 없을때 -->
 					
@@ -121,64 +123,98 @@
 						End If
 					%>
 
+                </div>
+					
+            	
 
-					<!--
-					<div class="box">
+			</section>
+			<!-- //사용가능쿠폰 -->
+		</article>
+
+		<article id="Ecoupon_list" class="content inbox1000" style="display: block">
+
+			<%
+				Set couponHoldList = CouponGetHoldList("NONE", "N", 100, 1)
+			%>
+
+			<!-- 사용가능쿠폰 -->
+			<section class="section section_couponUseOk">
+				<div class="coupon_head" onclick="Regi_Coupon();">모바일 상품권 등록하기</div>
+
+				<!-- <div class="couponUseOk_wrap"> -->
+                <div class="coupon">
+
+					<div class="couponUseOk">
+                <%
+                    Dim aCmd, aRs
+
+                    Set aCmd = Server.CreateObject("ADODB.Command")
+
+                    With aCmd
+                        .ActiveConnection = dbconn
+                        .NamedParameters = True
+                        .CommandType = adCmdStoredProc
+                        .CommandText = "bt_member_coupon_select"
+                        .Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, Session("userIdNo"))
+                        .Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput, 20, "LIST")
+                        .Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
+
+                        Set aRs = .Execute
+                    End With
+                    Set aCmd = Nothing   
+
+                    If Not (aRs.BOF Or aRs.EOF) Then    
+                        aRs.MoveFirst  
+
+                            Do Until aRs.EOF  
+                    %>           
 						<div class="coupon">
 							<div class="tit div-table">
 								<ul class="tr">
 									<li class="td device"><span class="ico-branch red">비비큐치킨</span></li>
-									<li class="td day">D-15</li>
+									<li class="td day"></li>
 								</ul>
 							</div>
 							<dl class="info">
-								<dt>[스테디셀러] 황금올리브 1+1 쿠폰</dt>
+								<dt onclick='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");'><b><%=aRs("c_title")%></b></dt>
 								<dd>
-									유효기간 : 2018-12-01 ~ 2018-12-31<br/>
-									사용처 : PC · 모바일 · App
+                                    번    호 : <%=aRs("c_code")%><br/>
+									유효기간 : <%=aRs("USESDATE")%> ~ <%=aRs("USEEDATE")%><br/>
+									사 용 처 : PC · 모바일 · App
 								</dd>
 							</dl>
+                            <dl class="coupon_list_delete"><a href='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");' class="btn btn-red btn_middle">사용하기</a></dl>
+                            <!--<dl class="coupon_list_use"><a href='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");' class="btn btn-red btn_middle">사용</a></dl>
+                            <dl class="coupon_list_delete"><a href="javascript:eCoupon_del_plus('<%=aRs("c_code")%>')"><img src="/images/mypage/ico_delete.png">삭제</a></dl>-->
 						</div>
-						<div class="txt">
-							- 황금올리브 치킨 주문시 사용 가능<br/>
+                        <div class="txt">
+                         <br/> 
+						</div>                        
+
+                <%
+                            aRs.MoveNext
+						    Loop
+                    End If
+                    Set aRs = Nothing                
+                %>						
+                        <div class="txt">
 							- 타 쿠폰과 중복 사용불가
 						</div>
-					</div>
 
-					<div class="box">
-						<div class="coupon">
-							<div class="tit div-table">
-								<ul class="tr">
-									<li class="td device"><span class="ico-branch yellow">비비큐몰</span></li>
-									<li class="td day">D-15</li>
-								</ul>
-							</div>
-							<dl class="info">
-								<dt>[스테디셀러] 황금올리브 1+1 쿠폰</dt>
-								<dd>
-									유효기간 : 2018-12-01 ~ 2018-12-31<br/>
-									사용처 : PC · 모바일 · App
-								</dd>
-							</dl>
-						</div>
-						<div class="txt">
-							- 황금올리브 치킨 주문시 사용 가능<br/>
-							- 타 쿠폰과 중복 사용불가
-						</div>
-					</div> 
-					-->
+                </div>
+					
+            	
 
-				</div>
 			</section>
 			<!-- //사용가능쿠폰 -->
-		</article>
+		</article>        
 
         <article class="content inbox1000" id="giftcard_list" style="display: none">
 	        <!-- //사용가능쿠폰 -->
 	        <section class="section section_couponUseOk">
                     <article class="content inbox1000">
-                    <div class="coupon_head">사용 가능한 상품권 <strong class="gc_red">0</strong>장</div>
-				    <div class="coupon_head" onclick="Regi_GiftCard();">상품권 등록하기</div>
+                    <div class="coupon_head">사용 가능한 지류 상품권 <strong class="gc_red">0</strong>장</div>
+				    <div class="coupon_head" onclick="Regi_GiftCard();">지류 상품권 등록하기</div>
                         <!-- 사용가능상품권 -->
                         <section class="section section_couponUseOk">
 							<input type="hidden" id="giftcard_value" value="0"><!-- 중복갱신 방지 값 -->
@@ -190,7 +226,7 @@
  								<!-- 등록된 상품권 목록 -->
                     	        <!-- 등록된 상품권 없을때 -->
                     	        <div id="giftcard_empty_list" class="coupon_empty" style="display: none">
-                    		        <p>등록된 상품권이<br>없습니다.</p>
+                    		        <p>등록된 지류 상품권이<br>없습니다.</p>
                     	        </div>
                     	        <!-- // 등록된 상품권 없을때 -->
                             </div>
@@ -229,8 +265,8 @@
 							<h3>모바일 상품권  번호를<br>입력하여 주세요.</h3>
 							<form action="" class="form">
 								<ul class="area">
-									<li><input type="text" id="txtPIN_save" name="txtPIN_save" placeholder="쿠폰 번호 입력" class="w-100p" maxlength="12"></li>
-                                    <li class="mar-t15"><button type="button" onclick="javascript:eCoupon_Check();" class="btn btn_middle btn-red">확인</button></li>
+									<li><input type="text" id="txtPIN" name="txtPIN" placeholder="모바일 상품권 번호 입력" class="w-100p" maxlength="12"></li>
+                                    <li class="mar-t15"><button type="button" onclick="javascript:eCoupon_Check_GoCart_NoPinCode('Y', './couponList.asp?couponList=Ecoupon')" class="btn btn_middle btn-red">확인</button></li>
                                 </ul>
                             </form>
                             <p>
@@ -257,7 +293,7 @@
 		<div class="lp-wrap inbox1000">
 			<!-- LP Header -->
 			<div class="lp-header">
-				<h2>상품권 등록</h2>
+				<h2>지류 상품권 등록</h2>
 			</div>
 			<!--// LP Header -->
 			<!-- LP Container -->
@@ -267,10 +303,10 @@
 					<form action="">
 						<!-- 상품권인증번호 등록 -->
 						 <section class="section section_coupon">
-							<h3><br><br>상품권 등록<br><br><br></h3>
+							<h3><br><br>지류 상품권 등록<br><br><br></h3>
 							<form action="" class="form">
                             	<ul class="area">
-                            		<li><input type="text" autocomplete="off" id="giftPIN" name="giftPIN" placeholder="상품권 번호 입력 ('-' 포함)" class="w-70p" style="margin-right:2%;"><button type="button" onclick="javascript:Giftcard_Check();" class="btn btn-sm btn-black w-15p">등록</button></li>
+                            		<li><input type="text" autocomplete="off" id="giftPIN" name="giftPIN" placeholder="지류 상품권 번호 입력 ('-' 포함)" class="w-70p" style="margin-right:2%;"><button type="button" onclick="javascript:Giftcard_Check();" class="btn btn-sm btn-black w-15p">등록</button></li>
                             		<li class="mar-t15">
                                         <button type="button" onclick="javascript:Giftcard_scan();" class="btn btn-md btn-black" style="width: 45%; margin-right:4%; padding:0 !important; line-height:25px !important; font-size: 20px !important">
                                             <img src="/images/order/barcode-scan2.png" alt="barcode_scan2" width="50px" height="50px"><br>바코드인증
@@ -316,7 +352,7 @@
 		<div class="lp-wrap inbox1000">
 			<!-- LP Header -->
 			<div class="lp-header">
-				<h2>상품권 선물</h2>
+				<h2>지류 상품권 선물</h2>
 			</div>
 			<!--// LP Header -->
 			<!-- LP Container -->
@@ -327,7 +363,7 @@
 						<!-- 상품권선물 대상 검색 -->
 						 <section class="section section_coupon">
 							<div class="section-header coupon_head">
-								<h3>상품권 선물대상 검색하기</h3>
+								<h3>지류 상품권 선물대상 검색하기</h3>
 							</div>
 							<form action="" class="form">
                                 <input type="hidden" id="giftcard_idx" value="">
@@ -340,7 +376,7 @@
 								</ul>
 							</form>
 						</section>
-						<!-- //상품권선물 대상 검색 -->
+						<!-- //지류 상품권선물 대상 검색 -->
 					</form>
 				</div>
 				<!--// LP Content -->
@@ -392,15 +428,26 @@
         
                 });
                 $('#coupon_list').css('display','none');
+                $('#Ecoupon_list').css('display','none');
                 $('#giftcard_list').css('display','block');
                 $('#tab_coupon').removeClass("on");
+                $('#tab_Ecoupon').removeClass("on");
                 $('#tab_giftcard').addClass("on");
             }else if (data == 'coupon'){
-              $('#coupon_list').css('display','block');
-              $('#giftcard_list').css('display','none');
-              $('#tab_coupon').addClass("on");
-              $('#tab_giftcard').removeClass("on");
-          }
+                $('#coupon_list').css('display','block');
+                $('#Ecoupon_list').css('display','none');
+                $('#giftcard_list').css('display','none');
+                $('#tab_coupon').addClass("on");
+                $('#tab_Ecoupon').removeClass("on");
+                $('#tab_giftcard').removeClass("on");
+            }else if (data == 'Ecoupon'){
+                $('#Ecoupon_list').css('display','block');
+                $('#coupon_list').css('display','none');
+                $('#giftcard_list').css('display','none');
+                $('#tab_Ecoupon').addClass("on");
+                $('#tab_coupon').removeClass("on");
+                $('#tab_giftcard').removeClass("on");
+            }
         }
         function Giftcard_List() {
             var gf_yn = $('#giftcard_value').val(); // 리스트 중복갱신 방지
@@ -444,7 +491,7 @@
                 error: function(data, status, err) {
                     console.log("error : " + err);
                     showAlertMsg({
-                        msg: "모바일 상품권 리스트를 불러오지 못했습니다."
+                        msg: "지류 상품권 리스트를 불러오지 못했습니다."
                     });
                 }
 
@@ -454,51 +501,13 @@
         function Regi_Coupon(){
             lpOpen('.lp_RegiCoupon');
         }
-        function eCoupon_Check() {
-            if ($("#txtPIN_save").val() == "") {
-                alert('모바일 상품권 번호를 입력해주세요.');
-                return;
-            }
-            $.ajax({
-                method: "post",
-                url: "/api/ajax/ajax_getEcoupon.asp",
-                data: {
-                    txtPIN: $("#txtPIN_save").val(),
-                    PIN_save: "Y"
-                },
-                dataType: "json",
-                success: function(res) {
-                    if (res.result == 0) {
-                        showConfirmMsg({
-                            msg:"정상 등록되었습니다.", 
-                            ok: function(){
-                             lpClose('.lp_RegiCoupon');
-                            },
-                            cancel:function() {
-                             lpClose('.lp_RegiCoupon');
-                            }
-                        });
-                    } else {
-                        showAlertMsg({
-                            msg: res.message
-                        });
-                    }
-                },
-                error: function(data, status, err) {
-//							msg: data + ' ' + status + ' ' + err
-                    showAlertMsg({
-                        msg: "에러가 발생하였습니다",
-                        ok: function() {
-                            location.href = "/";
-                        }
-                    });
-                }
-
-            });
-        }
                 
         function Regi_GiftCard(){
             lpOpen('.lp_RegiGiftCard');
+        }
+
+        function Refresh_Ecoupon(){
+            location.href = "./couponList.asp?couponList=Ecoupon"
         }
         
         function Giftcard_Upload(data){
@@ -507,7 +516,7 @@
                 Giftcard_Check()
             }else{
                 showAlertMsg({
-                    msg:"상품권을 다시 확인해주세요.",
+                    msg:"지류 상품권을 다시 확인해주세요.",
                 });
                 return;
             }
@@ -515,7 +524,7 @@
         function Giftcard_Check() {
             if ($("#giftPIN").val() == "") {
                 showAlertMsg({
-                    msg:"상품권 번호를 입력해주세요.",
+                    msg:"지류 상품권 번호를 입력해주세요.",
                 });
                 return;
             }
@@ -540,7 +549,7 @@
                         });
                     } else if(res.result == 1){
                         showAlertMsg({
-                            msg:"이미 등록 된 상품권입니다.",
+                            msg:"이미 등록된 지류 상품권입니다.",
                             ok: function(){
                                 $("#giftPIN").val("");
                                 lpClose(".lp_RegiGiftCard");
@@ -548,7 +557,7 @@
                         });
                     } else if(res.result == 2){
                          showAlertMsg({
-                             msg:"존재하지않는 상품권입니다.",
+                             msg:"존재하지않는 지류 상품권입니다.",
                              ok: function(){
                                  $("#giftPIN").val("");
                                  lpClose(".lp_RegiGiftCard");
@@ -556,7 +565,7 @@
                          });
                      } else if(res.result == 3){
                        showAlertMsg({
-                           msg:"이미 사용한 상품권입니다.",
+                           msg:"이미 사용한 지류 상품권입니다.",
                            ok: function(){
                                $("#giftPIN").val("");
                                lpClose(".lp_RegiGiftCard");
@@ -599,7 +608,7 @@
         function Giftcard_Check() {
             if ($("#giftPIN").val() == "") {
                 showAlertMsg({
-                    msg:"상품권 번호를 입력해주세요.",
+                    msg:"지류 상품권 번호를 입력해주세요.",
                 });
                 return;
             }
@@ -625,7 +634,7 @@
                         });
                     } else if(res.result == 1){
                         showAlertMsg({
-                            msg:"이미 등록 된 상품권입니다.",
+                            msg:"이미 등록된 지류 상품권입니다.",
                             ok: function(){
                                 $("#giftPIN").val("");
                                 reset_gift_select();
@@ -634,7 +643,7 @@
                         });
                     } else if(res.result == 2){
                          showAlertMsg({
-                             msg:"존재하지않는 상품권입니다.",
+                             msg:"존재하지않는 지류 상품권입니다.",
                              ok: function(){
                                  $("#giftPIN").val("");
                                  reset_gift_select();
@@ -643,7 +652,7 @@
                          });
                      } else if(res.result == 3){
                        showAlertMsg({
-                           msg:"이미 사용한 상품권입니다.",
+                           msg:"이미 사용한 지류 상품권입니다.",
                            ok: function(){
                                $("#giftPIN").val("");
                                reset_gift_select();
@@ -654,8 +663,6 @@
                         showAlertMsg({
                             msg: res.message
                         });
-
-                        openLogin('mobile');
                     }
                 },
                 error: function(data, status, err) {

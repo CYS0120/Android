@@ -2,6 +2,7 @@
 <!--#include virtual="/api/include/db_open.asp"-->
 <!--#include virtual="/api/include/func.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
+<!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include file="./inc/function.asp"-->
 <%
 	returncode = request("returncode")

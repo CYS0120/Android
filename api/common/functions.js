@@ -234,7 +234,7 @@ function addCartMenu(data) {
 		data += "$$";	//더미 추가
         var item = data.split("$$");
 
-        var key = item[0]+"_"+item[1]+"_"+item[2];
+        var key = item[0]+"_"+item[1]+"_"+item[2]+"_"+item[6];
 
         var jdata = getCartMenu(key);
 

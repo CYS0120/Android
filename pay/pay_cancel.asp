@@ -1,5 +1,6 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
+<!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
 
 <%
@@ -34,7 +35,10 @@
     If Len(is_call) = 0 Then is_call = ""
 
 	dim cl_eCoupon : set cl_eCoupon = new eCoupon
+	dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
 	dim pg_RollBack : pg_RollBack = 0
+
+	dim eCouponType : eCouponType = ""
 
     Set oCmd = Server.CreateObject("ADODB.Command")
     Set oRs = server.createobject("ADODB.RecordSet")
@@ -79,17 +83,47 @@
 		Set pCmd = Nothing
 
 		Do until pRs.EOF
-			cl_eCoupon.KTR_Cancel_Pin pRs("pay_transaction_id"), ORDER_ID, BRANCH_ID, BRANCH_NM, pRs("pay_approve_num"), dbconn
 
-			' 마이 쿠폰 취소
-			Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where c_code='"& pRs("pay_transaction_id") &"' "
-			dbconn.Execute(Sql)
+			prefix_coupon_no = LEFT(pRs("pay_transaction_id"), 1)
 
-			if cl_eCoupon.m_cd = "0" then
-			else
-				html_result = "FAIL|" & cl_eCoupon.m_message
-				pg_RollBack = 1
-			end if
+			If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+				eCouponType = "Coop"
+			Else 
+				eCouponType = "KTR"
+			End If
+
+			'html_result = "SUCC|" & prefix_coupon_no & "-" & eCouponType
+			'html_resutl = pRs("pay_transaction_id")
+			'Response.Write html_result
+			'Response.End
+
+			If eCouponType = "Coop" then
+				cl_eCouponCoop.Coop_Cancel_Pin pRs("pay_transaction_id"), ORDER_ID, BRANCH_ID, BRANCH_NM, pRs("pay_approve_num"), dbconn
+
+				' 마이 쿠폰 취소
+				Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where c_code='"& pRs("pay_transaction_id") &"' "
+				dbconn.Execute(Sql)
+
+				if cl_eCouponCoop.m_cd = "0" then
+				else
+					html_result = "FAIL|" & cl_eCouponCoop.m_message
+					pg_RollBack = 1
+				end if
+
+			Else 
+				cl_eCoupon.KTR_Cancel_Pin pRs("pay_transaction_id"), ORDER_ID, BRANCH_ID, BRANCH_NM, pRs("pay_approve_num"), dbconn
+
+				' 마이 쿠폰 취소
+				Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where c_code='"& pRs("pay_transaction_id") &"' "
+				dbconn.Execute(Sql)
+
+				if cl_eCoupon.m_cd = "0" then
+				else
+					html_result = "FAIL|" & cl_eCoupon.m_message
+					pg_RollBack = 1
+				end if
+
+			End If	
 			pRs.MoveNext
 		Loop
 

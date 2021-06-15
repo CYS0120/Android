@@ -1,5 +1,6 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
+<!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/order/class_order_db.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
 <%
@@ -7,6 +8,10 @@
 
 	Dim order_idx : order_idx = Request("order_idx")
 	Dim paytype : paytype = Request("pm")
+	Dim eCouponType : eCouponType = ""
+
+	'response.write order_idx 
+	'response.end
 
 	If IsEmpty(order_idx) Or IsNull(order_idx) Or Trim(order_idx) = "" Or Not IsNumeric(order_idx) Then order_idx = ""
 
@@ -24,7 +29,9 @@
 	dbconn.Execute(Sql)
 
 	dim pg_RollBack : pg_RollBack = 0
+	dim pg_Coop_RollBack : pg_Coop_RollBack = 0	
 	dim cl_eCoupon : set cl_eCoupon = new eCoupon
+	dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
 
 	dim db_call : set db_call = new Order_DB_Call
 	db_call.DB_Order_State dbconn, order_idx, "P", paytype
@@ -235,13 +242,46 @@
 	dbconn.Execute(Sql)
 
     ' 주문내에 e쿠폰 사용여부 체크 ##################
-    Dim CouponUseCheck : CouponUseCheck = "N"
-    cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn
-    if cl_eCoupon.m_cd = "0" then
-        CouponUseCheck = "N"
-    else
-        CouponUseCheck = "Y"
-    end if
+	Dim CouponUseCheck : CouponUseCheck = "N"
+
+	Set orderCmd = Server.CreateObject("ADODB.Command")
+	With orderCmd
+		.ActiveConnection = dbconn
+		.NamedParameters = True
+		.CommandType = adCmdStoredProc
+		.CommandText = "bp_order_detail_select"
+		.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput, , order_idx)
+
+		Set orderRs = .Execute
+	End With
+	Set orderCmd = Nothing
+
+	If Not (orderRs.BOF Or orderRs.EOF) Then
+		prefix_coupon_no = LEFT(orderRs("coupon_pin"), 1)
+		If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+			eCouponType = "Coop"
+			cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
+
+			if cl_eCouponCoop.m_cd = "0" then
+				CouponUseCheck = "N"
+			else
+				CouponUseCheck = "Y"
+			end if			
+		Else 
+			eCouponType = "KTR"
+			cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn
+			
+			if cl_eCoupon.m_cd = "0" then
+				CouponUseCheck = "N"
+			else
+				CouponUseCheck = "Y"
+			end if
+		End If
+		
+	End If
+
+	'response.write cl_eCouponCoop.m_cd &"-"& CouponUseCheck
+	'response.end
 
     If CouponUseCheck = "Y" Then 
 %>
@@ -391,28 +431,51 @@
 			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"','"& coupon_amt &"','Coupon_Return-11')"
 			dbconn.Execute(Sql)
 
-			cl_eCoupon.KTR_Use_Pin pinRs("coupon_pin"), order_num, branch_id, branch_name, dbconn
+			prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
+			If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then
+				eCouponType = "Coop"
+			else 
+				eCouponType = "KTR"
+			end if 
+
+			if eCouponType = "Coop" then
+				cl_eCouponCoop.Coop_Use_Pin pinRs("coupon_pin"), order_num, branch_id, branch_name, dbconn
+			else 
+				cl_eCoupon.KTR_Use_Pin pinRs("coupon_pin"), order_num, branch_id, branch_name, dbconn
+			end if 
 
 			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','Coupon_Return-12')"
 			dbconn.Execute(Sql)
 
-			if cl_eCoupon.m_cd = "0" then
-				db_call.DB_Payment_Insert order_idx, "ECOUPON", pinRs("coupon_pin"), "", "", pinRs("menu_price"), "", 0, "", ""
+			if eCouponType = "Coop" then
+				if cl_eCouponCoop.m_cd = "0" then
+					db_call.DB_Payment_Insert order_idx, "ECOUPON", pinRs("coupon_pin"), "", "", pinRs("menu_price"), "", 0, "", ""
 
-				' 마이 쿠폰사용
-				Sql = "update bt_member_coupon set use_yn='Y', last_use_date=getdate(), order_idx='"& order_idx &"' where c_code='"& pinRs("coupon_pin") &"' "
-				dbconn.Execute(Sql)
+					' 마이 쿠폰사용
+					Sql = "update bt_member_coupon set use_yn='Y', last_use_date=getdate(), order_idx='"& order_idx &"' where c_code='"& pinRs("coupon_pin") &"' "
+					dbconn.Execute(Sql)
 
+					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','Coupon_Return-13')"
+					dbconn.Execute(Sql)
+				else
+					pg_Coop_RollBack = 1
+					exit do
+				end if
+			else 
+				if cl_eCoupon.m_cd = "0" then
+					db_call.DB_Payment_Insert order_idx, "ECOUPON", pinRs("coupon_pin"), "", "", pinRs("menu_price"), "", 0, "", ""
 
+					' 마이 쿠폰사용
+					Sql = "update bt_member_coupon set use_yn='Y', last_use_date=getdate(), order_idx='"& order_idx &"' where c_code='"& pinRs("coupon_pin") &"' "
+					dbconn.Execute(Sql)
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','Coupon_Return-13')"
-				dbconn.Execute(Sql)
-
-			else
-				pg_RollBack = 1
-				exit do
+					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','Coupon_Return-13')"
+					dbconn.Execute(Sql)
+				else
+					pg_RollBack = 1
+					exit do
+				end if
 			end if
-
 			pinRs.MoveNext
 		Loop
 	End If	
@@ -428,7 +491,7 @@
 		dbconn.Execute(Sql)
 %>
 				<script type="text/javascript">
-					alert("이미 사용된 쿠폰이 존재합니다.");
+					alert("이미 사용된 쿠폰이 존재합니다!!");
 
 					opener.clearCart();
 					opener.location.href = "/";
@@ -436,6 +499,23 @@
 				</script>
 <%
 		Response.End
+		
+	else if  pg_Coop_RollBack = 1 then
+		cl_eCouponCoop.Coop_Rollback order_idx, dbconn			
+
+		' 마이 쿠폰 취소
+		Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where order_idx='"& order_idx &"' "
+		dbconn.Execute(Sql)
+%>
+				<script type="text/javascript">
+					alert("이미 사용된 쿠폰이 존재합니다!!");
+
+					opener.clearCart();
+					opener.location.href = "/";
+					window.close();
+				</script>
+<%
+		Response.End		
 	end if
 
 	Set aCmd = Server.CreateObject("ADODB.Command")
@@ -640,6 +720,8 @@
 		End If 
 	End If
 
+	'TODO 운영 또는 스테이징 반영시 사용처리
+	'TESTMODE = "Y"
 	If TESTMODE <> "Y" Then
 		If Session("userName") <> "" Then 
 			USERNAME = Session("userName")

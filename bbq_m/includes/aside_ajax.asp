@@ -87,27 +87,45 @@ end if
 					</dl>
 
 					<% 
-						Set pCouponList = CouponGetHoldList("NONE", "N", 100, 1) 
+						'Set pCouponList = CouponGetHoldList("NONE", "N", 100, 1) 
 					%>
 
 					<%
 						
 						'페이코 쿠폰 오류 발급으로 인한 코드 (쿠폰번호 - CP00002347, 유효기간- 2021.03.23-2021.04.23) 
-						Dim couponTotalCount 
-						couponTotalCount = pCouponList.mTotalCount
-						IF couponTotalCount > 0 Then
-							For i = 0 To UBound(pCouponList.mHoldList)
-								If pCouponList.mHoldList(i).mCouponId = "CP00002347" Then
-									couponTotalCount = couponTotalCount - 1
-								end if 	
-							Next
-						End If			
-						
+						'Dim couponTotalCount 
+						'couponTotalCount = pCouponList.mTotalCount
+						'IF couponTotalCount > 0 Then
+						'	For i = 0 To UBound(pCouponList.mHoldList)
+						'		If pCouponList.mHoldList(i).mCouponId = "CP00002347" Then
+						'			couponTotalCount = couponTotalCount - 1
+						'		end if 	
+						'	Next
+						'End If			
+
+							Dim aCmd, aRs, EcoupontotalCount
+
+							Set aCmd = Server.CreateObject("ADODB.Command")
+
+							With aCmd
+								.ActiveConnection = dbconn
+								.NamedParameters = True
+								.CommandType = adCmdStoredProc
+								.CommandText = "bt_member_coupon_select"
+								.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, Session("userIdNo"))
+								.Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput, 20, "LIST")
+								.Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
+
+								Set aRs = .Execute
+								EcoupontotalCount = .Parameters("@totalCount").Value
+							End With
+							Set aCmd = Nothing 
+
 					%>								
 					<dl>
-						<dt>쿠폰 :</dt>
+						<dt>모바일 상품권 :</dt>
 						<dd>
-							<a href="/mypage/couponList.asp"><strong><%=couponTotalCount%></strong> 장</a>
+							<a href="/mypage/couponList.asp"><strong><%=EcoupontotalCount%></strong> 장</a>
 						</dd>
 					</dl>
 				<% End If %>
