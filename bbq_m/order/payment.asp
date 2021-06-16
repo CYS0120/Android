@@ -2290,7 +2290,7 @@ function calcTotalAmount() {
                 <% end if %>
 
                 <% If vUseSGPAY = "Y" AND CheckLogin() Then %>
-                   <li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel" style="border-color: #e31937;">BBQ PAY</button></li>
+                   <li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel">BBQ PAY</button></li>
                 <% end if %>
 
                 <%
