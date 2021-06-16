@@ -185,9 +185,9 @@
 			vSubCPID = aRs("DANAL_H_SCPID")
 			vUseDANAL = aRs("USE_DANAL")
 			vUsePAYCO = aRs("USE_PAYCO")
-			vPayco_Seller = aRs("payco_seller")
-			vPayco_Cpid = aRs("payco_cpid")
-			vPayco_Itemcd = aRs("payco_itemcd")
+			' vPayco_Seller = aRs("payco_seller")
+			' vPayco_Cpid = aRs("payco_cpid")
+			' vPayco_Itemcd = aRs("payco_itemcd")
 			vSgpay_merchant = aRs("sgpay_merchant")
 
 			If vSgpay_merchant = "" Then
@@ -250,7 +250,9 @@
 		Set pinRs = .Execute
 	End With
 	Set pinCmd = Nothing
-    Dim coupon_pin : coupon_pin = ""
+    
+	Dim coupon_pin : coupon_pin = ""
+	Dim CouponUseCheck = "N"
 
 	If IsNull(pinRs("coupon_pin")) = True Then
 		coupon_pin = ""
@@ -258,32 +260,35 @@
 		coupon_pin = Cstr(pinRs("coupon_pin"))
 	End If  
 
-	prefix_coupon_no = LEFT(coupon_pin, 1)
-	Set pinRs = Nothing
+	If Len(coupon_pin) > 0 Then
 
-	If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
-		eCouponType = "Coop"
-	Else 
-		eCouponType = "KTR"
+		prefix_coupon_no = LEFT(coupon_pin, 1)
+		Set pinRs = Nothing
+
+		If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+			eCouponType = "Coop"
+		Else 
+			eCouponType = "KTR"
+		End If
+
+		Dim CouponUseCheck : CouponUseCheck = "N"
+
+		If eCouponType = "Coop" Then
+			cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
+			if cl_eCouponCoop.m_cd = "0" then
+				CouponUseCheck = "N"
+			else
+				CouponUseCheck = "Y"
+			end if
+		Else
+			cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
+			if cl_eCoupon.m_cd = "0" then
+				CouponUseCheck = "N"
+			else
+				CouponUseCheck = "Y"
+			end if
+		End If 
 	End If
-
-	Dim CouponUseCheck : CouponUseCheck = "N"
-
-	If eCouponType = "Coop" Then
-		cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
-		if cl_eCouponCoop.m_cd = "0" then
-			CouponUseCheck = "N"
-		else
-			CouponUseCheck = "Y"
-		end if
-	Else
-		cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
-		if cl_eCoupon.m_cd = "0" then
-			CouponUseCheck = "N"
-		else
-			CouponUseCheck = "Y"
-		end if
-	End If 
 
 	If (Not CStr(ret_Amount) = CStr(AMOUNT)) or (Not CStr(ret_TradeNo) = CStr(order_num)) Then		'위에서 파라메터로 받은 ret_Amount 값과 주문값이 같은지 비교합니다. 
 																			'( 연동 실패를 테스트 하시려면 값을 주문값을 ret_Amount 값과 틀리게 설정하세요. )
