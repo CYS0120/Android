@@ -212,6 +212,7 @@
 		SUBCPID = ""
 		AMOUNT = ""
 	End If
+	
 	Call Write_Log("sgpay_return.asp : " & CStr(shopInfoError))
 
 	' 제주/산간 =========================================================================================
@@ -249,8 +250,15 @@
 		Set pinRs = .Execute
 	End With
 	Set pinCmd = Nothing
+    Dim coupon_pin : coupon_pin = ""
 
-	prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
+	If IsNull(pinRs("coupon_pin")) = True Then
+		coupon_pin = ""
+	Else 
+		coupon_pin = Cstr(pinRs("coupon_pin"))
+	End If  
+
+	prefix_coupon_no = LEFT(coupon_pin, 1)
 	Set pinRs = Nothing
 
 	If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
