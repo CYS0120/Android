@@ -234,12 +234,17 @@
 	End If
 	' =========================================================================================
 
-	Set pRs = Nothing
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 bp_order_detail_select_1138 호출 "&order_idx&"')"
+	dbconn.Execute(Sql)
+
+	Set pRs = Nothing	
 
 	' 주문내에 e쿠폰 사용여부 체크 ##################
 	dim cl_eCoupon : set cl_eCoupon = new eCoupon
     dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
-
+	Dim coupon_pin : coupon_pin = ""
+	Dim CouponUseCheck : CouponUseCheck = "N"
+	
 	Set pinCmd = Server.CreateObject("ADODB.Command")
 	with pinCmd
 		.ActiveConnection = dbconn
@@ -249,32 +254,42 @@
 		.Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , order_idx)
 		Set pinRs = .Execute
 	End With
-	Set pinCmd = Nothing
-    
-	Dim coupon_pin : coupon_pin = ""
-	Dim CouponUseCheck = "N"
 
-	If IsNull(pinRs("coupon_pin")) = True Then
-		coupon_pin = ""
+
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 bp_order_detail_select_ecoupon 호출')"
+	dbconn.Execute(Sql)
+
+	If pinRs.RecordCount <= 0 Then
+		If IsNull(pinRs("coupon_pin")) = True Then
+			coupon_pin = ""
+		End If
 	Else 
 		coupon_pin = Cstr(pinRs("coupon_pin"))
 	End If  
 
+	Set pinRs = Nothing
+	Set pinCmd = Nothing
+
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰 핀 : "&coupon_pin&"')"
+	dbconn.Execute(Sql)	
+
 	If Len(coupon_pin) > 0 Then
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰사용')"
+		dbconn.Execute(Sql)
 
-		prefix_coupon_no = LEFT(coupon_pin, 1)
-		Set pinRs = Nothing
-
+		prefix_coupon_no = LEFT(trim(coupon_pin), 1)
 		If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
 			eCouponType = "Coop"
 		Else 
 			eCouponType = "KTR"
 		End If
 
-		Dim CouponUseCheck : CouponUseCheck = "N"
-
 		If eCouponType = "Coop" Then
 			cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
+
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰결제 쿠프"&coupon_pin&"')"
+			dbconn.Execute(Sql)
+
 			if cl_eCouponCoop.m_cd = "0" then
 				CouponUseCheck = "N"
 			else
@@ -282,6 +297,10 @@
 			end if
 		Else
 			cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
+
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰결제 KTR"&coupon_pin&"')"
+			dbconn.Execute(Sql)
+
 			if cl_eCoupon.m_cd = "0" then
 				CouponUseCheck = "N"
 			else
@@ -324,6 +343,9 @@
 	If Not RaiseError Then
 		Call Write_Log("sgpay_return.asp return success.")
 
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰결제 KTR"&coupon_pin&"')"
+		dbconn.Execute(Sql)
+
 		'***** pay insert
 		Set aCmd = Server.CreateObject("ADODB.Command")
 		With aCmd
@@ -337,6 +359,9 @@
 			Set aRs = .Execute
 		End With
 		Set aCmd = Nothing
+
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 bp_order_payment_select 호출')"
+		dbconn.Execute(Sql)
 
 		'연결된 pay가 있는지 확인'
 		If Not (aRs.BOF Or aRs.EOF) Then
@@ -367,6 +392,9 @@
 				errMsg = .Parameters("@ERRMSG").Value
 
 			End With
+
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 bp_payment_insert 호출"&order_idx&"')"
+			dbconn.Execute(Sql)
 
 			Set aCmd = Nothing
 		End If
