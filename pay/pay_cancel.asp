@@ -100,11 +100,14 @@
 			If eCouponType = "Coop" then
 				cl_eCouponCoop.Coop_Cancel_Pin pRs("pay_transaction_id"), ORDER_ID, BRANCH_ID, BRANCH_NM, pRs("pay_approve_num"), dbconn
 
-				' 마이 쿠폰 취소
-				Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where c_code='"& pRs("pay_transaction_id") &"' "
-				dbconn.Execute(Sql)
-
 				if cl_eCouponCoop.m_cd = "0" then
+					' 마이 쿠폰 취소
+					Sql = "update bt_member_coupon set use_yn='N' where c_code='"& pRs("pay_transaction_id") &"' "
+					dbconn.Execute(Sql)				
+		
+					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','cancel',0,'pay_cancel pin: '"&pRs("pay_transaction_id")&"')"
+					dbconn.Execute(Sql)
+
 				else
 					html_result = "FAIL|" & cl_eCouponCoop.m_message
 					pg_RollBack = 1
@@ -112,12 +115,13 @@
 
 			Else 
 				cl_eCoupon.KTR_Cancel_Pin pRs("pay_transaction_id"), ORDER_ID, BRANCH_ID, BRANCH_NM, pRs("pay_approve_num"), dbconn
-
-				' 마이 쿠폰 취소
-				Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where c_code='"& pRs("pay_transaction_id") &"' "
-				dbconn.Execute(Sql)
-
-				if cl_eCoupon.m_cd = "0" then
+				if cl_eCoupon.m_cd = "0" then				
+					' 마이 쿠폰 취소
+					Sql = "update bt_member_coupon set use_yn='N' where c_code='"& pRs("pay_transaction_id") &"' "
+					dbconn.Execute(Sql)		
+					
+					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','cancel',0,'pay_cancel pin: '"&pRs("pay_transaction_id")&"')"
+					dbconn.Execute(Sql)		
 				else
 					html_result = "FAIL|" & cl_eCoupon.m_message
 					pg_RollBack = 1
@@ -377,7 +381,7 @@
 			ElseIf PAY_TYPE = "Paycoin" Then 
 				payMethodCode = "41"
 			ElseIf PAY_TYPE = "Sgpay" Then 
-				payMethodCode = "51"
+				payMethodCode = "42"
 			ElseIf PAY_TYPE = "Later" Then 
 				payMethodCode = "23"
 			ElseIf PAY_TYPE = "Cash" Then 

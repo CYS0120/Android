@@ -489,7 +489,7 @@
 			cl_eCoupon.KTR_Rollback order_idx, dbconn
 		end if 
 			' 마이 쿠폰 취소
-			Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where order_idx='"& order_idx &"' "
+			Sql = "update bt_member_coupon set use_yn='N' where order_idx='"& order_idx &"' "
 			dbconn.Execute(Sql)
 %>
 				<script type="text/javascript">

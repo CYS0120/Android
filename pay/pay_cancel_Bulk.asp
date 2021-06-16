@@ -80,7 +80,7 @@
 			cl_eCoupon.KTR_Cancel_Pin pRs("pay_transaction_id"), ORDER_ID, BRANCH_ID, BRANCH_NM, pRs("pay_approve_num"), dbconn
 
 			' 마이 쿠폰 취소
-			Sql = "update bt_member_coupon set use_yn='N', last_use_date=null where c_code='"& pRs("pay_transaction_id") &"' "
+			Sql = "update bt_member_coupon set use_yn='N' where c_code='"& pRs("pay_transaction_id") &"' "
 			dbconn.Execute(Sql)
 
 			if cl_eCoupon.m_cd = "0" then
