@@ -216,6 +216,9 @@
 									Do While Not bRs.EOF
 										MAIN_IMG	= bRs("MAIN_IMG")
 										MAIN_TEXT	= bRs("MAIN_TEXT")
+										txtFromDate	= Cdate(left(bRs("date_s"),4) & "-" & mid(bRs("date_s"),5,2) & "-" & right(bRs("date_s"),2))
+										txtToDate	= Cdate(left(bRs("date_e"),4) & "-" & mid(bRs("date_e"),5,2) & "-" & right(bRs("date_e"),2))
+                						If txtFromDate <= date() AND txtToDate >= date() Then
 							%>
 
 							<!-- <li class="item" style="background:url('<%=SERVER_IMGPATH%>/main/<%=MAIN_IMG%>') no-repeat center bottom; cursor:pointer" <% if bRs("link_url") <> "" then %> onclick="location.href='<%=bRs("link_url")%>' " <% end if %>> -->
@@ -239,7 +242,9 @@
 									</div>
 								</div>
 							</li>
-							<% bRs.MoveNext
+							<% 
+										End If
+										bRs.MoveNext
 									Loop
 								End If 
 								bRs.close
