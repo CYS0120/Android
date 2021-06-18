@@ -92,7 +92,6 @@
 								<tr>
 									<th>매장코드</th>
 									<th>매장명</th>
-									<th>매장 취소건수</th>
 									<th>취소사유</th>
 									<th>사유건수</th>
 								</tr>
@@ -111,13 +110,17 @@
 				Else
 					border_top = "border-top:2px solid #a1a1a1;"
 				End If
+				If Rlist("CANCEL_MSG") = "[ 합 계 ]" Then
+					back_c = "background-color:#fffac7;"
+				Else
+					back_c = ""
+				End If
 %>
 								<tr>
-									<td style="<%=border_top%>"><%=Rlist("BRANCH_ID")%></td>
-									<td style="<%=border_top%>"><%=Rlist("BRANCH_NM")%></td>
-									<td style="<%=border_top%>"><%=Rlist("BRANCH_CNT")%></td>
-									<td style="<%=border_top%>"><%=Rlist("CANCEL_MSG")%></td>
-									<td style="<%=border_top%>"><%=Rlist("CANCEL_MSG_CNT")%></td>
+									<td style="<%=border_top&back_c%>"><%=Rlist("BRANCH_ID")%></td>
+									<td style="<%=border_top&back_c%>"><%=Rlist("BRANCH_NM")%></td>
+									<td style="<%=border_top&back_c%>"><%=Rlist("CANCEL_MSG")%></td>
+									<td style="<%=border_top&back_c%>"><%=Rlist("CANCEL_MSG_CNT")%></td>
 								</tr>
 <%
 				branch_before = branch_next

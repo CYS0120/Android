@@ -207,7 +207,6 @@ function gosubmit(t)
 								<tr>
 									<th>매장코드</th>
 									<th>매장명</th>
-									<th>매장 취소건수</th>
 									<th>취소사유</th>
 									<th>사유건수</th>
 								</tr>
@@ -226,12 +225,18 @@ function gosubmit(t)
 				Else
 					border_top = "border-top:2px solid #a1a1a1;"
 				End If
+				If Rlist("CANCEL_MSG") = "[ 합 계 ]" Then
+					back_c = "background-color:#fffac7;"
+					letter_sp = "letter-spacing:5px;"
+				Else
+					back_c = ""
+					letter_sp = ""
+				End If
 %>
-								<tr>
+								<tr style="<%=back_c%>">
 									<td style="<%=border_top%>"><%=Rlist("BRANCH_ID")%></td>
 									<td style="<%=border_top%>"><%=Rlist("BRANCH_NM")%></td>
-									<td style="<%=border_top%>"><%=Rlist("BRANCH_CNT")%></td>
-									<td style="<%=border_top%>"><%=Rlist("CANCEL_MSG")%></td>
+									<td style="<%=border_top&letter_sp%>"><%=Rlist("CANCEL_MSG")%></td>
 									<td style="<%=border_top%>"><%=Rlist("CANCEL_MSG_CNT")%></td>
 								</tr>
 <%
