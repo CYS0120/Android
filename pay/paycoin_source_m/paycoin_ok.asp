@@ -171,7 +171,10 @@
 				order_idx = Request.Cookies("ORDER_IDX")
 			end if 
 
-			order_idx = CLng(order_idx)
+			Dim CouponUseCheck : CouponUseCheck = "N"
+			dim cl_eCoupon : set cl_eCoupon = new eCoupon
+			dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
+
 			' 주문내에 e쿠폰 사용여부 체크 ##################
 			Set pinCmd = Server.CreateObject("ADODB.Command")
 			with pinCmd
@@ -182,36 +185,43 @@
 				.Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , order_idx)
 				Set pinRs = .Execute
 			End With
-			Set pinCmd = Nothing
 
-			prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
+			If pinRs.RecordCount <= 0 Then
+				If IsNull(pinRs("coupon_pin")) = True Then
+					coupon_pin = ""
+				End If
+			Else 
+				coupon_pin = Cstr(pinRs("coupon_pin"))
+			End If 
+
+			Set pinCmd = Nothing
 			Set pinRs = Nothing
 
-			If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
-				eCouponType = "Coop"
-			Else 
-				eCouponType = "KTR"
-			End If
+			If Len(coupon_pin) > 0 Then
+				prefix_coupon_no = LEFT(trim(coupon_pin), 1)			
 
-			Dim CouponUseCheck : CouponUseCheck = "N"
-			dim cl_eCoupon : set cl_eCoupon = new eCoupon
-			dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
+				If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+					eCouponType = "Coop"
+				Else 
+					eCouponType = "KTR"
+				End If
 
-			If eCouponType = "Coop" Then
-				cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
-				if cl_eCouponCoop.m_cd = "0" then
-					CouponUseCheck = "N"
-				else
-					CouponUseCheck = "Y"
-				end if
-			Else
-				cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
-				if cl_eCoupon.m_cd = "0" then
-					CouponUseCheck = "N"
-				else
-					CouponUseCheck = "Y"
-				end if
-			End If 
+				If eCouponType = "Coop" Then
+					cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
+					if cl_eCouponCoop.m_cd = "0" then
+						CouponUseCheck = "N"
+					else
+						CouponUseCheck = "Y"
+					end if
+				Else
+					cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
+					if cl_eCoupon.m_cd = "0" then
+						CouponUseCheck = "N"
+					else
+						CouponUseCheck = "Y"
+					end if
+				End If 
+			End If	
 
 			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin-003')"
 			dbconn.Execute(Sql)

@@ -85,46 +85,57 @@
 			order_idx = Clng(order_idx)
 			returnUrl = "/order/orderComplete.asp"
 	 
-		' 주문내에 e쿠폰 사용여부 체크 ##################
-		Set pinCmd = Server.CreateObject("ADODB.Command")
-		with pinCmd
-			.ActiveConnection = dbconn
-			.CommandText = "bp_order_detail_select_ecoupon"
-			.CommandType = adCmdStoredProc
+			Dim CouponUseCheck : CouponUseCheck = "N"
+			dim cl_eCoupon : set cl_eCoupon = new eCoupon
+			dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
 
-			.Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , order_idx)
-			Set pinRs = .Execute
-		End With
-		Set pinCmd = Nothing
+			' 주문내에 e쿠폰 사용여부 체크 ##################
+			Set pinCmd = Server.CreateObject("ADODB.Command")
+			with pinCmd
+				.ActiveConnection = dbconn
+				.CommandText = "bp_order_detail_select_ecoupon"
+				.CommandType = adCmdStoredProc
 
-        prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
-        Set pinRs = Nothing
+				.Parameters.Append .CreateParameter("@ORDER_IDX", adInteger, adParamInput, , order_idx)
+				Set pinRs = .Execute
+			End With
 
-        If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
-            eCouponType = "Coop"
-        Else 
-            eCouponType = "KTR"
-        End If
+			If pinRs.RecordCount <= 0 Then
+				If IsNull(pinRs("coupon_pin")) = True Then
+					coupon_pin = ""
+				End If
+			Else 
+				coupon_pin = Cstr(pinRs("coupon_pin"))
+			End If
 
-		Dim CouponUseCheck : CouponUseCheck = "N"
-		dim cl_eCoupon : set cl_eCoupon = new eCoupon
-		dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
+			Set pinCmd = Nothing
+			Set pinRs = Nothing
 
-			If eCouponType = "Coop" Then
-				cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
-				if cl_eCouponCoop.m_cd = "0" then
-					CouponUseCheck = "N"
-				else
-					CouponUseCheck = "Y"
-				end if
-			Else
-				cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
-				if cl_eCoupon.m_cd = "0" then
-					CouponUseCheck = "N"
-				else
-					CouponUseCheck = "Y"
-				end if
-			End If 
+			If Len(coupon_pin) > 0 Then
+				prefix_coupon_no = LEFT(trim(coupon_pin), 1)		
+
+				If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+					eCouponType = "Coop"
+				Else 
+					eCouponType = "KTR"
+				End If
+
+				If eCouponType = "Coop" Then
+					cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
+					if cl_eCouponCoop.m_cd = "0" then
+						CouponUseCheck = "N"
+					else
+						CouponUseCheck = "Y"
+					end if
+				Else
+					cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
+					if cl_eCoupon.m_cd = "0" then
+						CouponUseCheck = "N"
+					else
+						CouponUseCheck = "Y"
+					end if
+				End If
+			End If
 
 			If CouponUseCheck = "Y" Then 
 				Result 		= "COUPON"
