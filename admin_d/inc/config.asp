@@ -70,6 +70,13 @@ Const CANCEL_CKUNIV_DOMAIN	= "http://www.ckuniversity.com"
 
 BBQHOME_DB = "BBQ_HOME"
 
+Const REAL_COOP_API_URL = "https://authapi.inumber.co.kr/AuthUse"
+Const DEV_COOP_API_URL = "http://test.authapi.inumber.co.kr:9999/AuthUse"
+Const COOP_AUTH_KEY = "g9PJGmeh6BaSfprJx1xkAQ"
+
+Url = REAL_COOP_API_URL
+AuthKey = COOP_AUTH_KEY
+
 TESTMODE = "N"
 %>
 <!-- #include virtual="/inc/functions.asp" -->

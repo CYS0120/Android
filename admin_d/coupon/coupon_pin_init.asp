@@ -5,12 +5,14 @@
 %>
 <!-- #include virtual="/inc/admin_check.asp" -->
 <!-- #include virtual="/inc/ktr_exchange_proc.asp" -->
+<!-- #include virtual="/inc/coop_exchange_proc.asp" -->
 <%
 '  -------------------------------------------------------------------------------
 '  기본 변수 선언
 '  -------------------------------------------------------------------------------
 	'//리퀘스트 처리-------------------------
-	Dim CPNID, PIN, U_CD_BRAND, U_CD_PARTNER, CD_PARTNER, KTR, KTR_Result, KTR_Result_Msg
+	Dim CPNID, PIN, U_CD_BRAND, U_CD_PARTNER, CD_PARTNER, KTR, KTR_Result, Result_Msg
+    Dim Coop, Coop_Result, Coop_Result_Msg
 
 	Dim sReslult, Msg
 
@@ -63,10 +65,42 @@
             If KTR.m_StatusCode <> "000" And NOT (KTR.m_ErrorCode = "E0010" AND KTR.m_ErrorCode = "E0000") Then
                 KTR_Result = -1
                 sReslult = KTR.m_ErrorCode
-                KTR_Result_Msg = KTR.ErrorCode(KTR.m_ErrorCode)
+                Result_Msg = KTR.ErrorCode(KTR.m_ErrorCode)
             End If
         End If
         If KTR_Result = 0 Then
+            Set objCmd = Server.CreateObject("ADODB.Command")
+            WITH objCmd
+
+                .ActiveConnection = conn
+                .CommandTimeout = 3000
+                .CommandText = BBQHOME_DB &".DBO.UP_COUPON_INIT"
+                .CommandType = adCmdStoredProc
+
+                .Parameters.Append .CreateParameter("@PIN",advarchar,adParamInput,50, PIN)
+                .Parameters.Append .CreateParameter("@RETURN_VAL",advarchar,adParamOutPut,4)
+
+                .Execute
+
+                sReslult = .Parameters("@RETURN_VAL")
+            END With
+        End If
+
+        IF CD_PARTNER = "20010" Then
+            Coop_Result = 0
+    		Coop.CouponCall Url, AuthKey, "cancel", PIN, U_CD_PARTNER, 0, Replace(FormatDateTime(Time(), 4), ":","") & Right(Time(), 2), OK_NUM, "", ""
+
+	    	Call Insert_Coop_Log("ProcUnexchange", "01", U_CD_PARTNER, BranchNM, PIN, Coop.m_ResultCode, Coop.m_ErrorCode, Coop.ErrorCode(Coop.m_ErrorCode), Coop.m_BrandAuthCode, Coop.m_ProductCode, Coop.m_UseYN, "", "", "", "WEBADMIN", "", conn)
+
+            If Coop.m_ResultCode <> "0000" Then
+                Coop_Result = -1
+                Result_Msg = Coop.ErrorCode(Coop.m_ErrorCode)	' 승인 실패사유
+            Else
+                Coop_Result = 0
+            End If
+        End If
+
+        If Coop_Result = 0 Then
             Set objCmd = Server.CreateObject("ADODB.Command")
             WITH objCmd
 
@@ -89,8 +123,9 @@
         ElseIf sReslult = "9999" Then
             Msg = "완료되었거나 진행중인 주문 내역이 있습니다. 확인 바랍니다."
         Else
-            Msg = KTR_Result_Msg
+            Msg = Result_Msg
         End If
+
 
 	End If
 
