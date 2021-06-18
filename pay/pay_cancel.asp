@@ -351,7 +351,9 @@
 
 			End If
 		Else
-			html_result = "FAIL|NO DATA"
+			if len(html_result) = 0 then
+				html_result = "FAIL|NO DATA"
+			end if
 		End If
 	end if
     Response.write html_result

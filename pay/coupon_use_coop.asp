@@ -73,9 +73,10 @@ Class eCouponCoop
 
 		'Coop.Smartcon_Proc "cancel", pin, branch_id, branch_nm, "0", Replace(Date, "-", ""), Replace(FormatDateTime(Time(), 4), ":","") & Right(Time(), 2), ok_num
 
-		Call Insert_Coop_Log("ProcUnexchange", "01", branch_id, branch_nm, pin, Coop.m_ResultCode, Coop.m_ErrorCode, Coop.ErrorCode(Coop.m_ErrorCode), Coop.m_BrandAuthCode, Coop.m_ProductCode, Coop.m_UseYN, "", "", "", "ONLINE", order_id, dbconn)
+		Call Insert_Coop_Log("ProcUnexchange", "01", branch_id, branch_nm, pin, Coop.m_ResultCode, Coop.m_ErrorCode, Coop.m_ResultMsg, Coop.m_BrandAuthCode, Coop.m_ProductCode, Coop.m_UseYN, "", "", "", "ONLINE", order_id, dbconn)
 
-		If Coop.m_ResultCode <> "0000" Then
+		' 8005 : 취소시에는 이미 취소된 쿠폰이라는 메시지와 함께 표기됨. 8099 : 결제취소 쿠폰입니다.
+		If Coop.m_ResultCode <> "0000" AND Coop.m_ResultCode <> "8005" AND Coop.m_ResultCode <> "8099" Then
 			Coop_Result = -1
 			m_message = Coop.ErrorCode(Coop.m_ErrorCode)	' 승인 실패사유
 		Else
@@ -289,7 +290,7 @@ Class eCouponCoop
 					'Coop.CouponCall Url, AuthKey, ProcessType, CouponType, CompCode, Trim(arrPin(i)), BranchCode, PosNum, AuthPrice, AuthDate, BrandAuthCode, OriginalAuthCode, ProductCode
 					Coop.CouponCall Url, AuthKey, "rollback", arrPin, BranchCode, AuthPrice, AuthDate, arrOk, "", ProductCode
 					
-					Call Insert_Coop_Log("ProcUnexchange", "01", arrBpCd(i), arrBpNm(i), Trim(arrPin(i)), Coop.m_ResultCode, Coop.m_ErrorCode, Coop.ErrorCode(Coop.m_ErrorCode), Coop.m_BrandAuthCode, Coop.m_ProductCode, Coop.m_UseYN, "", "", "", "ONLINE", order_id, dbconn)
+					Call Insert_Coop_Log("ProcUnexchange", "01", arrBpCd(i), arrBpNm(i), Trim(arrPin(i)), Coop.m_ResultCode, Coop.m_ErrorCode, Coop.m_ResultMsg, Coop.m_BrandAuthCode, Coop.m_ProductCode, Coop.m_UseYN, "", "", "", "ONLINE", order_id, dbconn)
 				next
 			end if
 
@@ -339,9 +340,10 @@ Class eCouponCoop
 				Coop.CouponCall Url, AuthKey, "cancel", Trim(oRs("DISC_CD")), BranchCode, AuthPrice, AuthDate, Trim(oRs("OK_NUM")), "", ProductCode
 				
 				'Coop.ProcUnexchange Trim(oRs("DISC_CD")),oRs("BRANCH_ID"),oRs("BRANCH_ID"),"0",Replace(Date, "-", ""), Replace(FormatDateTime(Time(), 4), ":","") & Right(Time(), 2)
-				Call Insert_Coop_Log("ProcUnexchange", "01", oRs("BRANCH_ID"), oRs("BRANCH_NM"), Trim(oRs("DISC_CD")), Coop.m_ResultCode, Coop.m_ErrorCode, Coop.ErrorCode(Coop.m_ErrorCode), Coop.m_BrandAuthCode, Coop.m_ProductCode, Coop.m_UseYN, "", "", "", "ONLINE", order_id, dbconn)
+				Call Insert_Coop_Log("ProcUnexchange", "01", oRs("BRANCH_ID"), oRs("BRANCH_NM"), Trim(oRs("DISC_CD")), Coop.m_ResultCode, Coop.m_ErrorCode, Coop.m_ResultMsg, Coop.m_BrandAuthCode, Coop.m_ProductCode, Coop.m_UseYN, "", "", "", "ONLINE", order_id, dbconn)
 
-				If Coop.m_ResultCode <> "0000" Then
+				' 8005 : 취소시에는 이미 취소된 쿠폰이라는 메시지와 함께 표기됨. 8099 : 결제취소 쿠폰입니다.
+				If Coop.m_ResultCode <> "0000" AND Coop.m_ResultCode <> "8005" AND Coop.m_ResultCode <> "8099" Then
 					Coop_Result = -1
 					m_message = Coop.ErrorCode(Coop.m_ErrorCode)	' 승인 실패사유
 				Else
@@ -401,7 +403,7 @@ Class eCouponCoop
 				
 				'Coop.Smartcon_Proc "cancel", oRs("PIN"), oRs("BRANCH_ID"),oRs("BRANCH_NM"), "0", Replace(Date, "-", ""), Replace(FormatDateTime(Time(), 4), ":","") & Right(Time(), 2), oRs("OK_NUM")
 
-				Call Insert_Coop_Log("ProcUnexchange", "01", oRs("BRANCH_ID"), oRs("BRANCH_NM"), oRs("PIN"), Coop.m_ResultCode, Coop.m_ErrorCode, Coop.ErrorCode(Coop.m_ErrorCode), Coop.m_BrandAuthCode, Coop.m_ProductCode, Coop.m_UseYN, "", "", "", "ONLINE", order_id, dbconn)
+				Call Insert_Coop_Log("ProcUnexchange", "01", oRs("BRANCH_ID"), oRs("BRANCH_NM"), oRs("PIN"), Coop.m_ResultCode, Coop.m_ErrorCode, Coop.m_ResultMsg, Coop.m_BrandAuthCode, Coop.m_ProductCode, Coop.m_UseYN, "", "", "", "ONLINE", order_id, dbconn)
 
 				If Coop.m_ResultCode <> "0000" Then
 					Coop_Result = -1
