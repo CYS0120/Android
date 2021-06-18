@@ -132,7 +132,6 @@ function Coupon_Detail_pop(CPNID, PIN){
 										</div>
 										<div class="couponlist_search">
 											<div>
-												<input type="button" value="쿠폰(핀) 조회" onclick="javascript:lpOpen('.lp_coupon_search');" class="btn_white125">
 												<span>핀 번호:</span>
 												<input type="text" name="SW" value="<%=SW%>">
 												<input type="submit" value="검색" class="btn_white">

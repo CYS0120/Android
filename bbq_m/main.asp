@@ -82,9 +82,9 @@
                 				MAIN_IMG	= bRs("MAIN_IMG")
                 				MAIN_TEXT	= bRs("MAIN_TEXT")
                 	%>
-                				<li><a href="<%=bRs("link_url")%>" style="background:url('<%=SERVER_IMGPATH%>/main/<%=MAIN_IMG%>') no-repeat center top; background-size:cover"></a></li>
-
-                	<% bRs.MoveNext
+								<li><a href="<%=bRs("link_url")%>" style="background:url('<%=SERVER_IMGPATH%>/main/<%=MAIN_IMG%>') no-repeat center top; background-size:cover;"></a></li>
+                	<% 
+								bRs.MoveNext
                 			Loop
                 		End If 
                 		bRs.close

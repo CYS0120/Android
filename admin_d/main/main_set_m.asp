@@ -345,6 +345,32 @@ function DateYn(GB, check_){
 	ElseIf IMGNUM = "M1" Then  
 		DISPM1 = ""
 	End If
+	
+	If date_yn_1 = "" Then
+		date_yn_1 = "N"
+		txtFromDate_1 = date()
+		txtToDate_1 = "9999-12-31"
+	End If
+	If date_yn_2 = "" Then
+		date_yn_2 = "N"
+		txtFromDate_2 = date()
+		txtToDate_2 = "9999-12-31"
+	End If
+	If date_yn_3 = "" Then
+		date_yn_3 = "N"
+		txtFromDate_3 = date()
+		txtToDate_3 = "9999-12-31"
+	End If
+	If date_yn_4 = "" Then
+		date_yn_4 = "N"
+		txtFromDate_4 = date()
+		txtToDate_4 = "9999-12-31"
+	End If
+	If date_yn_5 = "" Then
+		date_yn_5 = "N"
+		txtFromDate_5 = date()
+		txtToDate_5 = "9999-12-31"
+	End If
 
 	If date_yn_1 = "Y" Then
 		DISPDATE1 = ""
@@ -361,6 +387,7 @@ function DateYn(GB, check_){
 	If date_yn_5 = "Y" Then
 		DISPDATE5 = ""
 	End If
+	
 
 	UploadDir	= FncGetUploadDir(CD)
 	UPIMG_DIR	= UploadDir &"/main"

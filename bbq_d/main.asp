@@ -239,7 +239,8 @@
 									</div>
 								</div>
 							</li>
-							<% bRs.MoveNext
+							<% 
+									bRs.MoveNext
 									Loop
 								End If 
 								bRs.close
