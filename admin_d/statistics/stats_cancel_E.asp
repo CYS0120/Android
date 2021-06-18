@@ -42,6 +42,9 @@
 </head>
 <body>
 							<table border=1>
+<%
+	If SCD = "DETAIL" Then
+%>
 								<tr>
 									<th>주문번호</th>
 									<th>매장코드</th>
@@ -83,6 +86,46 @@
 				Rlist.MoveNext
 			Loop
 		End If
+	
+	ElseIf SCD = "STAT" Then
+%>
+								<tr>
+									<th>매장코드</th>
+									<th>매장명</th>
+									<th>매장 취소건수</th>
+									<th>취소사유</th>
+									<th>사유건수</th>
+								</tr>
+<%
+		Sql = "UP_ADMIN_STATISTIC_CANCEL '"&SCD&"', '"&BRAND_CODE&"', '"&SDATE&"', '"&EDATE&"' "
+		Set Rlist = conn.Execute(Sql)
+		'RESPONSE.WRITE Sql & "<br>"
+		'RESPONSE.END
+
+		branch_before = ""
+		If Not Rlist.Eof Then 
+			Do While Not Rlist.Eof
+				branch_next = Rlist("BRANCH_ID")
+				If branch_before = branch_next Then
+					border_top = ""
+				Else
+					border_top = "border-top:2px solid #a1a1a1;"
+				End If
+%>
+								<tr>
+									<td style="<%=border_top%>"><%=Rlist("BRANCH_ID")%></td>
+									<td style="<%=border_top%>"><%=Rlist("BRANCH_NM")%></td>
+									<td style="<%=border_top%>"><%=Rlist("BRANCH_CNT")%></td>
+									<td style="<%=border_top%>"><%=Rlist("CANCEL_MSG")%></td>
+									<td style="<%=border_top%>"><%=Rlist("CANCEL_MSG_CNT")%></td>
+								</tr>
+<%
+				branch_before = branch_next
+				Rlist.MoveNext
+			Loop
+		End If
+
+	End If
 %>
 							</table>
 </body>
