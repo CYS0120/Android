@@ -100,6 +100,16 @@ function gosubmit(t)
 										end if
 %>
 											<li><label><input type="radio" name="MCD" <%=is_checked%> onClick="document.location.href='<%=MENU_FILE%>?CD=<%=CD%>'"><span><%=MENU_NAME%></span></label>
+<%
+										IF len(is_checked) > 0 then
+%>
+											( 목록형태:
+												<label><input type="radio" name="SCD" value="DETAIL"<%If SCD="DETAIL" Then%> checked<%End If%> onclick="gosubmit(0)"><span>메뉴</span></label>
+												<label><input type="radio" name="SCD" value="STAT"<%If SCD="STAT" Then%> checked<%End If%> onclick="gosubmit(0)"><span>취소통계</span></label>
+											)
+<%
+										end if
+%>
 											</li>
 <%
 										Mlist.MoveNext
@@ -147,19 +157,22 @@ function gosubmit(t)
 					<div class="db db_1">
 						<div class="ta ta_1">
 							<table>
+<%
+	If SCD = "DETAIL" Then
+%>
 								<tr>
-									<th>주문번호</th>
-									<th>매장코드</th>
-									<th>매장명</th>
-									<th>주문일자</th>
-									<th>주문시간</th>
-									<th>주문금액</th>
-									<th>할인금액</th>
-									<th>배송지</th>
-									<th>메뉴명</th>
-									<th>메뉴수량</th>
-									<th>메뉴금액</th>
-									<th>취소사유</th>
+									<th width=145>주문번호</th>
+									<th width=65>매장코드</th>
+									<th width=115>매장명</th>
+									<th width=74>주문일자</th>
+									<th width=66>주문시간</th>
+									<th width=66>주문금액</th>
+									<th width=66>할인금액</th>
+									<th width=270>배송지</th>
+									<th width=265>메뉴명</th>
+									<th width=66>메뉴수량</th>
+									<th width=66>메뉴금액</th>
+									<th width=*>취소사유</th>
 								</tr>
 <%
 		Sql = "UP_ADMIN_STATISTIC_CANCEL '"&SCD&"', '"&BRAND_CODE&"', '"&SDATE&"', '"&EDATE&"' "
@@ -170,24 +183,64 @@ function gosubmit(t)
 		If Not Rlist.Eof Then 
 			Do While Not Rlist.Eof
 %>
-									 <tr>
-										<td><%=Rlist("ORDER_ID")%></td>
-										<td><%=Rlist("BRANCH_ID")%></td>
-										<td><%=Rlist("BRANCH_NM")%></td>
-										<td><%=Rlist("ORDER_DATE")%></td>
-										<td><%=Rlist("ORDER_TIME")%></td>
-										<td><%=FormatNumber(Rlist("LIST_PRICE"),0)%></td>
-										<td><%=FormatNumber(Rlist("DISC_PRICE"),0)%></td>
-										<td><%=Rlist("ADDR")%></td>
-										<td><%=Rlist("MENU_NM")%></td>
-										<td><%=FormatNumber(Rlist("MENU_QTY"),0)%></td>
-										<td><%=FormatNumber(Rlist("MENU_AMT"),0)%></td>
-										<td><%=Rlist("CANCEL_MSG")%></td>
-									</tr>
+								<tr>
+									<td><%=Rlist("ORDER_ID")%></td>
+									<td><%=Rlist("BRANCH_ID")%></td>
+									<td><%=Rlist("BRANCH_NM")%></td>
+									<td><%=Rlist("ORDER_DATE")%></td>
+									<td><%=Rlist("ORDER_TIME")%></td>
+									<td><%=FormatNumber(Rlist("LIST_PRICE"),0)%></td>
+									<td><%=FormatNumber(Rlist("DISC_PRICE"),0)%></td>
+									<td><%=Rlist("ADDR")%></td>
+									<td><%=Rlist("MENU_NM")%></td>
+									<td><%=FormatNumber(Rlist("MENU_QTY"),0)%></td>
+									<td><%=FormatNumber(Rlist("MENU_AMT"),0)%></td>
+									<td><%=Rlist("CANCEL_MSG")%></td>
+								</tr>
 <%
 				Rlist.MoveNext
 			Loop
 		End If
+
+	ElseIf SCD = "STAT" Then
+%>
+								<tr>
+									<th>매장코드</th>
+									<th>매장명</th>
+									<th>매장 취소건수</th>
+									<th>취소사유</th>
+									<th>사유건수</th>
+								</tr>
+<%
+		Sql = "UP_ADMIN_STATISTIC_CANCEL '"&SCD&"', '"&BRAND_CODE&"', '"&SDATE&"', '"&EDATE&"' "
+		Set Rlist = conn.Execute(Sql)
+		'RESPONSE.WRITE Sql & "<br>"
+		'RESPONSE.END
+
+		branch_before = ""
+		If Not Rlist.Eof Then 
+			Do While Not Rlist.Eof
+				branch_next = Rlist("BRANCH_ID")
+				If branch_before = branch_next Then
+					border_top = ""
+				Else
+					border_top = "border-top:2px solid #a1a1a1;"
+				End If
+%>
+								<tr>
+									<td style="<%=border_top%>"><%=Rlist("BRANCH_ID")%></td>
+									<td style="<%=border_top%>"><%=Rlist("BRANCH_NM")%></td>
+									<td style="<%=border_top%>"><%=Rlist("BRANCH_CNT")%></td>
+									<td style="<%=border_top%>"><%=Rlist("CANCEL_MSG")%></td>
+									<td style="<%=border_top%>"><%=Rlist("CANCEL_MSG_CNT")%></td>
+								</tr>
+<%
+				branch_before = branch_next
+				Rlist.MoveNext
+			Loop
+		End If
+
+	End If
 %>
 							</table>
 						</div>
