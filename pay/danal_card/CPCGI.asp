@@ -77,15 +77,10 @@
 			Set pinRs = .Execute
 		End With
 
-        If pinRs.RecordCount <= 0 Then
-            If IsNull(pinRs("coupon_pin")) = True Then
-                coupon_pin = ""
-            End If
-        Else 
-            coupon_pin = Cstr(pinRs("coupon_pin"))
-        End If 
+        If Not (pinRs.BOF Or pinRs.EOF) then
+            coupon_pin = pinRs("coupon_pin"))	
+        End If
     
-
 		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-1','0','danal_card-000 "&coupon_pin&"')"
 		dbconn.Execute(Sql)    
 

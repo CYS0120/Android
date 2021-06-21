@@ -100,16 +100,9 @@
 				Set pinRs = .Execute
 			End With
 
-			If pinRs.RecordCount <= 0 Then
-				If IsNull(pinRs("coupon_pin")) = True Then
-					coupon_pin = ""
-				End If
-			Else 
-				coupon_pin = Cstr(pinRs("coupon_pin"))
+			If Not (pinRs.BOF Or pinRs.EOF) then
+				coupon_pin = pinRs("coupon_pin"))	
 			End If
-
-			Set pinCmd = Nothing
-			Set pinRs = Nothing
 
 			If Len(coupon_pin) > 0 Then
 				prefix_coupon_no = LEFT(trim(coupon_pin), 1)		
@@ -136,6 +129,9 @@
 					end if
 				End If
 			End If
+
+			Set pinCmd = Nothing
+			Set pinRs = Nothing
 
 			If CouponUseCheck = "Y" Then 
 				Result 		= "COUPON"

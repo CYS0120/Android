@@ -259,16 +259,9 @@
 	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 bp_order_detail_select_ecoupon 호출')"
 	dbconn.Execute(Sql)
 
-	If pinRs.RecordCount <= 0 Then
-		If IsNull(pinRs("coupon_pin")) = True Then
-			coupon_pin = ""
-		End If
-	Else 
-		coupon_pin = Cstr(pinRs("coupon_pin"))
-	End If  
-
-	Set pinRs = Nothing
-	Set pinCmd = Nothing
+	If Not (pinRs.BOF Or pinRs.EOF) then
+		coupon_pin = pinRs("coupon_pin"))	
+	End If
 
 	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰 핀 : "&coupon_pin&"')"
 	dbconn.Execute(Sql)	
@@ -309,6 +302,9 @@
 		End If 
 	End If
 
+	Set pinRs = Nothing
+	Set pinCmd = Nothing
+
 	If (Not CStr(ret_Amount) = CStr(AMOUNT)) or (Not CStr(ret_TradeNo) = CStr(order_num)) Then		'위에서 파라메터로 받은 ret_Amount 값과 주문값이 같은지 비교합니다. 
 																			'( 연동 실패를 테스트 하시려면 값을 주문값을 ret_Amount 값과 틀리게 설정하세요. )
 		doApproval = false
@@ -343,7 +339,7 @@
 	If Not RaiseError Then
 		Call Write_Log("sgpay_return.asp return success.")
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰결제 KTR"&coupon_pin&"')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰결제 Not RaiseError "&coupon_pin&"')"
 		dbconn.Execute(Sql)
 
 		'***** pay insert

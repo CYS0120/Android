@@ -87,12 +87,8 @@
 			Set pinRs = .Execute
 		End With
 
-        If pinRs.RecordCount <= 0 Then
-            If IsNull(pinRs("coupon_pin")) = True Then
-                coupon_pin = ""
-            End If
-        Else 
-            coupon_pin = Cstr(pinRs("coupon_pin"))
+        If Not (pinRs.BOF Or pinRs.EOF) then
+            coupon_pin = pinRs("coupon_pin"))	
         End If
 		
         Set pinCmd = Nothing
