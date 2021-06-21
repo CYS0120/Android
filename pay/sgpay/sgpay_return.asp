@@ -255,10 +255,6 @@
 		Set pinRs = .Execute
 	End With
 
-
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 bp_order_detail_select_ecoupon 호출')"
-	dbconn.Execute(Sql)
-
 	If Not (pinRs.BOF Or pinRs.EOF) then
 		coupon_pin = pinRs("coupon_pin")	
 	End If
@@ -280,7 +276,7 @@
 		If eCouponType = "Coop" Then
 			cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
 
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰결제 쿠프"&coupon_pin&"')"
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰조회 쿠프"&coupon_pin&"')"
 			dbconn.Execute(Sql)
 
 			if cl_eCouponCoop.m_cd = "0" then
@@ -291,7 +287,7 @@
 		Else
 			cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn                  
 
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰결제 KTR"&coupon_pin&"')"
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰조회 KTR"&coupon_pin&"')"
 			dbconn.Execute(Sql)
 
 			if cl_eCoupon.m_cd = "0" then
@@ -821,31 +817,56 @@
 			Set aRs = Nothing
 
 			Do Until pinRs.EOF
-
 				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"','"& coupon_amt &"','sgpay-11')"
 				dbconn.Execute(Sql)
+				
+				prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
+				If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
+					eCouponType = "Coop"
+				Else 
+					eCouponType = "KTR"
+				End If
 
-				cl_eCoupon.KTR_Use_Pin pinRs("coupon_pin"), order_num, branch_id, branch_name, dbconn
+				If eCouponType = "Coop" Then
+					cl_eCouponCoop.Coop_Use_Pin pinRs("coupon_pin"), order_num, branch_id, branch_name, dbconn
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','sgpay-12')"
-				dbconn.Execute(Sql)
-
-				if cl_eCoupon.m_cd = "0" then
-					db_call.DB_Payment_Insert order_idx, "ECOUPON", pinRs("coupon_pin"), "", "", pinRs("menu_price"), "", 0, "", ""
-
-					' 마이 쿠폰사용
-					Sql = "update bt_member_coupon set use_yn='Y', last_use_date=getdate(), order_idx='"& order_idx &"' where c_code='"& pinRs("coupon_pin") &"' "
+					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','sgpay-12')"
 					dbconn.Execute(Sql)
 
+					if cl_eCouponCoop.m_cd = "0" then
+						db_call.DB_Payment_Insert order_idx, "ECOUPON", pinRs("coupon_pin"), "", "", pinRs("menu_price"), "", 0, "", ""
 
+						' 마이 쿠폰사용
+						Sql = "update bt_member_coupon set use_yn='Y', last_use_date=getdate(), order_idx='"& order_idx &"' where c_code='"& pinRs("coupon_pin") &"' "
+						dbconn.Execute(Sql)
 
-					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','sgpay-13')"
+						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','sgpay-13')"
+						dbconn.Execute(Sql)
+
+					else
+						pg_RollBack = 1
+					end if
+				Else
+					cl_eCoupon.KTR_Use_Pin pinRs("coupon_pin"), order_num, branch_id, branch_name, dbconn
+
+					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','sgpay-12')"
 					dbconn.Execute(Sql)
 
-				else
-					pg_RollBack = 1
-				end if
+					if cl_eCoupon.m_cd = "0" then
+						db_call.DB_Payment_Insert order_idx, "ECOUPON", pinRs("coupon_pin"), "", "", pinRs("menu_price"), "", 0, "", ""
 
+						' 마이 쿠폰사용
+						Sql = "update bt_member_coupon set use_yn='Y', last_use_date=getdate(), order_idx='"& order_idx &"' where c_code='"& pinRs("coupon_pin") &"' "
+						dbconn.Execute(Sql)
+
+						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"/"& Replace(pinRs("coupon_pin"),"'","") &"','"& coupon_amt &"','sgpay-13')"
+						dbconn.Execute(Sql)
+
+					else
+						pg_RollBack = 1
+					end if
+
+				End If
 				pinRs.MoveNext
 			Loop
 
