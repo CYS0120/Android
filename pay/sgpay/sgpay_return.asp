@@ -260,7 +260,7 @@
 	dbconn.Execute(Sql)
 
 	If Not (pinRs.BOF Or pinRs.EOF) then
-		coupon_pin = pinRs("coupon_pin"))	
+		coupon_pin = pinRs("coupon_pin")	
 	End If
 
 	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','sgpay-000 쿠폰 핀 : "&coupon_pin&"')"

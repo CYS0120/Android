@@ -101,7 +101,7 @@
 			End With
 
 			If Not (pinRs.BOF Or pinRs.EOF) then
-				coupon_pin = pinRs("coupon_pin"))	
+				coupon_pin = pinRs("coupon_pin")	
 			End If
 
 			If Len(coupon_pin) > 0 Then
