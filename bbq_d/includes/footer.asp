@@ -36,8 +36,7 @@
 			</dl>
 
             <ul class="footer-sns">
-                <li><a href="https://www.facebook.com/bbqfb" target="_blank" class="sns_facebook"><img src="/images/common/btn_footer_sns_facebook.png" alt="페이스북" /></a></li>
-                <li><a href="https://www.instagram.com/bbq.chicken.insta" target="_blank" class="sns_instagram"><img src="/images/common/btn_footer_sns_instagram.png" alt="인스타그램" /></a></li>
+                <li><a href="https://www.instagram.com/bbq_offi" target="_blank" class="sns_instagram"><img src="/images/common/btn_footer_sns_instagram.png" alt="인스타그램" /></a></li>
                 <li><a href="https://www.youtube.com/user/BBQMobile" target="_blank" class="sns_youtube"><img src="/images/common/btn_footer_sns_youtube.png" alt="유투브" /></a></li>
                 <li><a href="http://blog.naver.com/blogbbq" target="_blank" class="sns_blog"><img src="/images/common/btn_footer_sns_blog.png" alt="블로그" /></a></li>
             </ul>
