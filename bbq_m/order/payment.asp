@@ -2288,7 +2288,7 @@ function calcTotalAmount() {
 	End If
    ' 페이코인 당일 이벤트
    paycoin_event = ""
-   if left(date(), 10) = "2021-06-23" and FormatDateTime(Now(),4) > "11:00" then
+   if left(date(), 10) = "2021-06-23" AND FormatDateTime(Now(),4) >= "11:00" then
       paycoin_event = "<div><span class='event_layer'>최대 10,000원 할인</span></div>"
    end if
 
