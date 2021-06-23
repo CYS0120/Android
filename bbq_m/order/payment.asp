@@ -1,6 +1,27 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <!--#include virtual="/order/Event_Set.asp"-->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+.event_layer {
+    font-family: 맑은 고딕;
+    font-size: 1px;
+    background-color: red;
+    color: white;
+    position: absolute;
+    left: 3px;
+    opacity: 0.9;
+    transform: rotate(-10deg);
+    /* font-weight: bold; */
+    letter-spacing: -1px;
+    width: 80px;
+    margin-top: -40px;
+    height: 0px;
+    text-align: center;
+    /* vertical-align: middle; */
+    padding-bottom: 17px;
+    /* border-radius: 0%; */
+}
+</style>
 <%
 	'===== 삼성이벤트 때문에 생성
 	If CheckLogin() Then
@@ -2267,8 +2288,8 @@ function calcTotalAmount() {
 	End If
    ' 페이코인 당일 이벤트
    paycoin_event = ""
-   if left(date(), 10) = "2021-04-08" then
-      paycoin_event = "<div alt=""페이백 찬스!!"" style=""position: relative; top:2px; left:2px; font-size:8px; color:red;"">결제시 최대 20,000원 페이백!</div>"
+   if left(date(), 10) = "2021-06-23" AND FormatDateTime(Now(),4) >= "11:00" then
+      paycoin_event = "<div><span class='event_layer'>최대 10,000원 할인</span></div>"
    end if
 
    'If vUseDANAL = "Y" Or vUsePAYCO = "Y" Then
@@ -2307,7 +2328,7 @@ function calcTotalAmount() {
                 <% if cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) then %>
                 <% else %>
                    <% If vUsePAYCOIN = "Y" Then %>
-                      <li><button type="button" id="payment_paycoin" onclick="javascript:setPayMethod('Paycoin');" class="payment_choiceSel"><%=paycoin_event%>페이코인</button></li>
+                      <li><button type="button" id="payment_paycoin" onclick="javascript:setPayMethod('Paycoin');" class="payment_choiceSel">페이코인</button><%=paycoin_event%></li>
                    <% end if %>
                 <% end if %>
 
