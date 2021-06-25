@@ -199,9 +199,9 @@ Function CheckOpenTime
 		else 
 			CheckOpenTime = GetCurrentTime >= "0900" And GetCurrentTime <= "2300"
 		end if 
-		If SGPayOn = True Then
-			CheckOpenTime = GetCurrentTime >= "0000" And GetCurrentTime <= "2400"
-		End If
+'		If SGPayOn = True Then
+'			CheckOpenTime = GetCurrentTime >= "0000" And GetCurrentTime <= "2400"
+'		End If
 	End If 
 End Function
 
