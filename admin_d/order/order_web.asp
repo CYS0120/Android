@@ -151,7 +151,7 @@ function SmsHistory(ORDER_ID){
 													<option value="7" <% If OTP = "7" Then %> selected<% End If %>>NUGU</option>
 													<option value="R" <% If OTP = "R" Then %> selected<% End If %>>예약</option>
 													<option value="36" <% If OTP = "36" Then %> selected<% End If %>>주문봇</option>
-													<option value="345" <% If OTP = "36" Then %> selected<% End If %>>ARS</option>
+													<option value="345" <% If OTP = "345" Then %> selected<% End If %>>ARS</option>
 												</select>
 											</li>
 											<li>
