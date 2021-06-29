@@ -179,7 +179,6 @@ function Change_TOP(){
 									<th>NO</th>
 									<th>선택</th>
 									<th>구분</th>
-									<th>이미지</th>
 									<th>브랜드명</th>
 									<th>매장명</th>
 									<th width="30%">제목</th>
@@ -207,7 +206,7 @@ function Change_TOP(){
 				STORENAME	= Rlist("STORENAME")
 				TITLE	= Rlist("TITLE")
 				HIT	= Rlist("HIT")
-				THUMBIMG	= Rlist("THUMBIMG")
+				' THUMBIMG	= Rlist("THUMBIMG")
 				REG_DATE	= Left(Rlist("REG_DATE"),10)
 
 				TOP_FGSEL = ""
@@ -234,7 +233,6 @@ function Change_TOP(){
 									<td><span><%=num%></span></td>
 									<td><input type="checkbox" name="TOP_FG" value="<%=BIDX%>"<%=TOP_FGSEL%>></td>
 									<td><span><%=SGUBUN_TXT%></span></td>
-									<td><img src="<%=FILE_SERVERURL%>/uploads/bbqstartup_d/success/<%=THUMBIMG%>" class="thum_size"></td>
 									<td><span><%=BRAND_NAME%></span></td>
 									<td><span><%=STORENAME%></span></td>
 									<td><span><%=TITLE%></span></td>
