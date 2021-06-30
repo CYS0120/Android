@@ -88,6 +88,11 @@ Function CheckLogin
     CheckLogin = loginResult
 End Function
 
+Function GetReferer
+	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
+	GetReferer = left(REFERERURL, InStr(9, REFERERURL, "/")-1)
+end function
+
 Function GetCurrentHost
     GetCurrentHost = GetUrlProtocol & "://" & GetUrlHost
 End Function

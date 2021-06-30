@@ -1,5 +1,7 @@
 <!-- #include virtual="/inc/config.asp" -->
 <%
+	CONT_TYPE = "IMG"
+
 	CUR_PAGE_CODE = "E"
 	CUR_PAGE_SUBCODE = ""
 	CD = InjRequest("CD")
@@ -28,10 +30,22 @@
 		STORENAME	= Binfo("STORENAME")
 		TITLE	= Binfo("TITLE")
 		HIT	= Binfo("HIT")
-		THUMBIMG	= Binfo("THUMBIMG")
+		' THUMBIMG	= Binfo("THUMBIMG")
 		CONTIMG	= Binfo("CONTIMG")
 		REG_DATE	= Binfo("REG_DATE")
-	End If 
+		CONT_TYPE	= Binfo("CONT_TYPE")
+		CONTHTML	= Binfo("CONTHTML")
+		CONTTXT		= Binfo("CONTTXT")
+		
+	End If
+
+	If CONT_TYPE = "IMG" Then
+		imgdp = "block"
+		htmldp = "none"
+	ElseIf CONT_TYPE = "HTML" Then
+		imgdp = "none"
+		htmldp = "block"		
+	End If
 %>
 <!-- #include virtual="/inc/admin_check.asp" -->
 <!-- #include file="bbs_config.asp" -->
@@ -82,6 +96,24 @@
 				}
 			});
 		}
+	}
+
+	function ImgDisplay(check_){
+		if (check_.checked == true){
+			document.getElementById("CONT_TYPE").value = "IMG";
+			document.getElementById("img_div").style.display = "block";
+			document.getElementById("mov_div").style.display = "none";
+		}
+
+	}
+
+	function MovDisplay(check_){
+		if (check_.checked == true){
+			document.getElementById("CONT_TYPE").value = "HTML";
+			document.getElementById("img_div").style.display = "none";
+			document.getElementById("mov_div").style.display = "block";
+		}
+
 	}
 </script>
 </head>
@@ -155,6 +187,10 @@
 							<label><input type="radio" name="SGUBUN" value="E"<%If SGUBUN="E" Then%> checked<%End If%>>청년/여성</label>
 						</td>
 					</tr>
+<%
+	' 썸네일 이미지 사용하는 곳 없어서 주석 처리 ###############################################################
+	If false Then
+%>
 					<tr>
 						<th>이미지(썸네일)</th>
 						<td>
@@ -170,6 +206,10 @@
 <%		End If %>
 						</td>
 					</tr>
+<%
+	End If
+	' 썸네일 이미지 주석 처리 끝 ##############################################################################
+%>
 					<tr>
 						<th>브랜드</th>
 						<td>
@@ -212,18 +252,39 @@
 					</tr>
 <%	End If %>
 					<tr>
-						<th>내용(이미지)</th>
+						<th>내용 형태</th>
+						<td>
+							<input type="hidden" id="CONT_TYPE" name="CONT_TYPE" value='<%=CONT_TYPE%>'>
+							<label><input type="radio" id="CONTENT_TYPE" name="CONTENT_TYPE"<%If CONT_TYPE="IMG" Then%> checked<%End If%> onChange="ImgDisplay(this)">이미지</label>
+							<label><input type="radio" id="CONTENT_TYPE" name="CONTENT_TYPE"<%If CONT_TYPE="HTML" Then%> checked<%End If%> onChange="MovDisplay(this)">동영상</label>						
+						</td>
+					</tr>
+					<tr>
+						<th>내용</th>
 						<td>
 							<div>
-								<div class="filebox">
+								<div id="img_div" class="filebox" style="margin-bottom:10px;margin-left:0px;display:<%=imgdp%>;"><strong>이미지</strong>&nbsp;&nbsp;
 									<input id="CONTIMG" name="CONTIMG" class="upload-name" value="<%=CONTIMG%>" readonly>
 									<label for="CONTIMG" onClick="OpenUploadIMG('CONTIMG','UPIMG_DIR')">찾아보기</label>
 									<span>이미지 사이즈(단위:픽셀)-가로 1920px, 세로600px, 확장자 jpg</span>
+								</div>
+								<div id="mov_div" style="display:none;margin-top:10px;display:<%=htmldp%>;"><strong>동영상 소스코드(html)</strong>
+									<div style="margin-left:21px;margin-top:-5px;margin-bottom:5px;">
+										<p style="font-size:11px;">
+											<br>※ 동영상 소스코드 찾는 방법
+											<br>&nbsp;&nbsp;① 유튜브 : 동영상 우측 하단 공유 버튼 클릭 > 퍼가기 > 우측 상단 'iframe' 으로 시작하는 소스코드 복사
+											<br>&nbsp;&nbsp;② 네이버 : 동영상 우측 상단 공유 버튼 클릭 > 좌측 상단 소스 코드 클릭 > HTML소스 복사
+										</p>
+									</div>
+									<textarea id="CONTHTML" name="CONTHTML" value='<%=CONTHTML%>' style="width:95%;height:75px;margin-left:21px;background-color:#f7f7f7;font-size:12px;"><%=CONTHTML%></textarea>
 								</div>
 							</div>
 <%		If Not FncIsBlank(CONTIMG) Then %>
 							<img src="<%=FILE_SERVERURL%>/uploads/bbqstartup_d/success/<%=CONTIMG%>" alt="" style="margin-left:21px;">
 <%		End If %>
+								<div id="txt_div" style="margin-top:10px;"><strong>텍스트</strong><br>
+									<textarea id="CONTTXT" name="CONTTXT" value="<%=CONTTXT%>" style="width:95%;height:100px;margin-left:21px;"></textarea>
+								</div>
 						</td>
 					</tr>
 

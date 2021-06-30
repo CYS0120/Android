@@ -150,6 +150,8 @@ function SmsHistory(ORDER_ID){
 													<option value="M" <% If OTP = "M" Then %> selected<% End If %>>자사통합</option>
 													<option value="7" <% If OTP = "7" Then %> selected<% End If %>>NUGU</option>
 													<option value="R" <% If OTP = "R" Then %> selected<% End If %>>예약</option>
+													<option value="36" <% If OTP = "36" Then %> selected<% End If %>>주문봇</option>
+													<option value="345" <% If OTP = "345" Then %> selected<% End If %>>ARS</option>
 												</select>
 											</li>
 											<li>
@@ -224,8 +226,12 @@ function SmsHistory(ORDER_ID){
 		elseif OTP = "R" then
 			SqlReserv	= " WHERE B.IS_RESERV = 'Y' "
 		Else
-			If LEN(OTP) = 2 Then 
+			If LEN(OTP) = 3 Then
+				SqlWhere	= SqlWhere & " AND A.ORDER_flag = SUBSTRING('"& OTP &"', 1, 1) AND A.ORDER_TYPE IN (SUBSTRING('"& OTP &"', 2, 1), SUBSTRING('"& OTP &"', 3, 1)) "
+			ElseIf LEN(OTP) = 2 Then 
 				SqlWhere	= SqlWhere & " AND A.ORDER_flag = SUBSTRING('"& OTP &"', 1, 1) AND A.ORDER_TYPE = SUBSTRING('"& OTP &"', 2, 1) "
+			ElseIf OTP = "3" Then
+				SqlWhere	= SqlWhere & " AND A.ORDER_flag = '"& OTP &"' AND A.ORDER_TYPE = '1' "
 			Else
 				SqlWhere	= SqlWhere & " AND A.ORDER_flag = '"& OTP &"' "
 			End If 
