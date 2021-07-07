@@ -58,7 +58,7 @@ jQuery(document).ready(function(e) {
 
 			<div class="icon-top">
 				<div class="img"><img src="/images/brand/ico_big_notice.gif" alt=""></div>
-				<h3>BBQ의새롭고 다양한 소식들을 전해드립니다. 꼭 알아두셔야 할 사항이나 유익한 정보도 확인하세요.</h3>
+				<h3>BBQ의 새롭고 다양한 소식들을 전해드립니다. 꼭 알아두셔야 할 사항이나 유익한 정보도 확인하세요.</h3>
 			</div>
 
 			<table border="1" cellspacing="0" class="tbl-list">
@@ -78,6 +78,14 @@ jQuery(document).ready(function(e) {
 					</tr>
 				</thead>
 				<tbody>
+					<tr style="background-color:#ffabab">
+						<td></td>
+						<td class="ta-l">
+							<a href="./noticeView_smile.asp">ESG 청년 스마일 프로젝트 지원자 현황</a>
+						</td>
+						<td>2021-07-05</td>
+						<td>-</td>
+					</tr>
 <%
 	Set vCmd = Server.CreateObject("ADODB.Command")
 	With vCmd
