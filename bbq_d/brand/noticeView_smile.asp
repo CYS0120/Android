@@ -1,5 +1,24 @@
 ﻿<!--#include virtual="/api/include/utf8.asp"-->
+<%
+	viewType = request("viewType")
+	If Len(viewType) = 0 And Len(request("pc")) > 0 Then viewType = "DESKTOP"
 
+	If Len(viewType) = 0 Then viewType = ""
+	If viewType <> "DESKTOP" Then
+		mobrwz = "iPhone|iPod|BalckBerry|Android|Windows CE|LG|MOT|SAMSUNG|SonyEricsson|Mobile|Symbian|Opera Mobi|Opera Mini|IEmobile|Mobile|Igtelecom|PPC"
+		spmobrwz = Split(mobrwz, "|")
+		agent = Request.ServerVariables("HTTP_USER_AGENT")
+
+		For i = 0 To Ubound(spmobrwz)
+			If InStr(agent, spmobrwz(i)) > 0 Then
+				Response.write "Go Mobile~<BR>"
+				Response.Redirect(g2_bbq_m_url&"/brand/noticeView_smile.asp")
+				Exit For
+			End If
+		Next
+	End If
+
+%>
 <!doctype html>
 <html lang="ko">
 <head>
@@ -286,7 +305,6 @@ jQuery(document).ready(function(e) {
 					</ul>
 				</div>
 				<div class="con smile">
-					<%=CONTENTS%>
 					<table>
 						<tr>
 							<td width="40%" class="smileTitle">지역</td>
