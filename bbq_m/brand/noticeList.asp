@@ -72,6 +72,12 @@
 			<!-- 게시판 리스트 -->
 			<div class="inbox1000">
 				<div class="board-list" id="vlist">
+					<div class="box" style="background-color:#ffabab">
+						<p class="subject"><a href="/brand/noticeView_smile.asp">ESG 청년 스마일 프로젝트 지원자 현황</a> </p>
+						<ul class="info">
+							<li>2021-07-06</li>
+						</ul>
+					</div>
 
 					<%
 						Set vCmd = Server.CreateObject("ADODB.Command")
