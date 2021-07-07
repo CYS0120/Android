@@ -301,7 +301,7 @@ jQuery(document).ready(function(e) {
 						ESG 청년 스마일 프로젝트 지원자 현황
 					</h3>
 					<ul class="info">
-						<li class="date"><strong>등록일 :</strong>2021-07-06</li>
+						<li class="date"><strong>등록일 :</strong> 2021-07-06</li>
 					</ul>
 				</div>
 				<div class="con smile">
