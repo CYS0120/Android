@@ -66,6 +66,11 @@
 	font-weight: bold;
 	background-color: #fff58c;
 }
+.chartTitle {
+	font-family: 'NanumSquareOTFR';
+	font-size: 18pt;
+	font-weight: bold;
+}
 </style>
 <script>
 jQuery(document).ready(function(e) {
@@ -176,8 +181,8 @@ jQuery(document).ready(function(e) {
 		]);
 
 		var options = {
-			title: 'ESG 청년 스마일 프로젝트 - 지역별 지원 현황\n',
-			titleTextStyle: {color: 'black', fontName: 'NanumSquareOTFR', fontSize: 22, bold: "True", italic: "False"},
+			// title: 'ESG 청년 스마일 프로젝트 - 지역별 지원 현황\n',
+			// titleTextStyle: {color: 'black', fontName: 'NanumSquareOTFR', fontSize: 22, bold: "True", italic: "False"},
 			fontName: 'NanumSquareOTFR',
 			hAxis: {title: '지역', titleTextStyle: {color: 'black', fontName: 'NanumSquareOTFR', fontSize: 17, italic: "False", bold: "True"}},
 			vAxis: {viewWindow: {min: 0, max: 80}},
@@ -205,8 +210,8 @@ jQuery(document).ready(function(e) {
 		]);
 
 		var options = {
-			title: 'ESG 청년 스마일 프로젝트 - 일자별 지원 현황 (누적)\n\n',
-			titleTextStyle: {color: 'black', fontName: 'NanumSquareOTFR', fontSize: 22, bold: "True", italic: "False"},				
+			// title: 'ESG 청년 스마일 프로젝트 - 일자별 지원 현황 (누적)\n\n',
+			// titleTextStyle: {color: 'black', fontName: 'NanumSquareOTFR', fontSize: 22, bold: "True", italic: "False"},				
 			fontName: 'NanumSquareOTFR',
 			hAxis: {title: '일자', titleTextStyle: {color: 'black', fontName: 'NanumSquareOTFR', fontSize: 17, italic: "False", bold: "True"}},
 			vAxis: {title: '팀수', titleTextStyle: {color: 'black', fontName: 'NanumSquareOTFR', fontSize: 17, italic: "False", bold: "True"}, minValue: 0},
@@ -301,7 +306,7 @@ jQuery(document).ready(function(e) {
 						ESG 청년 스마일 프로젝트 지원자 현황
 					</h3>
 					<ul class="info">
-						<li class="date"><strong>등록일 :</strong> 2021-07-06</li>
+						<li><strong>* <%=LEFT(vRs("INTERFACE_ID"),4)%>년 <%=MID(vRs("INTERFACE_ID"),5,2)%>월 <%=MID(vRs("INTERFACE_ID"),7,2)%>일 <%=MID(vRs("INTERFACE_ID"),9,2)%>시 <%=MID(vRs("INTERFACE_ID"),11,2)%>분 에 업데이트 되었습니다.</strong></li>
 					</ul>
 				</div>
 				<div class="con smile">
@@ -340,8 +345,10 @@ jQuery(document).ready(function(e) {
 						</tr-->
 					</table>
 				</div>
+				<div class="chartTitle" style="margin-top:50px;margin-bottom:50px;">ESG 청년 스마일 프로젝트 - 지역별 지원 현황</div>
 				<div id="ColumnChart_div" style="margin-top:30px;"></div>
-				<div id="LineChart_div" style="margin-top:80px;"></div>
+				<div class="chartTitle" style="margin-top:100px;">ESG 청년 스마일 프로젝트 - 일자별 지원 현황 (누적)</div>
+				<div id="LineChart_div"></div>
 			</div>
 			<!-- //게시판 뷰 -->
 
@@ -350,7 +357,7 @@ jQuery(document).ready(function(e) {
 			</div>
 <%
 ' 	End If
-' 	Set vRs = Nothing
+	Set vRs = Nothing
 %>
 		</article>
 		<!--// Content -->	

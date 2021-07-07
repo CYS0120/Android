@@ -250,7 +250,7 @@
 							ESG 청년 스마일 프로젝트 지원자 현황
 						</h3>
 						<ul class="info">
-							<li class="date">등록일 : 2021-07-06</li>
+							<li class="date" st><strong>* <%=LEFT(vRs("INTERFACE_ID"),4)%>년 <%=MID(vRs("INTERFACE_ID"),5,2)%>월 <%=MID(vRs("INTERFACE_ID"),7,2)%>일 <%=MID(vRs("INTERFACE_ID"),9,2)%>시 <%=MID(vRs("INTERFACE_ID"),11,2)%>분 에 업데이트 되었습니다.</strong></li>
 						</ul>
 					</div>
 					<div class="con smile">
@@ -289,7 +289,7 @@
 							</tr-->
 						</table>
 					</div>
-					<div style="margin-top:30px;">지역별 지원 현황</div>
+					<div style="margin-top:30px;margin-bottom:30px;">지역별 지원 현황</div>
 					<div id="ColumnChart_div" style="margin-top:5px;"></div>
 					<div style="margin-top:20px;">일자별 지원 현황 (누적)</div>
 					<div id="LineChart_div"></div>
