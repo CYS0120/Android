@@ -78,14 +78,6 @@ jQuery(document).ready(function(e) {
 					</tr>
 				</thead>
 				<tbody>
-					<tr style="background-color:#ffabab">
-						<td></td>
-						<td class="ta-l">
-							<a href="./noticeView_smile.asp">ESG 청년 스마일 프로젝트 지원자 현황</a>
-						</td>
-						<td></td>
-						<td></td>
-					</tr>
 <%
 	Set vCmd = Server.CreateObject("ADODB.Command")
 	With vCmd
