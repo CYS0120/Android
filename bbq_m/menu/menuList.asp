@@ -415,11 +415,10 @@ function menu_list_cate_all_open()
 			// $( '.menu_accordion' ).removeClass( menu_accordion_fix_string);
 		}
 	});
-
-	$(function() {
-		menu_go("<%=anc%>");
-	}); 
-
 	
+	$(window).load(function() {
+		menu_go("<%=anc%>");
+	});
+
 </script>
 <!-- // 메뉴검색 -->
