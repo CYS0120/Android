@@ -1349,6 +1349,10 @@ function calcTotalAmount() {
 				break;
 		}
 
+<%	if branch_id = "1146001" then %>
+			alert(agent);
+<%	end if %>
+
 		if (win_pay == null || typeof(win_pay) == "undefined" || (win_pay == null && win_pay.outerWidth == 0) || (win_pay != null && win_pay.outerHeight == 0) || win_pay.test == "undefined")
 		{
 			if (agent.indexOf("safari") != -1 || agent.indexOf("chrome") != -1 || agent.indexOf("firefox") != -1) {
