@@ -81,6 +81,7 @@
 <head>
 
 <!--#include virtual="/includes/top.asp"-->
+<!--#include virtual="/api/include/kakaomap.asp"-->
 
 
 

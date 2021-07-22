@@ -79,6 +79,7 @@
 <html lang="ko">
 <head>
 <!--#include virtual="/includes/top.asp"-->
+<!--#include virtual="/api/include/kakaomap.asp"-->
 <% If Request.ServerVariables("HTTP_HOST") = "bbq.fuzewire.com:8010" Then %>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <% Else %>
