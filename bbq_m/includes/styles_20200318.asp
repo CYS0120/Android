@@ -1,8 +1,0 @@
-<link rel="stylesheet" href="/common/css_test/base.css?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>">
-<link rel="stylesheet" href="/common/css_test/ui_style.css?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>">
-<link rel="stylesheet" href="/common/css_test/common.css?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>">
-<link rel="stylesheet" href="/common/css_test/layout.css?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>">
-<link rel="stylesheet" href="/common/css_test/content.css?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>">
-<link rel="stylesheet" href="/common/css_test/global.css?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>">
-<link rel="stylesheet" href="/common/css_test/main.css?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>">
-<link rel="stylesheet" href="/common/css_test/swiper.min.css?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>">
