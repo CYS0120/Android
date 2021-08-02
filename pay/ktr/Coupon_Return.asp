@@ -11,7 +11,7 @@
 	Dim eCouponType : eCouponType = ""
 
 	'response.write order_idx 
-	'response.end
+	'response.end 
 
 	If IsEmpty(order_idx) Or IsNull(order_idx) Or Trim(order_idx) = "" Or Not IsNumeric(order_idx) Then order_idx = ""
 
@@ -191,208 +191,177 @@
     '        'Response.Write "{""result"":99, ""result_msg"":""상품권 사용에 실패하였습니다.""}"
     '        Response.End
     '    End If
-    'End If
-		
+    'End If		
 	' 2021-07 더페이 상품권 주석 처리 끝 
 		
-	' 2021-07 더페이 상품권 복수처리 시작 
- 
-		'dim strMsg 
-		'giftcard_serial = giftcard_serial & "||93429619427999"
-		dim jsonGiftcard : jsonGiftcard = ""
-		dim arrGiftcard : arrGiftcard = split(giftcard_serial, "||") ' 상품권 번호 
-		dim arrGiftcardAmt : arrGiftcardAmt = split(giftcard_serial, "||") ' 상품권 금액  
-		 
-		dim chkStat : chkStat = ""
+	' 2021-07 더페이 상품권 복수처리 시작  
+	dim jsonGiftcard : jsonGiftcard = ""
+	dim arrGiftcard : arrGiftcard = split(giftcard_serial, "||") ' 상품권 번호 
+	dim arrGiftcardAmt : arrGiftcardAmt = split(giftcard_serial, "||") ' 상품권 금액  		 
+	dim chkStat : chkStat = ""
 	  
-		'Response.Write "Ubound / // " & Ubound(arrGiftcard) & "<BR>"
-
-		For i = 0 To Ubound(arrGiftcard)
-			giftcard_serial   = arrGiftcard(i) 
-			arrGiftcardAmt(i) = 0
+	'Response.Write "Ubound / // " & Ubound(arrGiftcard) & "<BR>"
+	For i = 0 To Ubound(arrGiftcard)
+		'giftcard_serial   = arrGiftcard(i) 
+		arrGiftcardAmt(i) = 0
 				  
-			If giftcard_serial <> "" Then 
-
-				If jsonGiftcard = "" Then
-					jsonGiftcard = "{ ""SRV"":""HOMEPAGE"",""GIFTCARD"":["
-	                jsonGiftcard = jsonGiftcard & "{""SN"":""" & giftcard_serial & """}"
-			    Else
-				    jsonGiftcard = jsonGiftcard & ",{""SN"":""" & giftcard_serial & """}"
-				End If  
-
-				 
-				'Response.Write "jsonGiftcard / " & i & " // " & jsonGiftcard & "<BR>"
-
-			End If
-		Next
+		If arrGiftcard(i) <> "" Then 
+			If jsonGiftcard = "" Then
+				jsonGiftcard = "{ ""SRV"":""HOMEPAGE"",""GIFTCARD"":["
+	            jsonGiftcard = jsonGiftcard & "{""SN"":""" & arrGiftcard(i) & """}"
+			Else
+				jsonGiftcard = jsonGiftcard & ",{""SN"":""" & arrGiftcard(i) & """}"
+			End If  				 
+			'Response.Write "jsonGiftcard / " & i & " // " & jsonGiftcard & "<BR>"
+		End If
+	Next
 
 
-		If jsonGiftcard <> "" Then
+	If jsonGiftcard <> "" Then
 			
-			jsonGiftcard = jsonGiftcard & "]}"
+		jsonGiftcard = jsonGiftcard & "]}"				  
+		'Response.Write "jsonGiftcard /// " & jsonGiftcard & "<BR>"
+
+		' 상품권 조회
+		Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+		httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
+		httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
+		httpRequest.SetRequestHeader "Content-Type", "application/json"
+        httpRequest.Send jsonGiftcard 
+		'상품권 조회
+		'조회 상품권 text -> json
+		Set oJSON = New aspJSON
+		'Response.Write "list /// " & httpRequest.responseText & "<BR>"
+		postResponse = "{""list"" : " & httpRequest.responseText & "}"
+		oJSON.loadJSON(postResponse)
+		Set this = oJSON.data("list")
+		'U_CD_BRAND = brand_code '사용브랜드코드
+		'U_CD_PARTNER = branch_id ' 사용매장코드
+		MA_RTN_CD  = this.item("Voucher_INFO").item("MA_RTN_CD") '  
+		MA_RTN_MSG = this.item("Voucher_INFO").item("MA_RTN_MSG") ' 사용여부
+		'조회 상품권 text -> json				 
+		'Response.Write "MA_RTN_CD /// " & MA_RTN_CD & "<BR>"
+		'Response.Write "MA_RTN_MSG /// " & MA_RTN_MSG & "<BR>"
+				 				 
+		Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) "_
+			& " VALUES ( '\pay\ktr\Coupon_Return.asp', '"& order_num &"','"& giftcard_serial &"','http://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','"& MA_RTN_CD &"','"& MA_RTN_MSG &"', GETDATE() ) "
+		dbconn.Execute(Sql)
+
+		If MA_RTN_CD = "0000" Then 				 
+			'Response.Write "SN  /// " & Ubound(this.data("Voucher_INFO").data("data").item("SN")) & "<BR>"
+			For Each row In this.item("Voucher_INFO").item("data")
+				Set this1 = this.item("Voucher_INFO").item("data").item(row) 
+				arrGiftcard(row)    = this1.item("SN")
+				arrGiftcardAmt(row) = this1.item("AMT")				  
+			Next
+
+			jsonGiftcard = ""
+			For i = 0 To Ubound(arrGiftcard) 				  
+				If arrGiftcard(i)  <> "" Then 
+					If jsonGiftcard = "" Then
+						jsonGiftcard = "{ ""U_CD_BRAND"":""" & brand_code & """," _
+				                        & """U_CD_PARTNER"":""" & branch_id & """," _
+				                        & """ORDER_ID"":""" & order_num & """," _
+				                        & """SRV"":""HOMEPAGE""," _
+				                        & """GIFTCARD"":["				                   
+						jsonGiftcard = jsonGiftcard & "{""SN"":""" & arrGiftcard(i)  & """, ""AMT"":""" & arrGiftcardAmt(i) & """}"
+					Else
+						jsonGiftcard = jsonGiftcard & ",{""SN"":""" & arrGiftcard(i)  & """, ""AMT"":""" & arrGiftcardAmt(i) & """}"
+					End If   				 
+					'Response.Write "jsonGiftcard / " & i & " // " & jsonGiftcard & "<BR>"
+				End If
+			Next
+				 
+			If jsonGiftcard <> "" Then 
+				jsonGiftcard = jsonGiftcard & "]}" 
+				'Response.Write "jsonGiftcard /// " & jsonGiftcard & "<BR>"
+
+				' 상품권 사용
+				Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+				httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherUse/", False
+				httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
+				httpRequest.SetRequestHeader "Content-Type", "application/json"
+				httpRequest.Send jsonGiftcard 
+				'상품권 사용
+				 
+			    '사용 상품권 text -> json
+			    Set gJSON = New aspJSON
+			    gpostResponse = "{""list"" : " & httpRequest.responseText & "}" 				 
+				'Response.Write "list /// " & httpRequest.responseText & "<BR>" 
+			    gJSON.loadJSON(gpostResponse)
+			    Set this = gJSON.data("list") 
+				 
+				MA_RTN_CD  = this.item("Voucher_Use").item("MA_RTN_CD") '  
+				MA_RTN_MSG = this.item("Voucher_Use").item("MA_RTN_MSG") ' 사용여부
+				'사용 상품권 text -> json				 
+				'Response.Write "Use MA_RTN_CD /// " & MA_RTN_CD & "<BR>"
+				'Response.Write "Use MA_RTN_MSG /// " & MA_RTN_MSG & "<BR>"			
 				  
-			'Response.Write "jsonGiftcard /// " & jsonGiftcard & "<BR>"
-
-		    ' 상품권 조회
-		    Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-		    httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
-		    httpRequest.SetRequestHeader "Authorization", "1DB46DE0D44A"
-		    httpRequest.SetRequestHeader "Content-Type", "application/json"
-            httpRequest.Send jsonGiftcard 
-		    '상품권 조회
-		    '조회 상품권 text -> json
-		    Set oJSON = New aspJSON
-
-			'Response.Write "list /// " & httpRequest.responseText & "<BR>"
-
-
-		    postResponse = "{""list"" : " & httpRequest.responseText & "}"
-		    oJSON.loadJSON(postResponse)
-		    Set this = oJSON.data("list")
-		    'U_CD_BRAND = brand_code '사용브랜드코드
-		    'U_CD_PARTNER = branch_id ' 사용매장코드
-		    MA_RTN_CD  = this.item("Voucher_INFO").item("MA_RTN_CD") '  
-		    MA_RTN_MSG = this.item("Voucher_INFO").item("MA_RTN_MSG") ' 사용여부
-		    '조회 상품권 text -> json
-				 
-			Response.Write "MA_RTN_CD /// " & MA_RTN_CD & "<BR>"
-			Response.Write "MA_RTN_MSG /// " & MA_RTN_MSG & "<BR>"
-
-				 
-			If MA_RTN_CD = "0000" THEN 
-				 
-				'Response.Write "SN  /// " & Ubound(this.data("Voucher_INFO").data("data").item("SN")) & "<BR>"
-
-				For Each row In this.item("Voucher_INFO").item("data")
-					Set this1 = this.item("Voucher_INFO").item("data").item(row)
- 
-					''//아래 this.item("name") 변수값을 가지고 디비 입력등을 처리하시면 됩니다.
-					'Response.write "[" & row & "] /// SN : "  & this1.item("SN") & " /// AMT : "  & this1.item("AMT") & "<br>"
-				 	'
-					arrGiftcard(row)    = this1.item("SN")
-					arrGiftcardAmt(row) = this1.item("AMT")
+				Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) "_
+				    & " VALUES ( '\pay\ktr\Coupon_Return.asp', '"& order_num &"','"& giftcard_serial &"','http://api-2.bbq.co.kr/api/VoucherUse/', '"& jsonGiftcard &"','"& gpostResponse &"','"& MA_RTN_CD &"','"& MA_RTN_MSG &"', GETDATE() ) "
+				dbconn.Execute(Sql)
 				  
-				Next
-
-				jsonGiftcard = ""
-				For i = 0 To Ubound(arrGiftcard) 
-				  
-					If arrGiftcard(i)  <> "" Then 
-
-						If jsonGiftcard = "" Then
-							jsonGiftcard = "{ ""U_CD_BRAND"":""" & U_CD_BRAND & """," _
-				                            & """U_CD_PARTNER"":""" & U_CD_PARTNER & """," _
-				                            & """ORDER_ID"":""" & order_num & """," _
-				                            & """SRV"":""HOMEPAGE""," _
-				                            & """GIFTCARD"":["				                   
-							jsonGiftcard = jsonGiftcard & "{""SN"":""" & arrGiftcard(i)  & """, ""AMT"":" & arrGiftcardAmt(i) & "}"
-						Else
-							jsonGiftcard = jsonGiftcard & ",{""SN"":""" & arrGiftcard(i)  & """, ""AMT"":" & arrGiftcardAmt(i) & "}"
-						End If   
-
-				 
-						'Response.Write "jsonGiftcard / " & i & " // " & jsonGiftcard & "<BR>"
-
-					End If
-				Next
-				 
-				If jsonGiftcard <> "" Then 
-					jsonGiftcard = jsonGiftcard & "]}" 
-
-					Response.Write "jsonGiftcard /// " & jsonGiftcard & "<BR>"
-
-					' 상품권 사용
-					Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-					httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherUse/", False
-					httpRequest.SetRequestHeader "Authorization", "1DB46DE0D44A"
-					httpRequest.SetRequestHeader "Content-Type", "application/json"
-					httpRequest.Send jsonGiftcard 
-					'상품권 사용
-				 
-			        '사용 상품권 text -> json
-			        Set gJSON = New aspJSON
-			        gpostResponse = "{""list"" : " & httpRequest.responseText & "}"
-
-				 
-					Response.Write "list /// " & httpRequest.responseText & "<BR>"
-
-
-			        gJSON.loadJSON(gpostResponse)
-			        Set this = gJSON.data("list") 
-				 
-					MA_RTN_CD  = this.item("Voucher_Use").item("MA_RTN_CD") '  
-					MA_RTN_MSG = this.item("Voucher_Use").item("MA_RTN_MSG") ' 사용여부
-					'사용 상품권 text -> json
-				 
-					Response.Write "Use MA_RTN_CD /// " & MA_RTN_CD & "<BR>"
-					Response.Write "Use MA_RTN_MSG /// " & MA_RTN_MSG & "<BR>"
-				  
-				 
-					If MA_RTN_CD = "0000" THEN 
-				 
-						'Response.Write "SN  /// " & Ubound(this.data("Voucher_INFO").data("data").item("SN")) & "<BR>"
-
-						For Each row In this.item("Voucher_Use").item("data")
-							Set this1 = this.item("Voucher_Use").item("data").item(row)
+				If MA_RTN_CD = "0000" THEN 				 
+					'Response.Write "SN  /// " & Ubound(this.data("Voucher_INFO").data("data").item("SN")) & "<BR>"
+					For Each row In this.item("Voucher_Use").item("data")
+						Set this1 = this.item("Voucher_Use").item("data").item(row)
   
-							'arrGiftcard(row)    = this1.item("SN")
-							'arrGiftcardAmt(row) = this1.item("AMT")
-							'arrGiftcardOkNum(row) = this1.item("OK_NUM")
-
-				            Set pCmd = Server.CreateObject("ADODB.Command")
-				                With pCmd
-				                    .ActiveConnection = dbconn
-				                    .NamedParameters = True
-				                    .CommandType = adCmdStoredProc
-				                    .CommandText = "bp_giftcard_status"
+				        Set pCmd = Server.CreateObject("ADODB.Command")
+				            With pCmd
+				                .ActiveConnection = dbconn
+				                .NamedParameters = True
+				                .CommandType = adCmdStoredProc
+				                .CommandText = "bp_giftcard_status"
 				
-				                    .Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput,30,"giftcard_use")
-				                    .Parameters.Append .CreateParameter("@order_num", adVarChar, adParamInput,100, order_num)
-				                    .Parameters.Append .CreateParameter("@giftcard_number", adVarChar, adParamInput,100, this1.item("SN"))
-				                    .Parameters.Append .CreateParameter("@u_cd_brand", adVarChar, adParamInput,10,U_CD_BRAND)
-				                    .Parameters.Append .CreateParameter("@u_cd_partner", adVarChar, adParamInput,50,U_CD_PARTNER)
-				                    .Parameters.Append .CreateParameter("@ok_num", adVarChar, adParamInput,50, this1.item("OK_NUM"))
-				                    .Execute
-				                End With
-				            Set pCmd = Nothing
+				                .Parameters.Append .CreateParameter("@mode"           , adVarChar, adParamInput, 30,"giftcard_use"       )
+				                .Parameters.Append .CreateParameter("@order_num"      , adVarChar, adParamInput,100, order_num           )
+				                .Parameters.Append .CreateParameter("@giftcard_number", adVarChar, adParamInput,100, this1.item("SN")    )
+				                .Parameters.Append .CreateParameter("@u_cd_brand"     , adVarChar, adParamInput, 10 ,brand_code          )
+				                .Parameters.Append .CreateParameter("@u_cd_partner"   , adVarChar, adParamInput, 50, branch_id           )
+				                .Parameters.Append .CreateParameter("@ok_num"         , adVarChar, adParamInput, 50, this1.item("OK_NUM"))
+				                .Execute
+				            End With
+				        Set pCmd = Nothing
 				  
-						Next
+					Next
 				  
-					Else   ' If MA_RTN_CD = "0000" THEN 
-						%>
-						<script type="text/javascript">
-							alert("상품권 사용에 실패하였습니다.");
-							location.href = "/";
-						</script>
-						 <%
-						'Response.Write "{""result"":99, ""result_msg"":"""& RTN_MSG &"""}"
-						Response.End
+				Else   ' If MA_RTN_CD = "0000" THEN 
+					%>
+					<script type="text/javascript">
+						alert("상품권 사용에 실패하였습니다.");
+						location.href = "/";
+					</script>
+						<%
+					'Response.Write "{""result"":99, ""result_msg"":"""& RTN_MSG &"""}"
+					Response.End
 
-					End If ' If MA_RTN_CD = "0000" THEN  
+				End If ' If MA_RTN_CD = "0000" THEN  
 
-				End If  ' If jsonGiftcard <> "" Then
+			End If  ' If jsonGiftcard <> "" Then
 							  
 
-		        '쿠키 제거
-		        Response.Cookies("giftcard_serial") = ""
-		        Response.Cookies("brand_code") = ""
-		        '쿠키 제거
+		    '쿠키 제거
+		    Response.Cookies("giftcard_serial") = ""
+		    Response.Cookies("brand_code") = ""
+		    '쿠키 제거
 
-			Else   ' If MA_RTN_CD = "0000" THEN 
-				%>
-				<script type="text/javascript">
-                    alert("상품권 사용에 실패하였습니다.");
-                    location.href = "/";
-                </script>
-				 <%
-				'Response.Write "{""result"":99, ""result_msg"":"""& RTN_MSG &"""}"
-				Response.End
+		Else   ' If MA_RTN_CD = "0000" THEN 
+			%>
+			<script type="text/javascript">
+                alert("상품권 사용에 실패하였습니다.");
+                location.href = "/";
+            </script>
+				<%
+			'Response.Write "{""result"":99, ""result_msg"":"""& RTN_MSG &"""}"
+			Response.End
 
-			End If   ' If MA_RTN_CD = "0000" THEN    
+		End If   ' If MA_RTN_CD = "0000" THEN    
 					  
-		End If  ' If jsonGiftcard <> "" Then 
-
+	End If  ' If jsonGiftcard <> "" Then 
 	' 2021-07 더페이 상품권 복수처리 끝 
+
+
+
 
 	If order_type = "D" Then
 		order_type_title = "배달정보"

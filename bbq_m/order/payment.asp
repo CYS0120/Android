@@ -785,7 +785,9 @@ function reset_Giftcard_apply(obj) {
     $("#g_Id").val(''); 
 	//$(obj).find('option:first').attr('selected', 'selected');
 	$("#g_discount_amount").val('0');
-	$("#giftcard_discount_amt").text('0');
+    $("#giftcard_discount_amt").text('0');
+    $("#giftcard_amt").val('0');
+    
 }
 
 function gitfcard_apply() {
@@ -1079,6 +1081,16 @@ function calcTotalAmount() {
 		$("#payment_later").prop("disabled", false);
 		$("#payment_cash").prop("disabled", false);
 
+        // 2021-07 더페이 추가 시작
+        $("#payment_card").removeClass("on");
+        $("#payment_phone").removeClass("on");
+        $("#payment_payco").removeClass("on");
+        $("#payment_paycoin").removeClass("on");
+        $("#payment_sgpay").removeClass("on");
+        $("#payment_later").removeClass("on");
+        $("#payment_cash").removeClass("on");
+        // 2021-07 더페이 추가 끝
+
 		$("#pay_method").val('');	//.replace("Point","");
 	}
 }
@@ -1090,6 +1102,36 @@ function calcTotalAmount() {
 			showAlertMsg({msg:"처리중입니다. 잠시만 기다려주세요."});
 			return;
 		}
+
+        // 2021-07 더페이 상품권 중복체크 시작    
+        if ($("#giftcard_id").val() != undefined ) { 
+			var arrgiftcard_no = ($("#giftcard_no").val()||"").split('||');
+			var arrgiftcard_id = ($("#giftcard_id").val()||"").split('||');
+			var i1 = 0;
+			var i2 = 0;
+			 
+			if (arrgiftcard_no.length != arrgiftcard_id.length) {
+				reset_Giftcard_apply(null);
+				showAlertMsg({ msg: "상품권 선택이 잘못되었습니다." });
+				return false;
+			}
+			while (i1 < arrgiftcard_id.length) {
+				i2 = 0;
+				while (i2 < arrgiftcard_id.length) {
+					if (i1 != i2 && arrgiftcard_id[i1] == arrgiftcard_id[i2]) {
+						reset_Giftcard_apply(null);
+						showAlertMsg({ msg: "상품권 선택이 잘못되었습니다." });
+						return false;
+					}
+					i2++;
+				}
+				i1++;
+			} 
+        }
+        //showAlertMsg({ msg: "상품권  test." });
+        //return false;
+        // 2021-07 더페이 상품권 중복체크 끝
+
 
 		<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Then %>
 			//alert("-앱 주문시스템 긴급점검 안내-\n\n배달주문 고객분은\n모바일 웹을 이용해주세요.\nhttps://m.bbq.co.kr/\n이용에 불편을 드려 죄송합니다.");
@@ -2161,8 +2203,8 @@ function calcTotalAmount() {
                             <span>상품권 <em>( 사용가능 상품권 : <strong class="red gc_red_f">0 장</strong> )</em></span>
                         </dt>
                         <dd>
-                            <input type="text" id="giftcard_no" name="giftcard_no"><!--2021-07 더페이 테스트 hidden->text -->
-                            <input type="text" id="giftcard_id" name="giftcard_id"><!--2021-07 더페이 테스트 hidden->text --> 
+                            <input type="hidden" id="giftcard_no" name="giftcard_no">
+                            <input type="hidden" id="giftcard_id" name="giftcard_id">
                             <input type="text" id="giftcard_amt" name="giftcard_amt" value="0" numberOnly readonly style="width:150px; margin-right:5px">
                              <!--<button type="button" onclick="javascript:Giftcard_scan();" class="btn btn-sm btn-grayLine" style="line-height: 0 !important;"><img src="/images/order/barcode-scan.png" alt="barcode_scan" width="30px" height="30px"></button>-->
                              <button type="button" onclick="javascript:Giftcard_ListCount('list');" class="btn btn-sm btn-grayLine">상품권적용</button>
@@ -2955,8 +2997,9 @@ function calcTotalAmount() {
                     callMode: "list",
                 },
                 dataType: "json",
-				success: function (res) {
-                    var str_giftcard = "<label class='checkbox'>"; // 2021-07 더페이 추가
+                success: function (res) {
+                    //var str_giftcard = "<label class='checkbox'>"; // 2021-07 더페이 추가
+                    var str_giftcard = ""; // 2021-07 더페이 추가
 
                     var strSel = "";
 					var strSelX = "checked";
@@ -2965,8 +3008,8 @@ function calcTotalAmount() {
 						for (var i = 0; i < res.Count.length; i++){
 
                            rdata = "<option value='"+ res.Count[i].giftcard_idx + "||"+ res.Count[i].giftcard_number + "||"+ res.Count[i].giftcard_amt + "' ";
-                           if(res.Count[i].giftcard_idx == $("#g_No").val()) rdata += " selected ";                           
-                           rdata += " >"+"지류상품권 ("+ res.Count[i].giftcard_amt+"원)" +"</option>";    
+                            if (res.Count[i].giftcard_idx == $("#g_No").val()) rdata += " selected ";
+                            rdata += " >" + "지류상품권 (" + res.Count[i].giftcard_amt + "원)" + "</option>"; 
 							$("select[name='giftcard_select']").append(rdata);
 
 
@@ -2976,7 +3019,7 @@ function calcTotalAmount() {
                                 strSel = "checked";
 								strSelX = "";
 							} 
-                            str_giftcard += "<input type='checkbox' " + strSel + " class='giftchk' name='chkGiftcard' id='chkGiftcard" + i.toString() + "' value='" + res.Count[i].giftcard_idx + "||" + res.Count[i].giftcard_number + "||" + res.Count[i].giftcard_amt + "' onClick='javascript: setGiftcardUse_CheckBox(this)' > " + "지류상품권 (" + res.Count[i].giftcard_amt + "원) <BR>" ; // 2021-07 더페이 추가
+                            str_giftcard += "<label class='checkbox'><input type='checkbox' " + strSel + " class='giftchk' name='chkGiftcard' id='chkGiftcard" + i.toString() + "' value='" + res.Count[i].giftcard_idx + "||" + res.Count[i].giftcard_number + "||" + res.Count[i].giftcard_amt + "' onClick='javascript: setGiftcardUse_CheckBox(this)' /> " + "지류상품권_" + res.Count[i].giftcard_number + " (" + res.Count[i].giftcard_amt + "원)</label><BR>" ; // 2021-07 더페이 추가
 							// 2021-07 더페이 추가  시작 끝 
                        }
                         /*showAlertMsg({
@@ -2985,8 +3028,8 @@ function calcTotalAmount() {
 
 					}
 
-                    str_giftcard += "<input type='checkbox' " + strSelX + " class='giftchkX' name='chkGiftcard' id='chkGiftcard' value='' onClick='javascript: setGiftcardUse_CheckBox(this)' > 사용안함"; // 2021-07 더페이 추가
-					str_giftcard += "</label>";
+                    str_giftcard += "<label class='checkbox'><input type='checkbox' " + strSelX + " class='giftchkX' name='chkGiftcard' id='chkGiftcard' value='' onClick='javascript: setGiftcardUse_CheckBox(this)' /> 사용안함</label>"; // 2021-07 더페이 추가
+					//str_giftcard += "</label>";
 
                     $("#div_giftcard").html(str_giftcard); // 2021-07 더페이 추가
                      

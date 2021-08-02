@@ -19,14 +19,13 @@
             objHttp.SetRequestHeader "Content-Type","application/x-www-form-urlencoded;charset=utf-8"
             objHttp.Send data
 
-            URL_Send = objHttp.responseText ' 결과데이터 파서로 넘기기 위해 별도 저장 
+            URL_Send = objHttp.responseText ' 결과데이터 파서로 넘기기 위해 별도 저장
 
             Set objHttp = Nothing '개체 소멸
         End If
 
     End Function
 	'http://bbq.fuzewire.com/pay/pay_cancel.asp?order_id=W20000000002117
-	 
 
     ORDER_ID   = GetReqStr("order_id", "")
     sms_msg    = GetReqStr("sms_msg", "")
@@ -128,161 +127,56 @@
 			pRs.MoveNext
 		Loop
 
-
-
-
 		Dim httpRequest, Gift_Count
-	' 2021-07 더페이 상품권 복수 처리 기존 소스 주석 시작 
-    ''상품권 취소
-    ''사용 상품권 조회 (dbo.bt_giftcard)
-    'CountQuery = " SELECT (SELECT COUNT(*) as cnt FROM BBQ.dbo.bt_giftcard WHERE order_num = '"& ORDER_ID &"') as cnt, u_cd_brand as U_CD_BRAND, u_cd_partner as U_CD_PARTNER, giftcard_amt as AMT, ok_num as OK_NUM, giftcard_number as Gift_Serial FROM BBQ.dbo.bt_giftcard WHERE order_num = '"& ORDER_ID &"'"
-    'Set Gift_Count = dbconn.Execute(CountQuery)
-    'If Not (Gift_Count.BOF Or Gift_Count.EOF) Then
-    '    Gift_Count.movefirst
-    '    If Gift_Count("cnt") > 0 Then
-    '        ' 상품권 취소처리 data set
-    '            data = "{"
-    '            data = data & """U_CD_BRAND"":""" & Gift_Count("U_CD_BRAND") & ""","
-    '            data = data & """U_CD_PARTNER"":""" & Gift_Count("U_CD_PARTNER") & ""","
-    '            data = data & """AMT"":""" & Gift_Count("AMT") & ""","
-    '            'data = data & """OK_NUM"":""" & Gift_Count("OK_NUM") & """"
-    '            data = data & """OK_NUM"":""" & Gift_Count("OK_NUM") & """"
-    '            data = data & "}"
-    '        ' 상품권 취소처리 data set
-    '            Set httpRequest = Nothing ' 초기화
-    '        ' 상품권 취소처리 API
-    '            Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-    '            httpRequest.Open "POST", "http://api.bbq.co.kr/GiftCard_2.svc/CancelGiftCard/"&Gift_Count("Gift_Serial"), False
-    '            httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
-    '            'httpRequest.SetRequestHeader "Content-Type", "application/raw"
-    '            httpRequest.Send data
-    '            'Response.Write httpRequest.ResponseText
-    '            'Response.Write data
-    '        ' 상품권 취소처리 API
-    '        'API VALUE text -> json
-    '            Set gJSON = New aspJSON
-    '            gpostResponse = "{""list"" : " & httpRequest.responseText & "}"
-    '            gJSON.loadJSON(gpostResponse)
-    '            Set this = gJSON.data("list")
-    '            RTN_CD = this.item("RTN_CD") ' 결과코드
-    '            RTN_MSG = this.item("RTN_MSG") ' 결과코드
-    '        'API VALUE text -> json
-    '            'Response.Write RTN_CD
-    '        '상품권 사용처리
-    '        If RTN_CD = "0000" Then
-    '            Sql = "UPDATE BBQ.dbo.bt_giftcard SET u_cd_brand = null, u_cd_partner = null, ok_num = null, order_num = null, used_date = null WHERE giftcard_number = '"& Gift_Count("Gift_Serial") &"'"
-    '            dbconn.Execute(Sql)
-    '            'Response.Write Sql
-    '        Else
-    '        	html_result = "FAIL|"&RTN_MSG
-	'			pg_RollBack = 1
-    '            Response.Write html_result
-    '            Response.End
-    '        End If
-    '        '상품권 사용처리
-    '    End If
-    'End If
-	' 2021-07 더페이 상품권 복수 처리 기존 소스 주석 끝 
-	 
-
-	' // --------------------------------------------------------------------------------------------------------
-	' 2021-07 더페이 상품권 복수 처리 수정 시작 
     '상품권 취소
     '사용 상품권 조회 (dbo.bt_giftcard)
-    CountQuery = " SELECT COUNT(*) OVER() as cnt, u_cd_brand as U_CD_BRAND, u_cd_partner as U_CD_PARTNER, giftcard_amt as AMT, ok_num as OK_NUM, giftcard_number as Gift_Serial " _ 
-	           & "   FROM BBQ.dbo.bt_giftcard WITH(NOLOCK) " _ 
-	           & "  WHERE order_num = '" & ORDER_ID & "' "
+    CountQuery = " SELECT (SELECT COUNT(*) as cnt FROM BBQ.dbo.bt_giftcard WHERE order_num = '"& ORDER_ID &"') as cnt, u_cd_brand as U_CD_BRAND, u_cd_partner as U_CD_PARTNER, giftcard_amt as AMT, ok_num as OK_NUM, giftcard_number as Gift_Serial FROM BBQ.dbo.bt_giftcard WHERE order_num = '"& ORDER_ID &"'"
     Set Gift_Count = dbconn.Execute(CountQuery)
-
     If Not (Gift_Count.BOF Or Gift_Count.EOF) Then
         Gift_Count.movefirst
-	
-		If Gift_Count("cnt") > 0 Then 
-
-			dim jsonGiftcard : jsonGiftcard = ""
-			dim cancelSN : cancelSN = ""  
-			dim giftcard_serial : giftcard_serial = ""
-
-			Do Until Gift_Count.EOF 
-				If jsonGiftcard = "" Then
-					jsonGiftcard = "{ ""U_CD_BRAND"":""" &  Gift_Count("U_CD_BRAND") & """," _
-								   & """U_CD_PARTNER"":""" &  Gift_Count("U_CD_PARTNER") & """," _
-								   & """ORDER_ID"":""" & ORDER_ID & """," _
-								   & """SRV"":""HOMEPAGE""," _
-								   & """GIFTCARD"":["				                   
-					jsonGiftcard = jsonGiftcard & "{""SN"":""" & Gift_Count("Gift_Serial")  & """, ""AMT"":""" & Gift_Count("AMT") & """, ""OK_NUM"":""" & Gift_Count("OK_NUM") & """}"
-				Else
-					jsonGiftcard = jsonGiftcard & ",{""SN"":""" & Gift_Count("Gift_Serial")  & """, ""AMT"":""" & Gift_Count("AMT") & """, ""OK_NUM"":""" & Gift_Count("OK_NUM") & """}"
-				End If   
-
-				cancelSN = cancelSN & "'" & Gift_Count("Gift_Serial") & "',"
-				giftcard_serial = giftcard_serial & Gift_Count("Gift_Serial") & "||"
-				Gift_Count.MoveNext
-			LOOP
-
-			jsonGiftcard = jsonGiftcard & "]}" 
-
-			If cancelSN <> "" Then
-				cancelSN = cancelSN & ","
-				cancelSN = Replace(cancelSN, ",,", "")
-				giftcard_serial = giftcard_serial & "||"
-				giftcard_serial = Replace(giftcard_serial, "||||", "")
-			End If
-
-'	Response.Write "^ cancelSN ::: " & cancelSN & "<BR>"
-	  
-			' 상품권 취소처리 data set
-            Set httpRequest = Nothing ' 초기화
-			' 상품권 취소처리 API 
-			Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-			httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherCancel/", False
-			httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"
-			httpRequest.SetRequestHeader "Content-Type", "application/json"
-			httpRequest.Send jsonGiftcard  
-			' 상품권 취소처리 API 
-	 
-			'사용 상품권 text -> json
-			Set gJSON = New aspJSON
-			gpostResponse = "{""list"" : " & httpRequest.responseText & "}"  
-			'Response.Write "^" & gpostResponse
-			gJSON.loadJSON(gpostResponse)
-			Set this = gJSON.data("list")  
-			RTN_CD  = this.item("Voucher_Cancel").item("MA_RTN_CD") '  
-			RTN_MSG = this.item("Voucher_Cancel").item("MA_RTN_MSG") ' 사용여부
-			'사용 상품권 text -> json 
-	 
-			Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) "_
-				& " VALUES ( '\pay\pay_cancel.asp', '"& ORDER_ID &"','"& giftcard_serial &"','http://api-2.bbq.co.kr/api/VoucherCancel/','"& jsonGiftcard &"','"& gpostResponse &"','"& RTN_CD &"','"& RTN_MSG &"', GETDATE() ) "
-			dbconn.Execute(Sql)
-				  
-		'Response.Write "^" & RTN_CD & " --- " & cancelSN & " ::: " & gpostResponse
-	 
-			'상품권 사용처리
-			If RTN_CD = "0000" Then
-
-				Sql = "UPDATE BBQ.dbo.bt_giftcard SET u_cd_brand = null, u_cd_partner = null, ok_num = null, order_num = null, used_date = null " _
-	                    & " WHERE giftcard_number IN (" & cancelSN & ") "  
-				dbconn.Execute(Sql)
-	
-		'Response.Write "^" & RTN_CD & " --- " & Sql & " ::: " & gpostResponse
-		
-			Else
-				html_result = "FAIL|" & RTN_MSG
+        If Gift_Count("cnt") > 0 Then
+            ' 상품권 취소처리 data set
+                data = "{"
+                data = data & """U_CD_BRAND"":""" & Gift_Count("U_CD_BRAND") & ""","
+                data = data & """U_CD_PARTNER"":""" & Gift_Count("U_CD_PARTNER") & ""","
+                data = data & """AMT"":""" & Gift_Count("AMT") & ""","
+                'data = data & """OK_NUM"":""" & Gift_Count("OK_NUM") & """"
+                data = data & """OK_NUM"":""" & Gift_Count("OK_NUM") & """"
+                data = data & "}"
+            ' 상품권 취소처리 data set
+                Set httpRequest = Nothing ' 초기화
+            ' 상품권 취소처리 API
+                Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+                httpRequest.Open "POST", "http://api.bbq.co.kr/GiftCard_2.svc/CancelGiftCard/"&Gift_Count("Gift_Serial"), False
+                httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
+                'httpRequest.SetRequestHeader "Content-Type", "application/raw"
+                httpRequest.Send data
+                'Response.Write httpRequest.ResponseText
+                'Response.Write data
+            ' 상품권 취소처리 API
+            'API VALUE text -> json
+                Set gJSON = New aspJSON
+                gpostResponse = "{""list"" : " & httpRequest.responseText & "}"
+                gJSON.loadJSON(gpostResponse)
+                Set this = gJSON.data("list")
+                RTN_CD = this.item("RTN_CD") ' 결과코드
+                RTN_MSG = this.item("RTN_MSG") ' 결과코드
+            'API VALUE text -> json
+                'Response.Write RTN_CD
+            '상품권 사용처리
+            If RTN_CD = "0000" Then
+                Sql = "UPDATE BBQ.dbo.bt_giftcard SET u_cd_brand = null, u_cd_partner = null, ok_num = null, order_num = null, used_date = null WHERE giftcard_number = '"& Gift_Count("Gift_Serial") &"'"
+                dbconn.Execute(Sql)
+                'Response.Write Sql
+            Else
+            	html_result = "FAIL|"&RTN_MSG
 				pg_RollBack = 1
-				Response.Write html_result
-				Response.End
-			End If   ' If RTN_CD = "0000" Then
-			'상품권 사용처리 
- 
-
-		End If   ' If Gift_Count("cnt") > 0 Then
-   
+                Response.Write html_result
+                Response.End
+            End If
+            '상품권 사용처리
+        End If
     End If
-	' 2021-07 더페이 상품권 복수 처리 수정 끝 
-	' // --------------------------------------------------------------------------------------------------------
-
-
-
 
 		if pg_RollBack = 0 then
 			'결제수단 취소
