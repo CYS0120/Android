@@ -50,9 +50,6 @@
         postResponse = "{""list"" : " & httpRequest.responseText & "}"
         oJSON.loadJSON(postResponse)
         Set this = oJSON.data("list")
-     
-
-        'Response.Write "<script language='javascript'>alert('" & postResponse & "');</script>"
 
 	    GiftPrice = this.item("AMT") '상품권 가격
         From_date = this.item("FROM_DATE") ' 상품권 발행일자

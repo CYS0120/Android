@@ -700,9 +700,8 @@ function setGiftcardUse(obj) {
 	//alert(obj.value + " " + order_amt);
 	if(obj.value != ""){
 	    var array_giftcard = obj.value.split('||'); // 선택한 상품권 value
-        var giftcardNo = array_giftcard[0]; // 상품권 IDX giftcard_idx
-        var giftcardId = array_giftcard[1]; // 상품권 번호 giftcard_number
-        var giftcardPrice = array_giftcard[2]; // 상품권 가격
+	    var giftcardNo = array_giftcard[0]; // 상품권 IDX giftcard_idx
+ 	    var giftcardId = array_giftcard[1]; // 상품권 번호 giftcard_number
 	    var giftcardAmt = Number(array_giftcard[2]); // 상품권 가격 giftcard_amt
 		var discount_amount = "0";
 		if (giftcardAmt > order_amt){
@@ -711,8 +710,8 @@ function setGiftcardUse(obj) {
                msg:addCommas(giftcardAmt) + '원 이상시 사용가능합니다.'
             });
         }else{
-            $("#g_No").val(giftcardNo);
-            $("#g_Id").val(giftcardId); 
+		    $("#g_No").val(giftcardNo);
+            $("#g_Id").val(giftcardId);
             $("#g_discount_amount").val(giftcardAmt);
             $("#giftcard_discount_amt").text(addCommas(giftcardAmt));
         }
@@ -722,67 +721,14 @@ function setGiftcardUse(obj) {
 	//coupon_discount_amt += $("#discount_"+i).html();
 }
 
-
-// 상품권 선택시 처리 // 2021-07 더페이 추가
-function setGiftcardUse_CheckBox(obj) {
-
-    if (obj.id == obj.name && $("input:checkbox[id='" + obj.id + "']:checked")) {  // 사용안함 선택시 처리 
-        $('.giftchk').attr('checked', false);
-    } else if ($("input:checkbox[id='" + obj.id + "']:checked")) { // 상품권 선택시 
-        $('.giftchkX').attr('checked', false);  // 사용안함 해제
-    }
-
-    var giftcardNo = "";
-	var giftcardId = "";
-	var giftcardPrice = "";
-    var giftcardAmt = 0;
-
-    $("input:checkbox[name='chkGiftcard']:checked").each(function () {
-        if ($(this).val() != "") {
-            //pPrivateDiv += "," + $(this).val();
-            var array_giftcard = $(this).val().split('||'); // 선택한 상품권 value 
-            giftcardNo    += array_giftcard[0] + "||";   // 상품권 IDX giftcard_idx
-            giftcardId    += array_giftcard[1] + "||";   // 상품권 번호 giftcard_number
-            giftcardPrice += array_giftcard[2] + "||";   // 상품권 가격
-            giftcardAmt   += Number(array_giftcard[2]);  // 상품권 가격 giftcard_amt
-
-        }
-    });
-
-
-    if (giftcardNo != "") {
-        giftcardNo    = (giftcardNo    + "||").replace("||||", "");
-        giftcardId    = (giftcardId    + "||").replace("||||", "");
-        giftcardPrice = (giftcardPrice + "||").replace("||||", "");
-        var order_amt = removeCommas($.trim($("#total_amt").val()));
-        /*order_amt -= getUseEventPoint();	//계산 비용에서 축하포인트 차감*/
-
-        if (giftcardAmt > order_amt) {
-            reset_Giftcard_apply(obj);
-            $('.giftchk').attr('checked', false);
-            $('.giftchkX').attr('checked', true);
-            showAlertMsg({
-                msg: addCommas(order_amt) + '원 이하로 사용가능합니다.'
-            });
-        } else {
-            $("#g_No").val(giftcardNo);
-            $("#g_Id").val(giftcardId); 
-            $("#g_discount_amount").val(giftcardAmt);
-            $("#giftcard_discount_amt").text(addCommas(giftcardAmt));
-        }
-    } else {
-        reset_Giftcard_apply(obj);
-    }
-	 
-}
-
+ 
 
 
 
 function reset_Giftcard_apply(obj) {
 	// 상품권 적용 부분 제외...
-    $("#g_No").val('');
-    $("#g_Id").val(''); 
+	$("#g_No").val('');
+	$("#g_Id").val('');
 	//$(obj).find('option:first').attr('selected', 'selected');
 	$("#g_discount_amount").val('0');
 	$("#giftcard_discount_amt").text('0');
@@ -791,8 +737,8 @@ function reset_Giftcard_apply(obj) {
 function gitfcard_apply() {
 	// 상품권 적용
 	if ($("#g_Id").val() != "") {
-        $("#giftcard_no").val($("#g_No").val());
-        $("#giftcard_id").val($("#g_Id").val()); 
+		$("#giftcard_no").val($("#g_No").val());
+		$("#giftcard_id").val($("#g_Id").val());
 		$("#giftcard_amt").val(addCommas($("#g_discount_amount").val()));
 		// $("#cash_receipt_area").css('display','block');
 		$("select[name='giftcard_select']").val('');
@@ -2161,8 +2107,8 @@ function calcTotalAmount() {
                             <span>상품권 <em>( 사용가능 상품권 : <strong class="red gc_red_f">0 장</strong> )</em></span>
                         </dt>
                         <dd>
-                            <input type="text" id="giftcard_no" name="giftcard_no"><!--2021-07 더페이 테스트 hidden->text -->
-                            <input type="text" id="giftcard_id" name="giftcard_id"><!--2021-07 더페이 테스트 hidden->text --> 
+                            <input type="hidden" id="giftcard_no" name="giftcard_no">
+                            <input type="hidden" id="giftcard_id" name="giftcard_id">
                             <input type="text" id="giftcard_amt" name="giftcard_amt" value="0" numberOnly readonly style="width:150px; margin-right:5px">
                              <!--<button type="button" onclick="javascript:Giftcard_scan();" class="btn btn-sm btn-grayLine" style="line-height: 0 !important;"><img src="/images/order/barcode-scan.png" alt="barcode_scan" width="30px" height="30px"></button>-->
                              <button type="button" onclick="javascript:Giftcard_ListCount('list');" class="btn btn-sm btn-grayLine">상품권적용</button>
@@ -2710,14 +2656,12 @@ function calcTotalAmount() {
 							</div>
 							<div class="order_menu order_lpCoupon">
 								<input type="hidden" name="g_No" id="g_No">
-								<input type="hidden" name="g_Id" id="g_Id"> 
+								<input type="hidden" name="g_Id" id="g_Id">
 								<input type="hidden" name="g_discount_amount" id="g_discount_amount" value="0">
 								<div class="mar-t25">
-									<select name="giftcard_select" id="giftcard_select" class="w-100p" onChange="javascript: setGiftcardUse(this)" style="display: none;"><!--2021-07 더페이 수정 display: noe; --> 
+									<select name="giftcard_select" id="giftcard_select" class="w-100p" onChange="javascript: setGiftcardUse(this)">
 										<option value=''>사용안함</option>
-									</select>
-									<div id="div_giftcard" style="width: 100%; height: auto; border: 1px solid; padding: 4px 0px 4px 4px;"><!--2021-07 더페이 추가-->  
-									</div>
+									</select> 
 								</div>
 								<div class="sale div-table mar-t25">
 									<dl class="tr">
@@ -2955,11 +2899,7 @@ function calcTotalAmount() {
                     callMode: "list",
                 },
                 dataType: "json",
-				success: function (res) {
-                    var str_giftcard = "<label class='checkbox'>"; // 2021-07 더페이 추가
-
-                    var strSel = "";
-					var strSelX = "checked";
+				success: function (res) { 
 
                     if (res.result == 0) {
 						for (var i = 0; i < res.Count.length; i++){
@@ -2968,27 +2908,14 @@ function calcTotalAmount() {
                            if(res.Count[i].giftcard_idx == $("#g_No").val()) rdata += " selected ";                           
                            rdata += " >"+"지류상품권 ("+ res.Count[i].giftcard_amt+"원)" +"</option>";    
 							$("select[name='giftcard_select']").append(rdata);
-
-
-							 // 2021-07 더페이 추가  시작 
-							strSel = "";
-							if ($("#g_No").val().indexOf(res.Count[i].giftcard_idx) > -1) {
-                                strSel = "checked";
-								strSelX = "";
-							} 
-                            str_giftcard += "<input type='checkbox' " + strSel + " class='giftchk' name='chkGiftcard' id='chkGiftcard" + i.toString() + "' value='" + res.Count[i].giftcard_idx + "||" + res.Count[i].giftcard_number + "||" + res.Count[i].giftcard_amt + "' onClick='javascript: setGiftcardUse_CheckBox(this)' > " + "지류상품권 (" + res.Count[i].giftcard_amt + "원) <BR>" ; // 2021-07 더페이 추가
-							// 2021-07 더페이 추가  시작 끝 
+ 
                        }
                         /*showAlertMsg({
                            msg:"쿠폰리스트 불러오기 성공" + res.Count[0].giftcard_idx
                         });*/
 
 					}
-
-                    str_giftcard += "<input type='checkbox' " + strSelX + " class='giftchkX' name='chkGiftcard' id='chkGiftcard' value='' onClick='javascript: setGiftcardUse_CheckBox(this)' > 사용안함"; // 2021-07 더페이 추가
-					str_giftcard += "</label>";
-
-                    $("#div_giftcard").html(str_giftcard); // 2021-07 더페이 추가
+ 
                      
                     },
                 error: function(data, status, err) {
