@@ -1923,9 +1923,9 @@ function calcTotalAmount() {
 				$("#og-total_amt").val(<%=totalAmount%>);
 			</script>
 
-			<% if totalAmount_parent < 15000 then %>
+			<% if totalAmount_parent < 13000 then %>
 				<script type="text/javascript">
-					alert("최소결제금액은 15,000원 이상 주문하셔야 됩니다.");
+					alert("최소결제금액은 13,000원 이상 주문하셔야 됩니다.");
 					history.back();
 				</script>
 				<% response.end %>
