@@ -1,7 +1,16 @@
 <%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
 <!--#include virtual="/api/include/db_open.asp"-->
 <%
-	If GetReferer = GetCurrentHost Then 
+	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
+    If Request.ServerVariables("HTTPS") = "on" Then
+        GetUrlProtocol = "https"
+    Else
+        GetUrlProtocol = "http"
+    End If
+	GetUrlHost = Request.ServerVariables("HTTP_HOST")
+    GetCurrentHost = GetUrlProtocol & "://" & GetUrlHost
+
+	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
 	Else 
 		result = "[]"
 		Response.ContentType = "application/json"

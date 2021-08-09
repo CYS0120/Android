@@ -6,7 +6,8 @@
 <!--#include virtual="/api/include/db_open.asp"-->
 <!--#include virtual="/api/include/func.asp"-->
 <%
-	If GetReferer = GetCurrentHost Then 
+	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
+	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
 	Else 
 		Response.Write "{""success"":false, ""addr_idx"":0}"
 		Response.End 

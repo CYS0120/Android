@@ -1,6 +1,7 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <%
-	If GetReferer = GetCurrentHost Then 
+	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
+	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
 	Else 
 '		Response.Write "{""result"":1,""message"":""잘못된 접근방식 입니다."",""totalCount"":0,data:[]}"
 '		Response.End 

@@ -2,7 +2,16 @@
 <!--#include virtual="/api/include/db_open.asp"-->
 <!--#include virtual="/api/include/g2.asp"-->
 <%
-	If GetReferer = GetCurrentHost Then 
+	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
+    If Request.ServerVariables("HTTPS") = "on" Then
+        GetUrlProtocol = "https"
+    Else
+        GetUrlProtocol = "http"
+    End If
+	GetUrlHost = Request.ServerVariables("HTTP_HOST")
+    GetCurrentHost = GetUrlProtocol & "://" & GetUrlHost
+
+	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
 	Else 
 '		orderList = "[]"
 '		Response.ContentType = "application/json"

@@ -1,6 +1,7 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <%
-	If GetReferer = GetCurrentHost Then 
+	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
+	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
 	Else 
 		Response.Write "E^잘못된 접근방식입니다"
 		Response.End 

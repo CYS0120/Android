@@ -2,13 +2,14 @@
 <!--#include virtual="/api/include/coop_exchange_proc.asp"-->
 <%
 	'Dim txtPIN : txtPIN = Request("txtPIN")
+	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
 
 	' 111566019243 < 조성배차장님이 주신 테스트 쿠폰
     Dim txtPIN, PIN_save 
     txtPIN = GetReqStr("txtPIN","")
     PIN_save = GetReqStr("PIN_save","")
 
-	If GetReferer = GetCurrentHost Then 
+	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
 	Else 
 		Response.Write "{""result"":1,""message"":""잘못된 접근방식 입니다.""}"
 		Response.End 

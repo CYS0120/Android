@@ -8,7 +8,8 @@
     page = GetReqNum("page", 1)
     mode = GetReqStr("mode", "json")
 
-	If GetReferer = GetCurrentHost Then 
+	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
+	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
 	Else 
         If mode = "json" Then
             Response.Write "{""result"":-1,""message"":""잘못된 접근방식 입니다.""}"
