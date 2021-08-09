@@ -1,8 +1,6 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <%
-	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
-
-	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
+	If GetReferer = GetCurrentHost Then 
 	Else 
 '		cart_recom_list = "[]"
 '		Response.ContentType = "application/json"

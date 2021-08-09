@@ -6,8 +6,7 @@
 <!--#include virtual="/api/include/db_open.asp"-->
 <!--#include virtual="/api/include/func.asp"-->
 <%
-	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
-	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
+	If GetReferer = GetCurrentHost Then 
 	Else
 		Response.Write "{""result"":-1, ""message"":""정보가 불확실합니다."", ""addr_idx"":" & vAddrIdx & ", ""paddr_idx"":" & pAddrIdx & "}"
 		Response.End 

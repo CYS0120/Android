@@ -1,7 +1,6 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <%
-	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
-	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
+	If GetReferer = GetCurrentHost Then 
 	Else
         Response.Write "{""result"":2,""message"":""전화번호가 불확실합니다.""}"
 		Response.End 

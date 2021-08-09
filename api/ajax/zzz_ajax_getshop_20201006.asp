@@ -1,7 +1,6 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <%
-'	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
-'	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
+'   If GetReferer = GetCurrentHost Then 
 '	Else 
 '		Response.Write "{""result"":""0001"",""message"":""검색된 매장이 없습니다.""}"
 '		Response.End 

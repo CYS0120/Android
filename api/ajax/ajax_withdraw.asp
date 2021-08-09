@@ -1,7 +1,6 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <%
-	REFERERURL	= Request.ServerVariables("HTTP_REFERER")
-	If left(REFERERURL,19) = left(GetCurrentHost,19) Then 
+	If GetReferer = GetCurrentHost Then 
 	Else 
 		Response.Write "{""result"":1,""message"":""잘못된 접근방식 입니다.""}"
 		Response.End 
@@ -55,7 +54,26 @@
                 End With
                 Set cmd = Nothing
 
-				Session.Abandon()
+                ' 자동로그인 삭제.
+                Response.Cookies("access_token") = ""
+                Response.Cookies("access_token_secret") = ""
+                Response.Cookies("refresh_token") = ""
+                Response.Cookies("refresh_token_save") = ""
+                Response.Cookies("token_type") = ""
+                Response.Cookies("expires_in") = ""
+                Response.Cookies("auto_login_yn") = ""
+                Response.Cookies("bbq_app_type") = ""
+
+                Response.Cookies("access_token").Expires = date() - 1
+                Response.Cookies("access_token_secret").Expires = date() - 1
+                Response.Cookies("refresh_token").Expires = date() - 1
+                Response.Cookies("refresh_token_save").Expires = date() - 1
+                Response.Cookies("token_type").Expires = date() - 1
+                Response.Cookies("expires_in").Expires = date() - 1
+                Response.Cookies("auto_login_yn").Expires = date() - 1
+                Response.Cookies("bbq_app_type").Expires = date() - 1
+
+                Session.Abandon()
             Else
                 mResult = "2"
                 mMessage = "처리되지 않았습니다."
