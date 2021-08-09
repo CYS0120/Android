@@ -152,7 +152,7 @@
 				url: "/api/ajax/ajax_withdraw.asp",
 				data: $("#secssionFrm").serialize(),
 				dataType: "json",
-				succes: function(res) {
+				success: function(res) {
 					lpClose(".lp_memSecssion");
 					if(res.result == 0) {
 						showAlertMsg({msg:res.message, ok: function(){

@@ -63,11 +63,11 @@
 	ElseIf LINK_DOMAINURL = "/" Then 
 		Response.Write "{""result"":1,""url"":"""& LINK_DOMAINURL &"""}"
 	Else
-		If SITE = "BBQMALL" Or SITE = "WATAMI" Or SITE ="MWATAMI" Then
-			Response.Write "{""result"":3,""url"":"""& LINK_DOMAINURL &"""}"
-		Else 
+		If SITE = "BBQ" OR SITE = "MBBQ" Then
 			LINK_DOMAINURL = LINK_DOMAINURL & "/api/loginCheck.asp"
 			Response.Write "{""result"":2,""url"":"""& LINK_DOMAINURL &"""}"
+		Else 
+			Response.Write "{""result"":3,""url"":"""& LINK_DOMAINURL &"""}"
 		End If
 '		access_token = Session("access_token")
 '		If Not FncIsBlank(access_token) Then 
