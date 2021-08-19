@@ -35,7 +35,7 @@
 					</dl>
 					<dl>
 						<dt>이메일 :</dt>
-						<dd>coop_cs@coopnc.com</dd>
+						<dd>ksm1459@coopnc.com</dd>
 					</dl>
 					<dl>
 						<dt>홈페이지 :</dt>
