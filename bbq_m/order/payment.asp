@@ -2809,7 +2809,7 @@ function calcTotalAmount() {
 			<!--// LP Content -->
 		</div>
 		<!--// LP Container -->
-		<button type="button" class="btn btn_lp_close"><span>레이어팝업 닫기</span></button>
+		<button type="button" class="btn btn_lp_close" onclick="lpClose('.lp_privacy')"><span>레이어팝업 닫기</span></button>
 	</div>
 	<!--// Layer Popup -->
 
@@ -2832,7 +2832,7 @@ function calcTotalAmount() {
 			<!--// LP Content -->
 		</div>
 		<!--// LP Container -->
-		<button type="button" class="btn btn_lp_close"><span>레이어팝업 닫기</span></button>
+		<button type="button" class="btn btn_lp_close" onclick="lpClose('.lp_policy')"><span>레이어팝업 닫기</span></button>
 	</div>
 	<!--// Layer Popup -->
 
