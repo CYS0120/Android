@@ -1,4 +1,26 @@
-<!--#include virtual="/api/include/utf8.asp"-->
+<%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
+<%
+    Session.CodePage = "65001"
+    Response.CharSet = "UTF-8"
+    Response.AddHeader "Pragma", "no-cache"
+	Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' 크롬 80이슈
+    Response.CacheControl = "no-cache"
+    ' Response.CharSet = "euc-kr"
+
+	session.lcid	= 1042	'날짜형식 한국 형식으로 
+
+    ' // TODO : 디버그를 위해 만들어 놓은 코드
+    IS_DEBUG = false
+%>
+<!--#include virtual="/api/include/g2.asp"-->
+<!--#include virtual="/api/include/cv.asp"-->
+<!--#include virtual="/includes/cv.asp"-->
+<!--#include virtual="/api/include/json2.asp"-->
+<!--#include virtual="/api/include/db_open.asp"-->
+<!--#include virtual="/api/include/func.asp"-->
+<!--#include virtual="/api/call_api.asp"-->
+<!--#include virtual="/api/include/classes.asp"-->
+<!--#include virtual="/api/membership.asp"-->
 <%
     Dim code, domain, page
 	dim main_yn
@@ -16,6 +38,8 @@
 
 	domain = Request("domain")
     rtnUrl = Request("rtnUrl")
+
+	if instr(rtnUrl, "loginToken.asp") > 0 or instr(rtnUrl, "ajax") > 0 then rtnUrl = ""
 
     Dim returnUrl
 
@@ -36,20 +60,27 @@
 		' access_token 유지시간 7200초
 		' refresh_token 유지시간 1년
 		' refresh_token으로 기존 access_token 유지시간을 늘림. 아래 과정을 꼭 해야됨.
+
         Set api = New ApiCall
 
         api.SetMethod = "POST"
         api.RequestContentType = "application/x-www-form-urlencoded"
         api.Authorization = "Basic " & PAYCO_CLIENT_SECRET
-        ' api.ResponseContentType = "application/json"
         api.SetData = "grant_type=refresh_token&client_id=" & PAYCO_CLIENT_ID & "&refresh_token=" & refresh_token
         api.SetUrl = PAYCO_AUTH_URL & getTokenUri
 
+		' response.write "PAYCO_CLIENT_SECRET : " & PAYCO_CLIENT_SECRET &"<br>"&"<br>"
+		' response.write "PAYCO_CLIENT_ID : " & PAYCO_CLIENT_ID &"<br>"&"<br>"
+		' response.write "refresh_token : " & refresh_token &"<br>"&"<br>"
+		' response.write "PAYCO_AUTH_URL & getTokenUri : " & PAYCO_AUTH_URL & getTokenUri &"<br>"&"<br>"
+		' response.end 
+
         result = api.Run
 
-        ' Response.Write "Result > " & result & "<br>"
-        ' {"token_type":"Bearer","expires_in":"7200","refresh_token":"QUFBQVd4Mk1HM0MrSk1haE5oQldzYXFJeHkvaVpIUks3SXZZWlFJRzIvSlhmeHJpVE1uMDhlbjZuWWZZMWkyYWJicWRvenBNaklxMmdVSzcvN0dMQ1FwbUg3aWw2NFdjMXBPbkxtNXMwYW9EVnJoQ1IyWXhzck42NlBxWWM2cUhya3NGbVE9PQ==","access_token":"QUFBQXZFamo5R2Mwa0RTMFl5cFk4c2xTL1RKR2RaY0JiVGwxM3Y1MjhyQS9LZit5VVNjNEdnNTRmcjVVQzJTOXJuV1NoWjdpeDdraXp4TUxMemFjeFdLUnJLMnNYNEVFWmVFeUo0VDJGSGdLai9aSU1aU3NBblFlRkliMGRTcjhUVnRpYUhCeEQ3eGpiMDlmZ2dYeHpmWmw5YWtXVG1qUTM0M0I0Y1lnYXc5R3lHNGc3KzJpY2xNdHN1SHZFbTJXVzEwNG5YN1RqYmR5bFBSTkZuazVQU2lJWEJCYWdQRFZSMml2MThhRU9pdExhMUxFK2pDc241ZjFqRGU3LzNGZHFMMHZNdz09","access_token_secret":"9jiEQ7nhrETzkKR1"}
-
+		if IS_DEBUG then
+        	Response.Write "Result > " & result & "<br>"
+        	' {"token_type":"Bearer","expires_in":"7200","refresh_token":"QUFBQVd4Mk1HM0MrSk1haE5oQldzYXFJeHkvaVpIUks3SXZZWlFJRzIvSlhmeHJpVE1uMDhlbjZuWWZZMWkyYWJicWRvenBNaklxMmdVSzcvN0dMQ1FwbUg3aWw2NFdjMXBPbkxtNXMwYW9EVnJoQ1IyWXhzck42NlBxWWM2cUhya3NGbVE9PQ==","access_token":"QUFBQXZFamo5R2Mwa0RTMFl5cFk4c2xTL1RKR2RaY0JiVGwxM3Y1MjhyQS9LZit5VVNjNEdnNTRmcjVVQzJTOXJuV1NoWjdpeDdraXp4TUxMemFjeFdLUnJLMnNYNEVFWmVFeUo0VDJGSGdLai9aSU1aU3NBblFlRkliMGRTcjhUVnRpYUhCeEQ3eGpiMDlmZ2dYeHpmWmw5YWtXVG1qUTM0M0I0Y1lnYXc5R3lHNGc3KzJpY2xNdHN1SHZFbTJXVzEwNG5YN1RqYmR5bFBSTkZuazVQU2lJWEJCYWdQRFZSMml2MThhRU9pdExhMUxFK2pDc241ZjFqRGU3LzNGZHFMMHZNdz09","access_token_secret":"9jiEQ7nhrETzkKR1"}
+		end if
 
         Set api = Nothing
 
@@ -82,8 +113,10 @@
 
 		result = api.Run
 
-		' Response.Write "Result > " & result & "<br>"
-		' {"header":{"resultCode":0,"resultMessage":"SUCCESS","isSuccessful":true},"data":{"member":{"idNo":"10007004142832003","id":"jtest1","type":"INDIVIDUAL","status":"USE","certificationStatus":"CELLPHONE"}}}
+		if IS_DEBUG then
+        	Response.Write "Result > " & result & "<br>"
+			' {"header":{"resultCode":0,"resultMessage":"SUCCESS","isSuccessful":true},"data":{"member":{"idNo":"10007004142832003","id":"jtest1","type":"INDIVIDUAL","status":"USE","certificationStatus":"CELLPHONE"}}}
+		end if
 
 		Set oJson = JSON.Parse(result)
 
@@ -143,6 +176,12 @@
 			End With
 			Set pCmd = Nothing
 
+			if IS_DEBUG then
+				response.write "idNo : " & idNo
+				response.write "uid : " & uid
+				response.write "uname : " & uname
+			end if	
+
 			If Not (pRs.BOF Or pRs.EOF) Then
 				Session("access_token") = access_token
 				Session("access_token_secret") = access_token_secret
@@ -166,6 +205,7 @@
 				Session("emailAllowed") = isEmailAllowed
 				Session("pushAllowed") = isPushAllowed
 
+
 				Response.Cookies("access_token") = access_token
 				Response.Cookies("access_token_secret") = access_token_secret
 				Response.Cookies("token_type") = token_type
@@ -184,7 +224,8 @@
 					Response.Cookies("refresh_token").Expires = DateAdd("yyyy", 1, now())
 				end if 
 
-
+				Response.Cookies("loginCheck") = "Y"
+				
 				loginSuccess = True
 				loginMessage = ""
 				returnUrl = returnUrl & "&error="
@@ -280,6 +321,10 @@
 		<iframe src="<%=multi_domail_login_url%>" style="display:none"></iframe>
 <%
 	end if 
+
+	if IS_DEBUG then
+		response.end
+	end if
 %>
 
 		<script type="text/javascript">

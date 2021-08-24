@@ -8,7 +8,7 @@
     Dim reg_ip
 	Dim domain_str, order_mode
 	Dim add_price_yn, add_price_cnt
-	Dim reserv_date, reserv_time ' 예약일자, 예약시간
+	Dim reserv_date, reserv_time ' 예약일자, 예약시간 
 	Dim order_status
 
 	Calc_Discount_amt = 0	'마지막 할인금액 검증을 위해서
@@ -440,34 +440,108 @@
     Set aCmd = Nothing
     giftcard_serial = GetReqStr("giftcard_id","")
     brand_code = Request.Cookies("brand_code")
+	
+	' 2021-07 더페이 상품권 복수처리 시작 - 상품권 조회 주석 처리
+    'If giftcard_serial <> "" Then
+    '    Response.Cookies("giftcardSerial") = giftcard_serial
+    '    ' 상품권 조회
+    '    Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+    '    httpRequest.Open "GET", "http://api.bbq.co.kr/GiftCard_2.svc/GetGiftCard/"& giftcard_serial, False
+    '    httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
+    '    httpRequest.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+    '    httpRequest.Send
+    '    '상품권 조회
+    '    '조회 상품권 text -> json
+    '    Set oJSON = New aspJSON
+    '    postResponse = "{""list"" : " & httpRequest.responseText & "}"
+    '    oJSON.loadJSON(postResponse)
+    '    Set this = oJSON.data("list")
+    '    U_CD_BRAND = brand_code '사용브랜드코드
+    '    U_CD_PARTNER = branch_id ' 사용매장코드
+    '    AMT = this.item("AMT") ' 금액
+    '    U_YN = this.item("U_YN") ' 사용여부
+    '    '조회 상품권 text -> json
+	'
+    '    ' 상품권 사용처리 data set
+    '    If U_YN = "N" Then
+    '    Else
+    '        Response.Write "{""result"":99, ""result_msg"":""상품권이 유효하지 않습니다.""}"
+    '        Response.End
+    '    End If
+    'End If 
+	' 2021-07 더페이 상품권 복수처리 끝 - 상품권 조회 주석 처리
+	
+	' 2021-07 더페이 상품권 복수처리 시작 - 상품권 조회  
+	dim jsonGiftcard : jsonGiftcard = ""
+	dim arrGiftcard : arrGiftcard = split(giftcard_serial, "||")  
+	dim arrGiftcardAmt : arrGiftcardAmt = split(giftcard_serial, "||") ' 상품권 금액  
 
-    If giftcard_serial <> "" Then
-        Response.Cookies("giftcardSerial") = giftcard_serial
-        ' 상품권 조회
-        Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-        httpRequest.Open "GET", "http://api.bbq.co.kr/GiftCard_2.svc/GetGiftCard/"& giftcard_serial, False
-        httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
-        httpRequest.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-        httpRequest.Send
-        '상품권 조회
-        '조회 상품권 text -> json
-        Set oJSON = New aspJSON
-        postResponse = "{""list"" : " & httpRequest.responseText & "}"
-        oJSON.loadJSON(postResponse)
-        Set this = oJSON.data("list")
-        U_CD_BRAND = brand_code '사용브랜드코드
-        U_CD_PARTNER = branch_id ' 사용매장코드
-        AMT = this.item("AMT") ' 금액
-        U_YN = this.item("U_YN") ' 사용여부
-        '조회 상품권 text -> json
+	Response.Cookies("giftcardSerial") = giftcard_serial 
+  
+	For i = 0 To Ubound(arrGiftcard)
+		'giftcard_serial   = arrGiftcard(i) 
+		arrGiftcardAmt(i) = 0
+				  
+		If arrGiftcard(i) <> "" Then 
+			If jsonGiftcard = "" Then
+				jsonGiftcard = "{ ""SRV"":""HOMEPAGE"",""GIFTCARD"":["
+				jsonGiftcard = jsonGiftcard & "{""SN"":""" & arrGiftcard(i) & """}"
+			Else
+				jsonGiftcard = jsonGiftcard & ",{""SN"":""" & arrGiftcard(i) & """}"
+			End If  				 
+			'Response.Write "jsonGiftcard / " & i & " // " & jsonGiftcard & "<BR>"
+		End If
+	Next
+	  
+	If jsonGiftcard <> "" Then
+			
+		jsonGiftcard = jsonGiftcard & "]}"				  
+		'Response.Write "jsonGiftcard /// " & jsonGiftcard & "<BR>"
 
-        ' 상품권 사용처리 data set
-        If U_YN = "N" Then
-        Else
-            Response.Write "{""result"":99, ""result_msg"":""상품권이 유효하지 않습니다.""}"
-            Response.End
-        End If
-    End If
+		' 상품권 조회
+		Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+		httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
+		httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
+		httpRequest.SetRequestHeader "Content-Type", "application/json"
+		httpRequest.Send jsonGiftcard 
+		'상품권 조회
+		'조회 상품권 text -> json
+		Set oJSON = New aspJSON
+		'Response.Write "list /// " & httpRequest.responseText & "<BR>"
+		postResponse = "{""list"" : " & httpRequest.responseText & "}"
+		oJSON.loadJSON(postResponse)
+		Set this = oJSON.data("list")
+		'U_CD_BRAND = brand_code '사용브랜드코드
+		'U_CD_PARTNER = branch_id ' 사용매장코드
+		MA_RTN_CD  = this.item("Voucher_INFO").item("MA_RTN_CD") '  
+		MA_RTN_MSG = this.item("Voucher_INFO").item("MA_RTN_MSG") ' 사용여부
+		'조회 상품권 text -> json				  
+				 				 
+		Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) "_
+			& " VALUES ( '\bbq_m\order\payment_proc.asp', '"& order_num &"','"& giftcard_serial &"','http://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','"& MA_RTN_CD &"','"& MA_RTN_MSG &"', GETDATE() ) "
+		dbconn.Execute(Sql)
+
+		If MA_RTN_CD = "0000" Then 	
+			For Each row In this.item("Voucher_INFO").item("data")
+				Set this1 = this.item("Voucher_INFO").item("data").item(row) 
+				arrGiftcard(row)    = this1.item("SN")
+				arrGiftcardAmt(row) = this1.item("AMT")		 
+				AMT  = this1.item("AMT") ' 금액 
+				U_YN = this1.item("U_YN") ' 사용여부		  
+			Next
+	
+			U_CD_BRAND = brand_code '사용브랜드코드
+			U_CD_PARTNER = branch_id ' 사용매장코드
+		Else 	
+			Response.Write "{""result"":99, ""result_msg"":""" & "(" & MA_RTN_CD & ") " & MA_RTN_MSG & """}"
+			Response.End
+		End If   ' If MA_RTN_CD = "0000" Then 	
+
+	End If   ' jsonGiftcard <> "" Then 
+	'Response.Write "{""result"":99, ""result_msg"":""" & strMsg & """}"  ' test 
+	'Response.End  ' test  
+	' 2021-07 더페이 상품권 복수처리 끝   - 상품권 조회
+	
 
     If order_idx = 0 Then
         Response.Write "{""result"":1, ""result_msg"":""주문이 실패하였습니다.""}"
@@ -793,26 +867,57 @@
 			errMsg = .Parameters("@ERRMSG").Value
 		End With
 		Set pCmd = Nothing
+	
+		' 2021-07 더페이 상품권 주석 처리 시작  
+		'Set pCmd = Server.CreateObject("ADODB.Command")
+		'With pCmd
+		'	.ActiveConnection = dbconn
+		'	.NamedParameters = True
+		'	.CommandType = adCmdStoredProc
+		'	.CommandText = "bp_payment_detail_insert"
+		'
+		'	.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput,,order_idx)
+		'	.Parameters.Append .CreateParameter("@pay_method", adVarChar, adParamInput, 20, "GIFTCARD")
+		'	.Parameters.Append .CreateParameter("@pay_transaction_id", adVarChar, adParamInput, 50, event_point_productcd)
+		'	.Parameters.Append .CreateParameter("@pay_cp_id", adVarChar, adParamInput, 50, "")
+		'	.Parameters.Append .CreateParameter("@pay_subcp", adVarChar, adParamInput, 50, "")
+		'	.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput, , giftcard_amt)
+		'	.Parameters.Append .CreateParameter("@pay_approve_num", adVarChar, adParamInput, 50, "")
+		'	.Parameters.Append .CreateParameter("@pay_result_code", adVarChar, adParamInput, 10, 0)
+		'	.Parameters.Append .CreateParameter("@pay_err_msg", adVarChar, adParamInput, 1000, "")
+		'	.Parameters.Append .CreateParameter("@pay_result", adLongVarWChar, adParamInput, 2147483647, "")
+		'	.Execute
+		'End With
+		' 2021-07 더페이 상품권 주석 처리 끝 
 
-		Set pCmd = Server.CreateObject("ADODB.Command")
-		With pCmd
-			.ActiveConnection = dbconn
-			.NamedParameters = True
-			.CommandType = adCmdStoredProc
-			.CommandText = "bp_payment_detail_insert"
+		' 2021-07 더페이 상품권 복수처리 시작   
+		For i = 0 To Ubound(arrGiftcard)
+			If arrGiftcard(i) <> "" Then
+		
+				Set pCmd = Server.CreateObject("ADODB.Command")
+				With pCmd
+					.ActiveConnection = dbconn
+					.NamedParameters = True
+					.CommandType = adCmdStoredProc
+					.CommandText = "bp_payment_detail_insert"
 
-			.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput,,order_idx)
-			.Parameters.Append .CreateParameter("@pay_method", adVarChar, adParamInput, 20, "GIFTCARD")
-			.Parameters.Append .CreateParameter("@pay_transaction_id", adVarChar, adParamInput, 50, event_point_productcd)
-			.Parameters.Append .CreateParameter("@pay_cp_id", adVarChar, adParamInput, 50, "")
-			.Parameters.Append .CreateParameter("@pay_subcp", adVarChar, adParamInput, 50, "")
-			.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput, , giftcard_amt)
-			.Parameters.Append .CreateParameter("@pay_approve_num", adVarChar, adParamInput, 50, "")
-			.Parameters.Append .CreateParameter("@pay_result_code", adVarChar, adParamInput, 10, 0)
-			.Parameters.Append .CreateParameter("@pay_err_msg", adVarChar, adParamInput, 1000, "")
-			.Parameters.Append .CreateParameter("@pay_result", adLongVarWChar, adParamInput, 2147483647, "")
-			.Execute
-		End With
+					.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput,,order_idx)
+					.Parameters.Append .CreateParameter("@pay_method", adVarChar, adParamInput, 20, "GIFTCARD")
+					.Parameters.Append .CreateParameter("@pay_transaction_id", adVarChar, adParamInput, 50, arrGiftcard(i))
+					.Parameters.Append .CreateParameter("@pay_cp_id", adVarChar, adParamInput, 50, "")
+					.Parameters.Append .CreateParameter("@pay_subcp", adVarChar, adParamInput, 50, "")
+					.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput, , arrGiftcardAmt(i))
+					.Parameters.Append .CreateParameter("@pay_approve_num", adVarChar, adParamInput, 50, "")
+					.Parameters.Append .CreateParameter("@pay_result_code", adVarChar, adParamInput, 10, 0)
+					.Parameters.Append .CreateParameter("@pay_err_msg", adVarChar, adParamInput, 1000, "")
+					.Parameters.Append .CreateParameter("@pay_result", adLongVarWChar, adParamInput, 2147483647, "")
+					.Execute
+				End With
+
+			End If
+		Next
+		' 2021-07 더페이 상품권 복수처리 끝  
+
 		Set pCmd = Nothing
 	End If
 

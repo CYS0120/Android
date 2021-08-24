@@ -59,16 +59,10 @@ end if
 				</li>
 				-->
 
-				<% If SGPayOn = True Then %>
+				<%If CheckLogin() Then%>
 				<script type="text/javascript">
 					function bbqPay() {
-						<%If CheckLogin() Then%>
-						window.open('/pay/sgpay/sgpay.asp', 'popupSgpay', pgPopupOption);
-						<%Else%>
-						showConfirmMsg({msg:"로그인이 필요합니다.",ok:function(){
-							openLogin();
-						}});
-						<%End If%>
+						location.replace('/pay/sgpay2/sgpay_Mypage.asp');
 					}
 				</script>
 				<dl>

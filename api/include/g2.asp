@@ -5,12 +5,12 @@
 	Const G2_SITE_MODE = "local" ' {local, test, production}, {87서버일때, bbq서버 test일때,
 
 	dim g2_bbq_a_url, g2_bbq_d_url, g2_bbq_m_url
-	dim login_direct_ok : login_direct_ok = "N" ' Y로 하면 "조준상" 으로 바로 로그인됨 / N으로 하면 입력하는 로직 (production 이 아닐때만.)
+	dim login_direct_ok : login_direct_ok = "Y" ' Y로 하면 "조성배" 으로 바로 로그인됨 / N으로 하면 입력하는 로직 (production 이 아닐때만.)
 
 	if G2_SITE_MODE = "local" then 
-		g2_bbq_a_url = "http://abbq.themiraclesoft.com"
-		g2_bbq_d_url = "http://dbbq.themiraclesoft.com"
-		g2_bbq_m_url = "http://mbbq.themiraclesoft.com"
+		g2_bbq_a_url = "http://admin.localhost.co.kr"
+		g2_bbq_d_url = "http://www.localhost.co.kr"
+		g2_bbq_m_url = "http://m.localhost.co.kr"
 	elseif G2_SITE_MODE = "test" then 
 		g2_bbq_a_url = "http://atest.bbq.co.kr"
 		g2_bbq_d_url = "http://htest.bbq.co.kr"
@@ -80,23 +80,23 @@
 	end function 
 
 	':::::::::::::::::::::::::::::: 비비큐페이(Stargate) 관련 설정 / 2020.04.30 / Sewoni31™ ::::::::::::::::::::::::::::::
-	Dim test_accounts
-	test_accounts = "fcku19, yje0709, dkfk1571, pjc0222, lsj92319, whj11111, asaspc, test2020, mtest91, sewoni31, comeover, csungbae79, xrmjjss, santa0220, seunghu, ispace70, childgun, dkfk1571@naver.com, asasoc"
+	' Dim test_accounts
+	' test_accounts = "fcku19, yje0709, dkfk1571, pjc0222, lsj92319, whj11111, asaspc, test2020, mtest91, sewoni31, comeover, csungbae79, xrmjjss, santa0220, seunghu, ispace70, childgun, dkfk1571@naver.com, asasoc"
 
-	Dim arr_test_account
-	arr_test_account = Split(test_accounts, ", ")
+	' Dim arr_test_account
+	' arr_test_account = Split(test_accounts, ", ")
 
-	Dim nArrCnt
+	' Dim nArrCnt
 
-	SGPayOn = True
+	' SGPayOn = true
 
-	If SGPayOn = True Then
-		For nArrCnt=0 To Ubound(arr_test_account)
-			SGPayOn = False
-			If Trim(arr_test_account(nArrCnt)) = Trim(Session("userId")) Then
-				SGPayOn = True
-				Exit For
-			End If
-		Next
-	End If
+	' If SGPayOn = True Then
+	' 	For nArrCnt=0 To Ubound(arr_test_account)
+	' 		SGPayOn = False
+	' 		If Trim(arr_test_account(nArrCnt)) = Trim(Session("userId")) Then
+	' 			SGPayOn = True
+	' 			Exit For
+	' 		End If
+	' 	Next
+	' End If
 %>

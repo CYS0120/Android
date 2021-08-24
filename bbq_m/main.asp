@@ -6,21 +6,6 @@
   Response.Cookies("bbq_app_type") = "bbqAOS"
   Response.Cookies("bbq_app_type").Expires = DateAdd("yyyy", 1, now())
   end if
-
-  if trim(Session("userId")) = "" or Request.Cookies("refresh_token") <> "" then
-    access_token = Request.Cookies("access_token")
-    access_token_secret = Request.Cookies("access_token_secret")
-    refresh_token = Request.Cookies("refresh_token")
-    token_type = Request.Cookies("token_type")
-    expires_in = Request.Cookies("expires_in")
-    auto_login_yn = Request.Cookies("auto_login_yn")
-
-    multi_domail_login_url = "/api/loginToken.asp?access_token="& access_token &"&access_token_secret="& access_token_secret &"&refresh_token="& refresh_token &"&token_type="& token_type &"&expires_in="& expires_in &"&auto_login_yn="& auto_login_yn &"&domain="& domain &"&rtnUrl="& rtnUrl
-    If Request.Cookies("loginCheck") = "" Then
-        Response.Cookies("loginCheck") = "Y"
-    Response.Redirect multi_domail_login_url
-    End If
-  end if
 %>
 
 <!doctype html>
@@ -310,6 +295,7 @@
 				popup_close	= bPopRs("popup_close")
 				popup_title	= bPopRs("popup_title")
 				popup_img	= bPopRs("popup_img")
+				POPUP_LINK	= bPopRs("POPUP_LINK")
 
 				popup_img = FILE_SERVERURL & "/uploads/popup/" & popup_img
 
@@ -322,7 +308,19 @@
 		<aside class="popup">
 			<div class="inner" id="pop1">
 				<div class="area" style="width:<%=popup_width%>px;">
+<%
+				if len(POPUP_LINK) > 0 then
+%>
+					<a href="<%=POPUP_LINK%>">
+						<img src="<%=popup_img%>" alt="POPUP">
+					</a>
+<%
+				Else
+%>
 					<img src="<%=popup_img%>" alt="POPUP">
+<%
+				end if
+%>
 				</div>
 				<%If popup_close = "1" Then%>
 				<button type="button" class="today" onClick="PopupNoDispaly()">하루동안 보지않기 <i class="axi axi-close"></i></button>
@@ -366,6 +364,7 @@
 				popup_top	= bPopRs("popup_top")
 				popup_width	= bPopRs("popup_width")
 				popup_height	= bPopRs("popup_height")
+				POPUP_LINK	= bPopRs("POPUP_LINK")
 
 				CookName	= "popup_" & popup_idx
 				If Request.Cookies(CookName) = "done" Then 

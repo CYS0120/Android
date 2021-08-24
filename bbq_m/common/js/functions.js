@@ -535,7 +535,7 @@ function getMenuRecom()
 					$.each(cart_recom_list, function(k, v) 
 					{
 						opt_idx = 0;
-						menuKey = "M_"+ v.menu_idx +"_"+ opt_idx+"_"+ side.pin;
+						menuKey = "M_"+ v.menu_idx +"_"+ opt_idx+"_";
 						menuItem = "M$$"+ v.menu_idx +"$$"+ opt_idx +"$$"+ v.menu_price +"$$"+ v.menu_name +"$$"+ g2_bbq_img_url + v.THUMB_FILEPATH + v.THUMB_FILENAME;
 
 						ht += "	<div class='menuBox' id='recom_div_"+ menuKey +"'>";

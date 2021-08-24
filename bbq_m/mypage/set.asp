@@ -13,9 +13,9 @@
 
 		result = api.Run
 
-'		Response.Write "</br>PUSH 수신 동의 설정 조회 Result > " & result & "<br>"
+		' Response.Write "</br>PUSH 수신 동의 설정 조회 Result > " & result & "<br>"
 
-		'Response.end
+		' Response.end
 		' {"code":0,"message":"SUCCESS"}
 
 		Set oJson = JSON.Parse(result)
@@ -37,6 +37,8 @@
 		loginSuccess = False
 		loginMessage = "인증에 실패하였습니다."
 		returnUrl = returnUrl & "&error=no_token"
+
+		'response.write "<br/><br/>access_token : " & access_token
 %>
 <script>
 	window.location.href = "/";
@@ -47,76 +49,87 @@
 %>
 
 <%
-    Set api = New ApiCall
+	If oJson.code = 0 Then
 
-    api.SetMethod = "POST"
-    api.RequestContentType = "application/json"
-    api.Authorization = "Bearer " & Session("access_token")
-    api.SetData = "{""scope"":""ADMIN""}"
-    api.SetUrl = PAYCO_AUTH_URL & "/api/member/me"
+		Set api = New ApiCall
 
-    result = api.Run
+		api.SetMethod = "POST"
+		api.RequestContentType = "application/json"
+		api.Authorization = "Bearer " & Session("access_token")
+		api.SetData = "{""scope"":""ADMIN""}"
+		api.SetUrl = "/api/member/me"
 
-    Set api = Nothing
+		result = api.Run
 
-    Set mJ = JSON.Parse(result)
+		Set api = Nothing
 
-    ' useInfo = "{}"
+		Set mJ = JSON.Parse(result)
+
+		' useInfo = "{}"
 
 
-    If JSON.hasKey(mJ, "header") Then
-    	If JSON.hasKey(mJ.header, "resultCode") Then
-    		If mJ.header.resultCode = 0 Then
-    			emailAgree = mJ.data.member.isAllowedEmailPromotion
-    			smsAgree = mJ.data.member.isAllowedSmsPromotion
-    			email = Split(mJ.data.member.email,"@")
+		If JSON.hasKey(mJ, "header") Then
+			If JSON.hasKey(mJ.header, "resultCode") Then
+				If mJ.header.resultCode = 0 Then
+					emailAgree = mJ.data.member.isAllowedEmailPromotion
+					smsAgree = mJ.data.member.isAllowedSmsPromotion
+					email = Split(mJ.data.member.email,"@")
 
-    			If UBound(email) = 1 Then
-    				email1 = email(0)
-    				email2 = email(1)
-    			Else
-    				email1 = ""
-    				email2 = ""
-    			End If
-    			' userInfo = JSON.stringify(mJ.data.member)
-    		End If
-    	End If
-    End If
-
-	If JSON.hasKey(mJ, "data") Then
-		If JSON.hasKey(mJ.data, "member") Then
-			If JSON.hasKey(mJ.data.member, "cellphoneNumber") Then
-				useridno = mJ.data.member.idNo
-			ENd If
+					If UBound(email) = 1 Then
+						email1 = email(0)
+						email2 = email(1)
+					Else
+						email1 = ""
+						email2 = ""
+					End If
+					' userInfo = JSON.stringify(mJ.data.member)
+				End If
+			End If
 		End If
-	End if
 
-	Set cmd = Server.CreateObject("ADODB.Command")
-	if emailAgree then
-		emailAgreeYn = "Y"
-	else
-		emailAgreeYn = "N"
+		If JSON.hasKey(mJ, "data") Then
+			If JSON.hasKey(mJ.data, "member") Then
+				If JSON.hasKey(mJ.data.member, "cellphoneNumber") Then
+					useridno = mJ.data.member.idNo
+				ENd If
+			End If
+		End if
+
+		Set cmd = Server.CreateObject("ADODB.Command")
+		if emailAgree then
+			emailAgreeYn = "Y"
+		else
+			emailAgreeYn = "N"
+		end if
+
+		if smsAgree then
+			smsAgreeYn = "Y"
+		else
+			smsAgreeYn = "N"
+		end if
+
+		sql = ""
+		sql = sql & "UPDATE bt_member SET "
+		sql = sql & "	push_agree_yn = '" & pushReceiveYn & "', "
+		sql = sql & "	email_agree_yn = '" & emailAgreeYn & "', "
+		sql = sql & "	sms_agree_yn = '" & smsAgreeYn & "' "
+		sql = sql & "WHERE member_idno = '" & useridno & "'"
+
+		cmd.ActiveConnection = dbconn
+		cmd.CommandType = adCmdText
+		cmd.CommandText = sql
+
+		cmd.Execute
 	end if
 
-	if smsAgree then
-		smsAgreeYn = "Y"
-	else
-		smsAgreeYn = "N"
-	end if
 
-	sql = ""
-	sql = sql & "UPDATE bt_member SET "
-	sql = sql & "	push_agree_yn = '" & pushReceiveYn & "', "
-	sql = sql & "	email_agree_yn = '" & emailAgreeYn & "', "
-	sql = sql & "	sms_agree_yn = '" & smsAgreeYn & "' "
-	sql = sql & "WHERE member_idno = '" & useridno & "'"
+	Set api = New ApiCall
 
-	cmd.ActiveConnection = dbconn
-	cmd.CommandType = adCmdText
-	cmd.CommandText = sql
+	api.SetMethod = "POST"
+	api.RequestContentType = "application/x-www-form-urlencode"
+	api.SetUrl = g2_bbq_m_url & "/pay/sgpay2/ajax_IsRegMember.asp?corpMemberNo=" & Session("userIdNo")
 
-	cmd.Execute
-
+	isSGPay = api.Run
 %>
 
 <!doctype html>
@@ -380,6 +393,12 @@
 <% end if %>
 					</dl>
 				<% end if %>
+<% if len(isSGPay) > 0 then %>
+				<dl class="set_list">
+					<dt>비비큐페이</dt>
+					<dd><a href="/pay/sgpay2/sgpay_Mypage.asp">페이설정</a></dd>
+				</dl>
+<% end if %>
 
 				<dl class="set_list">
 					<dt>약관</dt>

@@ -74,15 +74,20 @@ Function CheckLogin
     '     LoginUserIdNo = Session("userIdNo")
     '     LoginUserName = Session("userName")
     ' Else
-        If Session("userIdNo") <> "" Then
-            LoginUserIdNo = Session("userIdNo")
-            LoginUserName = Session("userName")
-            loginResult = True
-        Else
-            LoginUserIdNo = ""
-            LoginUserName = ""
-            loginResult = False
-        End If
+    if Session("userIdNo") = "" or request.cookies("userIdNo") <> "" then
+        Session("userIdNo") = request.cookies("userIdNo")
+        Session("userName") = request.cookies("userName")
+    end if
+
+    If Session("userIdNo") <> "" Then
+        LoginUserIdNo = Session("userIdNo")
+        LoginUserName = Session("userName")
+        loginResult = True
+    Else
+        LoginUserIdNo = ""
+        LoginUserName = ""
+        loginResult = False
+    End If
     ' End If
 
     CheckLogin = loginResult
@@ -191,7 +196,8 @@ End Function
 
 Function CheckOpenTime
 	CHECK_DATETIME = year(date) & Right("0" & month(date),2) & Right("0" & day(date),2) & Right("0" & hour(time),2) & Right("0" & minute(time),2) & Right("0" & second(time),2)
-	If CHECK_DATETIME >= "20190615110000" And CHECK_DATETIME < "20190616010000" Then	'U20 축구 결승때문에 연장 체크
+	'If CHECK_DATETIME >= "20190615110000" And CHECK_DATETIME < "20190616010000" Then	'U20 축구 결승때문에 연장 체크
+	If branch_id = "1146001" then   ' 테스트매장은 언제든지 테스트 가능하도록
 		CheckOpenTime = True
 	Else
 		if G2_SITE_MODE = "production" then 

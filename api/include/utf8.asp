@@ -28,3 +28,7 @@
 <!--#include virtual="/api/include/classes.asp"-->
 <!--#include virtual="/api/membership.asp"-->
 <!--#include virtual="/api/barcode/barcode.asp"-->
+<!--#include virtual="/api/include/keep_login.asp"-->
+
+<%
+%>

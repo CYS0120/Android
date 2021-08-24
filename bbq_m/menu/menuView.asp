@@ -158,6 +158,10 @@ $(function(){
 						<li><span id="pay_amount_new"><%=FormatNumber(vMenuPrice, 0)%>원</span></li>
 					</ul>
 
+					<!-- 추천메뉴:functions.js -->
+					<div id="recom_div" class="recom"></div>
+					<!-- 추천메뉴 -->
+
 					<div class="menuList_btn clearfix" style="position:unset;margin-top:20px">
 						<button type="button" class="btn btn_list_cart btn_newImg" style="height:40px;font-size:15px;" onClick="goCart();">장바구니 담기</button>
 						<button type="button" id="btn_order" class="btn btn_list_order btn_newImg" style="height:40px;font-size:15px;"onClick="goOrder();">주문하기</button>
@@ -249,7 +253,7 @@ $(function(){
 //    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 //    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 //  })();
-
+		getMenuRecom();
 </script>
 
 
