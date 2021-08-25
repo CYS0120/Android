@@ -62,7 +62,7 @@ end if
 				<%If CheckLogin() Then%>
 				<script type="text/javascript">
 					function bbqPay() {
-						location.replace('/pay/sgpay2/sgpay_Mypage.asp');
+						window.open('/pay/sgpay/sgpay.asp', 'popupSgpay', pgPopupOption);
 					}
 				</script>
 				<dl>

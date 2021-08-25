@@ -358,8 +358,8 @@
 
 			ElseIf PAY_TYPE = "Sgpay" Then
 
-				host = g2_bbq_m_url & "/pay/sgpay2/sgpay_cancel2.asp"
-				params = "tid="& TID &"&order_num="& ORDER_ID&"&sms_msg="&sms_msg
+				host = g2_bbq_m_url & "/pay/sgpay/sgpay_cancel.asp"
+				params = "tid="& TID &"&order_num="& ORDER_ID
 				html_result = URL_Send(host, params)
 
 			Else
