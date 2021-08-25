@@ -1,4 +1,4 @@
-﻿<!--#include virtual="/api/include/utf8.asp"-->
+<!--#include virtual="/api/include/utf8.asp"-->
 
 <!doctype html>
 <html lang="ko">
@@ -112,7 +112,11 @@ jQuery(document).ready(function(e) {
 					</ul>
 				</div>
 				<div class="con">
+				<% if nidx = "1560" then %>
+					<!-- #include virtual="/brand/noticeView_smile_2.asp" -->
+				<% else %>
 					<%=CONTENTS%>
+				<% end if %>
 				</div>
 			</div>
 			<!-- //게시판 뷰 -->

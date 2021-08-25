@@ -104,7 +104,11 @@
 						</ul>
 					</div>
 					<div class="con">
+					<% if nidx = "1560" then %>
+						<!-- #include virtual="/brand/noticeView_smile_2.asp" -->
+					<% else %>
 						<%=CONTENTS%>
+					<% end if %>
 					</div>
 				</div>
 

@@ -31,15 +31,16 @@
 				<div class="group_box">
 					<dl>
 						<dt>전화번호 :</dt>
-						<dd class="group_phone"><a href="tel:070-4705-436">070-4705-4363</dd>
+						<dd class="group_phone"><a href="tel:070-4020-5289">070-4020-5289</a></dd>
 					</dl>
 					<dl>
 						<dt>이메일 :</dt>
-						<dd>smartB2B@smartcon-metaps.com</dd>
+						<dd>ksm1459@coopnc.com</dd>
 					</dl>
-					<div class="group_link">
-						<p><img src="/images/order/group_img2.png"> <a href="https://www.smartconbiz.com/#!/searching?search_type=brand&brand=1065" target="_blank" class="btn_smart">바로가기</a></p>
-					</div>
+					<dl>
+						<dt>홈페이지 :</dt>
+						<dd><a href="http://www.coopnc.com/" target="_blanck">www.coopnc.com</a></dd>
+					</dl>
 				</div>
 			</div>
 		</article>

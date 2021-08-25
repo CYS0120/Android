@@ -67,9 +67,9 @@
                 				MAIN_IMG	= bRs("MAIN_IMG")
                 				MAIN_TEXT	= bRs("MAIN_TEXT")
                 	%>
-								<li><a href="<%=bRs("link_url")%>" style="background:url('<%=SERVER_IMGPATH%>/main/<%=MAIN_IMG%>') no-repeat center top; background-size:cover;"></a></li>
-                	<% 
-								bRs.MoveNext
+                				<li><a href="<%=bRs("link_url")%>" style="background:url('<%=SERVER_IMGPATH%>/main/<%=MAIN_IMG%>') no-repeat center top; background-size:cover"></a></li>
+
+                	<% bRs.MoveNext
                 			Loop
                 		End If 
                 		bRs.close
@@ -179,8 +179,11 @@
 						<li><div class="h-main_order01"><a href="/order/delivery.asp?order_type=D">배달주문</a></div></li>
 						<li><div class="h-main_order02"><a href="/order/delivery.asp?order_type=P">포장주문</a></div></li>
 						<li><div class="h-main_order03"><a href="/coupon_use.asp">모바일 상품권주문</a></div></li>
-						<!--<li><div class="h-main_order04"><a href="https://service.smartbag.kr:18060/81000/brand_giftshop/BRA200721108465763" target="_blank">선물하기</a></div></li>-->
+<%			if Session("userId") = "csungbae79" or Session("userId") = "sunny32" or Session("userId") = "shs1104" then %>
+						<li><div class="h-main_order04"><a href="https://bbq.multicon.co.kr" target="_blank">선물하기</a></div></li>
+<%			else %>
 						<li><div class="h-main_order04"><a href="https://service.smartbag.kr:18060/81000/brand_giftshop/BRA200721108465763" target="_blank">선물하기</a></div></li>
+<%			end if %>
 					</ul>
 					<ul class="h-footer_line">
 					</ul>

@@ -3,7 +3,7 @@
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
 <%
 	Dim mmidno, GiftPrice, callMode, Gc_List, Giftcard_list
-'req mode [ insert 상품권 코드 입력(등록) , list 상품권 리스트 조회 , listCount 상품권갯수 조회 ] 
+'req mode [ insert 상품권 코드 입력(등록) , list 상품권 리스트 조회 , listCount 상품권갯수 조회 ]
     callMode = GetReqStr("callMode","")
 'req mode 끝
 '회원 IDno 가져오기
@@ -21,80 +21,12 @@
         Dim httpRequest
 
         giftPIN = GetReqStr("giftPIN","") ' 상품권 시리얼 값 판단
-    
-	    ' 2021-07 더페이 상품권 주석 처리 시작
-        'Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-        'httpRequest.Open "GET", "http://api.bbq.co.kr/GiftCard_2.svc/GetGiftCard/"& giftPIN, False
-        'httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
-        'httpRequest.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-        'httpRequest.Send
-        ''Response.Write httpRequest.responseText
-        '
-        ''# postResponse Values
-        ''ACT_TP ::처리구분
-        ''AMT : 금액
-        ''FROM_DATE ::발행일자
-        ''OK_NUM ::승인번호(조회시 사용안함)
-        ''RTN_CD ::결과코드
-        ''RTN_MSG : 결과내용
-        ''SEQ ::상품권 일련번호
-        ''SN ::상품권 번호
-        ''ST_CONFIRM ::확정여부
-        ''TO_DATE ::종료일자
-        ''U_CD_BRAND ::사용브랜드코드
-        ''U_CD_PARTNER ::사용매장코드
-        ''U_DATE ::사용일자
-        ''U_NM_PARTNER : 사용매장명
-        ''U_YN ::교환여부
-        '
-        'Set oJSON = New aspJSON
-        'postResponse = "{""list"" : " & httpRequest.responseText & "}"
-        'oJSON.loadJSON(postResponse)
-        'Set this = oJSON.data("list")
-        '
-        '
-        ''Response.Write "<script language='javascript'>alert('" & postResponse & "');</script>"
-        '
-	    'GiftPrice = this.item("AMT") '상품권 가격
-        'From_date = this.item("FROM_DATE") ' 상품권 발행일자
-        'To_date = this.item("TO_DATE") ' 상품권 종료일자
-        'Gift_SEQ = this.item("SEQ") ' 상품권 일련번호
-        'U_YN = this.item("U_YN") ' 상품권 교환여부
-        '
-        '
-        'CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WHERE used_date is null AND giftcard_number = '"& giftPIN &"'"
-        'Set Gift_Count = dbconn.Execute(CountQuery)
-        'Gift_Count.movefirst
-        '
-        '
-        'If Gift_Count("cnt") > 0 Then
-        '    Response.Write "{""result"":""1""}" ' 이미 등록 된 상품권입니다.
-        'ElseIf Gift_SEQ = 0 Then
-        '    Response.Write "{""result"":""2""}" ' 존재하지않는 상품권입니다.
-        'ElseIf U_YN <> "N"  Then
-        '    Response.Write "{""result"":""3""}" ' 이미 사용한 상품권입니다.
-        'Else
-        '
-        'Sql = "Insert Into bt_giftcard(giftcard_number, giftcard_amt, member_id, publish_date, usedate_from, usedate_to) values('"& giftPIN &"','"& GiftPrice &"','"& mmidno &"',SYSDATETIME(),'"& From_date &"','"& To_date &"')"
-        'dbconn.Execute(Sql)
-        'Response.Write "{""result"":0,""giftPIN"":""" & giftPIN &"""}"
-        '
-        'End If
 
-	    ' 2021-07 더페이 상품권 주석 처리 끝 
-		
-	    ' 2021-07 더페이 상품권 시작    
-	    dim jsonGiftcard : jsonGiftcard = ""
-    
-		jsonGiftcard = "{ ""SRV"":""HOMEPAGE"",""GIFTCARD"":["
-	    jsonGiftcard = jsonGiftcard & "{""SN"":""" & giftPIN & """}"
-        jsonGiftcard = jsonGiftcard & "]}"	
-     
-		Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-		httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
-		httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
-		httpRequest.SetRequestHeader "Content-Type", "application/json"
-        httpRequest.Send jsonGiftcard 
+        Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+        httpRequest.Open "GET", "http://api.bbq.co.kr/GiftCard_2.svc/GetGiftCard/"& giftPIN, False
+        httpRequest.SetRequestHeader "AUTH_KEY", "BF84B3C90590"
+        httpRequest.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+        httpRequest.Send
         'Response.Write httpRequest.responseText
 
         '# postResponse Values
@@ -113,51 +45,38 @@
         'U_DATE ::사용일자
         'U_NM_PARTNER : 사용매장명
         'U_YN ::교환여부
-      
-		Set oJSON = New aspJSON 
-		postResponse = "{""list"" : " & httpRequest.responseText & "}"
-		oJSON.loadJSON(postResponse)
-		Set this = oJSON.data("list")
-     
-		Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) "_
-			& " VALUES ( '\api\ajax\ajax_getGiftCard.asp', '"& "" &"','"& giftPIN &"','http://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','"& this.item("Voucher_INFO").item("MA_RTN_CD") &"','"& this.item("Voucher_INFO").item("MA_RTN_MSG") &"', GETDATE() ) "
-		dbconn.Execute(Sql)
 
+        Set oJSON = New aspJSON
+        postResponse = "{""list"" : " & httpRequest.responseText & "}"
+        oJSON.loadJSON(postResponse)
+        Set this = oJSON.data("list")
 
-    	For Each row In this.item("Voucher_INFO").item("data")
-			Set this1 = this.item("Voucher_INFO").item("data").item(row) 
-			 			
-	        GiftPrice = this1.item("AMT")       ' 상품권 가격
-            From_date = this1.item("FROM_DATE") ' 상품권 발행일자
-            To_date   = this1.item("TO_DATE")   ' 상품권 종료일자
-            Gift_SEQ  = this1.item("SEQ")       ' 상품권 일련번호
-            U_YN      = this1.item("U_YN")      ' 상품권 교환여부
-    
-            'CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WHERE used_date is null AND giftcard_number = '"& giftPIN &"'"
-            CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WHERE giftcard_number = '"& giftPIN &"'"
-            Set Gift_Count = dbconn.Execute(CountQuery)
-            Gift_Count.movefirst
-     
+	    GiftPrice = this.item("AMT") '상품권 가격
+        From_date = this.item("FROM_DATE") ' 상품권 발행일자
+        To_date = this.item("TO_DATE") ' 상품권 종료일자
+        Gift_SEQ = this.item("SEQ") ' 상품권 일련번호
+        U_YN = this.item("U_YN") ' 상품권 교환여부
 
-            If U_YN <> "N"  Then
-                Response.Write "{""result"":""3""}" ' 이미 사용한 상품권입니다.
-            ElseIf Gift_Count("cnt") > 0 Then
-                Response.Write "{""result"":""1""}" ' 이미 등록 된 상품권입니다.
-            ElseIf Gift_SEQ = 0 Then
-                Response.Write "{""result"":""2""}" ' 존재하지않는 상품권입니다.
-            Else 
-                Sql = "Insert Into bt_giftcard(giftcard_number, giftcard_amt, member_id, publish_date, usedate_from, usedate_to) values('"& giftPIN &"','"& GiftPrice &"','"& mmidno &"',SYSDATETIME(),'"& From_date &"','"& To_date &"')"
-                dbconn.Execute(Sql)
-                Response.Write "{""result"":0,""giftPIN"":""" & giftPIN &"""}" 
-            End If 
-     
+        
+        CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WHERE used_date is null AND giftcard_number = '"& giftPIN &"'"
+        Set Gift_Count = dbconn.Execute(CountQuery)
+        Gift_Count.movefirst
 
-		Next
+        
+        If Gift_Count("cnt") > 0 Then
+            Response.Write "{""result"":""1""}" ' 이미 등록 된 상품권입니다.
+        ElseIf Gift_SEQ = 0 Then
+            Response.Write "{""result"":""2""}" ' 존재하지않는 상품권입니다.
+        ElseIf U_YN <> "N"  Then
+            Response.Write "{""result"":""3""}" ' 이미 사용한 상품권입니다.
+        Else
+        
+        Sql = "Insert Into bt_giftcard(giftcard_number, giftcard_amt, member_id, publish_date, usedate_from, usedate_to) values('"& giftPIN &"','"& GiftPrice &"','"& mmidno &"',SYSDATETIME(),'"& From_date &"','"& To_date &"')"
+        dbconn.Execute(Sql)
+        Response.Write "{""result"":0,""giftPIN"":""" & giftPIN &"""}"
 
-      
+        End If
 
-
-	    ' 2021-07 더페이 상품권 끝 
         
     End If
 '상품권 코드 입력(등록) 끝

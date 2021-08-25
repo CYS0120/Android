@@ -217,11 +217,11 @@
 					<ul class="li_style2">
 						<li>
 							<span>개인정보 관리책임자</span>
-							이 름 : 김선희<br />
+							이 름 : 김현섭<br />
 							소 속 : DX팀<br />
 							직 위 : 상무<br />
 							전 화 : 02-3403-9147<br />
-							메 일 : sunhee.kim@bbq.co.kr <br />
+							메 일 : hyeonseop@bbq.co.kr <br />
 						</li>
 					</ul>
 					<br />

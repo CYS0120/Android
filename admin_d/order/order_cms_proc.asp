@@ -22,23 +22,27 @@ Else
 	cms_type = "INFO"
 End If
 
+
 If proc = "C" Then	'주문취소 처리
-    host = CANCEL_BBQ_DOMAIN & "/pay/pay_cancel.asp"
-    'host = "http://1087.g2i.co.kr/pay/pay_cancel.asp"
-    params = "order_id="&orderid&"&sms_msg="&sms_msg
+    'host = CANCEL_BBQ_DOMAIN & "/pay/pay_cancel.asp"
+    host = "http://bbq_m.localhost.co.kr/pay/pay_cancel.asp"  ' 2021-07 더페이 상품권 복수 처리 테스트용
+    
+	params = "order_id=" & orderid & "&sms_msg=" & sms_msg
+	 
 	html_result = URL_Send(host, params)
-'    Response.write "result_full : " & html_result & "<BR>"
-    arr_result = Split(html_result, "|")
+    Response.write "result_full : " & html_result & "<BR>"
+    arr_result = Split(html_result&"|", "|")
 
     If Trim(arr_result(0)) = "SUCC" Then
 		Response.Write "Y^등록 되었습니다"
     Else
-		Response.Write "E^결제 취소가 실패했습니다"&arr_result(1)
+		Response.Write "E^결제 취소가 실패했습니다" & arr_result(1)
 		Response.End 
     End If
 Else
 	Response.Write "Y^등록 되었습니다"
 End If 
+
 Sql = "	Insert "& BBQHOME_DB &".DBO.T_CMS_LOG(orderid, username, note1, regdate, cms_type) " & _
 	"	Values('"& orderid &"','"& username &"','"& sms_msg &"', GetDate(), '"& cms_type &"')"
 conn.Execute(Sql)
