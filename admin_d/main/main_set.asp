@@ -39,62 +39,26 @@ function AdjustDiv(proc_type, main_kind){
 	});
 }
 
-function InputCheck(){
+function InputCheck(main_kind){
 	var f = document.inputfrm;
 	// alert(f.IMGNUM.value);
 	if (f.IMGNUM.value == "W1") {
 		if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
 	} else if (f.IMGNUM.value == "W2") {
-		// if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
 		if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
 	} else if (f.IMGNUM.value == "W3") {
-		// if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
-		// if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
 		if (document.getElementById("txtToDate_3").value == ""){alert("3번 배너 종료일자를 입력해주세요.");f.txtToDate_3.focus(); return false;}
 	} else if (f.IMGNUM.value == "W4") {
-		// if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
-		// if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
-		// if (document.getElementById("txtToDate_3").value == ""){alert("3번 배너 종료일자를 입력해주세요.");f.txtToDate_3.focus(); return false;}
 		if (document.getElementById("txtToDate_4").value == ""){alert("4번 배너 종료일자를 입력해주세요.");f.txtToDate_4.focus(); return false;}
 	} else if (f.IMGNUM.value == "W5") {
-		// if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
-		// if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
-		// if (document.getElementById("txtToDate_3").value == ""){alert("3번 배너 종료일자를 입력해주세요.");f.txtToDate_3.focus(); return false;}
-		// if (document.getElementById("txtToDate_4").value == ""){alert("4번 배너 종료일자를 입력해주세요.");f.txtToDate_4.focus(); return false;}
 		if (document.getElementById("txtToDate_5").value == ""){alert("5번 배너 종료일자를 입력해주세요.");f.txtToDate_5.focus(); return false;}
 	} else if (f.IMGNUM.value == "W6") {
-		// if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
-		// if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
-		// if (document.getElementById("txtToDate_3").value == ""){alert("3번 배너 종료일자를 입력해주세요.");f.txtToDate_3.focus(); return false;}
-		// if (document.getElementById("txtToDate_4").value == ""){alert("4번 배너 종료일자를 입력해주세요.");f.txtToDate_4.focus(); return false;}
-		// if (document.getElementById("txtToDate_5").value == ""){alert("5번 배너 종료일자를 입력해주세요.");f.txtToDate_5.focus(); return false;}
 		if (document.getElementById("txtToDate_6").value == ""){alert("6번 배너 종료일자를 입력해주세요.");f.txtToDate_6.focus(); return false;}
 	} else if (f.IMGNUM.value == "W7") {
-		// if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
-		// if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
-		// if (document.getElementById("txtToDate_3").value == ""){alert("3번 배너 종료일자를 입력해주세요.");f.txtToDate_3.focus(); return false;}
-		// if (document.getElementById("txtToDate_4").value == ""){alert("4번 배너 종료일자를 입력해주세요.");f.txtToDate_4.focus(); return false;}
-		// if (document.getElementById("txtToDate_5").value == ""){alert("5번 배너 종료일자를 입력해주세요.");f.txtToDate_5.focus(); return false;}
-		// if (document.getElementById("txtToDate_6").value == ""){alert("6번 배너 종료일자를 입력해주세요.");f.txtToDate_6.focus(); return false;}
 		if (document.getElementById("txtToDate_7").value == ""){alert("7번 배너 종료일자를 입력해주세요.");f.txtToDate_7.focus(); return false;}
 	} else if (f.IMGNUM.value == "W8") {
-		// if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
-		// if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
-		// if (document.getElementById("txtToDate_3").value == ""){alert("3번 배너 종료일자를 입력해주세요.");f.txtToDate_3.focus(); return false;}
-		// if (document.getElementById("txtToDate_4").value == ""){alert("4번 배너 종료일자를 입력해주세요.");f.txtToDate_4.focus(); return false;}
-		// if (document.getElementById("txtToDate_5").value == ""){alert("5번 배너 종료일자를 입력해주세요.");f.txtToDate_5.focus(); return false;}
-		// if (document.getElementById("txtToDate_6").value == ""){alert("6번 배너 종료일자를 입력해주세요.");f.txtToDate_6.focus(); return false;}
-		// if (document.getElementById("txtToDate_7").value == ""){alert("7번 배너 종료일자를 입력해주세요.");f.txtToDate_7.focus(); return false;}
 		if (document.getElementById("txtToDate_8").value == ""){alert("8번 배너 종료일자를 입력해주세요.");f.txtToDate_8.focus(); return false;}
 	} else if (f.IMGNUM.value == "W9") {
-		// if (document.getElementById("txtToDate_1").value == ""){alert("1번 배너 종료일자를 입력해주세요.");f.txtToDate_1.focus(); return false;}
-		// if (document.getElementById("txtToDate_2").value == ""){alert("2번 배너 종료일자를 입력해주세요.");f.txtToDate_2.focus(); return false;}
-		// if (document.getElementById("txtToDate_3").value == ""){alert("3번 배너 종료일자를 입력해주세요.");f.txtToDate_3.focus(); return false;}
-		// if (document.getElementById("txtToDate_4").value == ""){alert("4번 배너 종료일자를 입력해주세요.");f.txtToDate_4.focus(); return false;}
-		// if (document.getElementById("txtToDate_5").value == ""){alert("5번 배너 종료일자를 입력해주세요.");f.txtToDate_5.focus(); return false;}
-		// if (document.getElementById("txtToDate_6").value == ""){alert("6번 배너 종료일자를 입력해주세요.");f.txtToDate_6.focus(); return false;}
-		// if (document.getElementById("txtToDate_7").value == ""){alert("7번 배너 종료일자를 입력해주세요.");f.txtToDate_7.focus(); return false;}
-		// if (document.getElementById("txtToDate_8").value == ""){alert("8번 배너 종료일자를 입력해주세요.");f.txtToDate_8.focus(); return false;}
 		if (document.getElementById("txtToDate_9").value == ""){alert("9번 배너 종료일자를 입력해주세요.");f.txtToDate_9.focus(); return false;}
 	}		
 
@@ -102,7 +66,7 @@ function InputCheck(){
 		async: true,
 		type: "POST",
 		url: "main_set_proc.asp",
-		data: $("#inputfrm").serialize(),
+		data: $("#inputfrm").serialize()+"&main_kind="+main_kind,
 		dataType: "text",
 		success: function (data) {
 			alert(data.split("^")[1]);
@@ -305,6 +269,10 @@ function DateYn(GB, check_){
 					</table>
 				</div>
 			</div>
+<%
+	UploadDir	= FncGetUploadDir(CD)
+	UPIMG_DIR	= UploadDir &"/main"
+%>
             <div class="section section_main">
 				<form id="inputfrm" name="inputfrm" method="POST">
 				<input type="hidden" name="CD" value="<%=CD%>">
@@ -402,6 +370,7 @@ function DateYn(GB, check_){
 			End If
 
 %>
+				<input type="hidden" id="main_kind<%=i%>" name="main_kind<%=i%>" value="<%=main_kind%>">
 				<div class="section_main_img" id="Div<%=main_kind%>">
 					<table>
 						<tr>
@@ -411,7 +380,13 @@ function DateYn(GB, check_){
 									<input id="WMAINIMG<%=i%>" name="WMAINIMG<%=i%>" class="upload-name" value="<%=main_img%>" readonly>
 									<label for="WMAINIMG<%=i%>" onClick="OpenUploadIMG('WMAINIMG<%=i%>','UPIMG_DIR')">찾아보기</label>
 									<span>이미지 사이즈(단위:픽셀)-가로 958px, 세로 448px, 확장자 jpg <%If Not FncIsBlank(main_img) Then%><%=main_img%><%End If%></span>
+<%
+								If len(main_img) > 0 Then
+%>
 									<img src="https://img.bbq.co.kr:449/uploads/bbq_d/main/<%=main_img%>" width="245">
+<%
+								End If
+%>
 								</div>
 							</td>
 						</tr>
@@ -466,7 +441,7 @@ function DateYn(GB, check_){
 						<tr>
 							<td width=*>
 								<div style="text-align:right;">
-									<input type="button" value="저장" class="btn_white125" onClick="InputCheck()">
+									<input type="button" value="저장" class="btn_white125" onClick="InputCheck('<%=main_kind%>')">
 								</div>
 							</td>
 							<td width=13>

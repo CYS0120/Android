@@ -8,14 +8,12 @@
 <!-- #include virtual="/inc/admin_check.asp" -->
 <%
 	brand_code	= FncBrandDBCode(CD)
-	IMGNUM		= InjRequest("IMGNUM")
-	' Response.Write "Y^"&IMGNUM
+
+	main_kind 	= InjRequest("main_kind")
+	' Response.Write "Y^"&main_kind
 	' response.end
-
-
-	i = Cint(replace(IMGNUM, "W", ""))
+	i = Cint(replace(main_kind, "W", ""))
 		
-	main_kind 	= IMGNUM
 	main_text	= InjRequest("WMAINTEXT"&i)
 	main_img	= InjRequest("WMAINIMG"&i)
 	link_url	= InjRequest("WLINKURL"&i)
