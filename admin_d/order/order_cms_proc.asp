@@ -24,13 +24,13 @@ End If
 
 
 If proc = "C" Then	'주문취소 처리
-    'host = CANCEL_BBQ_DOMAIN & "/pay/pay_cancel.asp"
-    host = "http://bbq_m.localhost.co.kr/pay/pay_cancel.asp"  ' 2021-07 더페이 상품권 복수 처리 테스트용
+    host = CANCEL_BBQ_DOMAIN & "/pay/pay_cancel.asp"
+    'host = "/pay/pay_cancel.asp"  ' 2021-07 더페이 상품권 복수 처리 테스트용
     
 	params = "order_id=" & orderid & "&sms_msg=" & sms_msg
 	 
 	html_result = URL_Send(host, params)
-    Response.write "result_full : " & html_result & "<BR>"
+    'Response.write "result_full : " & html_result & "<BR>"
     arr_result = Split(html_result&"|", "|")
 
     If Trim(arr_result(0)) = "SUCC" Then

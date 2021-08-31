@@ -362,6 +362,13 @@
 				params = "tid="& TID &"&order_num="& ORDER_ID
 				html_result = URL_Send(host, params)
 
+
+			ElseIf PAY_TYPE = "Sgpay2" Then
+
+				host = g2_bbq_m_url & "/pay/sgpay2/sgpay_cancel2.asp"
+				params = "tid="& TID &"&order_num="& ORDER_ID&"&sms_msg="&sms_msg
+				html_result = URL_Send(host, params)
+
 			Else
 				html_result = "SUCC|"
 			End If
@@ -485,6 +492,8 @@
 			ElseIf PAY_TYPE = "Paycoin" Then 
 				payMethodCode = "41"
 			ElseIf PAY_TYPE = "Sgpay" Then 
+				payMethodCode = "42"
+			ElseIf PAY_TYPE = "Sgpay2" Then 
 				payMethodCode = "42"
 			ElseIf PAY_TYPE = "Later" Then 
 				payMethodCode = "23"

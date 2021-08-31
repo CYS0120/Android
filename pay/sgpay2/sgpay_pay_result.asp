@@ -156,9 +156,9 @@
 					vBranchName = aRs("branch_name")
 					vBranchTel = aRs("branch_tel")
 					vDeliveryFee = aRs("delivery_fee")
-					vSgpay_merchant = aRs("sgpay_merchant")
+					s_MERTNO = aRs("sgpay_merchant_v2")
 
-					If vSgpay_merchant = "" Then
+					If s_MERTNO = "" Then
 						shopInfoError = True
 						resultMsg = "매장정보가 잘못되었습니다."
 
@@ -380,10 +380,10 @@
 					.CommandText = "bp_payment_detail_insert"
 
 					.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput,,order_idx)
-					.Parameters.Append .CreateParameter("@pay_method", adVarChar, adParamInput, 10, "SGPAY")
+					.Parameters.Append .CreateParameter("@pay_method", adVarChar, adParamInput, 10, "SGPAY2")
 					.Parameters.Append .CreateParameter("@pay_transaction_id", adVarChar, adParamInput, 50, stdPayUniqNo)
 					.Parameters.Append .CreateParameter("@pay_cp_id", adVarChar, adParamInput, 50, g_CORPNO)
-					.Parameters.Append .CreateParameter("@pay_subcp", adVarChar, adParamInput, 50, g_MERTNO)
+					.Parameters.Append .CreateParameter("@pay_subcp", adVarChar, adParamInput, 50, s_MERTNO)
 					.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput,, applPrice)
 					.Parameters.Append .CreateParameter("@pay_approve_num", adVarChar, adParamInput, 50, applNum)
 					.Parameters.Append .CreateParameter("@pay_result_code", adVarChar, adParamInput, 10, resultCode)
@@ -412,7 +412,7 @@
 					.Parameters.Append .CreateParameter("@order_num", adVarChar, adParamInput, 50, order_num)
 					.Parameters.Append .CreateParameter("@amt", adCurrency, adParamInput,, AMOUNT)
 					.Parameters.Append .CreateParameter("@corporation", adVarChar, adParamInput, 32, g_CORPNO)
-					.Parameters.Append .CreateParameter("@merchant", adVarChar, adParamInput, 32, g_MERTNO)
+					.Parameters.Append .CreateParameter("@merchant", adVarChar, adParamInput, 32, s_MERTNO)
 					.Parameters.Append .CreateParameter("@corpMemberNo", adVarChar, adParamInput, 100, USER_ID)
 					.Parameters.Append .CreateParameter("@userMngNo", adVarChar, adParamInput, 100, userMngNo)
 					.Parameters.Append .CreateParameter("@txid", adVarChar, adParamInput, 32, stdPayUniqNo)
@@ -1149,7 +1149,7 @@
 					End If 
 				End If
 
-				Response.redirect "/order/orderComplete.asp?order_idx=" & order_idx & "&pm=Sgpay"
+				Response.redirect "/order/orderComplete.asp?order_idx=" & order_idx & "&pm=Sgpay2"
 
 				Response.End
 			Else

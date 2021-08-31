@@ -143,46 +143,22 @@
 	' 회원관리번호 추출
 	'-----------------------------------------------------------------------------
 	Function GetuserMngNo(ByVal f_corpMemberNo)
-
-		' //-------------------------------------------------------
-		' // 1. 파라미터 설정
-		' //-------------------------------------------------------
-		' // 입력 파라미터
-		corpNo 			= g_CORPNO			'// [필수] 기업관리번호
-		mertNo 			= s_MERTNO			'// [필수] 가맹점관리번호
-		
-		' //-------------------------------------------------------
-		' // 2. 암호화 대상 필드 Seed 암호화  
-		' //-------------------------------------------------------
-		f_corpMemberNo 	= seedEncrypt(f_corpMemberNo, g_SEEDKEY, g_SEEDIV)
-
-		' //-------------------------------------------------------
-		' // 3. 위변조 방지체크를 위한 signature 생성
-		' //   (순서주의:연동규약서 참고)
-		' //-------------------------------------------------------
-		srcStr = ""
-		srcStr = "corpNo=" & corpNo
-		srcStr = srcStr & "&mertNo=" & mertNo
-		srcStr = srcStr & "&corpMemberNo=" & f_corpMemberNo
-
-		signature = srcStr & "&hashKey=" & g_HASHKEY
-		signature = SHA256_Encrypt(signature)
-
-		' //-------------------------------------------------------
-		' // 4. API 전달 데이터 세팅
-		' //-------------------------------------------------------
-		srcStr = srcStr & "&signature=" & signature
-		Result = sgpay_Call_URL(sgpay_MemInfoUrl, srcStr)
-
-		' JSON 객체 생성
-		Set readTokenToJson = New aspJSON
-		' JSON 문자열 파싱
-		readTokenToJson.loadJSON(Result)
-		if readTokenToJson.data("resultCode") = "0000" and readTokenToJson.data("statusCd") = "0" then
-			GetuserMngNo = seedDecrypt(readTokenToJson.data("userMngNo"), g_SEEDKEY, g_SEEDIV)
+		if len(f_corpMemberNo) > 0 and len(session("sgpay_userMngNo")) > 0 then
+			GetuserMngNo = session("sgpay_userMngNo")
 		else
-			GetuserMngNo = ""
-		end if
+			Result = GetuserInfo(f_corpMemberNo)
+
+			' JSON 객체 생성
+			Set readTokenToJson = New aspJSON
+			' JSON 문자열 파싱
+			readTokenToJson.loadJSON(Result)
+			if readTokenToJson.data("resultCode") = "0000" and readTokenToJson.data("statusCd") = "0" then
+				GetuserMngNo = seedDecrypt(readTokenToJson.data("userMngNo"), g_SEEDKEY, g_SEEDIV)
+			else
+				GetuserMngNo = ""
+			end if
+			session("sgpay_userMngNo") = GetuserMngNo
+		end if	
 	end Function
 
 
@@ -196,7 +172,7 @@
 		' //-------------------------------------------------------
 		' // 입력 파라미터
 		corpNo 			= g_CORPNO			'// [필수] 기업관리번호
-		mertNo 			= s_MERTNO			'// [필수] 가맹점관리번호
+		mertNo 			= g_MERTNO			'// [필수] 가맹점관리번호
 		
 		' //-------------------------------------------------------
 		' // 2. 암호화 대상 필드 Seed 암호화  
@@ -234,14 +210,14 @@
 	'-----------------------------------------------------------------------------
 	' 결제취소
 	'-----------------------------------------------------------------------------
-	Function PayCancel(ByVal f_corpMemberNo, ByVal f_userMngNo, ByVal f_stdPayUniqNo, ByVal f_cancelMsg)
+	Function PayCancel(ByVal f_mertNo, ByVal f_corpMemberNo, ByVal f_userMngNo, ByVal f_stdPayUniqNo, ByVal f_cancelMsg)
 
 		' //-------------------------------------------------------
 		' // 1. 파라미터 설정
 		' //-------------------------------------------------------
 		' // 입력 파라미터
 		corpNo 			= g_CORPNO			'// [필수] 기업관리번호
-		mertNo 			= s_MERTNO			'// [필수] 가맹점관리번호
+		mertNo 			= f_mertNo			'// [필수] 가맹점관리번호
 		
 		' //-------------------------------------------------------
 		' // 2. 암호화 대상 필드 Seed 암호화  
@@ -310,7 +286,7 @@
 		' //-------------------------------------------------------
 		' // 입력 파라미터
 		corpNo 			= g_CORPNO			'// [필수] 기업관리번호
-		mertNo 			= s_MERTNO			'// [필수] 가맹점관리번호
+		mertNo 			= g_MERTNO			'// [필수] 가맹점관리번호
 		
 		' //-------------------------------------------------------
 		' // 2. 암호화 대상 필드 Seed 암호화  
@@ -336,6 +312,47 @@
 		Result = sgpay_Call_URL(sgpay_MemInfoUrl, srcStr)
 
 		GetuserInfo = Result
+	end Function
+
+
+	'-----------------------------------------------------------------------------
+	' 회원정보 간편결제 결제수단 정보
+	'-----------------------------------------------------------------------------
+	Function GetpayInfo(ByVal f_corpMemberNo, ByVal f_userMngNo)
+
+		' //-------------------------------------------------------
+		' // 1. 파라미터 설정
+		' //-------------------------------------------------------
+		' // 입력 파라미터
+		corpNo 			= g_CORPNO			'// [필수] 기업관리번호
+		mertNo 			= g_MERTNO			'// [필수] 가맹점관리번호
+		
+		' //-------------------------------------------------------
+		' // 2. 암호화 대상 필드 Seed 암호화  
+		' //-------------------------------------------------------
+		f_corpMemberNo 	= seedEncrypt(f_corpMemberNo, g_SEEDKEY, g_SEEDIV)
+		f_userMngNo 	= seedEncrypt(f_userMngNo, g_SEEDKEY, g_SEEDIV)
+
+		' //-------------------------------------------------------
+		' // 3. 위변조 방지체크를 위한 signature 생성
+		' //   (순서주의:연동규약서 참고)
+		' //-------------------------------------------------------
+		srcStr = ""
+		srcStr = "corpNo=" & corpNo
+		srcStr = srcStr & "&mertNo=" & mertNo
+		srcStr = srcStr & "&corpMemberNo=" & f_corpMemberNo
+		srcStr = srcStr & "&userMngNo=" & f_userMngNo
+
+		signature = srcStr & "&hashKey=" & g_HASHKEY
+		signature = SHA256_Encrypt(signature)
+
+		' //-------------------------------------------------------
+		' // 4. API 전달 데이터 세팅
+		' //-------------------------------------------------------
+		srcStr = srcStr & "&signature=" & signature
+		Result = sgpay_Call_URL(sgpay_payselUrl, srcStr)
+
+		GetpayInfo = Result
 	end Function
 
 %>

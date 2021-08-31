@@ -83,7 +83,8 @@
 	// 매장선택부터 않했다면 메인으로 ㄱ
 	if (branch_data != "" && typeof(branch_data) != "undefined" && branch_data != "" && branch_data != null) {
 		alert("잘못된 접근입니다.");
-		history.back();
+		//history.back();
+		document.location.href='/';
 	} else {
 		alert("매장선택이 안되어있습니다. 매장선택부터 해주시기 바랍니다.");
 		document.location.href='/order/selection.asp?order_type=D';
@@ -1205,7 +1206,7 @@ function calcTotalAmount() {
 		}
 
 		var pay_method = $("#pay_method").val();
-		if (pay_method=='Point' || pay_method=='Later' || pay_method=='ECoupon' || pay_method=='Cash' || pay_method=='Paycoin' || pay_method=='Sgpay'){
+		if (pay_method=='Point' || pay_method=='Later' || pay_method=='ECoupon' || pay_method=='Cash' || pay_method=='Paycoin' || pay_method=='Sgpay' || pay_method=='Sgpay2'){
 			ClickCheck = 1;
 		}
 
@@ -1347,6 +1348,7 @@ function calcTotalAmount() {
 	function goPay() {
 		var win_pay = null;
 		var pay_method = $("#pay_method").val();
+		alert(pay_method);
 		var agent = navigator.userAgent.toLowerCase();
 
 		$("#o_form input[name=pay_method]").val(pay_method);
@@ -1423,15 +1425,29 @@ function calcTotalAmount() {
 				}
 				setTimeout("ClickCheck = 0", 1000);
 				break;
-			// SGPAY 추가 / Sewoni31™ / 2019.12.09
+			// SGPAY 추가
 			case "Sgpay":
+				/*
 				<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 				<% else %>
 					win_pay = window.open("","popupSgpay",pgPopupOption);
 					$("#o_form").attr("target", "popupSgpay");
 				<% end if %>
-
+				*/
 				$("#o_form").attr("action", "/pay/sgpay/sgpay.asp");
+				$("#o_form").submit();
+				setTimeout("ClickCheck = 0", 1000);
+				break;
+			// SGPAY2 추가
+			case "Sgpay2":
+				/*
+				<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
+				<% else %>
+					win_pay = window.open("","popupSgpay",pgPopupOption);
+					$("#o_form").attr("target", "popupSgpay");
+				<% end if %>
+				*/
+				$("#o_form").attr("action", "/pay/sgpay2/sgpay_pay.asp");
 				$("#o_form").submit();
 				setTimeout("ClickCheck = 0", 1000);
 				break;
@@ -2407,18 +2423,22 @@ function calcTotalAmount() {
           <dd>
              <ul>
                 <% if cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) then %>
-                   <% If vUsePAYCOIN = "Y" Then %>
-                      <li><button type="button" id="payment_paycoin" onclick="javascript:setPayMethod('Paycoin');" class="payment_choiceSel"><img src="../images/order/paycoin_event_label2.png" alt="페이코인 50%" class="payco"/>&nbsp;페이코인</button></li>
-                   <% end if %>
+					<% If vUsePAYCOIN = "Y" Then %>
+						<li><button type="button" id="payment_paycoin" onclick="javascript:setPayMethod('Paycoin');" class="payment_choiceSel"><img src="../images/order/paycoin_event_label2.png" alt="페이코인 50%" class="payco"/>&nbsp;페이코인</button></li>
+					<% end if %>
                 <% end if %>
 
                 <% If vCPID <> "" And vUseDANAL = "Y" Then %>
-                   <li><button type="button" id="payment_card" onclick="javascript:setPayMethod('Card');" class="payment_choiceSel">신용카드</button></li>
-                   <li><button type="button" id="payment_phone" onclick="javascript:setPayMethod('Phone');" class="payment_choiceSel">휴대전화 결제</button></li>
+					<li><button type="button" id="payment_card" onclick="javascript:setPayMethod('Card');" class="payment_choiceSel">신용카드</button></li>
+					<li><button type="button" id="payment_phone" onclick="javascript:setPayMethod('Phone');" class="payment_choiceSel">휴대전화 결제</button></li>
                 <% end if %>
 
                 <% If vUseSGPAY = "Y" AND CheckLogin() Then %>
-                   <li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel">BBQ PAY</button></li>
+					<% if false then ' false 는 신규 sgpay %>
+					<li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel">BBQ PAY</button></li>
+    	            <% else %>
+					<li><button type="button" id="payment_sgpay2" onclick="javascript:setPayMethod('Sgpay2');" class="payment_choiceSel">BBQ PAY</button></li>
+	                <% end if %>
                 <% end if %>
 
                 <%

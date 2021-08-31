@@ -32,6 +32,25 @@
 		Response.End
 	End If
 
+	' 간편결제 등록 여부 확인
+	payInfo = GetpayInfo(g_corpMemberNo, g_userMngNo)
+	' JSON 객체 생성
+	Set payInfoToJson = New aspJSON
+	' JSON 문자열 파싱
+	payInfoToJson.loadJSON(Result)
+	sgpay_payListCnt = payInfoToJson.data("payListCnt")
+	if sgpay_payListCnt > 0 then
+	else
+%>
+<script>
+	alert('간편결제 등록이 되지 않은 사용자입니다. 먼저 가입을 부탁드립니다.');
+	document.location.href = "/pay/sgpay2/sgpay_MemReg.asp";
+</script>
+<%
+		Response.End
+	end if
+
+
 	' 매장정보 조회...
 	Set aCmd = Server.CreateObject("ADODB.Command")
 
@@ -58,9 +77,10 @@
 		vPayco_Seller = aRs("payco_seller")
 		vPayco_Cpid = aRs("payco_cpid")
 		vPayco_Itemcd = aRs("payco_itemcd")
-		vSgpay_Merchantcd = aRs("sgpay_merchant")
+		' s_MERTNO = aRs("sgpay_merchant")
+		s_MERTNO = aRs("sgpay_merchant_v2")
 
-		If vSgpay_Merchantcd = "" Then
+		If s_MERTNO = "" Then
 %>
 <script>
 	alert("BBQ PAY 가맹점이 아닙니다.");
@@ -208,8 +228,6 @@
 		totalDeliveryFeeAmt = DELIVERY_FEE													' 총 배송비(상품가격에 포함).
 		totalPaymentAmt = totalOrderAmt+totalDeliveryFeeAmt						' (필수) 총 결재 할 금액.
 
-		successUrl = AppWebPath & "/order/orderComplete.asp?order_idx=" & order_idx & "&pm=Sgpay"								' 결제 완료 후 리다이렉트 할 사이트 URL
-		resultUrl = AppWebPath & "/pay/sgpay/sgpay_return.asp?order_idx=" & order_idx					' 결제 결과 받을 Server-to-Server API URL
 		returnUrl = AppWebPath & "/pay/sgpay2/sgpay_pay_result.asp"
 
 
@@ -262,11 +280,11 @@
 	'-------------------------------------------------------
 	' 입력 파라미터
 	corpNo 			= g_CORPNO			        ' [필수] 기업관리번호
-	mertNo 			= s_MERTNO			        ' [필수] 가맹점관리번호	
+	mertNo 			= s_MERTNO					' [필수] 가맹점관리번호	
 	corpMemberNo 	= Session("userIdNo")	    ' [필수] 기업(가맹점) 회원번호 - (SEED 암호화 대상필드)
 	userMngNo 		= GetuserMngNo(Session("userIdNo"))' [필수] 간편결제 회원관리번호 - (SEED 암호화 대상필드)
-	response.write "corpMemberNo : " & corpMemberNo & "<BR>"
-	response.write "userMngNo : " & userMngNo & "<BR>"
+	' response.write "corpMemberNo : " & corpMemberNo & "<BR>"
+	' response.write "userMngNo : " & userMngNo & "<BR>"
 
 	orderNo 		= order_num					' [필수] 주문번호
 	goodsName 		= Main_product				' [필수] 상품명 - (URL Encoding 대상필드) 
@@ -301,8 +319,8 @@
 	'-------------------------------------------------------
 	corpMemberNo 	= seedEncrypt(corpMemberNo, g_SEEDKEY, g_SEEDIV)
 	userMngNo 		= seedEncrypt(userMngNo, g_SEEDKEY, g_SEEDIV)
-	response.write "corpMemberNo(E) : " & corpMemberNo & "<BR>"
-	response.write "userMngNo(E) : " & userMngNo & "<BR>"
+	' response.write "corpMemberNo(E) : " & corpMemberNo & "<BR>"
+	' response.write "userMngNo(E) : " & userMngNo & "<BR>"
 
 	'-------------------------------------------------------
 	' 3. URLEncode 대상 필드 encode처리(UTF-8)  

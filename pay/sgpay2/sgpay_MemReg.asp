@@ -23,7 +23,7 @@
 	'-------------------------------------------------------
 	' 입력 파라미터
 	corpNo 			= g_CORPNO			        ' [필수] 기업관리번호
-	mertNo 			= s_MERTNO			        ' [필수] 가맹점관리번호	
+	mertNo 			= g_MERTNO			        ' [필수] 가맹점관리번호	
 	corpMemberNo 	= Session("userIdNo")	    ' [필수] 기업(가맹점) 회원번호 - (SEED 암호화 대상필드)
 
 	introYn 		= "N"		                ' [옵션] 인트로 화면 표시여부 (Y/N)

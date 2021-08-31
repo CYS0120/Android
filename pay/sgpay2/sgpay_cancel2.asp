@@ -2,7 +2,7 @@
 <%
 	order_num		= GetReqStr("order_num","")
 	tid				= GetReqStr("tid","")
-	pay_method		= "SGPAY"
+	pay_method		= "SGPAY2"
 	sms_msg			= GetReqStr("sms_msg","")
 
 
@@ -28,7 +28,7 @@
 		order_idx		= pRs("order_idx")
 		TxId			= pRs("pay_transaction_id")
 		Corporation		= pRs("pay_cpid")
-		Merchant		= pRs("pay_subcp")
+		s_MERTNO		= pRs("pay_subcp")
 		Amount			= pRs("pay_amt")
 		pay_err_msg		= pRs("pay_err_msg")
 		pay_type		= pRs("pay_type")
@@ -85,22 +85,24 @@
 	' (로그) 호출 시점과 호출값을 파일에 기록합니다.
 	'-----------------------------------------------------------------------------
 	Dim xform, receive_str
-	receive_str = "sgpay_cancel.asp is Called - "
+	receive_str = "sgpay_cancel2.asp is Called - "
 	For Each xform In Request.form
 		receive_str = receive_str +  CStr(xform) + " : " + request(xform) + ", "
 	Next
 	Call Write_Log(receive_str)
 
-
-	Result = PayCancel(USER_ID, GetuserMngNo(USER_ID), TxId, sms_msg)
+	s_userMngNo = GetuserMngNo(USER_ID)
+	Result = PayCancel(s_MERTNO, USER_ID, s_userMngNo, TxId, sms_msg)
 
 	Dim Verify_Read_Data
 	Set Verify_Read_Data = New aspJSON		'Read_Data.data("result").item("orderProducts")
 	Verify_Read_Data.loadJSON(Result)
 
-	Dim returnMsg, errMsg
+	Dim returnMsg, errMsg, resultCode
 
-	If Verify_Read_Data.data("resultCode") = "0000" or Verify_Read_Data.data("resultCode") = "5409" Then
+	resultCode = Verify_Read_Data.data("resultCode")
+
+	If resultCode = "0000" or resultCode = "5409" Then
 		returnMsg	= "SUCC|취소 완료"
 		errMsg		= "취소 성공"
 	Else
@@ -115,19 +117,21 @@
 		.ActiveConnection = dbconn
 		.NamedParameters = True
 		.CommandType = adCmdStoredProc
-		.CommandText = "bp_sgpay_log_insert"
+		.CommandText = "bp_sgpay2_log_insert"
 
-		.Parameters.Append .CreateParameter("@act", adVarChar, adParamInput, 30, "CANCEL")
+		.Parameters.Append .CreateParameter("@act", adVarChar, adParamInput, 30, "PAY")
 		.Parameters.Append .CreateParameter("@order_num", adVarChar, adParamInput, 50, order_num)
 		.Parameters.Append .CreateParameter("@amt", adCurrency, adParamInput,, AMOUNT)
-		.Parameters.Append .CreateParameter("@corporation", adVarChar, adParamInput, 32, Corporation)
-		.Parameters.Append .CreateParameter("@merchant", adVarChar, adParamInput, 32, Merchantcd)
+		.Parameters.Append .CreateParameter("@corporation", adVarChar, adParamInput, 32, g_CORPNO)
+		.Parameters.Append .CreateParameter("@merchant", adVarChar, adParamInput, 32, s_MERTNO)
+		.Parameters.Append .CreateParameter("@corpMemberNo", adVarChar, adParamInput, 100, USER_ID)
+		.Parameters.Append .CreateParameter("@userMngNo", adVarChar, adParamInput, 100, s_userMngNo)
 		.Parameters.Append .CreateParameter("@txid", adVarChar, adParamInput, 32, TxId)
-		.Parameters.Append .CreateParameter("@result", adVarChar, adParamInput, 500, Result)
-		.Parameters.Append .CreateParameter("@paymentno", adVarChar, adParamInput, 50, pay_no)
-		.Parameters.Append .CreateParameter("@paymenttime", adVarChar, adParamInput, 14, pay_time)
-		.Parameters.Append .CreateParameter("@errmsg", adVarChar, adParamInput, 500, errMsg)
-		.Parameters.Append .CreateParameter("@etc1", adLongVarWChar, adParamInput, 2147483647, returnMsg)
+		.Parameters.Append .CreateParameter("@result", adVarChar, adParamInput, 10, resultCode)
+		.Parameters.Append .CreateParameter("@paymentno", adVarChar, adParamInput, 50, "")
+		.Parameters.Append .CreateParameter("@paymenttime", adVarChar, adParamInput, 14, "")
+		.Parameters.Append .CreateParameter("@errmsg", adVarChar, adParamInput, 1000, returnMsg)
+		.Parameters.Append .CreateParameter("@etc1", adLongVarWChar, adParamInput, 2147483647, "")
 		.Parameters.Append .CreateParameter("@seq", adInteger, adParamOutput)
 
 		.Execute
@@ -137,6 +141,6 @@
 
 	Response.Write returnMsg
 
-	Call Write_Log("sgpay_cancel.asp Complete!")
+	Call Write_Log("sgpay_cancel2.asp Complete!")
 
 %>

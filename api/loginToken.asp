@@ -69,10 +69,10 @@
         api.SetData = "grant_type=refresh_token&client_id=" & PAYCO_CLIENT_ID & "&refresh_token=" & refresh_token
         api.SetUrl = PAYCO_AUTH_URL & getTokenUri
 
-		' response.write "PAYCO_CLIENT_SECRET : " & PAYCO_CLIENT_SECRET &"<br>"&"<br>"
-		' response.write "PAYCO_CLIENT_ID : " & PAYCO_CLIENT_ID &"<br>"&"<br>"
-		' response.write "refresh_token : " & refresh_token &"<br>"&"<br>"
-		' response.write "PAYCO_AUTH_URL & getTokenUri : " & PAYCO_AUTH_URL & getTokenUri &"<br>"&"<br>"
+		'  response.write "PAYCO_CLIENT_SECRET : " & PAYCO_CLIENT_SECRET &"<br>"&"<br>"
+		'  response.write "PAYCO_CLIENT_ID : " & PAYCO_CLIENT_ID &"<br>"&"<br>"
+		'  response.write "refresh_token : " & refresh_token &"<br>"&"<br>"
+		'  response.write "PAYCO_AUTH_URL & getTokenUri : " & PAYCO_AUTH_URL & getTokenUri &"<br>"&"<br>"
 		' response.end 
 
         result = api.Run
@@ -86,6 +86,11 @@
 
         Set oJson = JSON.Parse(result)
 
+		' response.write "access_token hakey : " & JSON.hasKey(oJson, "access_token")
+		if not JSON.hasKey(oJson, "access_token") then
+			response.redirect "logout.asp"
+			response.end
+		end if
         access_token = IIF(JSON.hasKey(oJson, "access_token"), oJson.access_token, "")
         access_token_secret = IIF(JSON.hasKey(oJson, "access_token_secret"), oJson.access_token_secret, "")
 '        refresh_token = IIF(JSON.hasKey(oJson, "refresh_token"), oJson.refresh_token, "") ' refresh_token : 여기선 사용안함.

@@ -68,21 +68,24 @@
 	Dim g_CORPNO, g_MERTNO, s_MERTNO
 	If G2_SITE_MODE = "local" Then
 		g_CORPNO = "0001"		' 기업 관리번호
-		g_MERTNO = "0001-00010"	' 가맹점 관리번호					
+		g_MERTNO = "0001-00001"	' 가맹점 관리번호					
 	Else
 		g_CORPNO = "0001"		' 기업 관리번호
-		g_MERTNO = "0001-00010"	' 가맹점 관리번호					
+		g_MERTNO = "0001-00001"	' 가맹점 관리번호					
 	End If
-	s_MERTNO = "0001-00001"
+	's_MERTNO = "0001-00001"
 
 	'-----------------------------------------------------------------------------
 	' 회원 번호 고정 (개발용)
 	'-----------------------------------------------------------------------------
 
-	Dim g_corpMemberNo, g_userMngNo
+	Dim g_corpMemberNo, g_userMngNo, s_userMngNo
 	If G2_SITE_MODE = "local" Then
 		g_corpMemberNo = "10007012717313001"
 		g_userMngNo = "S21070000036"
+	else	
+		g_corpMemberNo = Session("userIdNo")
+		g_userMngNo = GetuserMngNo(Session("userIdNo")
 	end if
 
 
