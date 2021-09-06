@@ -25,6 +25,18 @@
 	applPrice		= request("applPrice")		' [옵션] 승인금액
 	signature 		= request("signature")		' [필수] Hash Value
 
+	Dim paytype : paytype = "Sgpay2"
+
+	'-----------------------------------------------------------------------------
+	' (로그) 호출 시점과 호출값을 파일에 기록합니다.
+	'-----------------------------------------------------------------------------
+	Dim xform, receive_str
+	receive_str = "sgpay_pay_result.asp is Called - "
+	For Each xform In Request.form
+		receive_str = receive_str +  CStr(xform) + " : " + request(xform) + ", "
+	Next
+	Call Write_Log(receive_str)
+
 	'-------------------------------------------------------------
 	' 2. 결과 처리
 	'    - 결과코드 성공(0000)인 경우 signature 검증

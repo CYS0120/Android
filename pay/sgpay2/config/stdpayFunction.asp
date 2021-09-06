@@ -1,5 +1,5 @@
 ﻿<%
-function seedEncrypt(bszPlainText,g_bszUser_key,g_bszIV)
+function seedEncrypt(ByVal bszPlainText, ByVal g_bszUser_key, ByVal g_bszIV)
 	Dim i
 	Dim bszChiperText
 	Dim temp, tempasd
@@ -27,7 +27,7 @@ function seedEncrypt(bszPlainText,g_bszUser_key,g_bszIV)
 	end if
 end Function
 
-function seedDecrypt(bszChiperText,g_bszUser_key,g_bszIV)
+function seedDecrypt(ByVal bszChiperText, ByVal g_bszUser_key, ByVal g_bszIV)
 	Dim i
 	Dim bszPlainText
 	Dim temp
@@ -57,7 +57,7 @@ function seedDecrypt(bszChiperText,g_bszUser_key,g_bszIV)
 	end if
 end function
 
-Function HexToDec(hexData)
+Function HexToDec(ByVal hexData)
 	
 	dataArray = split(hexData,",")
 	redim tempArray(ubound(dataArray))
@@ -105,6 +105,7 @@ Function UrlDecode_GBToUtf8(ByVal str)
 <script language="javascript" runat="server" charset="UTF-8">  
 function str2hex(szInput){ 
 	var wch,x,uch="",szRet="";
+	if (szInput == null) szInput = "";
 	for (x=0; x<szInput.length; x++){
 	  wch=szInput.charCodeAt(x);
 	  if (!(wch & 0xFF80)){
@@ -123,9 +124,16 @@ function str2hex(szInput){
 }
 
 function hex2str(v)
-{ 
-	v = v.replace(/,/g, "%");
-	v = "%" + v;
-	return decodeURIComponent(v); 
+{
+	var return_val = "";
+	if(v == null) {
+		return_val = "";
+	}
+	else {
+		v = v.replace(/,/g, "%");
+		v = "%" + v;
+		return_val = decodeURIComponent(v);
+	}
+	return return_val;
 }
 </script>

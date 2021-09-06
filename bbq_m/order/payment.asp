@@ -1427,13 +1427,11 @@ function calcTotalAmount() {
 				break;
 			// SGPAY 추가
 			case "Sgpay":
-				/*
 				<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 				<% else %>
 					win_pay = window.open("","popupSgpay",pgPopupOption);
 					$("#o_form").attr("target", "popupSgpay");
 				<% end if %>
-				*/
 				$("#o_form").attr("action", "/pay/sgpay/sgpay.asp");
 				$("#o_form").submit();
 				setTimeout("ClickCheck = 0", 1000);

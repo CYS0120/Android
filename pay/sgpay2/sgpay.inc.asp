@@ -75,20 +75,6 @@
 	End If
 	's_MERTNO = "0001-00001"
 
-	'-----------------------------------------------------------------------------
-	' 회원 번호 고정 (개발용)
-	'-----------------------------------------------------------------------------
-
-	Dim g_corpMemberNo, g_userMngNo, s_userMngNo
-	If G2_SITE_MODE = "local" Then
-		g_corpMemberNo = "10007012717313001"
-		g_userMngNo = "S21070000036"
-	else	
-		g_corpMemberNo = Session("userIdNo")
-		g_userMngNo = GetuserMngNo(Session("userIdNo")
-	end if
-
-
 	'---------------------------------------------------------------------------------
 	' 로그 파일 선언 ( 루트경로부터 \sgpay\log 폴더까지 생성을 해 놓습니다. )
 	'---------------------------------------------------------------------------------
@@ -118,7 +104,7 @@
 	' API 주소 설정 ( appMode 에 따라 테스트와 실서버로 분기됩니다. )
 	'---------------------------------------------------------------------------------
 	Dim sgPayDomain, sgPayPayUrl, sgPayCancelUrl
-	If G2_SITE_MODE = "local" Then
+	If G2_SITE_MODE <> "production" Then
 		sgPayDomain			= "https://stg-stdpay.kbstar.com/std"		' 운영 테스트서버
 	Else
 		sgPayDomain			= "https://stdpay.kbstar.com/std"			' 운영 실서버
@@ -133,4 +119,18 @@
 	sgpay_payselUrl		= sgPayDomain & "/api/payinfo/paysel"		' SG Pay 회원 결제수단 조회 URL
 	sgpay_MemInfoUrl	= sgPayDomain & "/api/memberinfo/meminfo"	' SG Pay 회원 정보 조회 URL
 	sgpay_MemUnRegUrl	= sgPayDomain & "/api/memberinfo/memunreg"	' SG Pay 회원 해제 URL
+
+		'-----------------------------------------------------------------------------
+	' 회원 번호 고정 (개발용)
+	'-----------------------------------------------------------------------------
+
+	Dim g_corpMemberNo, g_userMngNo, s_userMngNo
+'	If G2_SITE_MODE = "local" Then
+'		g_corpMemberNo = "10007012717313001"
+'		g_userMngNo = "S21070000036"
+'	else	
+		g_corpMemberNo = Session("userIdNo")
+		g_userMngNo = GetuserMngNo(g_corpMemberNo)
+'	end if
+
 %>

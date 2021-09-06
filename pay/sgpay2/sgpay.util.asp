@@ -36,7 +36,7 @@
 	'-----------------------------------------------------------------------------
 	Function Call_API(SiteURL, App_Mode, Param)
 		Dim HTTP_Object
-
+		Call Write_Log("Call API   " & CStr(SiteURL) & " Mode : " & CStr(App_Mode) & " Param : " & CStr(Param))
 		'-----------------------------------------------------------------------------
 		' WinHttpRequest 선언
 		'-----------------------------------------------------------------------------
@@ -145,6 +145,8 @@
 	Function GetuserMngNo(ByVal f_corpMemberNo)
 		if len(f_corpMemberNo) > 0 and len(session("sgpay_userMngNo")) > 0 then
 			GetuserMngNo = session("sgpay_userMngNo")
+		elseif len(f_corpMemberNo) = 0 then
+			GetuserMngNo = ""
 		else
 			Result = GetuserInfo(f_corpMemberNo)
 
@@ -291,7 +293,7 @@
 		' //-------------------------------------------------------
 		' // 2. 암호화 대상 필드 Seed 암호화  
 		' //-------------------------------------------------------
-		f_corpMemberNo 	= seedEncrypt(f_corpMemberNo, g_SEEDKEY, g_SEEDIV)
+		'f_corpMemberNo 	= seedEncrypt(f_corpMemberNo, g_SEEDKEY, g_SEEDIV)
 
 		' //-------------------------------------------------------
 		' // 3. 위변조 방지체크를 위한 signature 생성
