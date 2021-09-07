@@ -33,13 +33,14 @@
 	End If
 
 	' 간편결제 등록 여부 확인
-	payInfo = GetpayInfo(g_corpMemberNo, g_userMngNo)
-	' JSON 객체 생성
-	Set payInfoToJson = New aspJSON
-	' JSON 문자열 파싱
-	payInfoToJson.loadJSON(Result)
-	sgpay_payListCnt = payInfoToJson.data("payListCnt")
-	if sgpay_payListCnt > 0 then
+	' payInfo = GetpayInfo(g_corpMemberNo, g_userMngNo)
+	' ' JSON 객체 생성
+	' Set payInfoToJson = New aspJSON
+	' ' JSON 문자열 파싱
+	' payInfoToJson.loadJSON(Result)
+	' sgpay_payListCnt = payInfoToJson.data("payListCnt")
+	sgpay_payListCnt = 1
+	if sgpay_payListCnt > 0 and true then
 	else
 %>
 <script>

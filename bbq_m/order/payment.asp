@@ -1463,10 +1463,6 @@ function calcTotalAmount() {
 				break;
 		}
 
-<%	if branch_id = "1146001" then %>
-			alert(agent);
-<%	end if %>
-
 		if (win_pay == null || typeof(win_pay) == "undefined" || (win_pay == null && win_pay.outerWidth == 0) || (win_pay != null && win_pay.outerHeight == 0) || win_pay.test == "undefined")
 		{
 			if (agent.indexOf("safari") != -1 || agent.indexOf("chrome") != -1 || agent.indexOf("firefox") != -1) {
@@ -2432,10 +2428,9 @@ function calcTotalAmount() {
                 <% end if %>
 
                 <% If vUseSGPAY = "Y" AND CheckLogin() Then %>
-					<% if false then ' false 는 신규 sgpay %>
 					<li><button type="button" id="payment_sgpay" onclick="javascript:setPayMethod('Sgpay');" class="payment_choiceSel">BBQ PAY</button></li>
-    	            <% else %>
-					<li><button type="button" id="payment_sgpay2" onclick="javascript:setPayMethod('Sgpay2');" class="payment_choiceSel">BBQ PAY</button></li>
+					<%	if branch_id = "1146001" then %>
+					<li><button type="button" id="payment_sgpay2" onclick="javascript:setPayMethod('Sgpay2');" class="payment_choiceSel">BBQ PAY(N)</button></li>
 	                <% end if %>
                 <% end if %>
 
