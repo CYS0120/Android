@@ -4,22 +4,22 @@
 <style>
 .event_layer {
     font-family: 맑은 고딕;
-    font-size: 1px;
-    background-color: red;
+    font-size: 9pt;
+    background-color: #E31937;
     color: white;
     position: absolute;
-    left: 3px;
-    opacity: 0.9;
-    transform: rotate(-10deg);
-    /* font-weight: bold; */
-    letter-spacing: -1px;
-    width: 80px;
-    margin-top: -40px;
-    height: 0px;
+    left: 14px;
+    /* opacity: 0.5; */
+    transform: rotate(-23deg);
+    font-weight: bold;
+    letter-spacing: 1px;
+    width: 45px;
+    margin-top: -32px;
+    height: 20px;
     text-align: center;
-    /* vertical-align: middle; */
-    padding-bottom: 17px;
-    /* border-radius: 0%; */
+    vertical-align: middle;
+    padding-bottom: 22px;
+    border-radius: 50%;
 }
 </style>
 <%
@@ -2405,8 +2405,8 @@ function calcTotalAmount() {
 	End If
    ' 페이코인 당일 이벤트
    paycoin_event = ""
-   if left(date(), 10) = "2021-06-23" AND FormatDateTime(Now(),4) >= "11:00" then
-      paycoin_event = "<div><span class='event_layer'>최대 10,000원 할인</span></div>"
+   if left(date(), 10) = "2021-09-08" AND FormatDateTime(Now(),4) >= "11:00" then
+      paycoin_event = "<div><span class='event_layer'>event</span></div>"
    end if
 
    'If vUseDANAL = "Y" Or vUsePAYCO = "Y" Then
