@@ -132,6 +132,12 @@
 				$('#addr_data').val(sessionStorage.getItem("ss_addr_data"));
 				$('#spent_time').val(sessionStorage.getItem("ss_spent_time"));
 			</script>
+
+<!--
+			<div class="inbox1000" style="margin-top:20px">
+				<span style="color:red;weight:bold">※ 수제맥주 세트는 배달 메뉴로 이동 시 자동 삭제되오니 이점 유의하시기 바랍니다.</span>
+			</div>
+-->
 			
 			<div class="page_title inbox1000">
 				<p>담은메뉴</p>
