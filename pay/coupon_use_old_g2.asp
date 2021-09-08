@@ -74,7 +74,7 @@ Sub KTR_Cancel_Coupon(order_id, dbconn)
 			KTR_Result = -1
 			CPN_PARTNER = oRs("CD_PARTNER")
 
-			If CPN_PARTNER = "20000" Then
+			If CPN_PARTNER = "20010" Then
 
 				SET KTR = NEW PosResult
 				KTR.ProcUnexchange Trim(oRs("DISC_CD")),oRs("BRANCH_ID"),oRs("BRANCH_ID"),"0",Replace(Date, "-", ""), Replace(FormatDateTime(Time(), 4), ":","") & Right(Time(), 2)
