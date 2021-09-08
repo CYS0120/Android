@@ -1348,7 +1348,6 @@ function calcTotalAmount() {
 	function goPay() {
 		var win_pay = null;
 		var pay_method = $("#pay_method").val();
-		alert(pay_method);
 		var agent = navigator.userAgent.toLowerCase();
 
 		$("#o_form input[name=pay_method]").val(pay_method);
