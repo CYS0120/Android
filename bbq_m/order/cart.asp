@@ -566,7 +566,7 @@
 			setTempAddress();
 		}
 
-		getMenuRecom();
+		// getMenuRecom();
 
 <%
 	If ShowOrderType Then
