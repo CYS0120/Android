@@ -1168,6 +1168,8 @@ function goCart()
             if (typeof(cart_key) != "undefined" && cart_key != "" && cart_key != null) {
                 // alert('notnull');
                 a = 'N';
+                var qty = Number($('#new_qty_'+ key).val());
+                changeTxtMenuQty(key, qty);
             } else{
                 // alert('null');
                 goAddCart(key, subCartList[i].value);
@@ -1217,6 +1219,8 @@ function goOrder()
 
             if (typeof(cart_key) != "undefined" && cart_key != "" && cart_key != null) {
                 a = 'N';
+                var qty = Number($('#new_qty_'+ key).val());
+                changeTxtMenuQty(key, qty);
             } else{
                 goAddCart(key, subCartList[i].value);
             }
