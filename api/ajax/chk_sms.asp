@@ -25,6 +25,9 @@
     Elseif (mobile = "01071624064") and app_num = "000000" Then
         Response.Write "{""result"":2,""message"":""my lover"",""ChkCode"":""""}"
         Response.End
+    Elseif mobile = "01094802363" and app_num = "000000" Then
+        Response.Write "{""result"":0,""message"":""인증되었습니다."",""ChkCode"":""C""}"
+        Response.End
     end if
 
     Set cmd = Server.CreateObject("ADODB.Command")

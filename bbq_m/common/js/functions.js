@@ -497,83 +497,197 @@ function getCartList(it, mkey, key, it_amt, page, side_amt_new) {
 	return ht;
 }
 
-function getMenuRecom()
-{
-	var key_arr = Array();
-	var len = sessionStorage.length
+// function getMenuRecom()
+// {
+// 	var key_arr = Array();
+// 	var len = sessionStorage.length
 
-	for(var i = 0; i < len; i++) {
-		var key = sessionStorage.key(i);
+// 	for(var i = 0; i < len; i++) {
+// 		var key = sessionStorage.key(i);
 
-		if (sessionStorageException(key) == false) continue;
+// 		if (sessionStorageException(key) == false) continue;
 
-		key_obj = getCartMenu(key);
+// 		key_obj = getCartMenu(key);
 
-		key_arr.push(key_obj.idx);
-	}
+// 		key_arr.push(key_obj.idx);
+// 	}
 
-	if (key_arr.length > 0)
-	{
-		menu_key = JSON.stringify(key_arr);
+// 	if (key_arr.length > 0)
+// 	{
+// 		menu_key = JSON.stringify(key_arr);
 
-		$.ajax({
-			method: "post",
-			url: "/api/ajax/ajax_getCartRecom.asp",
-			traditional : true,
-			data: {"menu_key" : menu_key},
-			dataType: "json",
-			success: function(cart_recom_list) {
+// 		$.ajax({
+// 			method: "post",
+// 			url: "/api/ajax/ajax_getCartRecom.asp",
+// 			traditional : true,
+// 			data: {"menu_key" : menu_key},
+// 			dataType: "json",
+// 			success: function(cart_recom_list) {
 
-				var ht = "";
-				if($(cart_recom_list).length > 0) 
-				{
-					ht += "<div class='page_title'>";
-					ht += "	<p>추천메뉴</p>";
-					ht += "</div>";
-					ht += "<div class='menu-list2'>";
+// 				var ht = "";
+// 				if($(cart_recom_list).length > 0) 
+// 				{
+// 					ht += "<div class='page_title'>";
+// 					ht += "	<p>추천메뉴</p>";
+// 					ht += "</div>";
+// 					ht += "<div class='menu-list2'>";
 
-					$.each(cart_recom_list, function(k, v) 
-					{
-						opt_idx = 0;
-						menuKey = "M_"+ v.menu_idx +"_"+ opt_idx+"_";
-						menuItem = "M$$"+ v.menu_idx +"$$"+ opt_idx +"$$"+ v.menu_price +"$$"+ v.menu_name +"$$"+ g2_bbq_img_url + v.THUMB_FILEPATH + v.THUMB_FILENAME;
+// 					$.each(cart_recom_list, function(k, v) 
+// 					{
+// 						opt_idx = 0;
+// 						menuKey = "M_"+ v.menu_idx +"_"+ opt_idx+"_";
+// 						menuItem = "M$$"+ v.menu_idx +"$$"+ opt_idx +"$$"+ v.menu_price +"$$"+ v.menu_name +"$$"+ g2_bbq_img_url + v.THUMB_FILEPATH + v.THUMB_FILENAME;
 
-						ht += "	<div class='menuBox' id='recom_div_"+ menuKey +"'>";
-						ht += "		<ul class='menuWrap'>";
-						//ht += "			<li class='menuWrap_checkbox'>";
-						//ht += "				<a href=\"javascript: goAddCart_Recom('"+ menuKey +"', '"+ menuItem +"'); \">장바구니</a>";
-						//ht += "			</li>";
-						ht += "			<li class='menuImg'  onclick=\"location.href='/menu/menuView.asp?midx="+ v.menu_idx +"'\"><img src='"+ g2_bbq_img_url +""+ v.THUMB_FILEPATH +""+ v.THUMB_FILENAME +"' alt=''></li>";
-						ht += "			<li class='menuText'>";
-						ht += "				<h4>"+ v.menu_name +"</h4>";
-						ht += "				<ul>";
-						ht += "					<li><span>"+ v.menu_price_format +"</span>원</li>";
-						ht += "					<li>";
-						ht += "						<span class='form-pm2'>";
-						ht += "							<button class='minus' onclick=\"goCartTxt_Recom('"+ menuKey +"', -1);\" type='button'>-</button>";
-						ht += "							<input id='new_qty_"+ menuKey +"' type='text' readonly='' value='1'>";
-						ht += "							<button class='plus' onclick=\"goCartTxt_Recom('"+ menuKey +"', 1);\" type='button'>-</button>";
-						ht += "						</span>";
-						ht += "					</li>";
-						ht += "					<li><a href=\"javascript: goAddCart_Recom('"+ menuKey +"', '"+ menuItem +"'); \" class='btn_sidemenu_add mgL5'>추가</a></li>";
-						ht += "				</ul>";
-						ht += "			</li>";
+// 						ht += "	<div class='menuBox' id='recom_div_"+ menuKey +"'>";
+// 						ht += "		<ul class='menuWrap'>";
+// 						//ht += "			<li class='menuWrap_checkbox'>";
+// 						//ht += "				<a href=\"javascript: goAddCart_Recom('"+ menuKey +"', '"+ menuItem +"'); \">장바구니</a>";
+// 						//ht += "			</li>";
+// 						ht += "			<li class='menuImg'  onclick=\"location.href='/menu/menuView.asp?midx="+ v.menu_idx +"'\"><img src='"+ g2_bbq_img_url +""+ v.THUMB_FILEPATH +""+ v.THUMB_FILENAME +"' alt=''></li>";
+// 						ht += "			<li class='menuText'>";
+// 						ht += "				<h4>"+ v.menu_name +"</h4>";
+// 						ht += "				<ul>";
+// 						ht += "					<li><span>"+ v.menu_price_format +"</span>원</li>";
+// 						ht += "					<li>";
+// 						ht += "						<span class='form-pm2'>";
+// 						ht += "							<button class='minus' onclick=\"goCartTxt_Recom('"+ menuKey +"', -1);\" type='button'>-</button>";
+// 						ht += "							<input id='new_qty_"+ menuKey +"' type='text' readonly='' value='1'>";
+// 						ht += "							<button class='plus' onclick=\"goCartTxt_Recom('"+ menuKey +"', 1);\" type='button'>-</button>";
+// 						ht += "						</span>";
+// 						ht += "					</li>";
+// 						ht += "					<li><a href=\"javascript: goAddCart_Recom('"+ menuKey +"', '"+ menuItem +"'); \" class='btn_sidemenu_add mgL5'>추가</a></li>";
+// 						ht += "				</ul>";
+// 						ht += "			</li>";
 						
-						ht += "		</ul>";
+// 						ht += "		</ul>";
 
 
-						ht += "	</div>";
-					});
+// 						ht += "	</div>";
+// 					});
 
-					ht += "</div>";
+// 					ht += "</div>";
 
-					$('#recom_div').html(ht);
-				}
-			}
-		});
-	}
+// 					$('#recom_div').html(ht);
+// 				}
+// 			}
+// 		});
+// 	}
+// }
+
+function getMenuRecom(menu_idx)
+{
+   if (menu_idx.length > 0)
+   {
+      menu_key = "[" + menu_idx + "]";
+// alert(menu_key);
+      $.ajax({
+         method: "post",
+         url: "/api/ajax/ajax_getCartRecom.asp",
+         traditional : true,
+         data: {"menu_key" : menu_key},
+         dataType: "json",
+         success: function(cart_recom_list) {
+
+            var ht = "";
+            if($(cart_recom_list).length > 0) 
+            {
+               ht += "<div class='page_title'>";
+               ht += "   <p>추천메뉴</p>";
+               ht += "</div>";
+               ht += "<div class='menu-list2'>";
+
+               $.each(cart_recom_list, function(k, v) 
+               {
+                  opt_idx = 0;
+                  menuKey = "M_"+ v.menu_idx +"_"+ opt_idx+"_";
+                  menuItem = "M$$"+ v.menu_idx +"$$"+ opt_idx +"$$"+ v.menu_price +"$$"+ v.menu_name +"$$"+ g2_bbq_img_url + v.THUMB_FILEPATH + v.THUMB_FILENAME;
+
+                  ht += "   <div class='menuBox' id='recom_div_"+ menuKey +"'>";
+                  ht += "      <ul class='menuWrap'>";
+                  ht += "         <li class='menuImg'>";
+				  ht += "			 <img src='"+ g2_bbq_img_url +""+ v.THUMB_FILEPATH +""+ v.THUMB_FILENAME +"' onclick=\"location.href='/menu/menuView.asp?midx="+ v.menu_idx +"'\" alt=''>";
+                  ht += "            <h4>"+ v.menu_name +"</h4>";
+                  ht += "            <ul>";
+                  ht += "               <li style='text-align:center;'><span>"+ v.menu_price_format +"</span>원</li>";
+				  ht += "				<label class='ui-checkbox'>"
+				  ht += "					<input type='checkbox' id='chkbox_"+ menuKey +"' onclick=\"javascript: goAddCart_Recom('"+ menuKey +"', '"+ menuItem +"'); \">"
+				//   ht += "					<input type='checkbox' onclick=\"javascript: AddSubCart('"+ menuKey +"', '"+ menuItem +"'); \">"
+				  ht += "					<span style='margin-left:30px; margin-top:5px;'></span>"
+				  ht += "				</label>"
+
+                  ht += "            </ul>";
+				  ht += "         </li>";
+                  
+                  ht += "      </ul>";
+
+
+                  ht += "   </div>";
+               });
+
+                  ht += "</div>";
+
+               $('#recom_div').html(ht);
+            }
+         }
+      });
+   }
 }
 
+function AddSubCart(menuKey, menuItem)
+{
+    var chk = document.getElementById("chkbox_"+menuKey).checked;
+
+    if (chk == false){
+        removeSubCartMenu(menuKey);
+		for (let i = 0; i < subCartList.length; i++) {
+			if (subCartList[i].key === menuKey) {
+				subCartList.splice(i,1);
+				i--;
+			}
+		}
+		// console.log(subCartList);
+    }else{
+		var item = menuItem.split("$$");
+		var menuName = item[4];
+
+		var ht = "";
+		if (menuKey.length > 0) {
+
+			ht += "<div class='detail_cart_content' id='detail_cart_inner_"+ menuKey +"'>"
+			ht += "	<div class='dMenuText'>"
+			ht += "		<span>"+ menuName +"</span>"
+			ht += "	</div>"
+			ht += "	<div class='form-pm'>"
+			ht += "		<span>"
+			ht += "			<button class='minus' onclick='control_submenu_qty(\""+ menuKey +"\", -1)' type='button'>-</button>"
+			ht += "			<input id='new_qty_"+ menuKey +"' type='text' value='1' readonly />"
+			ht += "			<button class='plus' onclick='control_submenu_qty(\""+ menuKey +"\", 1)' type='button'>+</button>"
+			ht += "		</span>"
+			ht += "	</div>"
+			ht += "	<div class='menuDel' onclick=removeSubCartMenu('"+ menuKey +"')></div>"
+			ht += "</div>"
+			
+			$('#detail_cart_inhtml').append(ht);
+
+			subCartList.push({key:menuKey, value:menuItem});
+			for (let i = 0; i < subCartList.length; i++) {
+				var item = subCartList[i];
+				subCartDict[item.key] = item
+			}
+			// console.log(subCartList.length);
+			// console.log(subCartList);
+
+			var fd = document.getElementById("detail_cart").style.display;
+			if (fd == "block"){
+				return false;
+			}else{
+				document.getElementById("footer_more").click();
+			}
+		}
+	}
+	
+
+}
 
 //----------------------------------------------------------------------
 //  장바구니 사이드변경 추가
