@@ -269,35 +269,35 @@ function gosubmit(t)
 									</tr>
 <%
 				Rlist.MoveNext
-				iTOTAL_PRICE= iTOTAL_PRICE + SUM_PRICE
-				iTOTAL_COUNT= iTOTAL_COUNT + SUM_COUNT
+				iTOTAL_PRICE= Cdbl(iTOTAL_PRICE) + Cdbl(SUM_PRICE)
+				iTOTAL_COUNT= Cdbl(iTOTAL_COUNT) + Cdbl(SUM_COUNT)
 
-				itotal_pcount_1 = itotal_pcount_1 + ipcount_1
-				itotal_pcount_2 = itotal_pcount_2 + ipcount_2
-				itotal_pcount_3 = itotal_pcount_3 + ipcount_3
-				itotal_pcount_4 = itotal_pcount_4 + ipcount_4
-				itotal_pcount_5 = itotal_pcount_5 + ipcount_5
-				itotal_pcount_6 = itotal_pcount_6 + ipcount_6
-				itotal_pcount_7 = itotal_pcount_7 + ipcount_7
-				itotal_pcount_8 = itotal_pcount_8 + ipcount_8
-				itotal_pcount_9 = itotal_pcount_9 + ipcount_9
-				itotal_pcount_10 = itotal_pcount_10 + ipcount_10
+				itotal_pcount_1 = Cdbl(itotal_pcount_1) + Cdbl(ipcount_1)
+				itotal_pcount_2 = Cdbl(itotal_pcount_2) + Cdbl(ipcount_2)
+				itotal_pcount_3 = Cdbl(itotal_pcount_3) + Cdbl(ipcount_3)
+				itotal_pcount_4 = Cdbl(itotal_pcount_4) + Cdbl(ipcount_4)
+				itotal_pcount_5 = Cdbl(itotal_pcount_5) + Cdbl(ipcount_5)
+				itotal_pcount_6 = Cdbl(itotal_pcount_6) + Cdbl(ipcount_6)
+				itotal_pcount_7 = Cdbl(itotal_pcount_7) + Cdbl(ipcount_7)
+				itotal_pcount_8 = Cdbl(itotal_pcount_8) + Cdbl(ipcount_8)
+				itotal_pcount_9 = Cdbl(itotal_pcount_9) + Cdbl(ipcount_9)
+				itotal_pcount_10 = Cdbl(itotal_pcount_10) + Cdbl(ipcount_10)
 				
-				itotal_pcount_11 = itotal_pcount_11 + ipcount_11
-				itotal_pcount_12 = itotal_pcount_12 + ipcount_12
-				itotal_pcount_13 = itotal_pcount_13 + ipcount_13
-				itotal_pcount_14 = itotal_pcount_14 + ipcount_14
-				itotal_pcount_15 = itotal_pcount_15 + ipcount_15
-				itotal_pcount_16 = itotal_pcount_16 + ipcount_16
-				itotal_pcount_17 = itotal_pcount_17 + ipcount_17
-				itotal_pcount_18 = itotal_pcount_18 + ipcount_18
-				itotal_pcount_19 = itotal_pcount_19 + ipcount_19
-				itotal_pcount_20 = itotal_pcount_20 + ipcount_20
+				itotal_pcount_11 = Cdbl(itotal_pcount_11) + Cdbl(ipcount_11)
+				itotal_pcount_12 = Cdbl(itotal_pcount_12) + Cdbl(ipcount_12)
+				itotal_pcount_13 = Cdbl(itotal_pcount_13) + Cdbl(ipcount_13)
+				itotal_pcount_14 = Cdbl(itotal_pcount_14) + Cdbl(ipcount_14)
+				itotal_pcount_15 = Cdbl(itotal_pcount_15) + Cdbl(ipcount_15)
+				itotal_pcount_16 = Cdbl(itotal_pcount_16) + Cdbl(ipcount_16)
+				itotal_pcount_17 = Cdbl(itotal_pcount_17) + Cdbl(ipcount_17)
+				itotal_pcount_18 = Cdbl(itotal_pcount_18) + Cdbl(ipcount_18)
+				itotal_pcount_19 = Cdbl(itotal_pcount_19) + Cdbl(ipcount_19)
+				itotal_pcount_20 = Cdbl(itotal_pcount_20) + Cdbl(ipcount_20)
 
-				itotal_pcount_21 = itotal_pcount_21 + ipcount_21
-				itotal_pcount_22 = itotal_pcount_22 + ipcount_22
-				itotal_pcount_23 = itotal_pcount_23 + ipcount_23
-				itotal_pcount_24 = itotal_pcount_24 + ipcount_24
+				itotal_pcount_21 = Cdbl(itotal_pcount_21) + Cdbl(ipcount_21)
+				itotal_pcount_22 = Cdbl(itotal_pcount_22) + Cdbl(ipcount_22)
+				itotal_pcount_23 = Cdbl(itotal_pcount_23) + Cdbl(ipcount_23)
+				itotal_pcount_24 = Cdbl(itotal_pcount_24) + Cdbl(ipcount_24)
 			Loop
 		End If
 %>
