@@ -13,6 +13,8 @@
 
 		result = api.Run
 
+		Set api = Nothing
+
 		' Response.Write "</br>PUSH 수신 동의 설정 조회 Result > " & result & "<br>"
 
 		' Response.end
@@ -57,7 +59,7 @@
 		api.RequestContentType = "application/json"
 		api.Authorization = "Bearer " & Session("access_token")
 		api.SetData = "{""scope"":""ADMIN""}"
-		api.SetUrl = "/api/member/me"
+		api.SetUrl = PAYCO_AUTH_URL & "/api/member/me"
 
 		result = api.Run
 
@@ -122,14 +124,21 @@
 		cmd.Execute
 	end if
 
+	If CheckLogin() Then
 
-	Set api = New ApiCall
+		Set api = New ApiCall
 
-	api.SetMethod = "POST"
-	api.RequestContentType = "application/x-www-form-urlencode"
-	api.SetUrl = g2_bbq_m_url & "/pay/sgpay2/ajax_IsRegMember.asp?corpMemberNo=" & Session("userIdNo")
+		api.SetMethod = "POST"
+		api.RequestContentType = "application/x-www-form-urlencode"
+		api.SetUrl = g2_bbq_m_url & "/pay/sgpay2/ajax_IsRegMember.asp?corpMemberNo=" & Session("userIdNo")
 
-	isSGPay = api.Run
+		isSGPay = api.Run
+
+		Set api = Nothing
+
+	Else
+		isSGPay = ""
+	end if
 %>
 
 <!doctype html>
