@@ -15,6 +15,23 @@ var cartPage = "menu";
 $(function(){
 	getView();
 });
+
+$(function(){
+	var mt = $("#menu_top").offset().top;
+	var mt_h = 43;
+
+	$(window).scroll(function() {
+		var window_h = $(this).scrollTop();
+		// alert(window);
+
+		if (mt-mt_h <= window_h) {
+			$("#menu_top").addClass("fixed");
+			// window.scrollBy(0, 1);
+		}else{
+			$("#menu_top").removeClass("fixed");
+		}
+	})
+});
 </script>
 </head>
 <%
@@ -107,7 +124,16 @@ $(function(){
 	Dim menuItem : menuItem = vMenuType_plus &"$$"& vMenuIdx &"$$"& opt_idx &"$$"& vMenuPrice &"$$"& vMenuName &"$$"& SERVER_IMGPATH&vMainFilePath&vMainFileName
 	Dim ta_img_url : ta_img_url = SERVER_IMGPATH & vMainFilePath & vMainFileName
 %>
-<script type="text/javascript">var current_menu_key = "<%=menuKey%>";</script>
+<script type="text/javascript">
+	var current_menu_key = "<%=menuKey%>";
+	var subCartList = [{key:"<%=menuKey%>", value:"<%=menuItem%>"}];
+	var subCartDict = {};
+	// for (let i = 0; i < subCartList.length; i++) {
+	// 	const item = subCartList[i];
+	// 	subCartDict[item.key] = item
+	// }
+	// console.log(subCartDict);
+</script>
 <body>
 <div class="wrapper">
 	<%
@@ -131,43 +157,46 @@ $(function(){
 				<!-- <div><img src="<%=SERVER_IMGPATH%><%=MAIN_FILEPATH%><%=MAIN_FILENAME%>" alt="<%=vMenuName%>" ></div> -->
 				<div><img src="<%=SERVER_IMGPATH%><%=vMainFilePath%><%=vMainFileName%>" alt="<%=vMenuName%>" ></div>
 
-				<div class="info inbox1000">
+				<div id="menu_top" class="info">
 					<div class="info_con1">
 						<h3><%=vMenuName%></h3>
-						<div class="item_num">
+						<!--div-- class="item_num">
 							<span class="form-pm">
 								<button class="minus" onclick="control_menu_qty(-1);" type="button">-</button>
 								<input id="new_qty_<%=menuKey%>" type="text" value="1" readonly />
 								<button class="plus" onclick="control_menu_qty(1);" type="button">+</button>
 							</span>
-						</div>
+						</div-->
 					</div>
+				</div>
+
+				<div class="info inbox1000">
 					<div class="info_point"><%=vMenuTitle%></div>
 					<div class="info_origin">
 						<h3>[ 원산지 ]</h3>
 						<p><%=vOrigin%></p>
 					</div>
-					<%If add_price > 0 Then '2020-08-25 추가%>
-					<div class="info_origin">
-						<p style="color:red">제주도 및 도서지역은 <%=FormatNumber(add_price, 0)%>원이 추가됩니다</p>
-					</div>
-					<%End if%>
 
 					<ul class="pay_total">
 						<li>가격</li>
 						<li><span id="pay_amount_new"><%=FormatNumber(vMenuPrice, 0)%>원</span></li>
 					</ul>
+					<%If add_price > 0 Then '2020-08-25 추가%>
+					<div class="info_origin doseo">
+						<p style="color:red;">제주도 및 도서지역은 <%=FormatNumber(add_price, 0)%>원이 추가됩니다</p>
+					</div>
+					<%End if%>
 
 					<!-- 추천메뉴:functions.js -->
 					<div id="recom_div" class="recom"></div>
 					<!-- 추천메뉴 -->
-
+<!--
 					<div class="menuList_btn clearfix" style="position:unset;margin-top:20px">
 						<button type="button" class="btn btn_list_cart btn_newImg" style="height:40px;font-size:15px;" onClick="goCart();">장바구니 담기</button>
-						<button type="button" id="btn_order" class="btn btn_list_order btn_newImg" style="height:40px;font-size:15px;"onClick="goOrder();">주문하기</button>
+						<button type="button" id="btn_order" class="btn btn_list_order btn_newImg" style="height:40px;font-size:15px;" onClick="goOrder();">주문하기</button>
 					</div>
 					<div id="asdf"></div>
-
+-->
 				</div>
 			</div>
 
@@ -253,7 +282,7 @@ $(function(){
 //    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 //    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 //  })();
-		getMenuRecom();
+		getMenuRecom('<%=menu_idx%>');
 </script>
 
 
@@ -277,7 +306,7 @@ $(function(){
 	<!--#include virtual="/api/ta/product.asp"-->
 
 	<!-- Footer -->
-	<!--#include virtual="/includes/footer.asp"-->
+	<!--#include virtual="/includes/footer_order.asp"-->
 	<!--// Footer -->
 
 <% Call DBClose %>

@@ -425,8 +425,6 @@
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=<%=GOOGLE_MAP_API_KEY%>&callback=initMap" async defer></script>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<%=DAUM_MAP_API_KEY%>&libraries=services"></script>
-
 <script type="text/javascript">
 	function show_map(i, y, x)
 	{

@@ -13,7 +13,7 @@
 <div class="wrapper">
 
 	<%
-		PageTitle = "단체주문"
+		PageTitle = "대량구매"
 	%>
 
 	<!--#include virtual="/includes/header.asp"-->
