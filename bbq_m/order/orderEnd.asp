@@ -1,4 +1,4 @@
-<!--#include virtual="/api/include/utf8.asp"-->
+<!--#include virtual="/api/include/utf8_base.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/order/class_order_db.asp"-->
