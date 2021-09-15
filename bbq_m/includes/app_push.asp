@@ -20,13 +20,17 @@ if len(osTypeCd) = 0 and len(Session("osTypeCd")) > 0 then
 end if
 
 if push_token <> "" then
-Session("push_token") = push_token
-Session("deviceUid") = deviceUid
-Session("osTypeCd") = osTypeCd
+	Session("push_token") = push_token
+end if
+if deviceUid <> "" then
+	Session("deviceUid") = deviceUid
+end if
+if osTypeCd <> "" then
+	Session("osTypeCd") = osTypeCd
 end if
 
 If Session("push_token") <> "" Then
-push_check = "1"
+	push_check = "1"
 End if
 '================= 토큰 세션에 저장후 로그인 되면 토큰 페이코에 저장 =========================
 
@@ -62,15 +66,15 @@ If push_check = "1" Then
 
 	Set cmd = Server.CreateObject("ADODB.Command")
 
-if len(Session("userIdNo")) > 0 or len(Session("deviceUid")) > 0 or len(Session("osTypeCd")) > 0 or len(Session("push_token")) > 0 or len(Session("access_token")) > 0 then
+	if len(Session("userIdNo")) > 0 or len(Session("deviceUid")) > 0 or len(Session("osTypeCd")) > 0 or len(Session("push_token")) > 0 or len(Session("access_token")) > 0 then
 
-	sql = "INSERT INTO bbq_app_push_log(id, deviceUid, osTypeCd, Token, accessToken, gubun, regdate) VALUES('"&Session("userIdNo")&"', '"&Session("deviceUid")&"', '"&Session("osTypeCd")&"', '"&Session("push_token")&"', '"&Session("access_token")&"', '"&push_check&"', GETDATE());"
+		sql = "INSERT INTO bbq_app_push_log(id, deviceUid, osTypeCd, Token, accessToken, gubun, regdate) VALUES('"&Session("userIdNo")&"', '"&Session("deviceUid")&"', '"&Session("osTypeCd")&"', '"&Session("push_token")&"', '"&Session("access_token")&"', '"&push_check&"', GETDATE());"
 
-	cmd.ActiveConnection = dbconn
-	cmd.CommandType = adCmdText
-	cmd.CommandText = sql
-	cmd.Execute
-end if
+		cmd.ActiveConnection = dbconn
+		cmd.CommandType = adCmdText
+		cmd.CommandText = sql
+		cmd.Execute
+	end if
 
 	If Session("access_token") <> "" And Session("deviceUid") <> "" And Session("osTypeCd") <> ""  And Session("push_token") <> "" Then
 		Set api = New ApiCall
@@ -101,35 +105,35 @@ end if
 				End If 
 
 
-		if Session("userIdNo") = "10007012717313001" and push_debug then
-			Response.Write "</br>push_cnt > " & push_cnt & "<br>"
-		end if
+				if Session("userIdNo") = "10007012717313001" and push_debug then
+					Response.Write "</br>push_cnt > " & push_cnt & "<br>"
+				end if
 
 				If push_cnt > 0 Then
 
-				sql = "update bbq_app_push_2020 set Token = '"&Session("push_token")&"', id = '"&Session("userIdNo")&"', accessToken = '"&Session("access_token")&"', regdate = CONVERT(VARCHAR(10), getdate(), 121) where deviceUid = '"&Session("deviceUid")&"'"
+					sql = "update bbq_app_push_2020 set Token = '"&Session("push_token")&"', id = '"&Session("userIdNo")&"', accessToken = '"&Session("access_token")&"', regdate = CONVERT(VARCHAR(10), getdate(), 121) where deviceUid = '"&Session("deviceUid")&"'"
 
-				cmd.ActiveConnection = dbconn
-				cmd.CommandType = adCmdText
-				cmd.CommandText = sql
-				cmd.Execute
+					cmd.ActiveConnection = dbconn
+					cmd.CommandType = adCmdText
+					cmd.CommandText = sql
+					cmd.Execute
 
-		if Session("userIdNo") = "10007012717313001" and push_debug then
-			Response.Write "</br>sql > " & sql & "<br>"
-		end if
+					if Session("userIdNo") = "10007012717313001" and push_debug then
+						Response.Write "</br>sql > " & sql & "<br>"
+					end if
 
 				Else
 
-				sql = "insert into bbq_app_push_2020 (id,Token,deviceUid,osTypeCd,accessToken,gubun,regdate) values ('"&Session("userIdNo")&"','"&Session("push_token")&"','"&Session("deviceUid")&"','"&Session("osTypeCd")&"','"&Session("access_token")&"','"&push_check&"','"&Date()&"')"
+					sql = "insert into bbq_app_push_2020 (id,Token,deviceUid,osTypeCd,accessToken,gubun,regdate) values ('"&Session("userIdNo")&"','"&Session("push_token")&"','"&Session("deviceUid")&"','"&Session("osTypeCd")&"','"&Session("access_token")&"','"&push_check&"','"&Date()&"')"
 
-				cmd.ActiveConnection = dbconn
-				cmd.CommandType = adCmdText
-				cmd.CommandText = sql
-				cmd.Execute
+					cmd.ActiveConnection = dbconn
+					cmd.CommandType = adCmdText
+					cmd.CommandText = sql
+					cmd.Execute
 
-		if Session("userIdNo") = "10007012717313001" and push_debug then
-			Response.Write "</br>sql > " & sql & "<br>"
-		end if
+					if Session("userIdNo") = "10007012717313001" and push_debug then
+						Response.Write "</br>sql > " & sql & "<br>"
+					end if
 
 				End if
 				Session("push_token") = ""
@@ -149,5 +153,4 @@ end if
 	Set cmd = Nothing			
 
 End If
-
 %>
