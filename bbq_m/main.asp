@@ -171,7 +171,7 @@
 					<!-- // 실시간 인기 -->
 					<ul>
 						<div class="main_point_set">
-							<iframe width="100%" height="186" src="https://www.youtube.com/embed/NW-6kSg_UvM" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+							<iframe width="100%" height="186" src="https://www.youtube.com/embed/Av5cIn0YF_8" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 						</div>
 					</ul>
 					<!-- 메뉴 -->
