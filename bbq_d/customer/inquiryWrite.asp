@@ -17,7 +17,14 @@
 	});
 </script>
 <script type="text/javascript">
+var ClickCheck = 0;
+
 	function validQ() {
+		if (ClickCheck == 1){
+			alert("처리중입니다. 잠시만 기다려주세요.");
+			return false;
+		}
+
 		if ($.trim($("#mq [name=title]").val()) == "") {
 			alert("제목을 입력하세요.");
 			$("#mq [name=title]").focus();
@@ -30,7 +37,9 @@
 			return false;
 		}
 
-		$.ajax({
+        ClickCheck = 1;
+
+        $.ajax({
 			method: "post",
 			url: "inquiryProc.asp",
 			data: $("#mq").serialize(),
@@ -39,10 +48,15 @@
 				alert(res.message);
 				if (res.result == 0) {
 					location.href = "/mypage/inquiryList.asp";
-				}
-			}
+				} else {
+                    ClickCheck = 0;
+                }
+			}, error: function(){
+                ClickCheck = 0;
+            }
 		});
 	}
+
 	function Store_Search(){
 		SW = $('#txtBranch').val();
 		$.ajax({
