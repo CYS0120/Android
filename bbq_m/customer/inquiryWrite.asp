@@ -9,7 +9,14 @@
 <!--#include virtual="/api/include/requireLogin.asp"-->
 
 <script type="text/javascript">
+var ClickCheck = 0;
+
 	function validQ() {
+		if (ClickCheck == 1){
+			alert("처리중입니다. 잠시만 기다려주세요.");
+			return false;
+		}
+
 		if ($.trim($("#mq [name=title]").val()) == "") {
 			alert("제목을 입력하세요.");
 			$("#mq [name=title]").focus();
@@ -22,6 +29,8 @@
 			return false;
 		}
 
+        ClickCheck = 1;
+
 		$.ajax({
 			method: "post",
 			url: "inquiryProc.asp",
@@ -32,8 +41,12 @@
 				if (res.result == 0) {
 //					location.href = "/mypage/inquiryList.asp";
 					location.href = "./inquiryList.asp";
-				}
-			}
+				} else {
+                    ClickCheck = 0;
+                }
+			}, error: function(){
+                ClickCheck = 0;
+            }
 		})
 	}
 	function Store_Search(){
