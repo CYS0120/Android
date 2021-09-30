@@ -1714,9 +1714,16 @@ function calcTotalAmount() {
 							ProdUnitPrice = cJson.get(i).value.price
 							CouponPin = cJson.get(i).value.pin
 							If ECOUPON_POINTEVENT_YN = "Y" Then		'모바일 상품권 사용시 포인트 사용못하게 처리
-								If CouponPin <> "" Then 
-									ecoupon_amt = ecoupon_amt + ProdUnitPrice
-									ProdUnitPrice = 0
+								If CouponPin <> "" Then
+									' everland_compare = cJson.get(i).value.nm
+									If Instr(cJson.get(i).value.nm, "[에버랜드 프로모션]") <> 0 Then
+									' If true Then
+										' response.write cJson.get(i).value.nm
+										ProdUnitPrice = ProdUnitPrice
+									Else
+										ecoupon_amt = ecoupon_amt + ProdUnitPrice
+										ProdUnitPrice = 0
+									End If
 								End If 
 							End If
 							Order_qty = cJson.get(i).value.qty

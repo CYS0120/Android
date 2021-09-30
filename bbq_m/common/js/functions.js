@@ -357,8 +357,11 @@ function drawCartPage(page){
 
             var it = JSON.parse(sessionStorage.getItem(key));
 			if (it.pin != '')
-				it.price = 0;
-
+				if (it.nm.indexOf('[에버랜드 프로모션]') != -1) {
+					it.price = it.price;
+				} else{
+					it.price = 0;
+				}
             var it_amt = (Number(it.price) * Number(it.qty)); 
             menu_amt += (Number(it.price) * Number(it.qty));
 
