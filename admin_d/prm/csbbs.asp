@@ -1,4 +1,5 @@
 ﻿<!-- #include virtual="/inc/config.asp" -->
+<!-- #include virtual="/inc/ip_check.asp" -->
 <!-- #include virtual="/inc/functions_code.asp" -->
 <%
 	CUR_PAGE_CODE = "E"

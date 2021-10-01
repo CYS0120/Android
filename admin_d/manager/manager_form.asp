@@ -1,4 +1,5 @@
 <!-- #include virtual="/inc/config.asp" -->
+<!-- #include virtual="/inc/ip_check.asp" -->
 <%
 	IDX	= InjRequest("IDX")
 	If FncIsBlank(IDX) Then 
