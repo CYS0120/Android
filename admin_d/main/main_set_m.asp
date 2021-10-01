@@ -382,13 +382,37 @@ function DateYn(GB, check_){
 				DISPDATE = "none"
 			End If
 
+			If main_kind = "MV" Then
+%>
+
+				<div class="section_main_img" id="Div<%=main_kind%>" style="padding-bottom:0px;">
+					<table>
+						<tr>
+							<td width=570>
+								<div><span>메인 동영상 URL<br><font style="color:red;font-size:12px;">※ 방법: youtube 동영상 > 공유 > 퍼가기 > 동영상 퍼가기 하단 둘쨰 줄 src="<b>https:// ... </b>" 텍스트 복사</font></span></div>
+							</td>
+							<td>
+								<div>
+									<input type="text" name="WLINKURL<%=main_kind%>" value="<%=link_url%>" class="w50" style="width:550px;">
+								</div>
+							</td>
+							<td width=130 style="padding-right:15px;">
+								<div style="text-align:right;">
+									<input type="button" value="저장" class="btn_white125" onClick="InputCheck('<%=main_kind%>')">
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+<%
+			Else
 %>
 
 				<div class="section_main_img" id="Div<%=main_kind%>">
 					<table>
 						<tr>
 							<td>
-								<div><span>메인 배경 이미지(<%=i%>번)</span></div>
+								<div><span>메인 배너 이미지(<%=i%>번)</span></div>
 								<div class="filebox">
 									<input id="WMAINIMG<%=i%>" name="WMAINIMG<%=i%>" class="upload-name" value="<%=main_img%>" readonly>
 									<label for="WMAINIMG<%=i%>" onClick="OpenUploadIMG('WMAINIMG<%=i%>','UPIMG_DIR')">찾아보기</label>
@@ -467,7 +491,8 @@ function DateYn(GB, check_){
 				</div>
 
 <%
-			i = i + 1
+				i = i + 1
+			End If
 			Rlist.MoveNext
 		Loop
 	End If

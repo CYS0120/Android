@@ -169,11 +169,17 @@
 						</li>
 					</ul>
 					<!-- // 실시간 인기 -->
+					<%
+						sql = ""
+						sql = "SELECT LINK_URL FROM BT_MAIN_IMG_M WITH (NOLOCK) WHERE BRAND_CODE='01' AND MAIN_KIND='MV'"
+						set rs = dbconn.Execute(sql)
+					%>
 					<ul>
 						<div class="main_point_set">
-							<iframe width="100%" height="186" src="https://www.youtube.com/embed/Av5cIn0YF_8" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+							<iframe width="100%" height="186" src="<%=rs("LINK_URL")%>" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 						</div>
 					</ul>
+					<%	set rs = nothing %>
 					<!-- 메뉴 -->
 					<ul class="h-main_order">
 						<li><div class="h-main_order01"><a href="/order/delivery.asp?order_type=D">배달주문</a></div></li>
