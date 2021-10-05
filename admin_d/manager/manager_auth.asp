@@ -1,5 +1,10 @@
 <!-- #include virtual="/inc/config.asp" -->
 <%
+	CUR_PAGE_CODE = "SUPER"
+%>
+<!-- #include virtual="/inc/admin_check.asp" -->
+<!-- #include virtual="/inc/ip_check.asp" -->
+<%
 	IDX	= InjRequest("IDX")
 	TITLE = "수정"
 	If Not FncIsBlank(IDX) Then 
