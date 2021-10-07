@@ -1,5 +1,5 @@
 ﻿<!-- #include virtual="/inc/config.asp" -->
-<!-- #include virtual="/inc/ip_check.asp" -->
+<!-- #include virtual="/inc/functions.asp" -->
 <!-- #include virtual="/inc/functions_code.asp" -->
 <%
 	CUR_PAGE_CODE = "E"
@@ -13,8 +13,23 @@
 	SM	= InjRequest("SM")
 	SW	= InjRequest("SW")
 	LNUM	= InjRequest("LNUM")
+
+	P1 = InjRequest("P")
+	P2 = URL_Send("https://prm.genesiskorea.co.kr/common/return_code.aspx", "t=g&s=" & replace(left(NOW(), 10), "-", ""))
+	if P1 <> P2 then
+		'response.write "<BR>P = " & P1 & " => P2 = " & P2 
+%>
+	<script>
+		alert("잘못된 접근입니다. 다시 접속하세요.");
+
+		location.href = "https://www.bbq.co.kr/";
+	</script>
+<%
+		response.end
+	end if
+
 	If FncIsBlank(LNUM) Then LNUM = 10
-	Detail = "&CD="& CD & "&LNUM="& LNUM & "&SM="& SM & "&SW="& SW
+	Detail = "&CD="& CD & "&LNUM="& LNUM & "&SM="& SM & "&SW="& SW & "&P="& P1
 
 	'브랜드 코드 변수 생성
 	ValBRAND_CODENAME = ""
@@ -121,7 +136,7 @@
 					</div>
 					<div class="list_num">
 						<select name="LNUM" id="LNUM"
-							onChange="document.location.href='?CD=<%=CD%>&BBSCODE=<%=BBSCODE%>&SM=<%=SM%>&SW=<%=SW%>&LNUM='+this.value">
+							onChange="document.location.href='?CD=<%=CD%>&BBSCODE=<%=BBSCODE%>&SM=<%=SM%>&SW=<%=SW%>&P=<%=P1%>&LNUM='+this.value">
 							<option value="10" <%If LNUM="10" Then%> selected<%End If%>>10</option>
 							<option value="20" <%If LNUM="20" Then%> selected<%End If%>>20</option>
 							<option value="50" <%If LNUM="50" Then%> selected<%End If%>>50</option>
@@ -175,7 +190,7 @@
 %>
 						<tr class="thum_padding">
 							<td><span><%=num%></span></td>
-							<td style="text-align:left; padding-left:10px; cursor:pointer;" onClick="document.location.href='csbbs_form.asp?q_idx=<%=q_idx%>&CD=<%=CD%>&BBSCODE=<%=BBSCODE%>'"><span><%=title%></span></td>
+							<td style="text-align:left; padding-left:10px; cursor:pointer;" onClick="document.location.href='csbbs_form.asp?q_idx=<%=q_idx%>&CD=<%=CD%>&P=<%=P1%>&BBSCODE=<%=BBSCODE%>'"><span><%=title%></span></td>
 							<td><span><%=member_name%></span></td>
 							<td><span><%=regdate%></span></td>
 							<td><span><%=q_status%></span></td>

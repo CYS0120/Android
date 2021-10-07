@@ -1,4 +1,5 @@
 ﻿<!-- #include virtual="/inc/config.asp" -->
+<!-- #include virtual="/inc/functions.asp" -->
 <!-- #include virtual="/inc/functions_code.asp" -->
 <%
 	CUR_PAGE_CODE = "E"
@@ -16,6 +17,14 @@
 	If Binfo.Eof Then
 		Call subGoToMsg("존재하지 않는 게시물 입니다","back")
 	End If 
+
+	P1 = InjRequest("P")
+	P2 = URL_Send("https://prm.genesiskorea.co.kr/common/return_code.aspx", "t=g&s=" & replace(left(NOW(), 10), "-", ""))
+
+	if P1 <> P2 then
+		Call subGoToMsg("잘못된 접근방식 입니다.","back")
+		response.end
+	end if
 
 	'브랜드 코드 변수 생성
 	ValBRAND_CODENAME = ""
@@ -70,33 +79,11 @@
     <!-- #include virtual="/inc/head_prm.asp" -->
     <script type="text/javascript" src="/SmartEdit/js/HuskyEZCreator.js" charset="utf-8"></script>
     <script language="JavaScript">
-        //	$(document).ready(function(){
-        //		$('.answer_btn').on('click',function(){
-        //			$('#answer').css('display','block')
-        //		});
-        //	});
-
         function CheckInput(MODE) {
             var f = document.inputfrm;
             f.MODE.value = MODE;
             oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
             f.a_body.value = document.getElementById("ir1").value;
-            $.ajax({
-                async: true,
-                type: "POST",
-                url: "csbbs_form_proc.asp",
-                data: $("#inputfrm").serialize(),
-                dataType: "text",
-                success: function (data) {
-                    alert(data.split("^")[1]);
-                    if (data.split("^")[0] == 'Y') {
-                        document.location.href = 'csbbs.asp?CD=<%=CD%>&BBSCODE=<%=BBSCODE%>';
-                    }
-                },
-                error: function (data, status, err) {
-                    alert(err + '서버와의 통신이 실패했습니다.');
-                }
-            });
         }
     </script>
 </head>
