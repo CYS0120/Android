@@ -154,4 +154,7 @@ Const JUSO_API_KEY_XY = "U01TX0FVVEgyMDIwMTAwNjExNDc1MDExMDI1OTk="
 	BBQHOME_DB	= "BBQ_HOME"
 	TESTMODE	= "N"			'테스트용
 '	========================================================================================
+
+'고객센터 전화번호 (2021.10 더페이)
+SERVICE_CENTER_TEL = "1588-9282" '080-3436-0507에서 변경 
 %>

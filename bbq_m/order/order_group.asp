@@ -29,7 +29,7 @@
 			<div><strong>BBQ치킨</strong>을 학교, 회사, 기관 등<br> <strong>단체 주문</strong>시 <strong class="red">고객센터</strong>로 연락하면<br> 더욱 편리하게 이용할 수 있습니다.</div>
 			<ul>
 				<li><img src="/images/order/group_img1.png"></li>
-				<li><a href="tel:080-3436-0507"><img src="/images/order/group_img2.png"> 080-3436-0507</a></li>
+				<li><a href="tel:<%=SERVICE_CENTER_TEL%>"><img src="/images/order/group_img2.png"> <%=SERVICE_CENTER_TEL%></a></li>
 				<li><img src="/images/order/group_img3.png"></li>
 			</ul>
 			

@@ -250,7 +250,7 @@ end if
 			<dd>서울시 송파구 중대로 64(문정동)<span>/</span>대표자 : 윤경주, 신계돈</dd>
 			<dd>통신판매업신고 : 2010-서울송파-1181호</dd>
 			<dd>사업자등록번호 : 207-81-43555</dd>
-			<dd>고객센터 : 080-3436-0507<span>/</span>창업문의 : 080-383-9000</dd>
+			<dd>고객센터 : <%=SERVICE_CENTER_TEL%><span>/</span>창업문의 : 080-383-9000</dd>
 			<dd></dd>
 			<dt><a href="#" onClick="location.href='/etc/marketing.asp';return false;">마케팅수신약관</a> / <a href="#" onClick="location.href='/etc/location.asp';return false;">위치기반서비스약관</a> / <a href="#" onClick="location.href='/etc/privacy.asp';return false;">개인정보취급방침</a></dd>
 			<dd>Copyright 2020 © GENESIS BBQ. All rights reserved.</dd>

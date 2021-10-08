@@ -145,7 +145,7 @@ jQuery(document).ready(function(e) {
 						<div class="td cs">
 							<dl>
 								<dt>고객센터</dt>
-								<dd>080-3436-0507</dd>
+								<dd><%=SERVICE_CENTER_TEL%></dd>
 							</dl>
 							<p>토요일,공휴일은 휴무 / 운영시간 10:00~18:00</p>
 						</div>

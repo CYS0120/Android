@@ -259,7 +259,8 @@
                     				<div class="addManage" id="addr_<%=aRs("addr_idx")%>">
                     					<div class="name">
                     						<%If aRs("is_main") = "Y" Then%>
-                    						<span class="red">[기본배달지]</span> <%End If%><%'=aRs("addr_name")%>
+                    						<span class="red">[기본배달지]</span> <%End If%><%'=aRs("addr_name")
+											%>
                     					</div>
                     					<ul class="info">
                     						<li>(<%=aRs("zip_code")%>) <%=aRs("address_main")&" "&aRs("address_detail")%></li>
@@ -286,7 +287,7 @@
             <section class="mypage_callCenter h-inbox1000">
 				<ul>
 					<li>
-						<dl><dt>고객센터</dt><dd>080-3436-0507</dd></dl>
+						<dl><dt>고객센터</dt><dd><%=SERVICE_CENTER_TEL%></dd></dl>
 					</li>
 					<li>운영시간 10:00~18:00 (토요일, 공휴일은 휴무)</li>
 				</ul>

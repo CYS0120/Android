@@ -1,4 +1,4 @@
-<!--#include virtual="/api/include/utf8.asp"-->
+﻿<!--#include virtual="/api/include/utf8.asp"-->
 <!doctype html>
 <html lang="ko">
 <head>
@@ -204,7 +204,7 @@ function validInfo() {
 		<div class="breadcrumb-wrap">
 			<ul class="breadcrumb">
 				<li><a href="/">bbq home</a></li>
-				<li><a href="#" onclick="javascript:return false;">마이페이지</a></li>
+				<li><a href="#">마이페이지</a></li>
 				<li>회원정보 변경</li>
 			</ul>
 		</div>
@@ -433,7 +433,7 @@ function validInfo() {
 			
 					<button type="button" onclick="javascript:lpOpen('.lp_memSecssion');" class="btn btn_lp_open btn_memSecssion mar-t60">
 						<span class="ico-arrowRight">제너시스BBQ그룹 통합 멤버십 회원탈퇴
-							<small>불편사항이 있으셨나요? 고객센터(080-3436-0507)로 연락주시면 서비스개선을 위해 최선을 다하겠습니다.</small>
+							<small>불편사항이 있으셨나요? 고객센터(<%=SERVICE_CENTER_TEL%>)로 연락주시면 서비스개선을 위해 최선을 다하겠습니다.</small>
 						</span>
 					</button>
 				</div>

@@ -172,7 +172,7 @@
 					<dl class="callCenter">
 						<dt>고객센터</dt>
 						<dd>
-							<div class="callNumber">080-3436-0507</div>
+							<div class="callNumber"><%=SERVICE_CENTER_TEL%></div>
 							<div class="openTime">운영시간 10:00~18:00 (토요일, 공휴일은 휴무)</div>
 						</dd>
 					</dl>
