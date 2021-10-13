@@ -1,4 +1,4 @@
-<!--#include virtual="/api/include/utf8.asp"-->
+<!--#include virtual="/api/include/utf8_base.asp"-->
 <%
 	'Option Explicit
 	'-----------------------------------------------------------------------------
@@ -8,14 +8,7 @@
 	'
 	' ASP 에서는 JSON 형태를 지원하지 않기 때문에 하단 파일(json/JSON_2.0.4.asp)을 include 합니다.
 	'-----------------------------------------------------------------------------
-%>
-<!--#include file="sgpay.util.asp"-->
-<!--#include file="config/aspJSON1.17.asp"-->
-<!--#include file="config/KISA_SHA256.asp" -->
-<!--#include file="config/KISA_SEED_CBC.asp" -->
-<!--#include file="config/base64.asp" -->
-<!--#include file="config/stdpayFunction.asp" -->
-<%
+
 	'---------------------------------------------------------------------------------
 	'
 	' 환경변수 선언
@@ -86,9 +79,15 @@
 	' 암호화 모듈 및 키 선언
 	'-----------------------------------------------------------------------------
 	dim g_HASHKEY, g_SEEDKEY, g_SEEDIV
-	g_HASHKEY 	= "F3149950A7B6289723F325833F580001"
-	g_SEEDKEY 	= "gkR791mVtQlbbuwtcMfs1Q=="
-    g_SEEDIV 	= "STDP000173087816"
+	If G2_SITE_MODE <> "production" Then	' 테스트용 코드
+		g_HASHKEY 	= "F3149950A7B6289723F325833F580001"
+		g_SEEDKEY 	= "gkR791mVtQlbbuwtcMfs1Q=="
+		g_SEEDIV 	= "STDP000173087816"
+	else									' 실서버용 코드
+		g_HASHKEY 	= "F3149950A7B6289723F325833F580001"
+		g_SEEDKEY 	= "gkR791mVtQlbbuwtcMfs1Q=="
+		g_SEEDIV 	= "STDP000173087816"
+	end if
 
 
 	'---------------------------------------------------------------------------------
@@ -120,17 +119,32 @@
 	sgpay_MemInfoUrl	= sgPayDomain & "/api/memberinfo/meminfo"	' SG Pay 회원 정보 조회 URL
 	sgpay_MemUnRegUrl	= sgPayDomain & "/api/memberinfo/memunreg"	' SG Pay 회원 해제 URL
 
-		'-----------------------------------------------------------------------------
+
+
+%>
+<!--#include file="config/aspJSON1.17.asp"-->
+<!--#include file="config/KISA_SHA256.asp" -->
+<!--#include file="config/KISA_SEED_CBC.asp" -->
+<!--#include file="config/base64.asp" -->
+<!--#include file="config/stdpayFunction.asp" -->
+<!--#include file="sgpay.util.asp"-->
+<%
+	'-----------------------------------------------------------------------------
 	' 회원 번호 고정 (개발용)
 	'-----------------------------------------------------------------------------
 
+	if len(request.cookies("ui")) = 0 then
+		call SetCookies_enc("ui", Session("userIdNo"))
+	end if
+	
 	Dim g_corpMemberNo, g_userMngNo, s_userMngNo
 '	If G2_SITE_MODE = "local" Then
 '		g_corpMemberNo = "10007012717313001"
 '		g_userMngNo = "S21070000036"
 '	else	
-		g_corpMemberNo = Session("userIdNo")
+		g_corpMemberNo = GetCookies_enc("ui")
 		g_userMngNo = GetuserMngNo(g_corpMemberNo)
 '	end if
+
 
 %>

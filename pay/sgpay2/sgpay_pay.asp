@@ -2,7 +2,9 @@
 <%
     REFERERURL	= Request.ServerVariables("HTTP_REFERER")
 	If Not CheckLogin() Then
-        if len(REFERERURL) = 0 then REFERERURL = "/"
+        if len(REFERERURL) = 0 or instr(REFERERURL, g2_bbq_m_url) < 0 then
+			REFERERURL = "/"
+		end if
 %>
 <script>
 	alert('회원 서비스입니다.');
@@ -32,15 +34,21 @@
 		Response.End
 	End If
 
-	' 간편결제 등록 여부 확인
+	' ' 간편결제 등록 여부 확인
 	' payInfo = GetpayInfo(g_corpMemberNo, g_userMngNo)
 	' ' JSON 객체 생성
 	' Set payInfoToJson = New aspJSON
 	' ' JSON 문자열 파싱
 	' payInfoToJson.loadJSON(Result)
 	' sgpay_payListCnt = payInfoToJson.data("payListCnt")
-	sgpay_payListCnt = 1
-	if sgpay_payListCnt > 0 and true then
+
+	sgpay_userInfo = GetuserInfo(g_corpMemberNo)
+
+	' JSON 객체 생성
+	Set readTokenToJson = New aspJSON
+	' JSON 문자열 파싱
+	readTokenToJson.loadJSON(sgpay_userInfo)
+	if readTokenToJson.data("resultCode") = "0000" and readTokenToJson.data("statusCd") = "0" then
 	else
 %>
 <script>
@@ -50,7 +58,6 @@
 <%
 		Response.End
 	end if
-
 
 	' 매장정보 조회...
 	Set aCmd = Server.CreateObject("ADODB.Command")
@@ -282,8 +289,8 @@
 	' 입력 파라미터
 	corpNo 			= g_CORPNO			        ' [필수] 기업관리번호
 	mertNo 			= s_MERTNO					' [필수] 가맹점관리번호	
-	corpMemberNo 	= Session("userIdNo")	    ' [필수] 기업(가맹점) 회원번호 - (SEED 암호화 대상필드)
-	userMngNo 		= GetuserMngNo(Session("userIdNo"))' [필수] 간편결제 회원관리번호 - (SEED 암호화 대상필드)
+	corpMemberNo 	= g_corpMemberNo		    ' [필수] 기업(가맹점) 회원번호 - (SEED 암호화 대상필드)
+	userMngNo 		= g_userMngNo				' [필수] 간편결제 회원관리번호 - (SEED 암호화 대상필드)
 	' response.write "corpMemberNo : " & corpMemberNo & "<BR>"
 	' response.write "userMngNo : " & userMngNo & "<BR>"
 

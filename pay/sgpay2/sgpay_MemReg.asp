@@ -9,12 +9,15 @@
 <%
     REFERERURL	= Request.ServerVariables("HTTP_REFERER")
 	If Not CheckLogin() Then
+        if len(REFERERURL) = 0 or instr(REFERERURL, g2_bbq_m_url) < 0 then
+			REFERERURL = "/"
+		end if
 %>
 <script>
 	alert('회원 서비스입니다.');
 </script>
 <%
-        response.redirect "/"
+        response.redirect REFERERURL
 		Response.End
 	End If
 
@@ -24,7 +27,7 @@
 	' 입력 파라미터
 	corpNo 			= g_CORPNO			        ' [필수] 기업관리번호
 	mertNo 			= g_MERTNO			        ' [필수] 가맹점관리번호	
-	corpMemberNo 	= Session("userIdNo")	    ' [필수] 기업(가맹점) 회원번호 - (SEED 암호화 대상필드)
+	corpMemberNo 	= g_corpMemberNo		    ' [필수] 기업(가맹점) 회원번호 - (SEED 암호화 대상필드)
 
 	introYn 		= "N"		                ' [옵션] 인트로 화면 표시여부 (Y/N)
 	regUiType 		= "R2"		                ' [옵션] 가입 UI타입 , ① R1 : 약관동의, 본인인증 분리 UI,	② R2 : 약관동의, 본인인증 통합UI, *Default :R1
@@ -52,7 +55,7 @@
 	'-------------------------------------------------------
 	' 2. 암호화 대상 필드 Seed 암호화  
 	'-------------------------------------------------------
-	corpMemberNo = seedEncrypt(Session("userIdNo"), g_SEEDKEY, g_SEEDIV)
+	corpMemberNo = seedEncrypt(g_corpMemberNo, g_SEEDKEY, g_SEEDIV)
 	hNum = seedEncrypt(hNum, g_SEEDKEY, g_SEEDIV)
 	
 	'-------------------------------------------------------

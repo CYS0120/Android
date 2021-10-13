@@ -9,7 +9,9 @@
 <%
     REFERERURL	= Request.ServerVariables("HTTP_REFERER")
 	If Not CheckLogin() Then
-        if len(REFERERURL) = 0 then REFERERURL = "/"
+        if len(REFERERURL) = 0 or instr(REFERERURL, g2_bbq_m_url) < 0 then
+			REFERERURL = "/"
+		end if
 %>
 <script>
 	alert('회원 서비스입니다.');
@@ -25,8 +27,8 @@
 	' 입력 파라미터
 	corpNo 			= g_CORPNO			        ' [필수] 기업관리번호
 	mertNo 			= g_MERTNO			        ' [필수] 가맹점관리번호	
-	corpMemberNo 	= Session("userIdNo")	    ' [필수] 기업(가맹점) 회원번호 - (SEED 암호화 대상필드)
-	userMngNo 		= GetuserMngNo(Session("userIdNo"))' [필수] 간편결제 회원관리번호 - (SEED 암호화 대상필드)
+	corpMemberNo 	= g_corpMemberNo		    ' [필수] 기업(가맹점) 회원번호 - (SEED 암호화 대상필드)
+	userMngNo 		= g_userMngNo				' [필수] 간편결제 회원관리번호 - (SEED 암호화 대상필드)
 	' response.write "corpNo : " & corpNo & "<BR>"
 	' response.write "mertNo : " & mertNo & "<BR>"
 	' response.write "corpMemberNo : " & corpMemberNo & "<BR>"
@@ -71,7 +73,7 @@
     ' response.write "userMngNo : " & userMngNo & "<BR>"
 	'response.end
 
-	corpMemberNo 	= seedEncrypt(Session("userIdNo"), g_SEEDKEY, g_SEEDIV)
+	corpMemberNo 	= seedEncrypt(corpMemberNo, g_SEEDKEY, g_SEEDIV)
 	userMngNo 		= seedEncrypt(userMngNo, g_SEEDKEY, g_SEEDIV)
 	
 	'-------------------------------------------------------
@@ -129,8 +131,5 @@
 	<input type="hidden" name="mainColor" 		id="mainColor" 		value="<%=mainColor%>">
 	<input type="hidden" name="secuKeypadType" 	id="secuKeypadType" value="<%=secuKeypadType%>">
 </form>
-<script>
-    console.log("<%=userMngNo%>");    
-</script>
 </body>
 </html>

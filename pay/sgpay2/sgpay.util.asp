@@ -115,6 +115,26 @@
 
 
 	'-----------------------------------------------------------------------------
+	' 암호화된 쿠키 처리
+	'-----------------------------------------------------------------------------
+	Function SetCookies_enc(byVal k, byVal v)
+		v = seedEncrypt(v, g_SEEDKEY, g_SEEDIV)
+		Response.Cookies(k) = v
+		SetCookies_enc = true
+	End Function
+	Function GetCookies_enc(byVal k)
+		dim r : r = ""
+		if len(Request.Cookies(k)) > 0 then
+			r = seedDecrypt(Request.Cookies(k), g_SEEDKEY, g_SEEDIV)
+		else
+			r = ""
+		end if
+
+		GetCookies_enc = r
+	End Function
+
+
+	'-----------------------------------------------------------------------------
 	' SGPAY API 호출 함수
 	' 사용 방법 : Call sgpay_Call_URL(mURL, mData)
 	' mData - JSON 데이터
