@@ -34,7 +34,8 @@ function AdjustDiv(proc_type, main_kind){
 			}
 		},
 		error: function(data, status, err) {
-			alert(err + '서버와의 통신이 실패했습니다.');
+			// alert(err + '서버와의 통신이 실패했습니다.');
+			alert('배너는 최대 9개까지 추가할 수 있습니다.');
 		}
 	});
 }
@@ -400,6 +401,10 @@ function DateYn(GB, check_){
 										<option value="3"<%If BAN_ORD="3" Then%> selected<%End If%>>3</option>
 										<option value="4"<%If BAN_ORD="4" Then%> selected<%End If%>>4</option>
 										<option value="5"<%If BAN_ORD="5" Then%> selected<%End If%>>5</option>
+										<option value="6"<%If BAN_ORD="6" Then%> selected<%End If%>>6</option>
+										<option value="7"<%If BAN_ORD="7" Then%> selected<%End If%>>7</option>
+										<option value="8"<%If BAN_ORD="8" Then%> selected<%End If%>>8</option>
+										<option value="9"<%If BAN_ORD="9" Then%> selected<%End If%>>9</option>
 									</select>
 								</div>
 							</td>
