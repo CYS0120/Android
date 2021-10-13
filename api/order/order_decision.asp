@@ -11,6 +11,7 @@
     End With
     Set cmd = Nothing
     If Not (rs.BOF Or rs.EOF) Then
+		dim bat_cnt : bat_cnt = 0
         Do Until rs.EOF
             order_idx = rs("order_idx")
             order_channel = rs("order_channel")
@@ -33,14 +34,16 @@
 'Response.End 
             Set resC = OrderDecisionSimple(reqC.toJson())
             '확정완료
-
-Response.Write rs("order_idx") & "<br>"
-Response.Write resC.mCode & "<br>"
-Response.Write resC.mMessage & "<br>"
+			bat_cnt = bat_cnt + 1
+			Response.Write "cnt : " & bat_cnt & " | "
+			Response.Write "order_idx : " & rs("order_idx") & " | "
+			Response.Write "resC.mCode : " & resC.mCode & " | "
+			Response.Write "resC.mMessage : " & resC.mMessage & "<br>"&chr(10)
+			'Response.Write "=====================================================================================<br>"&chr(10)
 
 			resCode = resC.mCode
 			resMessage = resC.mMessage
-			If resCode = 0 Then 
+			If resCode = 0 or resCode = 9599 Then 
 				mCouponAcmPoint = resC.mCouponAcmPoint
 				mPayAcmPoint = resC.mPayAcmPoint
 				mRestPoint = resC.mRestPoint
