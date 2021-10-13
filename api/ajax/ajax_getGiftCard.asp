@@ -134,7 +134,7 @@
             U_YN      = this1.item("U_YN")      ' 상품권 교환여부
     
             'CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WHERE used_date is null AND giftcard_number = '"& giftPIN &"'"
-            CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WHERE giftcard_number = '"& giftPIN &"'"
+            CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WITH(NOLOCK) WHERE giftcard_number = '"& giftPIN &"'"
             Set Gift_Count = dbconn.Execute(CountQuery)
             Gift_Count.movefirst
      
@@ -165,7 +165,7 @@
 '상품권 조회 
     If callMode = "Select" Then
         giftPIN = GetReqStr("giftPIN","")
-        sql = " SELECT giftcard_idx,giftcard_number,giftcard_amt  FROM bt_giftcard WHERE giftcard_number = '"& giftPIN &"'"
+        sql = " SELECT giftcard_idx,giftcard_number,giftcard_amt FROM bt_giftcard WITH(NOLOCK) WHERE member_id = '"& mmidno &"' AND giftcard_number = '"& giftPIN &"'"
         Set Gc = dbconn.Execute(sql)
         If Not (Gc.BOF Or Gc.EOF) Then
             Gc.movefirst
@@ -187,7 +187,7 @@
 
 '상품권 갯수 조회 
     If callMode = "listCount" Then
-        sql = " SELECT COUNT(*) as cnt FROM bt_giftcard WHERE used_date is null AND member_id = '"& mmidno &"'"
+        sql = " SELECT COUNT(*) as cnt FROM bt_giftcard WITH(NOLOCK) WHERE member_id = '"& mmidno &"' AND USED_DATE IS NULL AND CONVERT(VARCHAR(8), GETDATE(), 112) BETWEEN USEDATE_FROM AND USEDATE_TO"
 
         Set Gc_List = dbconn.Execute(sql)
         Gc_list.movefirst
@@ -198,7 +198,7 @@
 
 '상품권 리스트 조회
     If callMode = "list" Then
-        sql = " SELECT giftcard_idx,giftcard_number,giftcard_amt,member_id,order_num,used_date,usedate_from,usedate_to,publish_date FROM bt_giftcard WHERE used_date is null AND member_id = '"& mmidno &"'"
+        sql = " SELECT giftcard_idx,giftcard_number,giftcard_amt,member_id,order_num,used_date,usedate_from,usedate_to,publish_date FROM bt_giftcard WITH(NOLOCK) WHERE member_id = '"& mmidno &"' AND USED_DATE IS NULL AND CONVERT(VARCHAR(8), GETDATE(), 112) BETWEEN USEDATE_FROM AND USEDATE_TO "
         Set Gc_List = dbconn.Execute(sql)
         If Not (Gc_list.BOF Or Gc_list.EOF) Then
             Gc_list.movefirst
@@ -231,7 +231,7 @@
 If callMode = "use" Then
         serial = GetReqStr("serial","")
         Response.Write serial
-        Sql = "UPDATE bt_giftcard SET used_date = SYSDATETIME() WHERE giftcard_number = '"& serial &"'"
+        Sql = "UPDATE bt_giftcard SET used_date = GETDATE() WHERE member_id = '"& mmidno &"' AND giftcard_number = '"& serial &"'"
         dbconn.Execute(Sql)
         Response.Write "{""result"":0,""giftPIN"":""" & giftPIN &"""}"
     End If
@@ -241,7 +241,7 @@ If callMode = "use" Then
 '상품권 선물 대상 조회
 If callMode = "search" Then
     userid = GetReqStr("userid","")
-    sql = " SELECT member_id as member,member_idno as member_idno FROM bt_member WHERE member_id = '"& userid &"'"
+    sql = " SELECT member_id as member,member_idno as member_idno FROM bt_member WITH(NOLOCK) WHERE member_id = '"& userid &"'"
     Set User = dbconn.Execute(sql)
 
     'Response.Write User("member_idno")
@@ -263,14 +263,13 @@ If callMode = "present" Then
     dbconn.Execute(Sql)
     Response.Write "{""result"":0,""user_id"":""" & userid &"""}"
 End If
-
 '상품권 선물 처리
 
 '지급쿠폰 조회
 
 If callMode = "productCoupon" Then
     giftProductCode = GetReqStr("giftProductCode","")
-    sql = " SELECT menu_price as m_price FROM bt_menu WHERE menu_idx = '"& giftProductCode &"'"
+    sql = " SELECT menu_price as m_price FROM bt_menu WITH(NOLOCK) WHERE menu_idx = '"& giftProductCode &"'"
     Set Product = dbconn.Execute(Sql)
     If Not (Product.BOF Or Product.EOF) Then
         Response.Write "{""result"":0,""price"":""" & Product("m_price") &"""}"
@@ -283,7 +282,7 @@ End If
 
 If callMode = "productSearch" Then
     giftProductCode = GetReqStr("giftProductCode","")
-    sql = " SELECT menu_name as m_name, menu_price as m_price, (SELECT file_name FROM bt_menu_file where menu_idx = '"& giftProductCode &"' AND file_type = 'THUMB') as m_file FROM bt_menu WHERE menu_idx = '"& giftProductCode &"'"
+    sql = " SELECT menu_name as m_name, menu_price as m_price, (SELECT file_name FROM bt_menu_file WITH(NOLOCK) where menu_idx = '"& giftProductCode &"' AND file_type = 'THUMB') as m_file FROM bt_menu WITH(NOLOCK) WHERE menu_idx = '"& giftProductCode &"'"
     Set Product = dbconn.Execute(Sql)
     If Not (Product.BOF Or Product.EOF) Then
 		Response.Write "{""result"":0,""name"":""" & Product("m_name") &""",""price"":"""& Product("m_price") &""",""file"":""" & Product("m_file") &"""}"
