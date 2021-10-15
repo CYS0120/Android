@@ -277,7 +277,10 @@
 	End With
 	Set pinCmd = Nothing
 
-	prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
+	If Not (pinRs.BOF Or pinRs.EOF) Then
+		prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
+	end if 
+	
 	Set pinRs = Nothing
 
 	If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
@@ -568,6 +571,10 @@
 			End If
 		End With 
 	End If
+
+	if ErrMessage <> "" Then
+		Call Write_Log("payco_return.asp order_idx : " & cstr(order_idx) & " ErrMessage : " & ErrMessage)
+	end if 
 
 	' ## 오류가 없을 시 주문 완료 처리
 	If Not RaiseError Then
