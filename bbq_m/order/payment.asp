@@ -1689,11 +1689,15 @@ function calcTotalAmount() {
 						Dim ecoupon_amt
 						ecoupon_amt = 0
 
+						Dim limit_price
+						limit_price = 13000
+
 						For i = 0 To iLen - 1	'모바일 상품권 사용여부 체크
 							CouponPin = cJson.get(i).value.pin
 							If CouponPin <> "" Then
 								ECOUPON_POINTEVENT_YN = "Y"
 								EVENT_POINT = 0
+								limit_price = 9900
 							End If
 						Next 
 
@@ -1939,9 +1943,9 @@ function calcTotalAmount() {
 				$("#og-total_amt").val(<%=totalAmount%>);
 			</script>
 
-			<% if totalAmount_parent < 13000 then %>
+			<% if totalAmount_parent < limit_price then %>
 				<script type="text/javascript">
-					alert("최소결제금액은 13,000원 이상 주문하셔야 됩니다.");
+					alert("최소결제금액은 13,000원 이상 주문하셔야 됩니다.\n※ 모바일 상품권 사용 시 9,900원 이상");
 					history.back();
 				</script>
 				<% response.end %>
