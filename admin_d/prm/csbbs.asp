@@ -14,7 +14,8 @@
 	SW	= InjRequest("SW")
 	LNUM	= InjRequest("LNUM")
 
-	P1 = InjRequest("P")
+	P1 = Request("P")
+	P1 = replace(P1, " ", "+")
 	P2 = URL_Send("https://prm.genesiskorea.co.kr/common/return_code.aspx", "t=g&s=" & replace(left(NOW(), 10), "-", ""))
 	if P1 <> P2 then
 		'response.write "<BR>P = " & P1 & " => P2 = " & P2 

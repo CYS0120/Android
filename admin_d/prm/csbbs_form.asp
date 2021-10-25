@@ -18,9 +18,9 @@
 		Call subGoToMsg("존재하지 않는 게시물 입니다","back")
 	End If 
 
-	P1 = InjRequest("P")
+	P1 = Request("P")
+	P1 = replace(P1, " ", "+")
 	P2 = URL_Send("https://prm.genesiskorea.co.kr/common/return_code.aspx", "t=g&s=" & replace(left(NOW(), 10), "-", ""))
-
 	if P1 <> P2 then
 		Call subGoToMsg("잘못된 접근방식 입니다.","back")
 		response.end
