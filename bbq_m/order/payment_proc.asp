@@ -921,6 +921,35 @@
 		Set pCmd = Nothing
 	End If
 
+
+	'주문 금액 체크
+	Set pCmd = Server.CreateObject("ADODB.Command")
+	With pCmd
+		.ActiveConnection = dbconn
+		.NamedParameters = True
+		.CommandType = adCmdStoredProc
+		.CommandText = "bp_order_amt_check"
+
+		.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput, , order_idx)
+
+		Set pRs = .Execute
+	End With
+	Set pCmd = Nothing
+	dim amt_check_code : amt_check_code = -1 
+	If Not (pRs.BOF Or pRs.EOF) Then
+		amt_check_code = pRs("ERRCODE")
+		amt_check_msg  = pRs("ERRMSG")
+		if amt_check_code <> 0 then
+			Response.Write "{""result"":1, ""result_msg"":""주문정보가 잘못되었습니다.("& amt_check_msg &")""}"
+			Response.End
+		end if 
+	end if 
+	set pRs = nothing 
+	'//주문 금액 체크
+
+
+
+
 '	If CheckLogin() Then	'회원인 경우 '페이코 쿠폰, 페이코 카드, 페이코 포인트를 쓴 경우 
 '		If Not (save_point = "0" And bbq_card = "[]" And coupon_no = "" And coupon_id = "") Then
 '	If Not (save_point = "0" And bbq_card = "[]" And coupon_no = "" And coupon_id = "") Then

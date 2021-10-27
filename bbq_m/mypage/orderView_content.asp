@@ -286,9 +286,76 @@
 						<span><%=vDeliveryMessage%></span>
 					</li>
 				</ul>
+				<%
+					' 결제수단 가져오기
+					Set pCmd = Server.CreateObject("ADODB.Command")
+					With pCmd
+						.ActiveConnection = dbconn
+						.NamedParameters = True
+						.CommandType = adCmdStoredProc
+						.CommandText = "bp_web_order_item_pay"
 
+						.Parameters.Append .CreateParameter("@order_num", advarchar, adParamInput, 40, vOrderNum)
+
+						Set pRs = .Execute
+					End With
+					Set pCmd = Nothing
+
+					Dim pay_info_html : pay_info_html = "" 
+					if Not (pRs.BOF or pRs.EOF) Then 
+						pay_info_html = pay_info_html & "<li><h5>결제방법</h5>"
+						Do until pRs.EOF
+							order_detail_idx   = pRs("order_idx")
+							pay_type_name      = pRs("pay_type_nm")
+							payment_amt        = pRs("payment_amt")
+
+							pay_info_html = pay_info_html & "<span>" & pay_type_name & " </span> "
+							pay_info_html = pay_info_html & "<span> <span class=""robotoR price"">" & FormatNumber(payment_amt,0) & "</span>원</span><br>"
+
+							pRs.MoveNext
+						Loop
+						pay_info_html = pay_info_html & "</li>"
+					end if 
+					set pRs = Nothing
+					'// 결제수단 가져오기
+
+					'오류 결제수단 가져오기 
+					Set pCmd = Server.CreateObject("ADODB.Command")
+					With pCmd
+						.ActiveConnection = dbconn
+						.NamedParameters = True
+						.CommandType = adCmdStoredProc
+						.CommandText = "bp_payment_detail_err_select"
+
+						.Parameters.Append .CreateParameter("@order_num", advarchar, adParamInput, 40, vOrderNum)
+						.Parameters.Append .CreateParameter("@pay_method", advarchar, adParamInput, 20, "GIFTCARD")
+
+						Set pRs = .Execute
+					End With
+					Set pCmd = Nothing
+					
+					dim pay_transaction_id : pay_transaction_id = ""
+					if Not (pRs.BOF or pRs.EOF) Then 
+						pay_info_html = pay_info_html & "<li><h5>오류 결제수단</h5>"
+						Do until pRs.EOF
+							pay_transaction_id = pRs("pay_transaction_id")
+
+							if Len(pay_transaction_id) >= 12 then
+								pay_info_html = pay_info_html & "<span>" & pay_transaction_id & " </span> "
+								pay_info_html = pay_info_html & "<span> <span class=""robotoR price"">" & FormatNumber(pRs("pay_amt"),0) & "</span>원</span><br>"
+							end if 
+							
+							pRs.MoveNext
+						Loop
+						pay_info_html = pay_info_html & "</li>"
+					end if 
+					set pRs = Nothing
+					'// 오류 결제수단 가져오기 
+				%>
 				<ul class="reorder_view_data">
 					<h4>결제정보</h4>
+					<%=pay_info_html%>
+					<!--
 					<li>
 						<h5>결제방법</h5>
 						<span><%=pay_type_title%> / <%=pay_type_name%></span>
@@ -297,4 +364,5 @@
 						<h5>결제금액</h5>
 						<span><span class="robotoR price"><%=FormatNumber(vPayAmt,0)%></span>원</span>
 					</li>
+					-->
 				</ul>

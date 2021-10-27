@@ -59,6 +59,9 @@
 
 		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0','0','danal_card-000')"
 		dbconn.Execute(Sql)
+        
+        Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Session("UserId") &"','0','danal_card-session-001')"
+        dbconn.Execute(Sql)
 
         returnUrl = "/order/orderComplete.asp"
 
@@ -198,7 +201,7 @@
         End If
 		' =========================================================================================
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','2','0','danal_card-000')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','2','"& cstr(AMOUNT) &"','danal_card-000')"
 		dbconn.Execute(Sql)
 
     ElseIf gubun = "Charge" Or gubun = "Gift" Then
@@ -240,7 +243,7 @@
             AMOUNT = ""
         End If
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','3','0','danal_card-000')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','3','"& cstr(AMOUNT) &"','danal_card-000')"
 		dbconn.Execute(Sql)
 		
     End If
@@ -293,7 +296,7 @@
         REQ_DATA.Add "SERVICETYPE", "DANALCARD"
         Set RES_DATA = CallCredit(REQ_DATA, false)
     End IF
-
+	
     IF RES_DATA.Item("RETURNCODE") = "0000" Then
 
         '***************************************************
@@ -515,6 +518,7 @@
 </script>
 <%
         End If
+		
 %>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -528,7 +532,7 @@
 	<input type="hidden" name="pm" value="Card" />
 </form-->
 <script type="text/javascript">
-	alert("주문이 정상적으로 완료되었습니다.");
+	//alert("주문이 정상적으로 완료되었습니다.");
 	opener.location.href = "/order/orderComplete.asp?order_idx=<%=order_idx%>&pm=Card";
 	window.close();
 /*

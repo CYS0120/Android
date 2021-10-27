@@ -230,6 +230,8 @@
 	Delivery_Event vDeliveryFee
     if DSP_DeliveryFee <> vDeliveryFee then
         DSP_DeliveryFee = "<strike style='color:#e31937'>" & FormatNumber(DSP_DeliveryFee,0) & "</strike>&nbsp;" & FormatNumber(vDeliveryFee,0)
+	else
+		DSP_DeliveryFee = FormatNumber(DSP_DeliveryFee,0) '2021-10 더페이 : 컴마 처리 
     end if
 
 	If order_type = "P" Then vDeliveryFee = 0
@@ -327,6 +329,11 @@
 %>
 
 <script type="text/javascript">
+
+	<%if order_type = "D" and Session("userPhone") <> "" Then%>
+		sessionStorage.setItem("ss_user_phone", "<%=Session("userPhone")%>");
+	<%end if%>
+		
 	function branch_chk() {
 		var branch_data = JSON.parse(sessionStorage.getItem("ss_branch_data"));
 
@@ -787,7 +794,9 @@ function reset_Giftcard_apply(obj) {
 	//$(obj).find('option:first').attr('selected', 'selected');
 	$("#g_discount_amount").val('0');
     $("#giftcard_discount_amt").text('0');
-    $("#giftcard_amt").val('0');
+    
+	//확인 누를 때만 값 반영되도록 주석처리 (2021.10 더페이)
+    //$("#giftcard_amt").val('0');
     
 }
 
@@ -1204,6 +1213,25 @@ function calcTotalAmount() {
 			}});
 			return false;
 		}
+		<%If order_type = "D" Then '배달일 때 핸드폰 번호 검증
+		%>
+			if($("input[name='mobile']").val() == ""){
+				var ss_user_phone = sessionStorage.getItem('ss_user_phone');
+				var temp_mobile = "";
+				var mobile = "";
+
+				if(ss_user_phone != ""){
+					if( ss_user_phone.length > 10){
+						temp_mobile = ss_user_phone.replace('+82', '0').substr(-10, 10);
+						mobile = '0'+temp_mobile.substr(0,2)+'-'+temp_mobile.substr(2,4)+'-'+temp_mobile.substr(6, 10);
+					}else if(ss_user_phone.length == 9) {
+						temp_mobile = ss_user_phone.replace('+82', '0').substr(-10, 10);
+						mobile = temp_mobile.substr(0,3)+'-'+temp_mobile.substr(3,3)+'-'+temp_mobile.substr(6, 10);
+					}
+					$("input[name='mobile']").val(mobile);
+				} 
+			}
+		<%end if%>
 
 		var pay_method = $("#pay_method").val();
 		if (pay_method=='Point' || pay_method=='Later' || pay_method=='ECoupon' || pay_method=='Cash' || pay_method=='Paycoin' || pay_method=='Sgpay' || pay_method=='Sgpay2'){
@@ -3042,7 +3070,7 @@ function calcTotalAmount() {
                                 strSel = "checked";
 								strSelX = "";
 							} 
-                            str_giftcard += "<label class='checkbox'><input type='checkbox' " + strSel + " class='giftchk' name='chkGiftcard' id='chkGiftcard" + i.toString() + "' value='" + res.Count[i].giftcard_idx + "||" + res.Count[i].giftcard_number + "||" + res.Count[i].giftcard_amt + "' onClick='javascript: setGiftcardUse_CheckBox(this)' /> " + "지류상품권_" + res.Count[i].giftcard_number + " (" + res.Count[i].giftcard_amt + "원)</label><BR>" ; // 2021-07 더페이 추가
+                            str_giftcard += "<label class='checkbox'><input type='checkbox' " + strSel + " class='giftchk' name='chkGiftcard' id='chkGiftcard" + i.toString() + "' value='" + res.Count[i].giftcard_idx + "||" + res.Count[i].giftcard_number + "||" + res.Count[i].giftcard_amt + "' onClick='javascript: setGiftcardUse_CheckBox(this)' /> " + "지류상품권_" + res.Count[i].giftcard_number + " (" + addCommas(res.Count[i].giftcard_amt) + "원)</label><BR>" ; // 2021-07 더페이 추가
 							// 2021-07 더페이 추가  시작 끝 
                        }
                         /*showAlertMsg({

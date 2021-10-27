@@ -205,6 +205,9 @@
 
 	Set RES_DATA = CallCredit(REQ_DATA, false)
 	
+    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Session("UserId") &"','0','danal_card-session-ready')"
+    dbconn.Execute(Sql)
+
 	IF RES_DATA.Item("RETURNCODE") = "0000" Then
 %>
 <form name="form" ACTION="<%=RES_DATA.Item("STARTURL")%>" METHOD="POST" >

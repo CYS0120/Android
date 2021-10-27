@@ -111,6 +111,7 @@
 		<iframe src="<%=multi_domail_login_url%>" style="display:none"></iframe>
 
 		<script type="text/javascript">
+			sessionStorage.removeItem("ss_user_phone");
 			showAlertMsg({msg:"로그아웃 되었습니다.", ok: function(){
 				location.href = "/";
 			}});
