@@ -14,7 +14,7 @@
             <address class="footer-addr clearfix">
                 <h4>주식회사 제너시스비비큐</h4>
 				<span>주문번호 : <p>1588-9282</p></span> <span>고객센터 : <p>1588-9282</p></span> <span>창업문의 : <p>080-383-9000</p></span><br />
-				<span>대표자 : 윤경주</span>
+				<span>대표자 : 정승인</span>
 				<span>서울시 송파구 중대로 64(문정동)</span>
 				<span>통신판매업신고 : 2010-서울송파-1181호</span>
 				<span>사업자등록번호 : 207-81-43555</span>                
