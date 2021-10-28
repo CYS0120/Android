@@ -84,6 +84,7 @@
 		Response.Cookies("expires_in") = ""
 		Response.Cookies("auto_login_yn") = ""
 		Response.Cookies("bbq_app_type") = ""
+		response.cookies("ui") = ""
 
 		Response.Cookies("access_token").Expires = date() - 1
 		Response.Cookies("access_token_secret").Expires = date() - 1
@@ -93,6 +94,7 @@
 		Response.Cookies("expires_in").Expires = date() - 1
 		Response.Cookies("auto_login_yn").Expires = date() - 1
 		Response.Cookies("bbq_app_type").Expires = date() - 1
+		response.cookies("ui").Expires = date() - 1
 
 		Session.Abandon()
 

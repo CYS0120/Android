@@ -85,7 +85,7 @@
 		g_SEEDIV 	= "STDP000173087816"
 	else									' 실서버용 코드
 		g_HASHKEY 	= "F3149950A7B6289723F325833F580001"
-		g_SEEDKEY 	= "gkR791mVtQlbbuwtcMfs1Q=="
+		g_SEEDKEY 	= "AVo/u0UuQbB0p3r+4dIROQ=="
 		g_SEEDIV 	= "STDP000173087816"
 	end if
 
@@ -123,9 +123,9 @@
 
 %>
 <!--#include file="config/aspJSON1.17.asp"-->
+<!--#include file="config/base64.asp" -->
 <!--#include file="config/KISA_SHA256.asp" -->
 <!--#include file="config/KISA_SEED_CBC.asp" -->
-<!--#include file="config/base64.asp" -->
 <!--#include file="config/stdpayFunction.asp" -->
 <!--#include file="sgpay.util.asp"-->
 <%
@@ -145,6 +145,8 @@
 		g_corpMemberNo = GetCookies_enc("ui")
 		g_userMngNo = GetuserMngNo(g_corpMemberNo)
 '	end if
-
+	if g_corpMemberNo = "" then
+		response.cookies("ui") = ""
+	end if
 
 %>

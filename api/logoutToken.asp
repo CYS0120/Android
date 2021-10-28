@@ -30,6 +30,7 @@
 	Response.Cookies("expires_in") = ""
 	Response.Cookies("auto_login_yn") = ""
 	Response.Cookies("bbq_app_type") = ""
+	response.cookies("ui") = ""
 
     Session.Abandon()
 %>

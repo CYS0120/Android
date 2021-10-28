@@ -10,9 +10,10 @@
 	alert('회원 서비스입니다.');
 </script>
 <%
-        response.redirect REFERERURL
+        response.redirect g2_bbq_m_url
 		Response.End
 	End If
+	IF LEN(REFERERURL) = 0 THEN REFERERURL = g2_bbq_m_url & "/order/payment.asp"
 
 	' 비비큐 주문정보 셋팅
 	gubun = GetReqStr("gubun", "")
@@ -24,13 +25,9 @@
 %>
 <script>
 	alert('매장정보가 없습니다.');
-	if (window.opener) {
-		self.close();
-	} else {
-		history.back();
-	}
 </script>
 <%
+        response.redirect g2_bbq_m_url
 		Response.End
 	End If
 
@@ -373,6 +370,8 @@
 	srcStr = srcStr & "&hashKey=" & g_HASHKEY
 	
 	signature = SHA256_Encrypt(srcStr)
+
+	Call Write_Log("Web Post   " & GetCurrentHost & request.servervariables("HTTP_url") & " Mode : " & " Param : " & CStr(srcStr))
 %>
 
 <!DOCTYPE html>

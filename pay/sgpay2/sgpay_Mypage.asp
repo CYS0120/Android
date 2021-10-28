@@ -20,6 +20,7 @@
         response.redirect REFERERURL
 		Response.End
 	End If
+	IF LEN(REFERERURL) = 0 THEN REFERERURL = g2_bbq_m_url
 
 	'-------------------------------------------------------
 	' 1. 파라미터 설정
@@ -34,7 +35,6 @@
 	' response.write "corpMemberNo : " & corpMemberNo & "<BR>"
 	' response.write "userMngNo : " & userMngNo & "<BR>"
 	'response.end
-
 
     if userMngNo = "" then
 		server.transfer("/pay/sgpay2/sgpay_MemReg.asp")
@@ -107,6 +107,7 @@
 	
 	signature = SHA256_Encrypt(signature)
 	
+	Call Write_Log("Web Post   " & GetCurrentHost & request.servervariables("HTTP_url") & " Mode : " & " Param : " & CStr(srcStr))
 %>
 
 

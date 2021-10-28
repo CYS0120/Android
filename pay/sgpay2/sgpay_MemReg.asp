@@ -10,7 +10,7 @@
     REFERERURL	= Request.ServerVariables("HTTP_REFERER")
 	If Not CheckLogin() Then
         if len(REFERERURL) = 0 or instr(REFERERURL, g2_bbq_m_url) < 0 then
-			REFERERURL = "/"
+			REFERERURL = g2_bbq_m_url
 		end if
 %>
 <script>
@@ -20,6 +20,7 @@
         response.redirect REFERERURL
 		Response.End
 	End If
+	IF LEN(REFERERURL) = 0 THEN REFERERURL = g2_bbq_m_url
 
 	'-------------------------------------------------------
 	' 1. 파라미터 설정
@@ -94,6 +95,7 @@
 	
 	signature = SHA256_Encrypt(srcStr)
 	
+	Call Write_Log("Web Post   " & GetCurrentHost & request.servervariables("HTTP_url") & " Mode : " & " Param : " & CStr(srcStr))
 %>
 
 
