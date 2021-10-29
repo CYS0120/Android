@@ -125,7 +125,7 @@
 	Sql = Sql & " , CASE WHEN LEN(ISNULL(danal_h_scpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS DANAL_YN " & vbCrLf
 	Sql = Sql & " , CASE WHEN LEN(ISNULL(paycoin_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS PAYCOIN_YN " & vbCrLf
 	Sql = Sql & " , CASE WHEN LEN(ISNULL(payco_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS PAYCO_YN " & vbCrLf
-	Sql = Sql & " , CASE WHEN LEN(ISNULL(SGPAY_MERCHANT, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS SGPAY_YN " & vbCrLf
+	Sql = Sql & " , CASE WHEN LEN(ISNULL(SGPAY_MERCHANT_V2, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS SGPAY_YN " & vbCrLf
 	Sql = Sql & " , CASE WHEN ISNULL(WGS84_X, 0) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS WGS84 " & vbCrLf
 	Sql = Sql & SqlFrom & SqlWhere & SqlOrder
 
@@ -162,7 +162,7 @@
 			PAYCO_YN = Rlist("PAYCO_YN")
 			PAYCO_ID = Rlist("payco_cpid")
 			SGPAY_YN = Rlist("SGPAY_YN")
-			SGPAY_ID = Rlist("SGPAY_MERCHANT")
+			SGPAY_ID = Rlist("SGPAY_MERCHANT_V2")
 			WGS84 = Rlist("WGS84")
 %>
 							<tr>

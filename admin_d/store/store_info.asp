@@ -61,7 +61,7 @@
 	payco_cpid	= Rinfo("payco_cpid")
 	payco_itemcd	= Rinfo("payco_itemcd")
 	paycoin_cpid	= Rinfo("paycoin_cpid")
-	sgpay_merchant	= Rinfo("sgpay_merchant")
+	sgpay_merchant	= Rinfo("sgpay_merchant_v2")
 	newbranch_title	= Rinfo("newbranch_title")
 	newbranch_explan	= Rinfo("newbranch_explan")
 	img_path	= Rinfo("img_path")
