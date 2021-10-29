@@ -2427,6 +2427,10 @@ function calcTotalAmount() {
    if left(date(), 10) = "2021-09-08" AND FormatDateTime(Now(),4) >= "11:00" then
       paycoin_event = "<div><span class='event_layer'>event</span></div>"
    end if
+   sgpay_event = ""
+   if cdate(date) >= cdate(sgpay_start_date) and cdate(date) <= cdate(sgpay_end_date) AND FormatDateTime(Now(),4) >= "11:00" and FormatDateTime(Now(),4) <= "23:00" then
+      sgpay_event = "<div><span class='event_layer'>event</span></div>"
+   end if
 
    'If vUseDANAL = "Y" Or vUsePAYCO = "Y" Then
    If vUseDANAL = "Y" Or vUsePAYCO = "Y" Or vUseSGPAY = "Y" Or vUsePAYCOIN = "Y" Then      'SGPAY 추가(사용 가맹점 여부에 따라 노출/비노출) / Sewoni31™ / 2019.12.09
@@ -2447,7 +2451,7 @@ function calcTotalAmount() {
                 <% end if %>
 
                 <% If vUseSGPAY = "Y" AND CheckLogin() Then %>
-					<li><button type="button" id="payment_sgpay2" onclick="javascript:setPayMethod('Sgpay2');" class="payment_choiceSel">BBQ PAY</button></li>
+					<li><button type="button" id="payment_sgpay2" onclick="javascript:setPayMethod('Sgpay2');" class="payment_choiceSel">BBQ PAY</button><%=sgpay_event%></li>
 					<%	if branch_id = "1146001" then %>
 					<!--li><button type="button" id="payment_sgpay2" onclick="javascript:setPayMethod('Sgpay2');" class="payment_choiceSel">BBQ PAY(N)</button></li-->
 	                <% end if %>
