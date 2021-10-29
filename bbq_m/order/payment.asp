@@ -43,20 +43,6 @@
 	Dim branch_data : branch_data = GetReqStr("branch_data","")
 	Dim spent_time : spent_time = GetReqStr("spent_time","")
 	Dim is_SGPay_Event : is_SGPay_Event = "N"
-	
-
-	' 테스트 매장일경우 강제로 페이코인 이벤트 ㄱㄱ
-	If branch_id = "1146001" Then 
-		paycoin_start_date = "2020-11-24" ' 2020-07-24
-		paycoin_end_date = "2020-12-31" ' 2020-08-01
-		bbqpay_start_date = "2021-10-29" 
-		bbqpay_end_date = "2021-10-31"
-	End If 
-		sgpay_start_date = "2021-06-11" 
-		sgpay_end_date = "2021-06-12"
-
-		bbqpay_start_date = "2021-10-29" 
-		bbqpay_end_date = "2021-10-31"
 
 	Dim bCmd, bMenuRs
 
@@ -413,7 +399,6 @@ function setMaxPoint() {
 		pay_amt -= getPaycoinPoint();
 		pay_amt -= getOtherCardUsePoint("");
 		pay_amt -= getSGPayEventAmt();
-		pay_amt -= getBBQPayEventAmt();
 
 		if ( pay_amt % 100 > 0 ){
 			pay_amt = parseInt(pay_amt / 100) * 100;
@@ -919,7 +904,6 @@ function getAllUsePoint() {
 	discount += getPaycoinPoint();
 	discount += getGiftcardAmt();
 	discount += getSGPayEventAmt();
-	discount += getBBQPayEventAmt();
 
 	return discount;
 }
@@ -986,7 +970,7 @@ function getPaycoinPoint()
 	if ($("#pay_method").val() == "Paycoin") {
 //		pay_amt = Number(removeCommas($.trim($("#pay_amt").val())));
 //		pay_amt = getTotalAmount();
-		pay_amt = getTotalAmount() - getOtherCardUsePoint("") - getSaveUsePoint() - getCouponAmt() - getUseEventPoint() - getSGPayEventAmt() - getBBQPayEventAmt();
+		pay_amt = getTotalAmount() - getOtherCardUsePoint("") - getSaveUsePoint() - getCouponAmt() - getUseEventPoint() - getSGPayEventAmt();
 		pay_amt_total = Math.round(Number(pay_amt/2));
 
 		// 최대 만원 (10,000) 까지 할인.
@@ -1003,55 +987,55 @@ function getPaycoinPoint()
 	return pay_amt_total;
 }
 
+// function getSGPayEventAmt()
+// {
+// 	<% if cdate(date) >= cdate(sgpay_start_date) and cdate(date) <= cdate(sgpay_end_date) then %>
+// 	<% else %>
+// 		return 0;
+// 	<% end if %>
+
+// 	sgpay_event_amt = 0;
+
+// 	//var sgpayprice = Number($("#pay_amt").val());
+// 	//할인된 금액 기준 12,000
+// 	var total_amt = Number($("#total_amt").val()-5000);
+	
+// 	if ($("#pay_method").val() == "Sgpay" && total_amt >= 12000 ) {
+
+// 		//alert(sgpayprice + "-" + total_amt);
+// 		<%If is_SGPay_Event = "Y" Then %>
+// 			sgpay_event_amt = 5000;			
+// 		<%End If %>
+
+// 	} else {
+// 		sgpay_event_amt = 0;
+// 	}
+
+// 	//alert(pay_amt_total + <%=branch_id%> +"-" + "<%=is_SGPay_Event%>" + "-" + "<%=vUseSGPAY %>");
+// 	$("#sgpay_event_amt").val(sgpay_event_amt);
+
+// 	return sgpay_event_amt;
+// }
+
 function getSGPayEventAmt()
 {
 	<% if cdate(date) >= cdate(sgpay_start_date) and cdate(date) <= cdate(sgpay_end_date) then %>
+		//할인된 금액 기준 8,000
+		var total_amt = Number($("#total_amt").val()-7000);
+		
+		if ($("#pay_method").val() == "Sgpay2" && total_amt >= 8000 ) {
+			sgpay_event_amt = 7000;			
+		} else {
+			sgpay_event_amt = 0;
+		}
+
+		$("#sgpay_event_amt").val(sgpay_event_amt);
+
+		return sgpay_event_amt;
 	<% else %>
 		return 0;
 	<% end if %>
 
-	sgpay_event_amt = 0;
-
-	//var sgpayprice = Number($("#pay_amt").val());
-	//할인된 금액 기준 12,000
-	var total_amt = Number($("#total_amt").val()-5000);
-	
-	if ($("#pay_method").val() == "Sgpay" && total_amt >= 12000 ) {
-
-		//alert(sgpayprice + "-" + total_amt);
-		<%If is_SGPay_Event = "Y" Then %>
-			sgpay_event_amt = 5000;			
-		<%End If %>
-
-	} else {
-		sgpay_event_amt = 0;
-	}
-
-	//alert(pay_amt_total + <%=branch_id%> +"-" + "<%=is_SGPay_Event%>" + "-" + "<%=vUseSGPAY %>");
-	$("#sgpay_event_amt").val(sgpay_event_amt);
-
-	return sgpay_event_amt;
-}
-
-function getBBQPayEventAmt()
-{
-	<% if cdate(date) >= cdate(bbqpay_start_date) and cdate(date) <= cdate(bbqpay_end_date) then %>
-	<% else %>
-		return 0;
-	<% end if %>
-
-	//할인된 금액 기준 15,000
-	var total_amt = Number($("#total_amt").val()-7000);
-	
-	if ($("#pay_method").val() == "Sgpay2" && total_amt >= 15000 ) {
-		bbqpay_event_amt = 7000;			
-	} else {
-		bbqpay_event_amt = 0;
-	}
-
-	$("#bbqpay_event_amt").val(bbqpay_event_amt);
-
-	return bbqpay_event_amt;
 }
 
 function calcTotalAmount() {
@@ -1174,7 +1158,7 @@ function calcTotalAmount() {
 			//return;
 		<% End If %>
 
-		if(getTotalAmount() - getOtherCardUsePoint("") - getSaveUsePoint() - getCouponAmt() - getUseEventPoint() - getPaycoinPoint() - getSGPayEventAmt() - getBBQPayEventAmt() < 0) {
+		if(getTotalAmount() - getOtherCardUsePoint("") - getSaveUsePoint() - getCouponAmt() - getUseEventPoint() - getPaycoinPoint() - getSGPayEventAmt() < 0) {
 			showAlertMsg({msg:"결제금액이 잘못되었습니다."});
 			return;
 		}
@@ -1699,7 +1683,6 @@ function calcTotalAmount() {
 			<input type="hidden" name="bbq_card" id="bbq_card">
 			<input type="hidden" name="paycoin_event_amt" id="paycoin_event_amt">
 			<input type="hidden" name="sgpay_event_amt" id="sgpay_event_amt">
-			<input type="hidden" name="bbqpay_event_amt" id="bbqpay_event_amt">
 			<input type="hidden" name="vAdd_price_yn" id="add_price_yn" value="<%=vAdd_price_yn%>">
 
             <input type="hidden" id="giftproductcode" name="giftproductcode">
@@ -2592,7 +2575,7 @@ function calcTotalAmount() {
 						<button id="pay_ok_go_btn" type="button" onclick="javascript:makeOrder();" class="btn btn_big btn-red">결제</button>
 					</div>
 				<% End If %>
-				<% Response.Write bbqpay_start_date %>
+				<% Response.Write sgpay_start_date %>
 				<input type="hidden" name="p_req" value='<%=reqOGLFO.toJson()%>'>
 			</div>
 			<!-- 결제정보 -->

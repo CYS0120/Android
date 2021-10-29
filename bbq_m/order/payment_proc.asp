@@ -60,14 +60,12 @@
 	paycoin_event_amt = Replace(paycoin_event_amt,",","")
 	sgpay_event_amt = GetReqNum("sgpay_event_amt",0)
 	sgpay_event_amt = Replace(sgpay_event_amt,",","")
-	bbqpay_event_amt = GetReqNum("bbqpay_event_amt",0)
-	bbqpay_event_amt = Replace(bbqpay_event_amt,",","")
 
 	SAMSUNG_USEFG = GetReqStr("SAMSUNG_USEFG","")
 
 	total_amount = CDbl(total_amount) + CDbl(ecoupon_amt)	'E 쿠폰금액을 총금액으로 더함
 	discount_amt = CDbl(discount_amt) + CDbl(ecoupon_amt)	'E 쿠폰금액을 할인금액으로 더함
-	Calc_Discount_amt = Calc_Discount_amt + CDbl(ecoupon_amt) + CDbl(giftcard_amt) + CDbl(paycoin_event_amt) + CDbl(sgpay_event_amt) + CDbl(bbqpay_event_amt)
+	Calc_Discount_amt = Calc_Discount_amt + CDbl(ecoupon_amt) + CDbl(giftcard_amt) + CDbl(paycoin_event_amt) + CDbl(sgpay_event_amt)
 
     ' 20201211 예약일자, 예약시간 추가
 	reserv_date = GetReqStr("nowDate","") ' 예약일자
@@ -766,29 +764,31 @@
 	End If 
 
 
-	'If sgpay_event_amt > 0 and branch_id = "1146001" Then
-	If sgpay_event_amt > 0 Then
-		Set pCmd = Server.CreateObject("ADODB.Command")
-		With pCmd
-			.ActiveConnection = dbconn
-			.NamedParameters = True
-			.CommandType = adCmdStoredProc
-			.CommandText = "bp_payment_detail_insert"
+	If cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) and branch_id = "1146001" Then
+		'If sgpay_event_amt > 0 and branch_id = "1146001" Then
+		If pay_method = "Sgpay2" and sgpay_event_amt > 0 Then
+			Set pCmd = Server.CreateObject("ADODB.Command")
+			With pCmd
+				.ActiveConnection = dbconn
+				.NamedParameters = True
+				.CommandType = adCmdStoredProc
+				.CommandText = "bp_payment_detail_insert"
 
-			.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput,,order_idx)
-			.Parameters.Append .CreateParameter("@pay_method", adVarChar, adParamInput, 20, "EVENTPOINT")
-			.Parameters.Append .CreateParameter("@pay_transaction_id", adVarChar, adParamInput, 50, "") 'event_point_productcd)
-			.Parameters.Append .CreateParameter("@pay_cp_id", adVarChar, adParamInput, 50, "")  '적립/충전'
-			.Parameters.Append .CreateParameter("@pay_subcp", adVarChar, adParamInput, 50, "")
-			.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput, , sgpay_event_amt)
-			.Parameters.Append .CreateParameter("@pay_approve_num", adVarChar, adParamInput, 50, "")
-			.Parameters.Append .CreateParameter("@pay_result_code", adVarChar, adParamInput, 10, 0)
-			.Parameters.Append .CreateParameter("@pay_err_msg", adVarChar, adParamInput, 1000, "")
-			.Parameters.Append .CreateParameter("@pay_result", adLongVarWChar, adParamInput, 2147483647, "")
-			.Execute
-		End With
-		Set pCmd = Nothing
-	End If 
+				.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput,,order_idx)
+				.Parameters.Append .CreateParameter("@pay_method", adVarChar, adParamInput, 20, "EVENTPOINT")
+				.Parameters.Append .CreateParameter("@pay_transaction_id", adVarChar, adParamInput, 50, "") 'event_point_productcd)
+				.Parameters.Append .CreateParameter("@pay_cp_id", adVarChar, adParamInput, 50, "")  '적립/충전'
+				.Parameters.Append .CreateParameter("@pay_subcp", adVarChar, adParamInput, 50, "")
+				.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput, , sgpay_event_amt)
+				.Parameters.Append .CreateParameter("@pay_approve_num", adVarChar, adParamInput, 50, "")
+				.Parameters.Append .CreateParameter("@pay_result_code", adVarChar, adParamInput, 10, 0)
+				.Parameters.Append .CreateParameter("@pay_err_msg", adVarChar, adParamInput, 1000, "")
+				.Parameters.Append .CreateParameter("@pay_result", adLongVarWChar, adParamInput, 2147483647, "")
+				.Execute
+			End With
+			Set pCmd = Nothing
+		End If
+	End If
 
 
 	'이벤트 포인트가 있다면 결제수단으로 먼저 저장

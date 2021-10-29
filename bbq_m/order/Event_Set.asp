@@ -13,4 +13,9 @@
 		end if
 
 	end sub
+
+	paycoin_start_date = "2020-11-24" ' 2020-07-24
+	paycoin_end_date = "2020-12-31" ' 2020-08-01
+	sgpay_start_date = "2021-10-29" 
+	sgpay_end_date = "2021-10-31"
 %>
