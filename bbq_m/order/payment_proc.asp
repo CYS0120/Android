@@ -60,12 +60,14 @@
 	paycoin_event_amt = Replace(paycoin_event_amt,",","")
 	sgpay_event_amt = GetReqNum("sgpay_event_amt",0)
 	sgpay_event_amt = Replace(sgpay_event_amt,",","")
+	bbqpay_event_amt = GetReqNum("bbqpay_event_amt",0)
+	bbqpay_event_amt = Replace(bbqpay_event_amt,",","")
 
 	SAMSUNG_USEFG = GetReqStr("SAMSUNG_USEFG","")
 
 	total_amount = CDbl(total_amount) + CDbl(ecoupon_amt)	'E 쿠폰금액을 총금액으로 더함
 	discount_amt = CDbl(discount_amt) + CDbl(ecoupon_amt)	'E 쿠폰금액을 할인금액으로 더함
-	Calc_Discount_amt = Calc_Discount_amt + CDbl(ecoupon_amt) + CDbl(giftcard_amt) + CDbl(paycoin_event_amt) + CDbl(sgpay_event_amt)
+	Calc_Discount_amt = Calc_Discount_amt + CDbl(ecoupon_amt) + CDbl(giftcard_amt) + CDbl(paycoin_event_amt) + CDbl(sgpay_event_amt) + CDbl(bbqpay_event_amt)
 
     ' 20201211 예약일자, 예약시간 추가
 	reserv_date = GetReqStr("nowDate","") ' 예약일자
