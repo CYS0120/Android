@@ -987,35 +987,6 @@ function getPaycoinPoint()
 	return pay_amt_total;
 }
 
-// function getSGPayEventAmt()
-// {
-// 	<% if cdate(date) >= cdate(sgpay_start_date) and cdate(date) <= cdate(sgpay_end_date) then %>
-// 	<% else %>
-// 		return 0;
-// 	<% end if %>
-
-// 	sgpay_event_amt = 0;
-
-// 	//var sgpayprice = Number($("#pay_amt").val());
-// 	//할인된 금액 기준 12,000
-// 	var total_amt = Number($("#total_amt").val()-5000);
-	
-// 	if ($("#pay_method").val() == "Sgpay" && total_amt >= 12000 ) {
-
-// 		//alert(sgpayprice + "-" + total_amt);
-// 		<%If is_SGPay_Event = "Y" Then %>
-// 			sgpay_event_amt = 5000;			
-// 		<%End If %>
-
-// 	} else {
-// 		sgpay_event_amt = 0;
-// 	}
-
-// 	//alert(pay_amt_total + <%=branch_id%> +"-" + "<%=is_SGPay_Event%>" + "-" + "<%=vUseSGPAY %>");
-// 	$("#sgpay_event_amt").val(sgpay_event_amt);
-
-// 	return sgpay_event_amt;
-// }
 
 function getSGPayEventAmt()
 {
@@ -2575,7 +2546,6 @@ function calcTotalAmount() {
 						<button id="pay_ok_go_btn" type="button" onclick="javascript:makeOrder();" class="btn btn_big btn-red">결제</button>
 					</div>
 				<% End If %>
-				<% Response.Write sgpay_start_date %>
 				<input type="hidden" name="p_req" value='<%=reqOGLFO.toJson()%>'>
 			</div>
 			<!-- 결제정보 -->

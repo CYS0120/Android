@@ -764,9 +764,15 @@
 	End If 
 
 
-	If cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) and branch_id = "1146001" Then
+	If cdate(date) >= cdate(sgpay_start_date) and cdate(date) <= cdate(sgpay_end_date) Then
 		'If sgpay_event_amt > 0 and branch_id = "1146001" Then
-		If pay_method = "Sgpay2" and sgpay_event_amt > 0 Then
+		If pay_method = "Sgpay2" and sgpay_event_amt > 0  Then
+			
+			if sgpay_event_amt <> 7000 then
+				Response.Write "{""result"":1, ""result_msg"":""할인 금액이 올바르지 않습니다.""}"
+				Response.End
+			end if
+			
 			Set pCmd = Server.CreateObject("ADODB.Command")
 			With pCmd
 				.ActiveConnection = dbconn
