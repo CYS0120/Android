@@ -799,9 +799,9 @@
 						reqOC.mSaveYn = "Y"
 					End If 
 
-					If payMethodCode = "41" and cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) Then  '2020-12-02 페이코인 이벤트시 적립안함
-						reqOC.mSaveYn = "N"
-					End If 
+					' If payMethodCode = "41" and cdate(date) >= cdate(paycoin_start_date) and cdate(date) <= cdate(paycoin_end_date) Then  '2020-12-02 페이코인 이벤트시 적립안함
+					' 	reqOC.mSaveYn = "N"
+					' End If 
 
 					reqOC.mDeliveryCharge = delivery_fee
 					reqOC.mOrderChannel = order_channel
@@ -820,7 +820,7 @@
 					Set aCmd = Nothing
 
 					Set OItem = New clsOuterPayMethodList
-					OItem.mCode = payMethodCode
+					OItem.mCode = "42"	' SGPAY의 경우 42번으로 한다.
 					OItem.mPayAmount = pay_amt
 					OItem.mApprovalNo = ""
 					OItem.mApprovalYmdt = ""

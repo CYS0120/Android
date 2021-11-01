@@ -383,41 +383,49 @@
 	End If
 
 	Select Case pay_type
-		Case "Card":
+		Case "Card"
 		pay_type_title = "온라인결제"
 		pay_type_name = "신용카드"
 		payMethodCode = "23"
-		Case "Phone":
+		Case "Phone"
 		pay_type_title = "온라인결제"
 		pay_type_name = "휴대전화 결제"
 		payMethodCode = "24"
-		Case "Point":
+		Case "Point"
 		pay_type_title = "온라인결제"
 		pay_type_name = "포인트"
 		payMethodCode = "99"
-		Case "Later":
+		Case "Later"
 		pay_type_title = "현장결제"
 		pay_type_name = "신용카드"
 		payMethodCode = "23"
-		Case "Cash":
+		Case "Cash"
 		pay_type_title = "현장결제"
 		pay_type_name = "현금"
 		payMethodCode = "21"
-		Case "Payco":
+		Case "Payco"
 		pay_type_title = "페이코"
 		pay_type_name = "간편결제"
 		payMethodCode = "31"
-		Case "Paycoin":
+		Case "Paycoin"
 		pay_type_title = "페이코인"
 		pay_type_name = "간편결제"
 		payMethodCode = "41"
-		Case "Sgpay":
+		Case "Sgpay"
 		pay_type_title = "BBQ PAY"
 		pay_type_name = "간편결제"
 		payMethodCode = "42"
-		Case "ECoupon":
+		Case "Sgpay2"
+		pay_type_title = "BBQ PAY"
+		pay_type_name = "간편결제"
+		payMethodCode = "42"
+		Case "ECoupon"
 		pay_type_title = "E 쿠폰"
 		pay_type_name = "E 쿠폰"
+		payMethodCode = "99"
+		Case else
+		pay_type_title = "기타"
+		pay_type_name = "기타"
 		payMethodCode = "99"
 	End Select
 
