@@ -1043,6 +1043,9 @@ mapOption = {
 // 지도를 생성합니다    
 var map = new kakao.maps.Map(mapContainer, mapOption); 
 
+var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
+    infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+
 // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 if (navigator.geolocation) {
 
@@ -1055,56 +1058,18 @@ if (navigator.geolocation) {
         var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
             message = ''; // 인포윈도우에 표시될 내용입니다
         
-        // 마커와 인포윈도우를 표시합니다
-        displayMarker(locPosition, message);
+		// 마커를 클릭한 위치에 표시합니다 
+		displayMarker(locPosition, message);
 
 		searchDetailAddrFromCoords(locPosition, function(result, status) {
 			if (status === kakao.maps.services.Status.OK) {
 				var detailAddr = !!result[0].road_address ? result[0].road_address.address_name: result[0].address.address_name;
-				
-				
-				/*
-				var content = '<div class="bAddr">' +
-								'<span class="title">법정동 주소정보</span>' + 
-								detailAddr + 
-							'</div>';
-							*/
 
-					//$("#address_main").val(result[0].road_address.address_name);
+				$("#form_addr input[name=address_jibun]").val(detailAddr);
 
-					//sujo = result[0].address.region_1depth_name+" "+result[0].address.region_2depth_name + " " + result[0].address.region_3depth_name +" " + result[0].address.main_address_no +"-" + result[0].address.sub_address_no;
-					//rnMgtSn1 = rnMgtSn.substr(0,5);
-					//rnMgtSn2 = rnMgtSn.substr(5,7);
-					//$("#juso_result").html(result[0].road_address.address_name);
-					//$("#form_addr input[name=zip_code]").val(result[0].road_address.zone_no);
-					//$("#form_addr input[name=addr_type]").val("R");
-					//$("#form_addr input[name=address_jibun]").val(sujo);
-					//$("#form_addr input[name=address_road]").val(result[0].road_address.address_name);
-					//$("#form_addr input[name=sido]").val(result[0].address.region_1depth_name);
-					//$("#form_addr input[name=sigungu]").val(result[0].address.region_2depth_name);
-					//$("#form_addr input[name=sigungu_code]").val(result[0].road_address.zone_no);
-					//$("#form_addr input[name=roadname_code]").val("");
-					//$("#form_addr input[name=b_name]").val(result[0].address.region_3depth_name);
-					//$("#form_addr input[name=b_code]").val("");
-					$("#form_addr input[name=address_jibun]").val(detailAddr);
-
-					getAddr();
-
-				// 마커를 클릭한 위치에 표시합니다 
-				//marker.setPosition(latlng);
-				marker.setPosition(locPosition);
-				marker.setMap(map);
-
-				// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-				//infowindow.setContent(content);
-				//infowindow.open(map, marker);
+				getAddr();
 			}   
 		});
-
-//		$( document ).ready(function() {
-//			map.setCenter(locPosition);
-//		});
-
     }, function(){
 
 		$( document ).ready(function() {
@@ -1126,24 +1091,9 @@ if (navigator.geolocation) {
 // 지도에 마커와 인포윈도우를 표시하는 함수입니다
 function displayMarker(locPosition, message) {
 
-    // 마커를 생성합니다
-    var marker = new kakao.maps.Marker({  
-        map: map, 
-        position: locPosition
-    }); 
-    
-    var iwContent = message, // 인포윈도우에 표시할 내용
-        iwRemoveable = true;
+	marker.setPosition(locPosition);
+	marker.setMap(map);
 
-    // 인포윈도우를 생성합니다
-    var infowindow = new kakao.maps.InfoWindow({
-        content : iwContent,
-        removable : iwRemoveable
-    });
-    
-    // 인포윈도우를 마커위에 표시합니다 
-    infowindow.open(map, "");
-    
     // 지도 중심좌표를 접속위치로 변경합니다
     map.setCenter(locPosition);      
 }    
@@ -1151,95 +1101,38 @@ function displayMarker(locPosition, message) {
 // 주소-좌표 변환 객체를 생성합니다
 var geocoder = new kakao.maps.services.Geocoder();
 
-var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
-    infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
-
 // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
 searchAddrFromCoords(map.getCenter(), displayCenterInfo);
 
-// 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
-/*
-kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-    searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
-            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
-            
-            var content = '<div class="bAddr">' +
-                            '<span class="title">법정동 주소정보</span>' + 
-                            detailAddr + 
-                        '</div>';
-
-            // 마커를 클릭한 위치에 표시합니다 
-            marker.setPosition(mouseEvent.latLng);
-            marker.setMap(map);
-
-            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-            infowindow.setContent(content);
-            infowindow.open(map, marker);
-        }   
-    });
+// 마우스 드래그로 지도 중심이 변경되면 지도의 중심좌표를 변경합니다.
+kakao.maps.event.addListener(map, 'center_changed', function() {        
+    
+    // 지도 중심좌표를 얻어옵니다 
+    var latlng = map.getCenter(); 
+    
+    displayMarker(latlng, "");
 });
-*/
 
 // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
 kakao.maps.event.addListener(map, 'dragend', function() {        
     
     // 지도 중심좌표를 얻어옵니다 
     var latlng = map.getCenter(); 
-//	console.log(latlng)
     
-    var message = '변경된 지도 중심좌표는 ' + latlng.getLat() + ' 이고, ';
-    message += '경도는 ' + latlng.getLng() + ' 입니다';
-    
-    //var resultDiv = document.getElementById('result');  
-    //resultDiv.innerHTML = message;
-	
 	searchDetailAddrFromCoords(latlng, function(result, status) {
         if (status === kakao.maps.services.Status.OK) {
             var detailAddr = !!result[0].road_address ? result[0].road_address.address_name: result[0].address.address_name;
-            
-            
-			/*
-            var content = '<div class="bAddr">' +
-                            '<span class="title">법정동 주소정보</span>' + 
-                            detailAddr + 
-                        '</div>';
-						*/
 
-				//$("#address_main").val(result[0].road_address.address_name);
-
-				//sujo = result[0].address.region_1depth_name+" "+result[0].address.region_2depth_name + " " + result[0].address.region_3depth_name +" " + result[0].address.main_address_no +"-" + result[0].address.sub_address_no;
-				//rnMgtSn1 = rnMgtSn.substr(0,5);
-				//rnMgtSn2 = rnMgtSn.substr(5,7);
-				//$("#juso_result").html(result[0].road_address.address_name);
-				//$("#form_addr input[name=zip_code]").val(result[0].road_address.zone_no);
-				//$("#form_addr input[name=addr_type]").val("R");
-				//$("#form_addr input[name=address_jibun]").val(sujo);
-				//$("#form_addr input[name=address_road]").val(result[0].road_address.address_name);
-				//$("#form_addr input[name=sido]").val(result[0].address.region_1depth_name);
-				//$("#form_addr input[name=sigungu]").val(result[0].address.region_2depth_name);
-				//$("#form_addr input[name=sigungu_code]").val(result[0].road_address.zone_no);
-				//$("#form_addr input[name=roadname_code]").val("");
-				//$("#form_addr input[name=b_name]").val(result[0].address.region_3depth_name);
-				//$("#form_addr input[name=b_code]").val("");
 				$("#form_addr input[name=address_jibun]").val(detailAddr);
 				
 				$("#address_main").val($("#address_main2").val());
 
 				getAddr();
-
-            // 마커를 클릭한 위치에 표시합니다 
-            marker.setPosition(latlng);
-            marker.setMap(map);
-
-            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-            //infowindow.setContent(content);
-            //infowindow.open(map, marker);
         }   
     });
     
 });
+
 
 // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
 kakao.maps.event.addListener(map, 'idle', function() {
@@ -1263,7 +1156,6 @@ function displayCenterInfo(result, status) {
 
         for(var i = 0; i < result.length; i++) {
             // 행정동의 region_type 값은 'H' 이므로
-			//console.log('그런 너를 마주칠까 ' + result[0].address.address_name + '을 못가');
             if (result[i].region_type === 'H') {
                 infoDiv.value = result[i].address_name;
                 break;
