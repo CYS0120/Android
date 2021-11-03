@@ -119,7 +119,7 @@
 		.CommandType = adCmdStoredProc
 		.CommandText = "bp_sgpay2_log_insert"
 
-		.Parameters.Append .CreateParameter("@act", adVarChar, adParamInput, 30, "PAY")
+		.Parameters.Append .CreateParameter("@act", adVarChar, adParamInput, 30, "CANCEL")
 		.Parameters.Append .CreateParameter("@order_num", adVarChar, adParamInput, 50, order_num)
 		.Parameters.Append .CreateParameter("@amt", adCurrency, adParamInput,, AMOUNT)
 		.Parameters.Append .CreateParameter("@corporation", adVarChar, adParamInput, 32, g_CORPNO)
