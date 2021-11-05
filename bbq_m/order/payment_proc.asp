@@ -56,6 +56,7 @@
 	coupon_id = GetReqStr("coupon_id","")
     coupon_amt = GetReqNum("coupon_amt",0)
 	giftcard_amt = GetReqNum("giftcard_amt",0)
+	giftcard_amt = Replace(giftcard_amt,",","")
     paycoin_event_amt = GetReqNum("paycoin_event_amt",0)
 	paycoin_event_amt = Replace(paycoin_event_amt,",","")
 	sgpay_event_amt = GetReqNum("sgpay_event_amt",0)
@@ -475,7 +476,7 @@
 	dim jsonGiftcard : jsonGiftcard = ""
 	dim arrGiftcard : arrGiftcard = split(giftcard_serial, "||")  
 	dim arrGiftcardAmt : arrGiftcardAmt = split(giftcard_serial, "||") ' 상품권 금액  
-
+	dim giftcard_total_amt : giftcard_total_amt = 0 
 	Response.Cookies("giftcardSerial") = giftcard_serial 
   
 	For i = 0 To Ubound(arrGiftcard)
@@ -528,6 +529,7 @@
 				arrGiftcardAmt(row) = this1.item("AMT")		 
 				AMT  = this1.item("AMT") ' 금액 
 				U_YN = this1.item("U_YN") ' 사용여부		  
+				giftcard_total_amt = giftcard_total_amt + cdbl(AMT)
 			Next
 	
 			U_CD_BRAND = brand_code '사용브랜드코드
@@ -1373,6 +1375,10 @@ End If
 		dbconn.Execute(Sql)
 	End If 
 
+	If cstr(giftcard_amt) <> cstr(giftcard_total_amt) Then 
+		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다. 다시 시도해 주세요.""}"
+		Response.End
+	End If 
 
 	If Calc_Discount_amt <> discount_amt Then 
 		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다. 다시 시도해 주세요.""}"

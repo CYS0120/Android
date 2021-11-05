@@ -3096,7 +3096,11 @@ function calcTotalAmount() {
             // var link = 'https://1087.g2i.co.kr/barcode/barcode_scan.asp' // DEV
             var link = 'https://m.bbq.co.kr/barcode/barcode_scan.asp' // REAL
             <% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
-                window.SGApp.barCodeScan('');
+				if ( window.webkit && window.webkit.messageHandlers ) {
+					window.webkit.messageHandlers.bbqHandler.postMessage('barCodeScan');
+				} else {
+					window.SGApp.barCodeScan('');
+				}
             <% else %>
                 document.location.href=link;
             <% end if %>

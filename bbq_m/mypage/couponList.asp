@@ -521,80 +521,16 @@
                 return;
             }
         }
-        function Giftcard_Check() {
-            if ($("#giftPIN").val() == "") {
-                showAlertMsg({
-                    msg:"지류 상품권 번호를 입력해주세요.",
-                });
-                return;
-            }
-            $.ajax({
-                method: "post",
-                url: "/api/ajax/ajax_getGiftCard.asp",
-                data: {
-                    callMode: "insert",
-                    giftPIN: $("#giftPIN").val(),
-                },
-                dataType: "json",
-                success: function(res) {
-                    if (res.result == 0) {
-                        showAlertMsg({
-                            msg:"정상 등록되었습니다.",
-                            ok: function(){
-                                $("#giftPIN").val("");
-                                lpClose(".lp_RegiGiftCard");
-                                $('#giftcard_empty_list').css('display','none');
-                                Giftcard_List();
-                            },
-                        });
-                    } else if(res.result == 1){
-                        showAlertMsg({
-                            msg:"이미 등록된 지류 상품권입니다.",
-                            ok: function(){
-                                $("#giftPIN").val("");
-                                lpClose(".lp_RegiGiftCard");
-                            },
-                        });
-                    } else if(res.result == 2){
-                         showAlertMsg({
-                             msg:"존재하지않는 지류 상품권입니다.",
-                             ok: function(){
-                                 $("#giftPIN").val("");
-                                 lpClose(".lp_RegiGiftCard");
-                             },
-                         });
-                     } else if(res.result == 3){
-                       showAlertMsg({
-                           msg:"이미 사용한 지류 상품권입니다.",
-                           ok: function(){
-                               $("#giftPIN").val("");
-                               lpClose(".lp_RegiGiftCard");
-                           },
-                       });
-                   } else {
-                        showAlertMsg({
-                            msg: res.message
-                        });
-                    }
-                },
-                error: function(data, status, err) {
-                    showAlertMsg({
-                                msg: data + ' ' + status + ' ' + err,
-                        // msg: "에러가 발생하였습니다",
-                        ok: function() {
-                            // location.href = "/";
-                        }
-                    });
-                }
-
-            });
-        }
         
         function Giftcard_scan(){
         // var link = 'https://1087.g2i.co.kr/barcode/barcode_scan.asp' // DEV
             var link = 'https://m.bbq.co.kr/barcode/barcode_scan.asp' // REAL
             <% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
-                window.SGApp.barCodeScan('');
+                if ( window.webkit && window.webkit.messageHandlers ) {
+                    window.webkit.messageHandlers.bbqHandler.postMessage('barCodeScan');
+                } else {
+                    window.SGApp.barCodeScan('');
+                }
             <% else %>
                 document.location.href=link;
             <% end if %>
@@ -626,7 +562,6 @@
                             msg:"정상 등록되었습니다.",
                             ok: function(){
                                 $("#giftPIN").val("");
-                                reset_gift_select();
                                 Giftcard_ListCount();
                                 Giftcard_Direct_use(res.giftPIN);
                                 lpClose(".lp_paymentGiftcard");
@@ -637,7 +572,6 @@
                             msg:"이미 등록된 지류 상품권입니다.",
                             ok: function(){
                                 $("#giftPIN").val("");
-                                reset_gift_select();
                                 lpClose(".lp_paymentGiftcard");
                             },
                         });
@@ -646,7 +580,6 @@
                              msg:"존재하지않는 지류 상품권입니다.",
                              ok: function(){
                                  $("#giftPIN").val("");
-                                 reset_gift_select();
                                  lpClose(".lp_paymentGiftcard");
                              },
                          });
@@ -655,7 +588,6 @@
                            msg:"이미 사용한 지류 상품권입니다.",
                            ok: function(){
                                $("#giftPIN").val("");
-                               reset_gift_select();
                                lpClose(".lp_paymentGiftcard");
                            },
                        });
