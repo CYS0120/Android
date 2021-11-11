@@ -134,7 +134,9 @@ function setDate(SD,ED){
 	SqlFrom = SqlFrom & " INNER JOIN TB_WEB_ORDER_STATE C WITH(NOLOCK) ON A.ORDER_ID=C.ORDER_ID  "
 
 	SqlWhere = " WHERE A.ORDER_DATE BETWEEN '"& SDATE & "' AND '"& EDATE & "' "
-	SqlWhere	= SqlWhere & " AND A.ORDER_ID LIKE 'V%' AND A.ORDER_FLAG = '3' AND A.ORDER_TYPE = '5' "
+	SqlWhere = SqlWhere & " AND ((A.ORDER_TYPE = '5' AND A.ORDER_FLAG = '3') "
+    SqlWhere = SqlWhere & " OR (A.ORDER_TYPE = '2' AND A.ORDER_FLAG = '1') "
+    SqlWhere = SqlWhere & " OR (A.ORDER_TYPE = '3' AND A.ORDER_FLAG = '1')) " ' HK
 
 	If OGB = "T" Then
 		If SITE_ADM_LV = "S" Then 
