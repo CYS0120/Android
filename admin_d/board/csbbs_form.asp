@@ -65,6 +65,11 @@
             f.MODE.value = MODE;
             oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
             f.a_body.value = document.getElementById("ir1").value;
+
+            //body replace
+            $("#a_body").val($("#a_body").val().replace(/\ufeff/g, ''));
+            $("#a_body").val($("#a_body").val().replace(/\u200B/g, ''));
+
             $.ajax({
                 async: true,
                 type: "POST",
@@ -209,7 +214,7 @@
                         <tr>
                             <th>답변내용</th>
                             <td>
-                                <textarea name="a_body" style="display:none"></textarea>
+                                <textarea name="a_body" id="a_body" style="display:none"></textarea>
                                 <textarea name="ir1" id="ir1" style="width:95%;height:150px;display:none;"><%=a_body%></textarea>
                             </td>
                         </tr>
