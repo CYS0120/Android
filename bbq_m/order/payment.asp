@@ -42,6 +42,7 @@
 	Dim addr_data : addr_data = GetReqStr("addr_data","")
 	Dim branch_data : branch_data = GetReqStr("branch_data","")
 	Dim spent_time : spent_time = GetReqStr("spent_time","")
+	Dim pin_save : pin_save = GetReqStr("pin_save","")
 	Dim is_SGPay_Event : is_SGPay_Event = "N"
 
 	Dim bCmd, bMenuRs
@@ -1244,6 +1245,11 @@ function calcTotalAmount() {
 								$("#o_form input[name=order_num]").val(res.order_num);
 								// insert_giftprod(res.order_idx);
 								goPay();
+							} else if(res.result == 11) {
+								clearCart();
+								ClickCheck = 0;
+								alert(res.result_msg);
+								document.location.href='/order/cart.asp';
 							} else {
 								showAlertMsg({msg:res.result_msg});
 								ClickCheck = 0;
@@ -1650,6 +1656,7 @@ function calcTotalAmount() {
 			<input type="hidden" name="addr_data" value='<%=addr_data%>'>
 			<input type="hidden" name="branch_data" value='<%=branch_data%>'>
 			<input type="hidden" name="spent_time" id="spent_time" value="<%=spent_time%>">
+			<input type="hidden" name="pin_save" id="pin_save" value="<%=pin_save%>">
 			<input type="hidden" name="save_point" id="save_point">
 			<input type="hidden" name="bbq_card" id="bbq_card">
 			<input type="hidden" name="paycoin_event_amt" id="paycoin_event_amt">

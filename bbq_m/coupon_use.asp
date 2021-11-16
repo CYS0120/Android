@@ -38,10 +38,6 @@
 						<li class="mar-t15"><button type="button" onclick="javascript:eCoupon_Register_GoCart('N');" class="btn btn_middle btn-red">확인</button></li>
 					</ul>
 				</form>
-				<p>
-					<strong><span>*</span> 모바일 상품권 입력이 잘 안될 때 확인 해주세요.</strong>
-					알파벳 ( I ) → 숫자 ( 1 ), 알파벳 ( O ) → 숫자 ( 0 ) 로 변경하여 정확히 확인 후 입력해 주세요.
-				</p>
 			</div>
 			<!--// e쿠폰 등록 -->
 

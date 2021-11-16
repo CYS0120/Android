@@ -5,6 +5,7 @@
     Dim addr_idx, branch_id, cart_value, delivery_fee, pay_method, total_amount
     Dim addr_name, mobile, zip_code, address_main, address_detail, delivery_message
     Dim spent_time
+	Dim pin_save
     Dim reg_ip
 	Dim domain_str, order_mode
 	Dim add_price_yn, add_price_cnt
@@ -48,6 +49,7 @@
     pay_amt = GetReqNum("pay_amt",0)
 
     spent_time = GetReqStr("spent_time","")
+    pin_save = GetReqStr("pin_save","")
 
     save_point = GetReqNum("save_point", 0)
     bbq_card = GetReqStr("bbq_card","")
@@ -958,6 +960,29 @@
 	'//주문 금액 체크
 
 
+	'중복 사용 제한 모바일 상품권 처리
+	Set pCmd = Server.CreateObject("ADODB.Command")
+	With pCmd
+		.ActiveConnection = dbconn
+		.NamedParameters = True
+		.CommandType = adCmdStoredProc
+		.CommandText = BBQHOME_DB & ".DBO.UP_COUPON_INFO_DUP"
+
+        .Parameters.Append .CreateParameter("@TP", adVarChar, adParamInput, 5, "CHK")
+        .Parameters.Append .CreateParameter("@PIN", adVarChar, adParamInput, 1000, pin_save)
+
+		Set pRs = .Execute
+	End With
+	Set pCmd = Nothing
+	If Not (pRs.BOF Or pRs.EOF) Then
+		dup_cnt = pRs("CNT")
+		If dup_cnt > 1 then
+			Response.Write "{""result"":11, ""result_msg"":""중복 사용이 불가한 E쿠폰이 포함되어 있습니다.\n장바구니를 초기화합니다.""}"
+			Response.End
+		End If
+	End If
+	set pRs = nothing
+	'//중복 사용 제한 모바일 상품권 처리
 
 
 '	If CheckLogin() Then	'회원인 경우 '페이코 쿠폰, 페이코 카드, 페이코 포인트를 쓴 경우 

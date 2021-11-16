@@ -117,6 +117,7 @@
 				<input type="hidden" name="cart_value">
 				<input type="hidden" name="addr_data" id="addr_data" value='<%=addr_data%>'>
 				<input type="hidden" name="spent_time" id="spent_time">
+				<input type="hidden" name="pin_save" id="pin_save">
 			</form>
 
 			<input type="hidden" id="CART_IN_PRODIDX">
@@ -131,6 +132,7 @@
 				$('#addr_idx').val(sessionStorage.getItem("ss_addr_idx"));
 				$('#addr_data').val(sessionStorage.getItem("ss_addr_data"));
 				$('#spent_time').val(sessionStorage.getItem("ss_spent_time"));
+				$('#pin_save').val(sessionStorage.getItem("ss_pin_save"));
 			</script>
 
 <!--
@@ -689,6 +691,7 @@
 								showAlertMsg({msg:data.message});
 							}else{
 								// 완료
+								cpnPinSave();
 								$("#cart_form input[name=cart_value]").val(JSON.stringify(cartV));
 								$("#cart_form").submit();
 							}

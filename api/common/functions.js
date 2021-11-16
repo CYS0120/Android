@@ -235,26 +235,96 @@ function addCartMenu(data) {
         var item = data.split("$$");
 
         var key = item[0]+"_"+item[1]+"_"+item[2]+"_"+item[6];
-
         var jdata = getCartMenu(key);
 
-        if(jdata == null) {
-            jdata = {};
-            jdata.type = item[0];
-            jdata.idx = item[1];
-            jdata.opt = item[2];
-            jdata.price = item[3];
-            jdata.nm = item[4];
-            jdata.qty = 1;
-            jdata.img = item[5];
-            jdata.pin = item[6];
-            jdata.kindSel = item[7];
-            jdata.side = {};
-            saveCartMenu(key, JSON.stringify(jdata));
+        var pin = item[6];
+        var addYn = "N"
+        
+        $.ajax({
+            method: "post",
+            url: "/api/ajax/ajax_getEcouponDup.asp",
+            data: {"PIN": pin},
+            dataType: "json",
+            cache: false,
+            async: false,
+            headers: {"cache-control":"no-cache","pragma":"no-cache"},
+            success: function(res) {
+                // alert(res.dupYn+"/"+res.cpnId);
+                if (res.dupYn == "N") {
+                    var dup = hasDupMenu(res.cpnId);
+                    if (dup == 1) {
+                        alert("해당 모바일 상품권은 1주문 당 1개만 사용 가능합니다.\n새로 입력한 상품권은 장바구니에 담기지 않습니다.");
+                    } else {
+                        addYn = "Y"
+                    }
+                } else {
+                    addYn = "Y"
+                }
+
+                if (addYn == "Y") {
+                    // alert('add');
+                    if(jdata == null) {
+                        jdata = {};
+                        jdata.type = item[0];
+                        jdata.idx = item[1];
+                        jdata.opt = item[2];
+                        jdata.price = item[3];
+                        jdata.nm = item[4];
+                        jdata.qty = 1;
+                        jdata.img = item[5];
+                        jdata.pin = item[6];
+                        jdata.cpnid = res.cpnId;
+                        jdata.kindSel = item[7];
+                        jdata.side = {};
+                        saveCartMenu(key, JSON.stringify(jdata));
+                    }
+                    chkCartMenuCount();
+                    // var item = JSON.parse(data);
+                    getView();
+                }
+            },
+            error: function(data, status, err) {
+                alert(data + ' ' + status + '\n모바일 상품권 중복 사용 가능 여부 판별 중 에러가 발생했습니다.');
+            }
+        });	
+    }
+}
+
+function hasDupMenu(cpnId) {
+    if(supportStorage()) {
+        // alert('dup function');
+        var len = sessionStorage.length;
+
+        for(var i=0; i < len; i++) {
+            var key = sessionStorage.key(i);
+            try {
+                var sessionCpnid = JSON.parse(sessionStorage.getItem(key)).cpnid;
+
+                if (sessionCpnid == cpnId) {
+                    // alert('has');
+                    return 1;
+                }
+            } catch {}
         }
-        chkCartMenuCount();
-        // var item = JSON.parse(data);
-        getView();
+        return 0;
+    } else {
+        return 0;
+    }
+}
+
+function cpnPinSave() {
+    if(supportStorage()) {
+        var len = sessionStorage.length;
+        var pinsave = "";
+        for(var i=0; i < len; i++) {
+            var key = sessionStorage.key(i);
+            try {
+                var sessionPin = JSON.parse(sessionStorage.getItem(key)).pin;
+                pinsave = pinsave + ',' + sessionPin;
+            } catch {}
+        }
+        
+        sessionStorage.setItem("ss_pin_save", pinsave);
     }
 }
 
@@ -286,7 +356,8 @@ function addCartSide(key, data) {
                 jdata.nm = item[4];
                 jdata.qty = 1;
                 jdata.img = item[5];
-	            jdata.pin = item[6];                
+	            jdata.pin = item[6];
+                jdata.cpnid = "";
             } else {
                 jdata.qty = jdata.qty + 1;
             }
