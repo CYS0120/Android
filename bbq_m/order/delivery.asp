@@ -166,7 +166,7 @@
 			<div class="find_shop_wrap" id="order_branch_list"></div>
 
 			<div class="reorder_wrap mar-t30">
-				<div class="btn-wrap one mar-t20">
+				<div class="btn-wrap one mar-t20 mar-b30">
 					<button type="button" id="btn_more" onclick="javascript: <% if order_type = "D" then %>getOrderOldBranchList();<% end if %><% if order_type = "P" then %>getOrderBranchList();<% end if %>;" class="btn btn-grayLine btn_middle">더보기</button>
 				</div>
 			</div>

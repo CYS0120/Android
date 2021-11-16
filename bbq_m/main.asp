@@ -174,11 +174,13 @@
 						sql = "SELECT LINK_URL FROM BT_MAIN_IMG_M WITH (NOLOCK) WHERE BRAND_CODE='01' AND MAIN_KIND='MV'"
 						set rs = dbconn.Execute(sql)
 					%>
-					<ul>
-						<div class="main_point_set">
-							<iframe width="100%" height="186" src="<%=rs("LINK_URL")%>" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-						</div>
-					</ul>
+				<% If False Then %>
+						<ul>
+							<div class="main_point_set">
+								<iframe width="100%" height="186" src="<%=rs("LINK_URL")%>" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+							</div>
+						</ul>
+				<% End If %>
 					<%	set rs = nothing %>
 					<!-- 메뉴 -->
 					<ul class="h-main_order">

@@ -292,7 +292,7 @@
 					<li>운영시간 10:00~18:00 (토요일, 공휴일은 휴무)</li>
 				</ul>
 			</section>
-            <section class="footer_btn h-inbox1000">
+            <section class="footer_btn h-inbox1000 mar-b30">
 				<button type="button" onClick="javascript:location.href='/api/logout.asp';" class="btn h-btn_logout">로그아웃</button>
 			</section>
 			<div class="section-wrap">
