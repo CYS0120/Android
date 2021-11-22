@@ -140,7 +140,7 @@ jQuery(document).ready(function(e) {
 									<td>1</td>
 									<td class="ta-l">
 										<span class="ico-branch red mar-r10">비비큐 치킨</span>
-										<a href="./inquiryView.asp">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+										<a href="./inquiryView.asp">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a>
 									</td>
 									<td>2018-12-20</td>
 									<td><span>답변전</span></td>
@@ -149,7 +149,7 @@ jQuery(document).ready(function(e) {
 									<td>1</td>
 									<td class="ta-l">
 										<span class="ico-branch orange mar-r10">올떡</span>
-										<a href="./inquiryView.asp">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+										<a href="./inquiryView.asp">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a>
 									</td>
 									<td>2018-12-20</td>
 									<td><span class="red">답변완료</span></td>
@@ -158,7 +158,7 @@ jQuery(document).ready(function(e) {
 									<td>1</td>
 									<td class="ta-l">
 										<span class="ico-branch yellow mar-r10">비비큐몰</span>
-										<a href="./inquiryView.asp">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+										<a href="./inquiryView.asp">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a>
 									</td>
 									<td>2018-12-20</td>
 									<td><span class="red">답변완료</span></td>

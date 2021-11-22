@@ -2395,7 +2395,7 @@ function calcTotalAmount() {
 				<p class="mar-t10">
 					<label class="ui-checkbox">
 						<input type="checkbox" id="nm_privacy">
-						<span></span> 개인정보 취급방침 동의 <span class="red">(필수)</span>
+						<span></span> 개인정보 처리방침 동의 <span class="red">(필수)</span>
 					</label>
 					<a href="javascript:void(0);" class="fr"  onclick="javascript:lpOpen('.lp_privacy');"><u>내용보기</u></a>
 				</p>
@@ -2833,11 +2833,11 @@ function calcTotalAmount() {
 
 
 
-	<!-- Layer Popup : 개인정보취급방침 -->
+	<!-- Layer Popup : 개인정보 처리방침 -->
 	<div id="LP_Privacy" class="lp-wrapper lp_privacy">
 		<!-- LP Header -->
 		<div class="lp-header">
-			<h2># 개인정보 보호정책 (개인정보 취급방침)</h2>
+			<h2># 개인정보 보호정책 (개인정보 처리방침)</h2>
 		</div>
 		<!--// LP Header -->
 		<!-- LP Container -->
@@ -2845,7 +2845,7 @@ function calcTotalAmount() {
 			<!-- LP Content -->
 			<div class="lp-content">
 
-			<!-- 개인정보 취급방침 -->
+			<!-- 개인정보 처리방침 -->
 			<!--#include virtual="/etc/privacy_contents.asp"-->
 
 			</div>

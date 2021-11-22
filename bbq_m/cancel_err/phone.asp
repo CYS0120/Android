@@ -167,7 +167,7 @@
 				<p class="mar-t10">
 					<label class="ui-checkbox">
 						<input type="checkbox" id="nm_privacy">
-						<span></span> 개인정보 취급방침 동의 <span class="red">(필수)</span>
+						<span></span> 개인정보 처리방침 동의 <span class="red">(필수)</span>
 					</label>
 					<a href="javascript:void(0);" class="fr"  onclick="javascript:lpOpen('.lp_privacy');"><u>내용보기</u></a>
 				</p>

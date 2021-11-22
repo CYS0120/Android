@@ -77,7 +77,7 @@ jQuery(document).ready(function(e) {
 					<tr>
 						<td>1</td>
 						<td class="ta-l">
-							<a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+							<a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a>
 						</td>
 						<td>2018-12-20</td>
 						<td>265</td>
@@ -85,7 +85,7 @@ jQuery(document).ready(function(e) {
 					<tr>
 						<td>1</td>
 						<td class="ta-l">
-							<a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+							<a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a>
 						</td>
 						<td>2018-12-20</td>
 						<td>265</td>
@@ -93,7 +93,7 @@ jQuery(document).ready(function(e) {
 					<tr>
 						<td>1</td>
 						<td class="ta-l">
-							<a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+							<a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a>
 						</td>
 						<td>2018-12-20</td>
 						<td>265</td>
@@ -101,7 +101,7 @@ jQuery(document).ready(function(e) {
 					<tr>
 						<td>1</td>
 						<td class="ta-l">
-							<a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+							<a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a>
 						</td>
 						<td>2018-12-20</td>
 						<td>265</td>

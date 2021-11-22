@@ -59,19 +59,19 @@
 			<div class="inner">
 				<div class="board-list">
 					<div class="box">
-						<p class="subject"><a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a> </p>
+						<p class="subject"><a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a> </p>
 						<ul class="info">
 							<li class="date">2018-12-14</li>
 						</ul>
 					</div>
 					<div class="box">
-						<p class="subject"><a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a> </p>
+						<p class="subject"><a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a> </p>
 						<ul class="info">
 							<li class="date">2018-12-14</li>
 						</ul>
 					</div>
 					<div class="box">
-						<p class="subject"><a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a> </p>
+						<p class="subject"><a href="./noticeView.asp">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a> </p>
 						<ul class="info">
 							<li class="date">2018-12-14</li>
 						</ul>

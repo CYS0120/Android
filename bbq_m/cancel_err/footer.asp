@@ -38,7 +38,7 @@
 		<!--
 		<div>
 			<ul class="footer_menu">
-				<li><a href="/etc/privacy.asp">개인정보취급방침</a></li>       
+				<li><a href="/etc/privacy.asp">개인정보 처리방침</a></li>       
 				<li><a href="/etc/policy.asp">이용약관</a></li>      
 				<li><a href="/etc/membership.asp">멤버쉽약관</a></li>     
 				<li class="btn_click md-trigger"  data-modal="modal-1">패밀리사이트</li>

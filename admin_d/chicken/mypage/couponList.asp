@@ -133,7 +133,7 @@ jQuery(document).ready(function(e) {
 							<tr>
 								<td class="ta-l">
 									<span class="ico-branch red mar-r10">비비큐 치킨</span>
-									<a href="#" onclick="javascript:return false;">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+									<a href="#" onclick="javascript:return false;">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a>
 								</td>
 								<td>황금올리브 치킨 주문</td>
 								<td>PC/모바일</td>
@@ -143,7 +143,7 @@ jQuery(document).ready(function(e) {
 							<tr>
 								<td class="ta-l">
 									<span class="ico-branch red mar-r10">비비큐 치킨</span>
-									<a href="#" onclick="javascript:return false;">제너시스 BBQ 통합회원 개인정보 취급 방침 개정안내</a>
+									<a href="#" onclick="javascript:return false;">제너시스 BBQ 통합회원 개인정보 처리방침 개정안내</a>
 								</td>
 								<td>황금올리브 치킨 주문</td>
 								<td>PC/모바일</td>

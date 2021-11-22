@@ -4421,7 +4421,7 @@ NB_User_Chat_Layout.prototype = Object.create(null, {
 			var privacy_checkbox = this.util.cc(0,this.root,'label','',privacy_div);
 			privacy_checkbox.setAttribute('for','_NBCONTACTAGREE');
 			var privacy_content_div = this.util.cc(0,this.root,'div','_nbinputcheckboxwrapup',privacy_div);
-			var privacy_content_link = this.util.cc(0,this.root,'span','_nbcheckboxlink',privacy_content_div,'click',function(){instance.chatmodal.confirmmodal('개인정보수집 및 이용에 대한 안내','<br>수집한 개인정보는 정보통신망 이용촉진 및 정보보호 등에 관한 법률과 기타 관계 법령에 의거하여 보호합니다.(주)니블스카이는 상담을 희망하는 경우 아래와 같이 개인정보를 수집하고 있습니다.<br><br>1. 수집 개인정보 항목 : [필수] 이메일  <br>2. 개인정보의 수집 및 이용목적 : 온라인상담신청에 따른 본인확인 및 원활한 의사소통 경로 확보<br>3. 개인정보의 이용기간 : 원칙적으로 개인정보 수집 및 이용목적이 달성된 후에 해당 정보를 지체없이 파기합니다.<br>단, 상법, 전자상거래 등에서의 소비자보호에 관한 법률 등 관계법령의 규정에 의하여 보존할 필요가 있는 경우 회사는 관계법령에서 정한 일정한 기간 동안 개인정보를 보관할 수 있습니다.<br><br>그 밖의 사항은 개인정보취급방침을 준수합니다.');},'false','개인정보수집 및 이용');
+			var privacy_content_link = this.util.cc(0,this.root,'span','_nbcheckboxlink',privacy_content_div,'click',function(){instance.chatmodal.confirmmodal('개인정보수집 및 이용에 대한 안내','<br>수집한 개인정보는 정보통신망 이용촉진 및 정보보호 등에 관한 법률과 기타 관계 법령에 의거하여 보호합니다.(주)니블스카이는 상담을 희망하는 경우 아래와 같이 개인정보를 수집하고 있습니다.<br><br>1. 수집 개인정보 항목 : [필수] 이메일  <br>2. 개인정보의 수집 및 이용목적 : 온라인상담신청에 따른 본인확인 및 원활한 의사소통 경로 확보<br>3. 개인정보의 이용기간 : 원칙적으로 개인정보 수집 및 이용목적이 달성된 후에 해당 정보를 지체없이 파기합니다.<br>단, 상법, 전자상거래 등에서의 소비자보호에 관한 법률 등 관계법령의 규정에 의하여 보존할 필요가 있는 경우 회사는 관계법령에서 정한 일정한 기간 동안 개인정보를 보관할 수 있습니다.<br><br>그 밖의 사항은 개인정보 처리방침을 준수합니다.');},'false','개인정보수집 및 이용');
 			this.util.cc(0,this.root,'span','',privacy_content_div,'','','','에 대해 동의합니다.');
 			
 			var button_layout = this.util.cc(0,this.root,'div','_nbinputbuttonlayout',main_layout);

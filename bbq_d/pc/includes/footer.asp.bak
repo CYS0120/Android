@@ -8,7 +8,7 @@
 			<div class="fnb-wrap">
 				<div class="logo-footer"><img src="/images/common/logo_footer_bbq.png" alt="bbq"></div>
 				<ul class="fnb">
-					<li><a href="/etc/privacy.asp">개인정보취급방침</a></li>
+					<li><a href="/etc/privacy.asp">개인정보 처리방침</a></li>
 					<li><a href="/etc/preventEmail.asp">이메일주소무단수집거부</a></li>
 					<li><a href="/etc/policy.asp">이용약관</a></li>
 				</ul>
