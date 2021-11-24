@@ -84,7 +84,8 @@ function CheckInput(){
         </div>
         <!--//popup-->
 <%
-	Sql = "	SELECT A.*, CASE WHEN A.ORDER_FLAG IN (2, 3, 5, 6) AND A.ORDER_DATE+A.ORDER_TIME <> A.RESERV_DATE+A.RESERV_TIME THEN 'Y' ELSE 'N' END AS IS_RESERV "	& _
+	Sql = "	SELECT A.*, BBQ.DBO.FN_ORDER_AMOUNT(A.ORDER_ID) AS PAID_PRICE "	& _
+		"		, CASE WHEN A.ORDER_FLAG IN (2, 3, 5, 6) AND A.ORDER_DATE+A.ORDER_TIME <> A.RESERV_DATE+A.RESERV_TIME THEN 'Y' ELSE 'N' END AS IS_RESERV "	& _
 		"	    , ( A.LIST_PRICE - (SELECT ISNULL(SUM(LIST_PRICE) * -1, 0) FROM TB_WEB_ORDER_ITEM WITH(NOLOCK) WHERE ORDER_ID = '"& OID &"' AND ORD_TYPE <> '10') ) AS LAST_PRICE, "	& _
 		"	    B.BRANCH_NAME, B.BRANCH_TEL, CASE WHEN B.ONLINE_STATUS = 'Y' THEN '<span style=''color:green''>주문수신중</span>' ELSE '<span style=''color:red;font-weight:bold;''>포스종료</span>' END AS ONLINE_STATUS, CONVERT(VARCHAR(19), CONVERT(DATETIME, B.ONLINE_DATE + ' ' + DBO.UF_STRING2TIME(B.ONLINE_TIME)), 121) AS LAST_DTS, C.STATE, "	& _
 		"		ISNULL( (SELECT ABS(SUM(LIST_PRICE)) As CLPRICE FROM TB_WEB_ORDER_ITEM WHERE ORDER_ID = '"& OID &"' AND ORD_TYPE = '20' AND SESSION_ID LIKE 'CL|%' GROUP BY ORD_TYPE) ,0) AS CLPRICE, "	& _
@@ -104,6 +105,7 @@ function CheckInput(){
 	order_memo      = oRs("ORDER_MEMO")
 
     list_price      = oRs("LIST_PRICE")
+	paid_price		= oRs("PAID_PRICE")
     disc_price      = oRs("DISC_PRICE")
     last_price      = oRs("LAST_PRICE")
     si              = oRs("SI")
@@ -161,25 +163,13 @@ function CheckInput(){
 
 		If Not (pRs.BOF Or pRs.EOF) Then
 			plus_price = (pRs("menu_price")*pRs("menu_qty"))
+			
+			list_price = list_price + plus_price
+			last_price = last_price + plus_price
 		End If
 		' =========================================================================================
 	End If 
 
-
-    ' 3자리수마다 콤마
-    if list_price > 0 then
-        list_price = FormatNumber(list_price + plus_price,0)
-    end if
-
-    if disc_price > 0 then
-        disc_price = FormatNumber(disc_price,0)
-    end if
-
-    if last_price > 0 then
-        last_price = FormatNumber(last_price,0)
-	Else 
-        last_price = FormatNumber(last_price + plus_price,0)
-    end if
 
     cust_addr   = si&" "&Trim(gu)&" "&Trim(dong)&" "&Trim(bunji)&" "&Trim(building)&" "&Trim(addr_append)
     sPhone  = getFormatPhoneNumber(Trim(phone_region)&Trim(phone))
@@ -384,9 +374,9 @@ function CheckInput(){
 								<tr>
 									<td><%=USE_PAY_TYPE%></td>
 									<td><%=USE_PAY_METHOD_TXT%></td>
-                                    <td><%=FormatNumber(List_Price,0) %></td>
-                                    <td><%=FormatNumber(PAID_PRICE,0) %></td>
-                                    <td><%=FormatNumber(LAST_PRICE,0) %></td>
+                                    <td><%=FormatNumber(list_price,0) %></td>
+                                    <td><%=FormatNumber(paid_price,0) %></td>
+                                    <td><%=FormatNumber(last_price,0) %></td>
 								</tr>
 							</table>
 						</div>
