@@ -59,8 +59,8 @@
 					Next
 				End If
 %>
-				<div class="coupon_head">사용 가능한 할인/증정쿠폰권 <strong><%=couponTotalCount%></strong>장</div>
-				<!--<div class="coupon_head" onclick="Regi_Coupon();">모바일 상품권 등록하기</div>-->
+				<!--<div class="coupon_head">사용 가능한 할인/증정쿠폰 <strong><%=couponTotalCount%></strong>장</div>-->
+				<div class="coupon_head" onclick="Regi_PaycoCoupon();">할인/증정쿠폰 등록하기</div>
 
 				<!-- <div class="couponUseOk_wrap"> -->
                 <div class="coupon">
@@ -73,27 +73,27 @@
                         If couponHoldList.mHoldList(i).mCouponId <> "CP00002347" then
                     %>
 					<div class="couponUseOk">
-						<div>
+						<div class="coupon">
 							<ul class="tit">
 								<li class="device"><span class="ico-branch red">비비큐치킨</span></li>
 								<li class="day"><span>D - <%=DateDiff("d", Date, left(couponHoldList.mHoldList(i).mValidEndDate,4)&"-"&mid(couponHoldList.mHoldList(i).mValidEndDate,5,2)&"-"&mid(couponHoldList.mHoldList(i).mValidEndDate,7,2))%></span></li>
 							</ul>
 							<dl class="info">
+							<%
+								Set couponDetail = CouponGetDetail(couponHoldList.mHoldList(i).mCouponId)
+							%>
 								<dt><%=couponHoldList.mHoldList(i).mCouponName%></dt>
 								<dd>
 									유효기간 : <%=left(couponHoldList.mHoldList(i).mValidStartDate,4)&"-"&mid(couponHoldList.mHoldList(i).mValidStartDate,5,2)&"-"&mid(couponHoldList.mHoldList(i).mValidStartDate,7,2)%> ~ <%=left(couponHoldList.mHoldList(i).mValidEndDate,4)&"-"&mid(couponHoldList.mHoldList(i).mValidEndDate,5,2)&"-"&mid(couponHoldList.mHoldList(i).mValidEndDate,7,2)%><br/>
-									<!-- 사용처 : PC · 모바일 · App -->
+									사용처 : PC · 모바일 · App
 								</dd>
 							</dl>
 							<!-- <ul class="txt">
 								<li>모든메뉴 주문시 사용 가능 (단, 주류/음료/배달비 제외)</li>
 								<li>타 쿠폰과 중복 사용불가</li>
 							</ul> -->
-							<%
-								Set couponDetail = CouponGetDetail(couponHoldList.mHoldList(i).mCouponId)
-							%>
 							<div class="txt2">
-								<%=Replace(couponDetail.mCouponInfo, chr(13), "<br>")%>
+                                <%=Replace(couponDetail.mCouponInfo, chr(13), "<br>")%>
 							</div>
 <!-- 
 							<ul class="txt">
@@ -244,7 +244,47 @@
 
 
 
-
+<!-- Layer Popup : 쿠폰등록 -->
+	<div id="Lp_RegiPaycoCoupon" class="lp-wrapper lp_RegiPaycoCoupon">
+		<!-- LP Wrap -->
+		<div class="lp-wrap inbox1000">
+			<!-- LP Header -->
+			<div class="lp-header">
+				<h2>할인/증정쿠폰 등록</h2>
+			</div>
+			<!--// LP Header -->
+			<!-- LP Container -->
+			<div class="lp-container">
+				<!-- LP Content -->
+				<div class="lp-content ">
+					<form action="">
+						<!-- 모바일 상품권 등록 -->
+						 <section class="eCoupon_wrap">
+							<h3>할인/증정쿠폰 번호를<br>입력하여 주세요.</h3>
+							<form action="" class="form">
+								<ul class="area">
+									<li><input type="text" id="paycoPIN" name="paycoPIN" placeholder="할인/증정쿠폰 번호 입력" class="w-100p" maxlength="12" value=""></li>
+                                    <li class="mar-t15"><button type="button" onclick="paycoCoupon_Check_Json_url();" class="btn btn_middle btn-red">확인</button></li>
+                                    <%
+                                        ' Set couponIssueByPin = CouponIssueByPinV2("페이코 핀번호  paycoPIN.value")
+                                        ' If couponIssueByPin.code = 0 Then
+                                        '     alert("");
+                                        ' End If
+                                    %>
+                                </ul>
+                            </form>
+						</section>
+						<!-- 쿠폰 등록 -->
+					</form>
+				</div>
+				<!--// LP Content -->
+			</div>
+			<!--// LP Container -->
+			<button type="button" class="btn btn_lp_close" onclick="javascript:lpClose('.lp_RegiPaycoCoupon');"><span>레이어팝업 닫기</span></button>
+		</div>
+		<!-- // LP Wrap -->
+	</div>
+	<!--// Layer Popup -->
 
 <!-- Layer Popup : 쿠폰등록 -->
 	<div id="Lp_RegiCoupon" class="lp-wrapper lp_RegiCoupon">
@@ -262,17 +302,13 @@
 					<form action="">
 						<!-- 모바일 상품권 등록 -->
 						 <section class="eCoupon_wrap">
-							<h3>모바일 상품권  번호를<br>입력하여 주세요.</h3>
+							<h3>모바일 상품권 번호를<br>입력하여 주세요.</h3>
 							<form action="" class="form">
 								<ul class="area">
 									<li><input type="text" id="txtPIN" name="txtPIN" placeholder="모바일 상품권 번호 입력" class="w-100p" maxlength="12"></li>
                                     <li class="mar-t15"><button type="button" onclick="javascript:eCoupon_Check_GoCart_NoPinCode('Y', './couponList.asp?couponList=Ecoupon')" class="btn btn_middle btn-red">확인</button></li>
                                 </ul>
                             </form>
-                            <p>
-                                <strong><span>*</span> 모바일 상품권 입력이 잘 안될 때 확인 해주세요.</strong>
-                                알파벳 ( I ) → 숫자 ( 1 ), 알파벳 ( O ) → 숫자 ( 0 ) 로 변경하여 정확히 확인 후 입력해 주세요.
-                            </p>
 						</section>
 						<!-- 쿠폰 등록 -->
 					</form>
@@ -497,7 +533,11 @@
 
             });
         }
-        
+
+        function Regi_PaycoCoupon(){
+            lpOpen('.lp_RegiPaycoCoupon');
+        }
+
         function Regi_Coupon(){
             lpOpen('.lp_RegiCoupon');
         }

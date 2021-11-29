@@ -1,11 +1,13 @@
 <!--#include virtual="/api/class/CardDetail.class.asp"-->
 <!--#include virtual="/api/class/ChargeInfoList.class.asp"-->
+<!--#include virtual="/api/class/ConditionProductList.class.asp"-->
 <!--#include virtual="/api/class/CouponAcmList.class.asp"-->
 <!--#include virtual="/api/class/CouponCancelList.class.asp"-->
 <!--#include virtual="/api/class/CouponConditions.class.asp"-->
 <!--#include virtual="/api/class/CouponList.class.asp"-->
 <!--#include virtual="/api/class/CouponUseList.class.asp"-->
 <!--#include virtual="/api/class/DormancyHistoryList.class.asp"-->
+<!--#include virtual="/api/class/GiftProductList.class.asp"-->
 <!--#include virtual="/api/class/HoldList.class.asp"-->
 <!--#include virtual="/api/class/MemberBenefitList.class.asp"-->
 <!--#include virtual="/api/class/MemberUpgradeConditionList.class.asp"-->
@@ -42,6 +44,7 @@
 <!--#include virtual="/api/class/Req.Coupon.GetDetail.class.asp"-->
 <!--#include virtual="/api/class/Req.Coupon.GetUseList.class.asp"-->
 <!--#include virtual="/api/class/Req.Coupon.Issue.class.asp"-->
+<!--#include virtual="/api/class/Req.Coupon.IssuePin.class.asp"-->
 <!--#include virtual="/api/class/Req.Order.Cancel.class.asp"-->
 <!--#include virtual="/api/class/Req.Order.CancelListForOrder.class.asp"-->
 <!--#include virtual="/api/class/Req.Order.Complete.class.asp"-->
@@ -76,6 +79,7 @@
 <!--#include virtual="/api/class/Res.Coupon.GetDetail.class.asp"-->
 <!--#include virtual="/api/class/Res.Coupon.GetUseList.class.asp"-->
 <!--#include virtual="/api/class/Res.Coupon.Issue.class.asp"-->
+<!--#include virtual="/api/class/Res.Coupon.IssuePin.class.asp"-->
 <!--#include virtual="/api/class/Res.Order.Cancel.class.asp"-->
 <!--#include virtual="/api/class/Res.Order.CancelListForOrder.class.asp"-->
 <!--#include virtual="/api/class/Res.Order.Complete.class.asp"-->

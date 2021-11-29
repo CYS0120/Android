@@ -305,6 +305,29 @@
 
         Set CouponIssue = resClass
     End Function
+
+    Function CouponIssueByPinV2(pinNo)
+        req_str = ""
+        api_url = "/coupon/issueByPinV2"
+        result = ""
+
+        Dim reqClass : Set reqClass = New clsReqCouponIssueByPinV2
+        reqClass.mCompanyCode = PAYCO_MEMBERSHIP_COMPANYCODE
+        reqClass.mMemberNo = Session("userIdNo")
+        reqClass.mPinNo = pinNo
+
+        req_str = reqClass.toJson()
+
+        result = executeApi ("POST", "application/json", req_str, PAYCO_MEMBERSHIP_URL & api_url)
+
+        Set oJson = JSON.Parse(result)
+
+        Dim resClass : Set resClass = New clsResCouponIssueByPinV2
+        resClass.Init(oJson)
+
+        Set CouponIssueByPinV2 = resClass
+    End Function
+
 '----------------------------------------------------------------------------------------------'
 '쿠폰 종료
 '----------------------------------------------------------------------------------------------'

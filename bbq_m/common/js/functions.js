@@ -1611,3 +1611,29 @@ function eCoupon_del_plus(txtPIN_str) {
 		});
 	}});
 }
+
+function paycoCoupon_Check_Json_url() {
+	var paycoPIN = $("#paycoPIN").val();
+
+	$.ajax({
+		method: "post",
+		url: "/api/ajax/ajax_getPaycoCoupon.asp",
+		data: {"paycoPIN": paycoPIN},
+		dataType: "json",
+		success: function(res) {
+			showAlertMsg({
+				msg: res.message,
+				ok: function() {
+					if (res.result == 0) {
+						location.href = "/mypage/couponList.asp";;
+					}
+				}
+			});
+		},
+		error: function(data, status, err) {
+			showAlertMsg({
+				msg: data + ' ' + status + ' ' + err
+			});
+		}
+	});
+}
