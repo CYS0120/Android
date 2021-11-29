@@ -985,6 +985,32 @@
 	'//중복 사용 제한 모바일 상품권 처리
 
 
+	'치얼스 이벤트 365 쿠폰 사용자 제한 (10007016149745001)
+	Set pCmd = Server.CreateObject("ADODB.Command")
+	With pCmd
+		.ActiveConnection = dbconn
+		.NamedParameters = True
+		.CommandType = adCmdStoredProc
+		.CommandText = BBQHOME_DB & ".DBO.UP_COUPON_INFO_365"
+
+        .Parameters.Append .CreateParameter("@TP", adVarChar, adParamInput, 5, "CHK")
+        .Parameters.Append .CreateParameter("@MEMBER_IDNO", adVarChar, adParamInput, 50, mmidno)
+        .Parameters.Append .CreateParameter("@PIN", adVarChar, adParamInput, 1000, pin_save)
+
+		Set pRs = .Execute
+	End With
+	Set pCmd = Nothing
+	If Not (pRs.BOF Or pRs.EOF) Then
+		result_365 = pRs("RESULT")
+		If result_365 = "N" then
+			Response.Write "{""result"":11, ""result_msg"":""해당 E쿠폰을 사용할 수 있는 회원이 아닙니다.\n장바구니를 초기화합니다.""}"
+			Response.End
+		End If
+	End If
+	set pRs = nothing
+	'//치얼스 이벤트 365 쿠폰 사용자 제한
+
+
 '	If CheckLogin() Then	'회원인 경우 '페이코 쿠폰, 페이코 카드, 페이코 포인트를 쓴 경우 
 '		If Not (save_point = "0" And bbq_card = "[]" And coupon_no = "" And coupon_id = "") Then
 '	If Not (save_point = "0" And bbq_card = "[]" And coupon_no = "" And coupon_id = "") Then
