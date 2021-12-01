@@ -119,8 +119,8 @@ function chkWord(obj, maxByte) {
 	<tr>
 		<th>유효기간</th>
 		<td>
-			<input type="text" name="USESDATE" id="SDATE" value="<%=USESDATE%>" style="width:100px;" readonly> ~
-			<input type="text" name="USEEDATE" id="EDATE" value="<%=USEEDATE%>" style="width:100px;" readonly>
+			<input type="text" name="USESDATE" id="SDATE" value="<%=USESDATE%>" style="width:100px;"> ~
+			<input type="text" name="USEEDATE" id="EDATE" value="<%=USEEDATE%>" style="width:100px;">
 		</td>
 	</tr>
 	<tr>
@@ -145,11 +145,21 @@ function chkWord(obj, maxByte) {
 		</td>
 	</tr>
 	<tr>
-		<th>할인여부 (*현재 할인에 따른 구분사용 구현X)</th>
+		<th>쿠폰종류</th>
 		<td>
 			<select name="DC_YN" id="DC_YN" style="width:40%">
-				<option value="N" <% If DC_YN = "N" Or DC_YN = "" Then Response.write "SELECTED" %>>일반판매</option>
-				<option value="Y" <% If DC_YN = "Y" Then Response.write "SELECTED" %>>할인판매</option>
+				<option value="01" <% If DC_YN = "01" Or DC_YN = "" Then Response.write "SELECTED" %>>상품교환</option>
+				<option value="02" <% If DC_YN = "02" Then Response.write "SELECTED" %>>상품교환(할인판매)</option>
+				<option value="03" <% If DC_YN = "03" Then Response.write "SELECTED" %>>금액할인</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<th>중복사용가능여부</th>
+		<td>
+			<select name="DUP_YN" id="DUP_YN" style="width:40%">
+				<option value="Y" <% If DUP_YN = "Y" Or DUP_YN = "" Then Response.write "SELECTED" %>>가능</option>
+				<option value="N" <% If DUP_YN = "N" Then Response.write "SELECTED" %>>불가능</option>
 			</select>
 		</td>
 	</tr>
