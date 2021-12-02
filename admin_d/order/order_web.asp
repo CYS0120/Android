@@ -465,6 +465,32 @@ function SmsHistory(ORDER_ID){
 				ELSE
 					sState="<b>정상</b>"
 				END If
+				
+				' 제주/산간 =========================================================================================
+				plus_price = 0
+				Set pCmd = Server.CreateObject("ADODB.Command")
+				With pCmd
+					.ActiveConnection = conn
+					.NamedParameters = True
+					.CommandType = adCmdStoredProc
+					.CommandText = "bp_order_detail_select_1138"
+
+					.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput, , Rlist("order_idx"))
+
+					Set pRs = .Execute
+				End With
+				Set pCmd = Nothing
+
+				If Not (pRs.BOF Or pRs.EOF) Then
+					plus_price = (pRs("menu_price")*pRs("menu_qty"))
+
+					List_Price = List_Price + plus_price
+					LAST_PRICE = LAST_PRICE + plus_price
+				End If
+
+				ORDER_TITLE = ""
+				IF IS_RESERV = "Y" THEN ORDER_TITLE = "[예약주문] "
+				' =========================================================================================
 
 				If LAST_PRICE = "0원" Or LAST_PRICE = "0" then
 					USE_PAY_TYPE = "<span style='color:red;'>선불<span>"
@@ -510,31 +536,6 @@ function SmsHistory(ORDER_ID){
 					USE_PAY_METHOD_TXT = "기타"
 				End If
 
-				' 제주/산간 =========================================================================================
-				plus_price = 0
-				Set pCmd = Server.CreateObject("ADODB.Command")
-				With pCmd
-					.ActiveConnection = conn
-					.NamedParameters = True
-					.CommandType = adCmdStoredProc
-					.CommandText = "bp_order_detail_select_1138"
-
-					.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput, , Rlist("order_idx"))
-
-					Set pRs = .Execute
-				End With
-				Set pCmd = Nothing
-
-				If Not (pRs.BOF Or pRs.EOF) Then
-					plus_price = (pRs("menu_price")*pRs("menu_qty"))
-
-					List_Price = List_Price + plus_price
-					LAST_PRICE = LAST_PRICE + plus_price
-				End If
-
-				ORDER_TITLE = ""
-				IF IS_RESERV = "Y" THEN ORDER_TITLE = "[예약주문] "
-				' =========================================================================================
 %>
                                 <tr style="background-color:<%=sRowColor%>; color:<%=sFontColor%>" onmouseover="this.style.backgroundColor='#FCFAF9';this.style.color='#000000'" onmouseout="this.style.backgroundColor='<%=sRowColor%>';this.style.color='<%=sFontColor%>'">
                                     <td><%=num%></td>
