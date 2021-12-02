@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="/common/css/base.css?ver=?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>"">
-<link rel="stylesheet" href="/common/css/ui_style.css?ver=?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>"">
-<link rel="stylesheet" href="/common/css/common.css?ver=?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>"">
-<link rel="stylesheet" href="/common/css/layout.css?ver=?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>"">
-<link rel="stylesheet" href="/common/css/content.css?ver=?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>"">
-<link rel="stylesheet" href="/common/css/global.css?ver=?ver=<%=Year(Now) & Right("0"& Month(Now), 2) & Right("0"& Day(Now), 2) & Right("0"& Hour(Now), 2) & Right("0"& Minute(Now), 2) & Right("0"& Second(Now), 2)%>"">
+<link rel="stylesheet" href="/common/css/base.css?ver=20211202">
+<link rel="stylesheet" href="/common/css/ui_style.css?ver=20211202">
+<link rel="stylesheet" href="/common/css/common.css?ver=20211202">
+<link rel="stylesheet" href="/common/css/layout.css?ver=20211202">
+<link rel="stylesheet" href="/common/css/content.css?ver=20211202">
+<link rel="stylesheet" href="/common/css/global.css?ver=20211202">
