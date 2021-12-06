@@ -252,7 +252,7 @@ end if
 			<dd>사업자등록번호 : 207-81-43555</dd>
 			<dd>고객센터 : <%=SERVICE_CENTER_TEL%><span>/</span>창업문의 : 080-383-9000</dd>
 			<dd></dd>
-			<dt><a href="#" onClick="location.href='/etc/marketing.asp';return false;">마케팅수신약관</a> / <a href="#" onClick="location.href='/etc/location.asp';return false;">위치기반서비스약관</a> / <a href="#" onClick="location.href='/etc/privacy.asp';return false;">개인정보 처리방침</a></dd>
+			<dt><a href="#" onClick="location.href='/etc/marketing.asp';return false;">마케팅수신약관</a> / <a href="#" onClick="location.href='/etc/location.asp';return false;">위치기반서비스약관</a> / <a href="#" onClick="location.href='/etc/privacy.asp';return false;">개인정보처리방침</a></dd>
 			<dd>Copyright 2020 © GENESIS BBQ. All rights reserved.</dd>
 		</dl>
 

@@ -31,7 +31,7 @@
 <div class="wrapper">
 
 	<%
-		PageTitle = "개인정보 처리방침"
+		PageTitle = "개인정보처리방침"
 	%>
 
 	<!-- Header -->
@@ -48,7 +48,7 @@
 		<!-- Content -->
 		<article class="content">
 
-			<!-- 개인정보 처리방침 -->
+			<!-- 개인정보처리방침 -->
 			<!--#include virtual="/etc/privacy_contents.asp"-->
 
 		</article>
