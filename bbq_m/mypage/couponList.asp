@@ -131,20 +131,23 @@
 			<!-- //사용가능쿠폰 -->
 		</article>
 
-		<article id="Ecoupon_list" class="content inbox1000" style="display: block">
-
-			<%
-				Set couponHoldList = CouponGetHoldList("NONE", "N", 100, 1)
-			%>
-
-			<!-- 사용가능쿠폰 -->
+		<article id="LP_eCoupon" class="eCoupon_wrap" style="display: block">
+			<!-- 사용가능 e쿠폰 -->
 			<section class="section section_couponUseOk">
-				<div class="coupon_head" onclick="Regi_Coupon();">모바일 상품권 등록하기</div>
+				
+                <!-- e쿠폰 등록 -->
+                <section class="eCoupon_wrap">
+                    <h3>모바일 상품권  번호를<br>입력하여 주세요.</h3>
+                    <ul class="area">
+                        <li><input type="text" id="txtPIN" name="txtPIN" placeholder="모바일 상품권 번호 입력" class="w-70p" autocomplete="off" style="margin-right:2%;" maxlength="12">
+                            <button type="button" onclick='javascript:eCouponUse("LA");/*eCoupon_Check_GoCart_NoPinCode("Y", "./couponList.asp?couponList=Ecoupon")*/' class="btn-sm btn-black w-15p">등록</button>
+                        </li>
+                    </ul>
+                </section>
+                <!-- //e쿠폰 등록 -->
 
 				<!-- <div class="couponUseOk_wrap"> -->
-                <div class="coupon">
-
-					<div class="couponUseOk">
+                <div class="couponUseOk">
                 <%
                     Dim aCmd, aRs
 
@@ -163,37 +166,49 @@
                     End With
                     Set aCmd = Nothing   
 
+                    dim idxEcoupon : idxEcoupon = 0 
                     If Not (aRs.BOF Or aRs.EOF) Then    
                         aRs.MoveFirst  
 
-                            Do Until aRs.EOF  
-                    %>           
+                        Do Until aRs.EOF  
+                            idxEcoupon = idxEcoupon + 1
+                    %>
+                    <div class="divCouponItemM"> 
 						<div class="coupon">
+                            <!--
 							<div class="tit div-table">
 								<ul class="tr">
 									<li class="td device"><span class="ico-branch red">비비큐치킨</span></li>
 									<li class="td day"></li>
 								</ul>
 							</div>
+                            -->
 							<dl class="info">
-								<dt onclick='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");'><b><%=aRs("c_title")%></b></dt>
+                                <label class='checkbox'>
+								<!--<dt onclick='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");'><b><%=aRs("c_title")%></b></dt>-->
+								<dt><input type="checkbox" name="chkEcoupon" id="chkEcoupon<%=idxEcoupon%>" value="<%=aRs("c_code")%>" /> <b><%=aRs("c_title")%></b></dt>
 								<dd>
-                                    번    호 : <%=aRs("c_code")%><br/>
-									유효기간 : <%=aRs("USESDATE")%> ~ <%=aRs("USEEDATE")%><br/>
-									사 용 처 : PC · 모바일 · App
+                                    번&nbsp;&nbsp;&nbsp;&nbsp;호 : <%=aRs("c_code")%><br/>
+									금&nbsp;&nbsp;&nbsp;&nbsp;액 : <%=FormatNumber(aRs("CPN_PRICE"), 0)%><br/>
+									유효기간 : <%=aRs("USESDATE")%> ~ <%=aRs("USEEDATE")%>
 								</dd>
+                                </label>
 							</dl>
-                            <dl class="coupon_list_delete"><a href='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");' class="btn btn-red btn_middle">사용하기</a></dl>
-                            <!--<dl class="coupon_list_use"><a href='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");' class="btn btn-red btn_middle">사용</a></dl>
+                            <!--<dl class="coupon_list_delete"><a href='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");' class="btn btn-red btn_middle">사용하기</a></dl>
+                            <dl class="coupon_list_use"><a href='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");' class="btn btn-red btn_middle">사용</a></dl>
                             <dl class="coupon_list_delete"><a href="javascript:eCoupon_del_plus('<%=aRs("c_code")%>')"><img src="/images/mypage/ico_delete.png">삭제</a></dl>-->
 						</div>
                         <div class="txt">
                          <br/> 
-						</div>                        
+						</div>
+                    </div>
 
                 <%
                             aRs.MoveNext
-						    Loop
+						Loop
+                %>
+						<button type="button" id="btnCouponUse" onclick='javascript:eCouponUse("LU");' class="btn btn_middle btn-red">사용하기</button>
+                <%
                     End If
                     Set aRs = Nothing                
                 %>						
@@ -202,11 +217,9 @@
 						</div>
 
                 </div>
-					
-            	
-
 			</section>
-			<!-- //사용가능쿠폰 -->
+			<!-- //사용가능 e쿠폰 -->
+            
 		</article>        
 
         <article class="content inbox1000" id="giftcard_list" style="display: none">
@@ -286,41 +299,7 @@
 	</div>
 	<!--// Layer Popup -->
 
-<!-- Layer Popup : 쿠폰등록 -->
-	<div id="Lp_RegiCoupon" class="lp-wrapper lp_RegiCoupon">
-		<!-- LP Wrap -->
-		<div class="lp-wrap inbox1000">
-			<!-- LP Header -->
-			<div class="lp-header">
-				<h2>모바일 상품권 등록</h2>
-			</div>
-			<!--// LP Header -->
-			<!-- LP Container -->
-			<div class="lp-container">
-				<!-- LP Content -->
-				<div class="lp-content ">
-					<form action="">
-						<!-- 모바일 상품권 등록 -->
-						 <section class="eCoupon_wrap">
-							<h3>모바일 상품권 번호를<br>입력하여 주세요.</h3>
-							<form action="" class="form">
-								<ul class="area">
-									<li><input type="text" id="txtPIN" name="txtPIN" placeholder="모바일 상품권 번호 입력" class="w-100p" maxlength="12"></li>
-                                    <li class="mar-t15"><button type="button" onclick="javascript:eCoupon_Check_GoCart_NoPinCode('Y', './couponList.asp?couponList=Ecoupon')" class="btn btn_middle btn-red">확인</button></li>
-                                </ul>
-                            </form>
-						</section>
-						<!-- 쿠폰 등록 -->
-					</form>
-				</div>
-				<!--// LP Content -->
-			</div>
-			<!--// LP Container -->
-			<button type="button" class="btn btn_lp_close" onclick="javascript:lpClose('.lp_RegiCoupon');"><span>레이어팝업 닫기</span></button>
-		</div>
-		<!-- // LP Wrap -->
-	</div>
-	<!--// Layer Popup -->
+
 
 
 <!-- Layer Popup : 상품권 등록 -->
@@ -438,6 +417,12 @@
 <script>
     $(document).ready(function() {
         change_tab("<%=couponList%>");
+
+		$('#txtPIN').keydown(function(key){
+			if(key.keyCode == 13){
+				eCouponUse("LA");
+			}
+		});
     });
     
     function change_tab(data){
@@ -464,20 +449,20 @@
         
                 });
                 $('#coupon_list').css('display','none');
-                $('#Ecoupon_list').css('display','none');
+                $('#LP_eCoupon').css('display','none');
                 $('#giftcard_list').css('display','block');
                 $('#tab_coupon').removeClass("on");
                 $('#tab_Ecoupon').removeClass("on");
                 $('#tab_giftcard').addClass("on");
             }else if (data == 'coupon'){
                 $('#coupon_list').css('display','block');
-                $('#Ecoupon_list').css('display','none');
+                $('#LP_eCoupon').css('display','none');
                 $('#giftcard_list').css('display','none');
                 $('#tab_coupon').addClass("on");
                 $('#tab_Ecoupon').removeClass("on");
                 $('#tab_giftcard').removeClass("on");
             }else if (data == 'Ecoupon'){
-                $('#Ecoupon_list').css('display','block');
+                $('#LP_eCoupon').css('display','block');
                 $('#coupon_list').css('display','none');
                 $('#giftcard_list').css('display','none');
                 $('#tab_Ecoupon').addClass("on");

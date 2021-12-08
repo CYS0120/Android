@@ -39,10 +39,10 @@
 	Dim addr_idx : addr_idx = GetReqStr("addr_idx","")
 	Dim branch_id : branch_id = GetReqStr("branch_id","")
 	Dim cart_value : cart_value = GetReqStr("cart_value","")
+	Dim cart_ec_list : cart_ec_list = GetReqStr("cart_ec_list","")
 	Dim addr_data : addr_data = GetReqStr("addr_data","")
 	Dim branch_data : branch_data = GetReqStr("branch_data","")
 	Dim spent_time : spent_time = GetReqStr("spent_time","")
-	Dim pin_save : pin_save = GetReqStr("pin_save","")
 	Dim is_SGPay_Event : is_SGPay_Event = "N"
 
 	Dim bCmd, bMenuRs
@@ -371,12 +371,14 @@ var cartPage = "payment";
 var ownCardList = [];
 
 function setPayMethod(paymethod) {
-	<%' If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAAOS") > 0 Then %>
+	<%' If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAAOS") > 0 Then 
+	%>
 //	if (paymethod == "Card" || paymethod == "Phone" || paymethod == "Payco") {
 //		alert("앱 주문 결제시스템 점검 중 입니다.\n\n현장결제를 택하시거나,\nm.bbq.co.kr로 주문결제 해주세요.\n\n이용에 불편을 드려 죄송합니다.");
 //		return;
 //	}
-	<%' End If %>
+	<%' End If 
+	%>
 
 	$(".payment_choice .payment_choiceSel.on").removeClass("on");
 	$("#payment_"+paymethod.toLowerCase()).addClass("on");
@@ -1104,7 +1106,7 @@ function calcTotalAmount() {
 			 
 			if (arrgiftcard_no.length != arrgiftcard_id.length) {
 				reset_Giftcard_apply(null);
-				showAlertMsg({ msg: "상품권 선택이 잘못되었습니다." });
+				showAlertMsg({ msg: "지류상품권 선택이 잘못되었습니다." });
 				return false;
 			}
 			while (i1 < arrgiftcard_id.length) {
@@ -1112,7 +1114,7 @@ function calcTotalAmount() {
 				while (i2 < arrgiftcard_id.length) {
 					if (i1 != i2 && arrgiftcard_id[i1] == arrgiftcard_id[i2]) {
 						reset_Giftcard_apply(null);
-						showAlertMsg({ msg: "상품권 선택이 잘못되었습니다." });
+						showAlertMsg({ msg: "지류상품권 선택이 잘못되었습니다." });
 						return false;
 					}
 					i2++;
@@ -1195,14 +1197,14 @@ function calcTotalAmount() {
 			}});
 			return false;
 		}
-		<%If order_type = "D" Then '배달일 때 핸드폰 번호 검증
+		<%'If order_type = "D" Then '배달일 때 핸드폰 번호 검증
 		%>
 			if($("input[name='mobile']").val() == ""){
 				var ss_user_phone = sessionStorage.getItem('ss_user_phone');
 				var temp_mobile = "";
 				var mobile = "";
 
-				if(ss_user_phone != ""){
+				if(ss_user_phone != null && ss_user_phone != ""){
 					if( ss_user_phone.length > 10){
 						temp_mobile = ss_user_phone.replace('+82', '0').substr(-10, 10);
 						mobile = '0'+temp_mobile.substr(0,2)+'-'+temp_mobile.substr(2,4)+'-'+temp_mobile.substr(6, 10);
@@ -1213,7 +1215,8 @@ function calcTotalAmount() {
 					$("input[name='mobile']").val(mobile);
 				} 
 			}
-		<%end if%>
+		<%'end if
+		%>
 
 		var pay_method = $("#pay_method").val();
 		if (pay_method=='Point' || pay_method=='Later' || pay_method=='ECoupon' || pay_method=='Cash' || pay_method=='Paycoin' || pay_method=='Sgpay' || pay_method=='Sgpay2'){
@@ -1643,6 +1646,7 @@ function calcTotalAmount() {
 			<input type="hidden" name="addr_idx" value="<%=addr_idx%>">
 			<input type="hidden" name="branch_id" value="<%=branch_id%>">
 			<input type="hidden" name="cart_value" value='<%=cart_value%>'>
+			<input type="hidden" name="cart_ec_list" value='<%=cart_ec_list%>'>
 			<input type="hidden" name="delivery_fee" id="delivery_fee" value="<%=vDeliveryFee%>">
 			<input type="hidden" name="pay_method" id="pay_method">
 			<input type="hidden" name="addr_name" value="<%=vAddrName%>">
@@ -1724,8 +1728,13 @@ function calcTotalAmount() {
 						dim row_price : row_price = 0
 						dim row_side_price : row_side_price = 0
 
+						dim iEcAmtTot : iEcAmtTot = 0 '모바일상품권 금액
+						dim iEc : iEc = -1
+						dim isEcAmt 
+						dim arrEcList : arrEcList = ""
+						arrEcList = split(cart_ec_list, "||") '금액권 list
+							
 						For i = 0 To iLen - 1
-
 							menu_idx = cJson.get(i).value.idx
 							If ""&menu_idx = ""&SAMSUNG_EVENT Then 	'이벤트 메뉴아이디
 								SAMSUNG_USEFG = "Y"		'이벤트 메뉴가 있는지 체크
@@ -1818,10 +1827,22 @@ function calcTotalAmount() {
 								Response.End
 							End If 
 
+							'e쿠폰 금액권 : 도서산간 금액에 추가하지 않고, 화면에도 노출하지 않는다.
+							isEcAmt = false 
+							for iEc=0 to ubound(arrEcList)
+								if arrEcList(iEc) = CouponPin then 
+									iEcAmtTot = iEcAmtTot + cJson.get(i).value.price
+									isEcAmt = true 
+									exit for 
+								end if 
+							next 
+
 							vMenuPrice	= bMenuRs("menu_price")
 							vAdultPrice = bMenuRs("adult_price")
 							If vAdd_price_yn = "Y" Then
-								add_total_price = add_total_price + (CLng(bMenuRs("add_price"))*Order_qty)
+								if Not isEcAmt then 
+									add_total_price = add_total_price + (CLng(bMenuRs("add_price"))*Order_qty)
+								end if 
 							End If 
 							totalAmount_parent = totalAmount_parent + ( vMenuPrice * Order_qty )
 
@@ -1833,7 +1854,9 @@ function calcTotalAmount() {
 								adult_H_Price = adult_H_Price + ( vAdultPrice * Order_qty )
 							End If 
 							adult_N_Price = adult_N_Price + ( vMenuPrice * Order_qty )
+
 							
+							if not isEcAmt then 
 					%>
 					<div class="order_menu">
 						<ul class="cart_list" >
@@ -1932,8 +1955,22 @@ function calcTotalAmount() {
 					</div>
 
 					<%
+							end if '//if not isEcAmt then 
 						Next
 					%>
+					<%if ecoupon_amt > 0 or iEcAmtTot > 0 Then 
+						totalAmount = totalAmount - iEcAmtTot
+					%>
+					<input type="hidden" name="iEcAmtTot" value="<%=iEcAmtTot%>" />
+					<div class="order_calc">
+						<div class="bot div-table">
+							<dl class="tr">
+								<dt class="td">모바일상품권 금액</dt>
+								<dd class="td"><%=FormatNumber(ecoupon_amt, 0)%><span>원</dd>
+							</dl>
+						</div>
+					</div>
+					<%end if%>
 
 					<input type="hidden" name="ecoupon_amt" id="ecoupon_amt" value="<%=ecoupon_amt%>">
 					<div class="order_calc">
@@ -1978,8 +2015,10 @@ function calcTotalAmount() {
 				<% end if %>
 			<% end if %>
 
-			<% if beer_yn <> "Y" then ' 주류판매 가능 매장인지 %>
-				<% if adult_H_Price > 0 then ' 수제주류 일경우에만 체크. %>
+			<% if beer_yn <> "Y" then ' 주류판매 가능 매장인지 
+			%>
+				<% if adult_H_Price > 0 then ' 수제주류 일경우에만 체크. 
+				%>
 					<script type="text/javascript">
 						alert("주류 판매 가능한 매장이 아닙니다.");
 						history.back();
@@ -2214,10 +2253,10 @@ function calcTotalAmount() {
 			<!-- 쿠폰 및 포인트 사용 -->
 			<div class="section-wrap section-payment" id="coupon_area">
 				<div class="section-header order_head">
-					<h3>모바일 상품권 및 포인트 사용</h3>
+					<h3>할인 및 포인트 사용</h3>
 				</div>
 				<div class="area border">
-					<%		If ECOUPON_POINTEVENT_YN = "N" Then '모바일 상품권을 사용하는 경우는 숨김
+					<%		If ECOUPON_POINTEVENT_YN = "N" Then '페이코 할인/증정쿠폰을 사용하는 경우는 숨김
 								If POINTEVENT_VIEW_YN = "Y" Then 
 					%>
 					<dl>
@@ -2236,29 +2275,29 @@ function calcTotalAmount() {
 					End If %>
 					<dl id="test_giftcard">
                         <dt>
-                            <span>상품권 <em>( 사용가능 상품권 : <strong class="red gc_red_f">0 장</strong> )</em></span>
+                            <span>지류상품권 <em>( 사용가능 지류상품권 : <strong class="red gc_red_f">0 장</strong> )</em></span>
                         </dt>
                         <dd>
                             <input type="hidden" id="giftcard_no" name="giftcard_no">
                             <input type="hidden" id="giftcard_id" name="giftcard_id">
                             <input type="text" id="giftcard_amt" name="giftcard_amt" value="0" numberOnly readonly style="width:150px; margin-right:5px">
                              <!--<button type="button" onclick="javascript:Giftcard_scan();" class="btn btn-sm btn-grayLine" style="line-height: 0 !important;"><img src="/images/order/barcode-scan.png" alt="barcode_scan" width="30px" height="30px"></button>-->
-                             <button type="button" onclick="javascript:Giftcard_ListCount('list');" class="btn btn-sm btn-grayLine">상품권적용</button>
+                             <button type="button" onclick="javascript:Giftcard_ListCount('list');" class="btn btn-sm btn-grayLine">지류상품권적용</button>
                         </dd>
                     </dl>
                     <%
-                    If ECOUPON_POINTEVENT_YN = "N" Then '모바일 상품권을 사용하는 경우는 숨김
+                    If ECOUPON_POINTEVENT_YN = "N" Then '페이코 할인/증정쿠폰을 사용하는 경우는 숨김
                     %>
 					<dl>
 						<dt >
-							<span>모바일 상품권 <em>( 사용가능 모바일 상품권 : <strong><%=ubound(resOGLFO.mCouponList)+1%> 장</strong> )</em></span>
+							<span>할인/증정쿠폰 <em>( 사용가능 할인/증정쿠폰 : <strong><%=ubound(resOGLFO.mCouponList)+1%> 장</strong> )</em></span>
 						</dt>
 						<dd>
 							<input type="hidden" id="coupon_no" name="coupon_no">
 							<input type="hidden" id="coupon_id" name="coupon_id">
 							<input type="text" id="coupon_amt" name="coupon_amt" value="0" numberOnly readonly style="width:150px; margin-right:5px"> 
 							<input type="text" id="coupon_amt_prod" name="coupon_amt_prod" value="0" numberOnly readonly style="width:150px; margin-right:5px; display:none;"> 
-                            <button type="button" onclick="javascript:lpOpen('.lp_paymentCoupon');" class="btn btn-sm btn-grayLine">모바일 상품권 적용</button>
+                            <button type="button" onclick="javascript:lpOpen('.lp_paymentCoupon');" class="btn btn-sm btn-grayLine">할인/증정쿠폰 적용</button>
 						</dd>
 					</dl>
 					<%
@@ -2571,6 +2610,7 @@ function calcTotalAmount() {
 				<input type="hidden" name="order_idx">
 				<input type="hidden" name="order_num">
 				<input type="hidden" name="cart_value" value='<%=cart_value%>'>
+				<input type="hidden" name="cart_ec_list" value='<%=cart_ec_list%>'>
 				<input type="hidden" name="pay_method">
 				<input type="hidden" name="domain" value="mobile">
 				<input type="hidden" name="event_point" value="<%=EVENT_POINT%>">
@@ -2598,7 +2638,7 @@ function calcTotalAmount() {
 
 
 
-	<!-- Layer Popup : 모바일 상품권 적용 -->
+	<!-- Layer Popup : 페이코 할인/증정쿠폰 적용 -->
 	<div id="LP_paymentCoupon" class="lp-wrapper lp_paymentCoupon">
 
 		<!-- LP Wrap -->
@@ -2606,7 +2646,7 @@ function calcTotalAmount() {
 
 			<!-- LP Header -->
 			<div class="lp-header">
-				<h2>모바일 상품권 적용</h2>
+				<h2>할인/증정쿠폰 적용</h2>
 			</div>
 			<!--// LP Header -->
 			<!-- LP Container -->
@@ -2637,7 +2677,7 @@ function calcTotalAmount() {
 						<section class="section section_orderCoupon">
 							<div class="section-header order_head">
 								<!-- <h3 class="fl">상품별 쿠폰 적용</h3> -->
-								<div class="fr mar-t10">( 사용가능 모바일 상품권 : <strong class="red"><% If CheckLogin() Then response.write ubound(resOGLFO.mCouponList)+1 end if  %> 장</strong> )</div>
+								<div class="fr mar-t10">( 사용가능 할인/증정쿠폰 : <strong class="red"><% If CheckLogin() Then response.write ubound(resOGLFO.mCouponList)+1 end if  %> 장</strong> )</div>
 							</div>
 							<%
 								'For i = 0 To iLen - 1
@@ -2649,13 +2689,15 @@ function calcTotalAmount() {
 										<div class="td info">
 											<div class="coupon">
 												<dl>
-													<dt><%'=cJson.get(i).value.nm%></dt>
+													<dt><%'=cJson.get(i).value.nm
+													%></dt>
 													<dd>
 														<%
 																'If JSON.hasKey(cJson.get(i).value, "side") Then
 																	'For Each skey In cJson.get(i).value.side.enumerate()
 														%>
-														<p>- <%'=cJson.get(i).value.side.get(skey).nm%></p>
+														<p>- <%'=cJson.get(i).value.side.get(skey).nm
+														%></p>
 														<%
 																	'Next
 																'End If
@@ -2675,7 +2717,7 @@ function calcTotalAmount() {
 											If CheckLogin() Then
 											If UBound(resOGLFO.mCouponList)+1 >= 1 Then
 										%>
-											<option value="">적용할 모바일 상품권을 선택해주세요.</option>
+											<option value="">적용할 할인/증정쿠폰을 선택해주세요.</option>
 										<%
 											For j = 0 To UBound(resOGLFO.mCouponList)
 										%>
@@ -2687,7 +2729,7 @@ function calcTotalAmount() {
 										<%
 											Else
 										%>
-										<option value="">적용할 모바일 상품권이 없습니다.</option>
+										<option value="">적용할 할인/증정쿠폰이 없습니다.</option>
 									<%
 										End If
 										End If
@@ -2743,7 +2785,7 @@ function calcTotalAmount() {
 		<div class="lp-wrap inbox1000">
 			<!-- LP Header -->
 			<div class="lp-header">
-				<h2>상품권적용</h2>
+				<h2>지류상품권 적용</h2>
 			</div>
 			<!--// LP Header -->
 			<!-- LP Container -->
@@ -2754,11 +2796,11 @@ function calcTotalAmount() {
 						<!-- 상품권인증번호 등록 -->
 						 <section class="section section_coupon">
 							<div class="section-header coupon_head">
-								<h3>상품권번호 등록하기</h3>
+								<h3>지류상품권번호 등록하기</h3>
 							</div>
 							<form action="" class="form">
 								<ul class="area">
-									<li><input type="text" autocomplete="off" id="giftPIN" name="giftPIN" placeholder="상품권 번호 입력 ('-' 포함)" class="w-70p" style="margin-right:2%;"><button type="button" onclick="javascript:Giftcard_Check();" class="btn btn-sm btn-black w-15p">등록</button></li>
+									<li><input type="text" autocomplete="off" id="giftPIN" name="giftPIN" placeholder="지류상품권 번호 입력 ('-' 포함)" class="w-70p" style="margin-right:2%;"><button type="button" onclick="javascript:Giftcard_Check();" class="btn btn-sm btn-black w-15p">등록</button></li>
 									<li class="mar-t15">
                                         <button type="button" onclick="javascript:Giftcard_scan();" class="btn btn-md btn-black" style="width: 45%; margin-right:4%; padding:0 !important; line-height:25px !important; font-size: 20px !important">
                                             <img src="/images/order/barcode-scan2.png" alt="barcode_scan2" width="50px" height="50px"><br>바코드인증
@@ -2791,7 +2833,7 @@ function calcTotalAmount() {
 						<section class="section section_orderCoupon">
 							<div class="section-header order_head">
 								<!-- <h3 class="fl">상품별 상품권 적용</h3> -->
-								<div class="fr mar-t10">( 사용가능 상품권 : <strong class="red gc_red">0 장</strong> )</div>
+								<div class="fr mar-t10">( 사용가능 지류상품권 : <strong class="red gc_red">0 장</strong> )</div>
 							</div>
 							<div class="order_menu order_lpCoupon">
 								<input type="hidden" name="g_No" id="g_No">
@@ -2807,7 +2849,7 @@ function calcTotalAmount() {
 								<div class="sale div-table mar-t25">
 									<dl class="tr">
 										<!--<dt class="td">할인금액</dt>-->
-										<dt class="td">상품권금액</dt>
+										<dt class="td">지류상품권 금액</dt>
 										<dd class="td"><span class="red" id="giftcard_discount_amt">0</span>원</dd>
 									</dl>
 								</div>
@@ -2897,7 +2939,7 @@ function calcTotalAmount() {
 	            Giftcard_Check()
 	        }else{
 	            showAlertMsg({
-                    msg:"상품권을 다시 확인해주세요.",
+                    msg:"지류상품권을 다시 확인해주세요.",
                 });
                 return;
 	        }
@@ -2905,7 +2947,7 @@ function calcTotalAmount() {
         function Giftcard_Check() {
             if ($("#giftPIN").val() == "") {
                 showAlertMsg({
-                    msg:"상품권 번호를 입력해주세요.",
+                    msg:"지류상품권 번호를 입력해주세요.",
                 });
                 return;
 			}
@@ -2934,7 +2976,7 @@ function calcTotalAmount() {
                         });
                     } else if(res.result == 1){
                         showAlertMsg({
-                            msg:"이미 등록 된 상품권입니다.",
+                            msg:"이미 등록 된 지류상품권입니다.",
                             ok: function(){
                                 $("#giftPIN").val("");
                                 reset_gift_select();
@@ -2943,7 +2985,7 @@ function calcTotalAmount() {
                         });
                     } else if(res.result == 2){
                          showAlertMsg({
-                             msg:"존재하지않는 상품권입니다.",
+                             msg:"존재하지않는 지류상품권입니다.",
                              ok: function(){
                                  $("#giftPIN").val("");
                                  reset_gift_select();
@@ -2952,7 +2994,7 @@ function calcTotalAmount() {
                          });
                      } else if(res.result == 3){
                        showAlertMsg({
-                           msg:"이미 사용한 상품권입니다.",
+                           msg:"이미 사용한 지류상품권입니다.",
                            ok: function(){
                                $("#giftPIN").val("");
                                reset_gift_select();

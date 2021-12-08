@@ -327,9 +327,10 @@ function closeCart() {
 
 function drawCartPage(page){
     var len = sessionStorage.length;
-    var goods_len = getAllCartMenuCount();
+    var goods_len = getAllCartMenuCount()+getCartEcAmtCount(); //getCartEcAmtCount : 금액권 갯수 가져오기
     var menu_amt = 0;
     var side_amt = 0;
+	var ec_amt = 0;
 
     if(page == "C") {
         $("#cart_list .order_menu").remove();
@@ -360,6 +361,7 @@ function drawCartPage(page){
 				if (it.nm.indexOf('[에버랜드 프로모션]') != -1) {
 					it.price = it.price;
 				} else{
+					ec_amt = ec_amt + Number(it.price);
 					it.price = 0;
 				}
             var it_amt = (Number(it.price) * Number(it.qty)); 
@@ -420,7 +422,7 @@ function drawCartPage(page){
 //            ht += "\t\t</div>";
 //            ht += "\t<div>";
             ht += "</div>";
-
+			
             if(page == "C") {
                 if($("#cart_list .order_menu").length == 0) {
                     $("#cart_list").prepend(ht);
@@ -435,11 +437,33 @@ function drawCartPage(page){
                 }
             }
         }
-
+		
 //        $("#item_amount").text(numberWithCommas(menu_amt+side_amt)+"원");
-        $("#total_amount").html(numberWithCommas(menu_amt+side_amt+delivery_amt)+"<span>원</span>");
+        $("#total_amount").html(numberWithCommas(menu_amt+side_amt+delivery_amt-Number(getCartEcAmt()))+"<span>원</span>");
+		$("#total_amount_h").val(menu_amt+side_amt+delivery_amt-Number(getCartEcAmt()));
     }
+	
+	var ht_ec = "";
+	//if (ec_amt > 0 || Number(getCartEcAmt()) > 0
+	//	|| (document.getElementById("blnMyECoupon") != null && document.getElementById("blnMyECoupon").value == "Y")) {
+		ec_amt = ec_amt + Number(getCartEcAmt());
+		console.log("==ec_amt : "+ ec_amt);
+		ht_ec += "<div id=\"div_coupon_amt\"><ul class=\"cart_total\">\n";
+		ht_ec += "<li>모바일상품권 금액</li>\n";
+		ht_ec += "<li id=\"ec_total_amount\">"+numberWithCommas(ec_amt)+"<span>원</span>\n";
+		ht_ec += "&nbsp;&nbsp;<button type=\"button\" class=\"btn btn_small4 btn-red\" onclick=\"javascript:drawCouponFromCart('C');lpOpen('.lp_cartCoupon');\">추가</button></li>\n";
+		ht_ec += "</ul><font align='left' color='red'>* 모바일상품권 금액 이상 메뉴 변경 가능</font></div>\n";
+		ht_ec += "<input type=\"hidden\" id=\"ec_total_amount_h\" value=\""+ec_amt+"\" />\n";
+
+		if(page == "C") {
+			if($("#div_coupon_amt").length > 0) {
+				$("#div_coupon_amt").remove();
+			}
+			$("#divSaveMenu").prepend(ht_ec);
+		}
+	//}
 }
+
 
 function getCartList(it, mkey, key, it_amt, page, side_amt_new) {
 	ht = "<div class=\"order_menu\">\n";
@@ -454,7 +478,11 @@ function getCartList(it, mkey, key, it_amt, page, side_amt_new) {
 	}
 
 	if(page == "C") {
-		ht += "<button type=\"button\" class=\"btn-del\" onClick=\"removeCartMenu('"+key+"'); getMenuRecom(); \">삭제</button>\n";
+		if (it.pin != '' && it.nm.indexOf('[에버랜드 프로모션]') == -1){
+			ht += "<button type=\"button\" class=\"btn-amt\" onClick=\"couponToAmt('"+key+"'); \">메뉴 변경</button>\n";
+		}else{
+			ht += "<button type=\"button\" class=\"btn-del\" onClick=\"removeCartMenu('"+key+"'); getMenuRecom(); \">삭제</button>\n";
+		}
 	}
 	ht += "			</dt>";
 	ht += "			<dd class='cart_choice'>&nbsp;<span>기본 : <span>"+numberWithCommas(Number(it.price))+"</span>원</span></dd>";
@@ -577,9 +605,303 @@ function getCartList(it, mkey, key, it_amt, page, side_amt_new) {
 // 	}
 // }
 
+//여러 e쿠폰 번호 선택 후, 사용하기 
+function eCouponUse(page) {
+	var saveYN = "";
+	var pinObj, saveCartYN, drawCouponYn, goUrl;
+	switch(page){
+		case 'UA': //coupon_use - 추가 add
+			saveYN = 'N'; 
+			pinObj = $("input[name=txtPIN]"); 
+			saveCartYN = 'N';
+			drawCouponYn = 'Y';
+			goUrl = '';
+			break;
+		case 'UU': //coupon_use - 사용하기 use
+			saveYN = 'N';
+			pinObj = $("input[name=chkEcoupon]"); 
+			saveCartYN = 'Y';
+			drawCouponYn = 'N';
+			goUrl = '/order/cart.asp';
+			break;
+		case 'LA': //couponList - 추가 add
+			saveYN = 'Y'; 
+			pinObj = $("input[name=txtPIN]"); 
+			saveCartYN = 'N';
+			drawCouponYn = 'N';
+			goUrl = './couponList.asp?couponList=Ecoupon';
+			break;
+		case 'LU': //couponList - 사용하기 use
+			saveYN = 'N';
+			pinObj = $("input[name=chkEcoupon]"); 
+			saveCartYN = 'Y';
+			drawCouponYn = 'N';
+			goUrl = '/order/cart.asp';
+			break;
+		case 'CA': //cart - 추가 add
+			saveYN = 'N';
+			pinObj = $("input[name=txtPIN]"); 
+			saveCartYN = 'N';
+			drawCouponYn = 'Y';
+			goUrl = '';
+			break;
+		case 'CU': //cart - 사용하기 use
+			saveYN = 'N';
+			pinObj = $("input[name=chkEcoupon]"); 
+			saveCartYN = 'Y';
+			drawCouponYn = 'N';
+			goUrl = '/order/cart.asp';
+			break;
+	}
+	
+	if(saveYN == "") return;
+	
+	var couponList = eCouponObjToString(pinObj);
+	if (couponList === undefined || couponList == "") {
+		var msgText;
+		//if($(pinObj).attr("type") == "checkbox")
+		//	msgText = '모바일상품권을 선택하세요.';
+		if($(pinObj).attr("type") == "text"){
+			msgText = '모바일상품권번호를 입력하세요.';
+			
+			showAlertMsg({
+				msg: msgText
+			});
+			return;
+		}
+	}
+	if($(pinObj).attr("type") == "text"){
+		if(chkCouponDup(couponList)){ //중복
+			pinObj.val(couponList);
+			showAlertMsg({
+				msg: "해당하는 모바일상품권은 이미 등록 되어있습니다."
+			});
+			return;
+		}
+	} 
+	
+	getECouponInfo(saveYN, couponList, saveCartYN, drawCouponYn, goUrl); //e쿠폰 정보 가져오기
+}
+
+function eCouponObjToString(pinObj){
+	var couponList = "";
+	if($(pinObj).attr("type") == "checkbox"){
+		$(pinObj).each(function(){
+			if (this.checked) {
+				var pin = $(this).val();
+			
+				if (pin != ""){
+					if(couponList != "") {
+						couponList += "||";
+					}
+					couponList += pin;
+				}
+			}
+		});
+	}else if($(pinObj).attr("type") == "text"){
+		var pin = $(pinObj).val();
+		
+		$(pinObj).val('');
+		if (pin != "") {
+			couponList = pin;
+		}
+	}
+	return couponList;
+}
+
+function chkCouponDup(txtPin){
+	//중복 체크 
+	var result = false; //중복 아님
+	if($("input[name=chkEcoupon]").val() === undefined){
+	}else {
+		$("input[name=chkEcoupon]").each(function(){
+			if( $(this).val() == txtPin){ 
+				result = true; //중복
+			}
+		});
+	}
+	return result;
+}
+
+//e쿠폰 정보 가져와서 상태 검사하고 HTML 만들기 
+function getECouponInfo(saveYN, couponList, saveCartYN, drawCouponYn, goUrl){
+	if (couponList != "") {
+		var jsonData = {
+			"txtPIN": couponList,
+			"PIN_save": saveYN
+		};
+		
+		var targetUrl = "/api/ajax/ajax_getEcouponAll.asp";
+		var cartList = getCouponFromCart();
+		var ecAmtPin = "";
+		
+		$.ajax({
+			method: "post",
+			url: targetUrl,
+			data: jsonData,
+			dataType: "json",
+			success: function(res) {				
+				if (res.result == 0) {
+					if(saveCartYN == "Y") {
+						ecAmtPin = getCartEcPinList(); 
+						console.log("ecAmtPin:" + ecAmtPin);
+						resetCartMenuEcAmt(); //e쿠폰+금액권 장바구니 비우기
+					}
+					var ht = "";
+					$.each(res.menuItemList, function(k,v) {
+						
+						if(saveCartYN == "Y") {
+							addCartMenu(v.menuItem);
+							console.log('add : '+ v.menuItem)
+						}else {	
+							if($("input[name=chkEcoupon]").val() != undefined && $("input[name=chkEcoupon]").val() != ""){
+								$("input[name=chkEcoupon]").each(function(){
+									if(cartList.indexOf($(this).val()) != -1) {
+										$(this).prop("checked", true);
+									}else {
+										$(this).prop("checked", false);
+									}
+								});
+							}
+						}
+						
+						if(drawCouponYn == "Y") {
+							var strChecked = "";
+							if(cartList != "") {
+								if(cartList.indexOf(v.pin) != -1)
+									strChecked = "checked";
+							}
+							ht += '<div class="divCouponItem">';
+							ht += '<div class="coupon">';
+							ht += '	<dl class="info">';
+							ht += '        <label class="checkbox">';
+							ht += '		<dt><input type="checkbox" name="chkEcoupon" id="chkEcoupon1'+k+'" value="'+ v.pin +'" ' + strChecked + '/> <b>'+ v.title +'</b></dt>';
+							ht += '		<dd>';
+							ht += '        번&nbsp;&nbsp;&nbsp;&nbsp;호 : '+ v.pin +'<br/>';
+							ht += '		   금&nbsp;&nbsp;&nbsp;&nbsp;액 : '+ addCommas(v.price) +'<br/>';
+							ht += '		   유효기간 : '+ v.useSDate +' ~ '+ v.useEDate +'';
+							ht += '		</dd>';
+							ht += '        </label>';
+							ht += '	</dl>';
+							ht += '</div><div class="txt"><br/>  </div></div>';
+						}
+					});
+					
+					if (ht != "") {
+						$("#divCouponUse").prepend(ht);
+						$("#divCouponUse").show();
+					}
+					if (goUrl != ""){
+						if(saveCartYN == "Y" && ecAmtPin != "") {
+							alert("이전의 e쿠폰 메뉴 변경 내용이 사라집니다. \n메뉴 변경을 원하시면 e쿠폰 우측 상단의 [메뉴 변경]을 클릭해주세요.");
+						}
+						location.href = goUrl;
+						console.log('---- goURL ');
+					}
+				}else {
+					showAlertMsg({
+						msg: res.message
+					});
+				}
+			},
+			error: function(data, status, err) {
+				showAlertMsg({
+					msg: data + ' ' + status + ' ' + err
+				});
+				return false;
+			}
+		});
+	}else {
+		//선택한 모바일상품권이 없을 때 e쿠폰 장바구니 비우기
+		alert("모바일상품권을 사용하지 않습니다.");
+		resetCartMenuEcAmt(); //e쿠폰+금액권 장바구니 비우기
+		if (goUrl != ""){
+			location.href = goUrl;
+		}
+	}
+}
+
+function drawCouponFromCart(page){
+	//마이페이지 등록된 모바일상품권 제외하고 Cart에 있는 coupon list 가져오기
+    var len = sessionStorage.length;
+    var couponList = "";
+
+    if(page == "C") {
+        $(".divCouponItem .coupon").remove(); //Cart에서 가져온 item 지우기 
+    //} else if(page == "P") {
+    //    $("#payment_list .order_menu").remove();
+    }
+    if(supportStorage()) {
+		for(var i = 0; i < len; i++) {
+			var key = sessionStorage.key(i);
+			
+			if(key == null) continue;
+			if(key.substring(0, 3) == "ec_" || key.substring(0, 2) == "M_" ) {
+				var str = sessionStorage.getItem(key);
+				
+				if(str === null || str == "" || str === undefined || str == "undefined") continue;
+				
+				var it = JSON.parse(str);
+				if (it.pin != ''){
+					if($("input[name=chkEcoupon]").val() === undefined){
+						if(couponList != "") couponList +=  "||";
+						couponList +=  it.pin;
+					}else{
+						var blnDisplayYn = false;
+						$("input[name=chkEcoupon]").each(function(){
+							if( $(this).val() == it.pin) {
+								//마이페이지 등록되어 이미 화면에 뿌려진 쿠폰이면 skip 
+								blnDisplayYn = true;
+								return false;
+							
+							}
+						});
+						if (!blnDisplayYn) {
+							if(couponList != "") couponList +=  "||";
+							couponList +=  it.pin;
+							console.log("key:" + key + ", couponList:" + couponList);
+						}
+					}
+				}
+			}
+		}
+		
+		//coupon html 만들기 
+		if(couponList != "")
+			getECouponInfo('N', couponList, 'N', 'Y', '');
+	}
+}
+
+
+function getCouponFromCart(){
+	//마이페이지 등록된 모바일상품권 제외하고 Cart에 있는 coupon list 가져오기
+    var len = sessionStorage.length;
+    var cartList = "";
+
+    if(supportStorage()) {
+		for(var i = 0; i < len; i++) {
+			var key = sessionStorage.key(i);
+			
+			if(key == null) continue;
+			if(key.substring(0, 3) == "ec_" || key.substring(0, 2) == "M_" ) {
+				var str = sessionStorage.getItem(key);
+				
+				if(str === null || str == "" || str === undefined || str == "undefined") continue;
+				
+				var it = JSON.parse(str);
+				if (it.pin != ''){
+					if(cartList != "") cartList +=  "||";
+					cartList +=  it.pin;
+				}
+			}
+		}
+		
+		return cartList;
+	}
+}
 function getMenuRecom(menu_idx)
 {
-   if (menu_idx.length > 0)
+   if (menu_idx != null && menu_idx.length > 0)
    {
       menu_key = "[" + menu_idx + "]";
 // alert(menu_key);

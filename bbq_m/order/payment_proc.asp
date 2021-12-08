@@ -77,6 +77,13 @@
 	order_status = "W"
 	End If
 
+	Dim cart_ec_list : cart_ec_list = GetReqStr("cart_ec_list","")
+	dim iEcAmtTot : iEcAmtTot = 0 '모바일상품권 금액
+	dim iEc : iEc = -1
+	dim isEcAmt 
+	dim arrEcList : arrEcList = ""
+	arrEcList = split(cart_ec_list, "||") '금액권 list
+
 	If Not FncIsBlank(order_idno) Then
 		If Not CheckLogin() Then
 			Response.Write "{""result"":10,""result_msg"":""로그아웃 되었습니다. 로그인후 이용해 주세요.""}"
@@ -196,7 +203,18 @@
 
 		' 제주/도서산간
 		If add_price_yn = "Y" And CLng(bMenuRs("add_price")) > 0 Then 
-			add_price_cnt = add_price_cnt + SESS_menu_qty
+			' 금액권으로 전환한 e쿠폰은 추가금 제외
+			isEcAmt = false 
+			iEc = -1
+			for iEc=0 to ubound(arrEcList)
+				if arrEcList(iEc) = SESS_coupon_pin then 
+					isEcAmt = true
+					exit for 
+				end if 
+			next 
+			if Not isEcAmt then 
+				add_price_cnt = add_price_cnt + SESS_menu_qty
+			end if 
 		End If 
 
 		' 뱀파이어 이벤트 체크
@@ -259,7 +277,8 @@
         CART_TOTAL_PRICE = CART_TOTAL_PRICE + gift_prod
 '증정상품이 있다면 CART_TOTAL_PRICE에 해당 증정상품 가격 추가
 
-	If CDbl(CART_TOTAL_PRICE) <> CDbl(total_amount) Then 
+	iEcAmtTot = GetReqStr("iEcAmtTot",0)
+	If CDbl(CART_TOTAL_PRICE) <> (CDbl(total_amount)+CDbl(iEcAmtTot)) Then 
 		Response.Write "{""result"":1, ""result_msg"":""주문정보에 이상이 있습니다.4""}"
 		Response.End
 	End If
@@ -556,77 +575,88 @@
 
     Dim dd : dd = FormatDateTime(Now, 2)
     Dim dt : dt = FormatDateTime(Now, 4)
-
+	
     For i = 0 To iLen - 1
-        ' If order_item <> "" Then order_item = order_item & ";"
-        upper_order_detail_idx = 0
+		'금액권 전환된 e쿠폰은 bt_order_detail에 저장할 때 mene_option_idx를 -1로 저장
+		dim sEcChk : sEcChk = cJson.get(i).value.qty 
+		iEc = -1
+		for iEc=0 to ubound(arrEcList)
+			if arrEcList(iEc) = cJson.get(i).value.pin then 
+				iEcAmtTot = iEcAmtTot + cJson.get(i).value.price
+				sEcChk = -1
+				exit for 
+			end if 
+		next 
+		
+		' If order_item <> "" Then order_item = order_item & ";"
+		upper_order_detail_idx = 0
 
-        Set aCmd = Server.CreateObject("ADODB.Command")
-        With aCmd
-            .ActiveConnection = dbconn
-            .NamedParameters = True
-            .CommandType = adCmdStoredProc
-            .CommandText = "bp_order_detail_insert"
+		Set aCmd = Server.CreateObject("ADODB.Command")
+		With aCmd
+			.ActiveConnection = dbconn
+			.NamedParameters = True
+			.CommandType = adCmdStoredProc
+			.CommandText = "bp_order_detail_insert"
 
-            .Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput, , order_idx)
-            .Parameters.Append .CreateParameter("@menu_idx", adInteger, adParamInput, , cJson.get(i).value.idx)
-            .Parameters.Append .CreateParameter("@menu_option_idx", adInteger, adParamInput, , cJson.get(i).value.opt)
-            .Parameters.Append .CreateParameter("@menu_qty", adInteger, adParamInput,, cJson.get(i).value.qty)
-            .Parameters.Append .CreateParameter("@coupon_pin", adVarChar, adParamInput, 18, cJson.get(i).value.pin)
-            .Parameters.Append .CreateParameter("@reg_ip", adVarChar, adParamInput, 30, reg_ip)
-            .Parameters.Append .CreateParameter("@order_detail_idx", adInteger, adParamOutput)
-            .Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
-            .Parameters.Append .CreateParameter("@ERRMSG", adVarChar, adParamOutput, 500)
+			.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput, , order_idx)
+			.Parameters.Append .CreateParameter("@menu_idx", adInteger, adParamInput, , cJson.get(i).value.idx)
+			.Parameters.Append .CreateParameter("@menu_option_idx", adInteger, adParamInput, , cJson.get(i).value.opt)
+			.Parameters.Append .CreateParameter("@menu_qty", adInteger, adParamInput,, sEcChk)
+			.Parameters.Append .CreateParameter("@coupon_pin", adVarChar, adParamInput, 18, cJson.get(i).value.pin)
+			.Parameters.Append .CreateParameter("@reg_ip", adVarChar, adParamInput, 30, reg_ip)
+			.Parameters.Append .CreateParameter("@order_detail_idx", adInteger, adParamOutput)
+			.Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
+			.Parameters.Append .CreateParameter("@ERRMSG", adVarChar, adParamOutput, 500)
 
-            .Execute
+			.Execute
 
-            order_detail_idx = .Parameters("@order_detail_idx").Value
-            errCode = .Parameters("@ERRCODE").Value
-            errMsg = .Parameters("@ERRMSG").Value
-            upper_order_detail_idx = order_detail_idx
+			order_detail_idx = .Parameters("@order_detail_idx").Value
+			errCode = .Parameters("@ERRCODE").Value
+			errMsg = .Parameters("@ERRMSG").Value
+			upper_order_detail_idx = order_detail_idx
 			
 			'Response.write i & ":" & errCode & "-" & errMsg & "-" & order_detail_idx & "<br>"
 			If errCode = 1 Then
-                Response.Write "{""result"":1, ""result_msg"":""주문상세내역이 저장되지 않았습니다."", ""order_idx"":"& order_idx &",""order_num"":""" & order_num & """}"
+				Response.Write "{""result"":1, ""result_msg"":""주문상세내역이 저장되지 않았습니다."", ""order_idx"":"& order_idx &",""order_num"":""" & order_num & """}"
 				Response.End
-            End If
-        End With
-        Set aCmd = Nothing
-        ' order_item = order_item & cJson.get(i).value.idx & "_" & cJson.get(i).value.opt &"_" & cJson.get(i).value.qty
+			End If
+		End With
+		Set aCmd = Nothing
+		' order_item = order_item & cJson.get(i).value.idx & "_" & cJson.get(i).value.opt &"_" & cJson.get(i).value.qty
 
-        If JSON.hasKey(cJson.get(i).value, "side") Then
-            For Each skey In cJson.get(i).value.side.enumerate()
+		If JSON.hasKey(cJson.get(i).value, "side") Then
+			For Each skey In cJson.get(i).value.side.enumerate()
 
-                Set aCmd = Server.CreateObject("ADODB.Command")
-                With aCmd
-                    .ActiveConnection = dbconn
-                    .NamedParameters = True
-                    .CommandType = adCmdStoredProc
-                    .CommandText = "bp_order_detail_insert"
+				Set aCmd = Server.CreateObject("ADODB.Command")
+				With aCmd
+					.ActiveConnection = dbconn
+					.NamedParameters = True
+					.CommandType = adCmdStoredProc
+					.CommandText = "bp_order_detail_insert"
 
-                    .Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput, , order_idx)
-                    .Parameters.Append .CreateParameter("@menu_idx", adInteger, adParamInput, , cJson.get(i).value.side.get(skey).idx)
-                    .Parameters.Append .CreateParameter("@menu_option_idx", adInteger, adParamInput, , cJson.get(i).value.side.get(skey).opt)
-                    .Parameters.Append .CreateParameter("@menu_qty", adInteger, adParamInput,, cJson.get(i).value.side.get(skey).qty)
-                    .Parameters.Append .CreateParameter("@coupon_pin", adVarChar, adParamInput, 18, "")
-                    .Parameters.Append .CreateParameter("@upper_order_detail_idx", adInteger, adParamInput,, upper_order_detail_idx)
-                    .Parameters.Append .CreateParameter("@reg_ip", adVarChar, adParamInput, 30, reg_ip)
-                    .Parameters.Append .CreateParameter("@order_detail_idx", adInteger, adParamOutput)
-                    .Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
-                    .Parameters.Append .CreateParameter("@ERRMSG", adVarChar, adParamOutput, 500)
+					.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput, , order_idx)
+					.Parameters.Append .CreateParameter("@menu_idx", adInteger, adParamInput, , cJson.get(i).value.side.get(skey).idx)
+					.Parameters.Append .CreateParameter("@menu_option_idx", adInteger, adParamInput, , cJson.get(i).value.side.get(skey).opt)
+					.Parameters.Append .CreateParameter("@menu_qty", adInteger, adParamInput,, cJson.get(i).value.side.get(skey).qty)
+					.Parameters.Append .CreateParameter("@coupon_pin", adVarChar, adParamInput, 18, "")
+					.Parameters.Append .CreateParameter("@upper_order_detail_idx", adInteger, adParamInput,, upper_order_detail_idx)
+					.Parameters.Append .CreateParameter("@reg_ip", adVarChar, adParamInput, 30, reg_ip)
+					.Parameters.Append .CreateParameter("@order_detail_idx", adInteger, adParamOutput)
+					.Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
+					.Parameters.Append .CreateParameter("@ERRMSG", adVarChar, adParamOutput, 500)
 
-                    .Execute
+					.Execute
 
-                    order_detail_idx = .Parameters("@order_detail_idx").Value
-                    errCode = .Parameters("@ERRCODE").Value
-                    errMsg = .Parameters("@ERRMSG").Value
-                End With
-                Set aCmd = Nothing
+					order_detail_idx = .Parameters("@order_detail_idx").Value
+					errCode = .Parameters("@ERRCODE").Value
+					errMsg = .Parameters("@ERRMSG").Value
+				End With
+				Set aCmd = Nothing
 
-                ' If order_item <> "" Then order_item = order_item & ";"
-                ' order_item = order_item &  cJson.get(i).value.side.get(skey).idx & "_" & cJson.get(i).value.side.get(skey).opt & "_" & cJson.get(i).value.side.get(skey).qty
-            Next
-        End If
+				' If order_item <> "" Then order_item = order_item & ";"
+				' order_item = order_item &  cJson.get(i).value.side.get(skey).idx & "_" & cJson.get(i).value.side.get(skey).opt & "_" & cJson.get(i).value.side.get(skey).qty
+			Next
+		End If
     Next
 	' 배송비 추가 ==============================================
 	If delivery_fee > 0 Then '배송비가 있다면

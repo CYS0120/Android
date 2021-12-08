@@ -115,6 +115,7 @@
 				<input type="hidden" name="branch_data" id="branch_data" value='<%=branch_data%>'>
 				<input type="hidden" name="addr_idx" id="addr_idx" value="<%=addr_idx%>">
 				<input type="hidden" name="cart_value">
+				<input type="hidden" name="cart_ec_list">
 				<input type="hidden" name="addr_data" id="addr_data" value='<%=addr_data%>'>
 				<input type="hidden" name="spent_time" id="spent_time">
 				<input type="hidden" name="pin_save" id="pin_save">
@@ -140,8 +141,32 @@
 				<span style="color:red;weight:bold">※ 수제맥주 세트는 배달 메뉴로 이동 시 자동 삭제되오니 이점 유의하시기 바랍니다.</span>
 			</div>
 -->
-			
-			<div class="page_title inbox1000">
+			<%
+			Dim aEcCmd, aEcRs
+
+			Set aEcCmd = Server.CreateObject("ADODB.Command")
+
+			With aEcCmd
+				.ActiveConnection = dbconn
+				.NamedParameters = True
+				.CommandType = adCmdStoredProc
+				.CommandText = "bt_member_coupon_select"
+				.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, Session("userIdNo"))
+				.Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput, 20, "LIST")
+				.Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
+
+				Set aEcRs = .Execute
+			End With
+			Set aEcCmd = Nothing   
+
+			If Not (aEcRs.BOF Or aEcRs.EOF) Then
+			%>
+				<input type="hidden" id="blnMyECoupon" name="blnMyECoupon" value="Y" />
+			<%
+			end if 
+			Set aEcRs = Nothing   
+			%>
+			<div id="divSaveMenu" class="page_title inbox1000">
 				<p>담은메뉴</p>
 <!--				수정-->
 				<span class="btn-del" id="cart_all_del" onclick="cart_all_clear_del()" style="cursor:pointer">전체삭제</span>
@@ -254,6 +279,7 @@
 				<ul class="cart_total">
 					<li>전체금액</li>
 					<li  id="total_amount">0<span>원</span></li>
+					<input type="hidden" id="total_amount_h" />
 				</ul>
 
 				<%If CheckLogin() Then%><% else %><div class="cart_wait"><span>잠깐!</span> 로그인 후 주문 하시면 포인트가 쌓여요!!</div><% end if %>
@@ -388,7 +414,93 @@
 	</div>
 	<!--// Container -->
 
+<div id="LP_cartCoupon" class="lp-wrapper lp_cartCoupon" style="display: none">
+<article id="LP_eCoupon" class="eCoupon_wrap">
+	<!-- e쿠폰 레이어 -->
+	<section class="section section_couponUseOk">
+		
+		<!-- e쿠폰 등록 -->
+		<section class="eCoupon_wrap">
+			<h3>모바일 상품권  번호를<br>입력하여 주세요.</h3>
+			<ul class="area">
+				<li><input type="text" id="txtPIN" name="txtPIN" placeholder="모바일 상품권 번호 입력" class="w-70p" autocomplete="off" style="margin-right:2%;" maxlength="12"><button type="button" onclick='javascript:eCouponUse("CA");' class="btn-sm btn-black w-15p">추가</button></li>
+			</ul>
+		</section>
+		<!-- //e쿠폰 등록 -->
 
+		<!-- <div class="couponUseOk_wrap"> -->
+		<div class="couponUseOk">
+		<%
+			Dim aCmd, aRs
+
+			Set aCmd = Server.CreateObject("ADODB.Command")
+
+			With aCmd
+				.ActiveConnection = dbconn
+				.NamedParameters = True
+				.CommandType = adCmdStoredProc
+				.CommandText = "bt_member_coupon_select"
+				.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, Session("userIdNo"))
+				.Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput, 20, "LIST")
+				.Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
+
+				Set aRs = .Execute
+			End With
+			Set aCmd = Nothing   
+
+			dim idxEcoupon : idxEcoupon = 0 
+			If Not (aRs.BOF Or aRs.EOF) Then    
+				aRs.MoveFirst  
+
+				Do Until aRs.EOF  
+					idxEcoupon = idxEcoupon + 1
+			%>
+            <div class="divCouponItemM"> 
+				<div class="coupon">
+					<!--
+					<div class="tit div-table">
+						<ul class="tr">
+							<li class="td device"><span class="ico-branch red">비비큐치킨</span></li>
+							<li class="td day"></li>
+						</ul>
+					</div>
+					-->
+					<dl class="info">
+						<label class='checkbox'>
+						<dt><input type="checkbox" name="chkEcoupon" id="chkEcoupon<%=idxEcoupon%>" value="<%=aRs("c_code")%>" /> <b><%=aRs("c_title")%></b></dt>
+						<dd>
+							번&nbsp;&nbsp;&nbsp;&nbsp;호 : <%=aRs("c_code")%><br/>
+							금&nbsp;&nbsp;&nbsp;&nbsp;액 : <%=FormatNumber(aRs("CPN_PRICE"), 0)%><br/>
+							유효기간 : <%=aRs("USESDATE")%> ~ <%=aRs("USEEDATE")%>
+						</dd>
+						</label>
+					</dl>
+					<!--<dl class="coupon_list_delete"><a href='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");' class="btn btn-red btn_middle">사용하기</a></dl>
+					<dl class="coupon_list_use"><a href='javascript:eCoupon_Check_GoCart("N", "<%=aRs("c_code")%>");' class="btn btn-red btn_middle">사용</a></dl>
+					<dl class="coupon_list_delete"><a href="javascript:eCoupon_del_plus('<%=aRs("c_code")%>')"><img src="/images/mypage/ico_delete.png">삭제</a></dl>-->
+				</div>
+				<div class="txt">
+					<br/> 
+				</div>                        
+			</div>
+		<%
+					aRs.MoveNext
+				Loop
+			End If
+			Set aRs = Nothing                
+		%>	
+			<div id="divCouponUse">
+				<button type="button" onclick='javascript:eCouponUse("CU");' class="btn btn_middle btn-red">사용하기</button>
+				<div class="txt">
+					- 타 쿠폰과 중복 사용불가
+				</div>
+			</div>
+		</div>
+	</section>
+</article>   
+	<button type="button" class="btn btn_lp_close" onclick="lpClose('.lp_cartCoupon')"><span>레이어팝업 닫기</span></button>
+	<!-- //사용가능 e쿠폰 -->
+</div>
 
 <!-- Layer Popup : 배달지 입력 -->
 <div id="LP_addShipping" class="lp-wrapper lp_addShipping" style="display:none;">
@@ -630,6 +742,17 @@
 //			break;
 //		}
 
+		if($('#total_amount_h') === undefined){
+		}else{
+			if($('#ec_total_amount_h') === undefined){
+			}else{
+				if($('#total_amount_h').val()<0) {
+					showAlertMsg({msg:"모바일상품권 금액 이상 주문하셔야 됩니다."});
+					return;
+				}
+			}
+		}
+		
 		/* -------------------------------------------------- */
 		// 1단계 : 매장 선택 되었는가
 		/* -------------------------------------------------- */
@@ -658,7 +781,8 @@
 		// 2단계 : 상품 선택 되었는가
 		/* -------------------------------------------------- */
 		let tot_price = 0;
-		var cartV = getAllCartMenu();
+		var cartV = getAllCartEcMenu();
+		var cartEcList = getCartEcPinList();
 		if(cartV.length == 0) {
 			showAlertMsg({msg:"장바구니에 상품이 없습니다."});
 			return;
@@ -693,6 +817,7 @@
 								// 완료
 								cpnPinSave();
 								$("#cart_form input[name=cart_value]").val(JSON.stringify(cartV));
+								$("#cart_form input[name=cart_ec_list]").val(cartEcList);
 								$("#cart_form").submit();
 							}
 						},
@@ -740,6 +865,14 @@
 			}
 		}
 	}
+
+    $(document).ready(function() {
+		$('#txtPIN').keydown(function(key){
+			if(key.keyCode == 13){
+				eCouponUse("CA");
+			}
+		});
+    });
 </script>
 
 
@@ -1021,6 +1154,18 @@
 		function goMenuList(){
 			location.href='/menu/menuList.asp?order_type='+sessionStorage.getItem("ss_order_type");
 		}
+
+		$(document).ready(function(e){
+			var cartList = getCouponFromCart();
+			$("input[name=chkEcoupon]").each(function(){
+				if( cartList.indexOf($(this).val()) != -1) {
+					$(this).prop("checked", true);
+				}else {
+					$(this).prop("checked", false);
+				}
+			});
+
+		});
 	</script>
 
 

@@ -472,6 +472,9 @@ function clearCart() {
         for(var i = 0; i < len; i++) {
             var key = sessionStorage.key(i);
 
+			if(key.substring(0, 3) == "ec_") { // e쿠폰 금액권 지우기 
+				key_arr.push(key);
+			}
 			if (sessionStorageException(key) == false) continue;
 
 			key_arr.push(key);
@@ -540,6 +543,136 @@ function removeCartMenu(key) {
 
         getView();
     }
+}
+
+function getCartEcAmtCount() {
+    if(supportStorage()) {
+        var len = sessionStorage.length;
+
+        var count = 0;
+
+        for(var i=0; i < len; i++) {
+            var key = sessionStorage.key(i);
+
+			if (key.substring(0, 3) == "ec_"){
+				count++;
+			}
+        }
+
+        return count;
+    } else {
+        return 0;
+    }
+}
+
+function resetCartMenuEcAmt() {
+	//e쿠폰 장바구니 비우기 
+    if(supportStorage()) {
+		var key_arr = Array();
+        var len = sessionStorage.length
+		
+		for(var i = 0; i < len; i++) {
+			var key = sessionStorage.key(i);
+			
+			if(key == null) continue;
+			if(key.substring(0, 3) == "ec_" || key.substring(0, 2) == "M_" ) {
+				var str = sessionStorage.getItem(key);
+				
+				if(str === null || str == "" || str === undefined || str == "undefined") continue;
+				
+				var it = JSON.parse(str);
+				if (it.pin != ''){
+					key_arr.push(key);
+				}
+			}
+		}
+		
+		// 위에서 바로 삭제하면 이상하게 삭제가 누락됨;
+        for(var i = 0; i < key_arr.length; i++) {
+			sessionStorage.removeItem(key_arr[i]);
+			console.log("resetCartMenuEcAmt remove : " + key_arr[i]);
+        }
+	}
+}
+
+function getCartEcAmt() {
+	var len = sessionStorage.length;
+	var goods_len = getCartEcAmtCount();
+	var result = 0;
+	if(goods_len > 0) {
+		for(var i = 0; i < len; i++) {
+			var side_amt_new = 0;
+			var key = sessionStorage.key(i);
+
+			if(key.substring(0, 3) == "ec_") {
+				var str = sessionStorage.getItem(key);
+				
+				if(str === null || str == "" || str === undefined || str == "undefined") continue;
+				
+				var it = JSON.parse(str);
+				
+				if (it.pin != ''){
+					result += Number(it.price);
+				}
+			}
+		}
+	}
+	return result;
+}
+
+function getCartEcPinList() {
+    if(supportStorage()) {
+        var len = sessionStorage.length;
+
+        var cart = "";
+
+        for(var i=0; i < len; i++) {
+            var key = sessionStorage.key(i);
+
+			if(key.substring(0, 3) == "ec_") { // e쿠폰 금액권 가져오기
+				var value = JSON.parse(sessionStorage.getItem(key));
+				if (cart != "") cart += "||";
+					
+				cart += value.pin;
+			}
+        }
+        return cart;
+    }
+}
+
+function getAllCartEcMenu() {
+    if(supportStorage()) {
+        var len = sessionStorage.length;
+
+        var cart = [];
+
+        for(var i=0; i < len; i++) {
+            var key = sessionStorage.key(i);
+
+			if(key.substring(0, 3) == "ec_") { // e쿠폰 금액권 가져오기
+			} else {
+				if (sessionStorageException(key) == false) continue;
+			}
+            var value = JSON.parse(sessionStorage.getItem(key));
+
+            var cart_value = {};
+            cart_value.key = key;
+            cart_value.value = value;
+            cart.push(cart_value);
+        }
+
+        return cart;
+    }
+}
+function couponToAmt(key) {
+    if(supportStorage()) {
+		var menu = getCartMenu(key);
+
+        if(menu != null) {
+			saveCartMenu("ec_"+key, JSON.stringify(menu));
+		}
+	}
+	removeCartMenu(key);
 }
 
 function removeCartSide(key, skey) {
@@ -1343,6 +1476,7 @@ function sessionStorageException(key)
     if(key == ta_id) return false;
 //	if(key != ta_id) return false;
 	if(key.substring(0, 3) == "ss_") return false;
+	if(key.substring(0, 3) == "ec_") return false;
 	if(key == "ENP_SESSION_KEY") return false;
 }
 
