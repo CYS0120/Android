@@ -66,12 +66,12 @@
                 smartcon_Result.Smartcon_Proc "info", txtPIN, "bbq_ecoupon","bbq_ecoupon","bbqsite",Replace(Date, "-", ""), Replace(FormatDateTime(Time(), 4), ":","") & Right(Time(), 2), ""
                 RESULT = smartcon_Result.m_StatusCode
                 RESULT_MSG = smartcon_Result.m_ErrorMessage
-
+                RESULT_PRODUCT_CODE = smartcon_Result.m_ProductCode
             end if 
 
             Dim cmd, rs
 
-            if RESULT = "0000" Then
+            if RESULT = "0000" or RESULT = "000" Then
 
                 Set cmd = Server.CreateObject("ADODB.Command")
                 With cmd
