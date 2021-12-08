@@ -2054,7 +2054,11 @@ function calcTotalAmount() {
 			<% end if %>
 
 			<%
-				OrderAmount = totalAmount - EVENT_POINT	'총금액에서 이벤트 포인트 차감
+				dim tmpOrderAmount : tmpOrderAmount = 0
+				if ecoupon_amt > 0 or iEcAmtTot > 0 Then 
+					tmpOrderAmount = iEcAmtTot
+				end if 
+				OrderAmount = totalAmount - EVENT_POINT + tmpOrderAmount	'총금액에서 이벤트 포인트 차감
 				reqOGLFO.mOrderAmount = OrderAmount
 
 				Session("sess_avap") = 0	'주문시 포인트 초과여부를 체크하기 위해서 설정
