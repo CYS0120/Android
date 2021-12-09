@@ -1,5 +1,6 @@
 <!-- #include virtual="/inc/config.asp" -->
 <!-- #include virtual="/inc/ip_check.asp" -->
+<!-- #include virtual="/inc/admin_check.asp" -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
 <head>
