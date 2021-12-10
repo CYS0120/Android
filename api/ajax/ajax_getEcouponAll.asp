@@ -78,8 +78,9 @@
                     .ActiveConnection = dbconn
                     .NamedParameters = True
                     .CommandType = adCmdStoredProc
-                    .CommandText = BBQHOME_DB & ".DBO.UP_COUPON_INFO_NEW"
+                    .CommandText = BBQHOME_DB & ".DBO.UP_COUPON_INFO_NEW_2"
 
+                    .Parameters.Append .CreateParameter("@PIN", adVarChar, adParamInput, 12, txtPIN)
                     .Parameters.Append .CreateParameter("@CPNID", adVarChar, adParamInput, 20, RESULT_PRODUCT_CODE)
 
                     Set oRs = .Execute
