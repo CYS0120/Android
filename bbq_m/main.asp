@@ -189,6 +189,11 @@
 						<li><div class="h-main_order03"><a href="/coupon_use.asp">모바일 상품권주문</a></div></li>
 						<li><div class="h-main_order04"><a href="https://bbq.multicon.co.kr" target="_blank">선물하기</a></div></li>
 					</ul>
+					<ul class="h-footer_line_2">
+					</ul>
+					<ul class="h-main_order_2">
+						<li><div class="h-main_order05"><a href="/menu/menuList.asp?anc=128&order_type=R">홈파티 사전예약</a></div></li>
+					</ul>
 					<ul class="h-footer_line">
 					</ul>
 					<!-- // 메뉴 -->

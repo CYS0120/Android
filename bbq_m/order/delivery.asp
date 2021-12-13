@@ -9,7 +9,7 @@
 
 	cancel_idx = GetReqStr("cancel_idx","")
 
-	If order_type = "D" Then
+	If order_type = "D" Or order_type = "R" Then
 		If addr_idx <> "" And addr_data <> "" Then
 			Set aJson = JSON.Parse(addr_data)
 
@@ -116,7 +116,7 @@
 		</form>
 
 		<!-- 검색 -->
-		<% if order_type = "D" then %>
+		<% if order_type = "D" Or order_type = "R" then %>
 			<div class="find_shopSearch h-inbox1000">
 				<form class="form" id="deliverysearch_form" name="deliverysearch_form" action="delivery_search.asp">
 					<input type="hidden" name="lat" id="lat" value="">
@@ -482,6 +482,12 @@
 			case "P":
 				if($("#branch_id").val() == "") {
 					showAlertMsg({msg:"포장가능한 매장이 없습니다."});
+					return false;
+				}
+			break;
+			case "R":
+				if($("#addr_idx").val() == "") {
+					showAlertMsg({msg:"배달지를 선택하세요."});
 					return false;
 				}
 			break;

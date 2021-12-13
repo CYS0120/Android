@@ -1,5 +1,9 @@
 <!--#include virtual="/api/include/utf8.asp"-->
-
+<script type="text/javascript">
+	if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
+		sessionStorage.setItem("ss_order_type", "R");
+	}
+</script>
 <%
 
 	order_type = GetReqStr("order_type","")
@@ -68,6 +72,10 @@
 			address = bJson.branch_address
 			Set bJson = Nothing
 		End If
+	ElseIf order_type = "R" Then
+		branch_name = "미정"
+		branch_tel = "미정"
+		address = "미정"
 	End If
 
 	ShowOrderType = False
@@ -107,7 +115,27 @@
 		<!-- Content -->
 		<article class="content inbox1000_2">
 
+			<!-- 회원주소 -->
+			<style type="text/css">
+				span.order_type {font-size:0.785em; background:#ff0000; color:#fff; border-radius:10px; padding:1px 10px; vertical-align:t; margin:0 10px 0 5px; }
+			</style>
+
+			<div id="address_div" class="member_address" style="display:none"></div>
+
+			<script type="text/javascript">
+				const ad = document.getElementById("address_div");
+				var cont = "";
+				if(sessionStorage.getItem("ss_order_type") == "R"){
+					cont = "<p id='ship_address'></p><p id='branch_name_p'>🎉 홈파티 사전예약 [배달] 🍗</p>";
+				}else{
+					cont = "<p id='ship_address'></p><p id='branch_name_p'><% if vBranchName <> "" then %>< <%=vBranchName%> ><% end if %></p>"
+				}
+				ad.innerHTML = cont;
+				ad.style.display = "block";		
+			</script>
+
 			<!--#include virtual="/includes/address.asp"-->
+			<!-- // 회원주소 -->
 
 			<form id="cart_form" name="cart_form" method="post" action="payment.asp">
 				<input type="hidden" name="order_type" id="order_type" value="<%=order_type%>">
@@ -762,17 +790,18 @@
 			var addr_data = JSON.parse(sessionStorage.getItem("ss_addr_data"));
 			var branch_data = JSON.parse(sessionStorage.getItem("ss_branch_data"));
 		}
-		// 매장선택부터 않했다면 메인으로 ㄱ
+		// 매장선택부터 안했다면 메인으로 ㄱ
 		if (branch_data != "" && typeof(branch_data) != "undefined" && branch_data != "" && branch_data != null) {
 		} else {
-			showAlertMsg({msg:"매장선택이 안되어있습니다. 매장선택부터 해주시기 바랍니다.", ok: function(){
-			    //홈파티 Test 1248 = 홈파티 트레이 , 치본스테이크가 장바구니에 있으면 바로 배달주문으로 넘어감. 20201204
-			    if(sessionStorage.getItem("M_1246_0") || sessionStorage.getItem("M_1247_0") || sessionStorage.getItem("M_1248_0") || sessionStorage.getItem("M_1249_0")){
-			        document.location.href='/order/delivery.asp?order_type=D';
-			    }else{
-				document.location.href='/order/selection.asp';
-			    }
-			}});
+			if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
+				showAlertMsg({msg:"홈파티 사전예약은 배달만 가능합니다. 배달지를 선택해주세요.", ok: function(){
+					document.location.href='/order/delivery.asp?order_type=R';
+				}});
+			}else{
+				showAlertMsg({msg:"매장선택이 안되어있습니다. 매장선택부터 해주시기 바랍니다.", ok: function(){
+					document.location.href='/order/selection.asp';
+				}});
+			}
 			return;
 		}
 

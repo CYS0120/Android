@@ -1,13 +1,3 @@
-<style type="text/css">
-	span.order_type {font-size:0.785em; background:#ff0000; color:#fff; border-radius:10px; padding:1px 10px; vertical-align:t; margin:0 10px 0 5px; }
-</style>
-			<!-- 회원주소 -->
-			<div class="member_address" style="display:none">
-				<p id="ship_address"></p>
-				<p id="branch_name_p"><% if vBranchName <> "" then %>< <%=vBranchName%> ><% end if %></p>
-			</div>
-			<!-- // 회원주소 -->
-
 			<script type="text/javascript">
 				next_page_gubun = "";
 
@@ -125,13 +115,13 @@
 						}
 
 						////홈파티 Test 1248 = 홈파티 트레이 , 치본스테이크가 장바구니에 있으면 매장선택 가능하게끔. 20201204
-						if(sessionStorage.getItem("M_1246_0") || sessionStorage.getItem("M_1247_0") || sessionStorage.getItem("M_1248_0") || sessionStorage.getItem("M_1249_0")){
-						    $('#branch_name_p').html("<span style='color: #ff0000'>< 주문통합 ></span>");
+						if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
+						    $('#branch_name_p').html("<span>🎉 홈파티 사전예약 [배달] 🍗</span>");
 							sessionStorage.setItem("ss_branch_id", "7451401");
 							var var_branch_data = sessionStorage.getItem("ss_branch_data")
 							var jobj = JSON.parse(var_branch_data);
 							jobj.branch_id = "7451401";
-							jobj.branch_name = "주문통합";
+							jobj.branch_name = "홈파티 사전예약";
 							sessionStorage.setItem("ss_branch_data", JSON.stringify(jobj));
 						} else if (branch_data.branch_name == "배달불가") {
 							$('#branch_name_p').html("<span style='color: #ff0000'>< "+ branch_data.branch_name +" ></span>");

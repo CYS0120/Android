@@ -86,6 +86,12 @@
 		Response.End
 	End If
 
+	If order_type = "P" And branch_id = "7451401" Then
+%>
+        <script>alert("홈파티 사전예약은 배달만 가능합니다.");history.back();</script>
+<%
+	End If
+
 	If order_type = "D" Then
 		order_type_title = "배달정보"
 		order_type_name = "배달매장"
@@ -94,6 +100,10 @@
 		order_type_title = "포장정보"
 		order_type_name = "포장매장"
 		address_title = "포장매장 주소"
+	ElseIf order_type = "R" then
+		order_type_title = "예약정보"
+		order_type_name = "배달매장"
+		address_title = "배달주소"
 	End If
 
 	Dim aCmd, aRs
@@ -226,12 +236,13 @@
     end if
 
 	If order_type = "P" Then vDeliveryFee = 0
+	If order_type = "R" Then vDeliveryFee = 3000
 
 	Set aRs = Nothing
 
 	Set bJson = JSON.Parse(branch_data)
 
-	If order_type = "D" Then
+	If order_type = "D" Or order_type = "R" Then
 		Set aJson = JSON.Parse(addr_data)
 
 		vAddrName = aJson.addr_name
@@ -2078,7 +2089,7 @@ function calcTotalAmount() {
 				<div class="area border">
 					<dl>
 						<dt><%=order_type_name%></dt>
-						<dd id="deliver_event"><strong class="red">주문통합</strong>(1588-9282)</dd>
+						<dd id="deliver_event"><strong class="red">홈파티 사전예약 매장</strong>(1588-9282)</dd>
 						<dd id="deliver_addr"><strong class="red"><%=vBranchName%></strong>(<%=vBranchTel%>)</dd>
 					</dl>
 					<dl>
@@ -2126,7 +2137,7 @@ function calcTotalAmount() {
 										.CommandType = adCmdStoredProc
 										.CommandText = "UP_BT_EVENT_ORDER"
 			
-										.Parameters.Append .CreateParameter("@TP", adVarChar, adParamInput, 20, "HOME_PARTY_1")
+										.Parameters.Append .CreateParameter("@TP", adVarChar, adParamInput, 20, "HOME_PARTY_2")
 										.Parameters.Append .CreateParameter("@DT", adVarChar, adParamInput, 8, today)
 			
 										Set pRs = .Execute
@@ -2134,28 +2145,28 @@ function calcTotalAmount() {
 									Set pCmd = Nothing
 			
 									If Not (pRs.BOF Or pRs.EOF) Then
-										e_start_date_a = split(pRs("DTS_S_DELIVERY"), " ")
-										e_start_date = e_start_date_a(0)
-										e_end_date_a = split(pRs("DTS_E_DELIVERY"), " ")
-										e_end_date = e_end_date_a(0)
-
-										e_f_date = e_start_date
+										delivery_date = pRs("DTS_DELIVERY")
+										Do
+											%>
+											<option value="<%=e_f_date%>" <%=e_selected%>><%=e_f_date%></option>'
+											<%
+										Loop
 									End If
 
-									if e_start_date <> "" then
-									ei = 0
-									Do While CDate(e_f_date) < CDate(e_end_date)
-									e_selected = ""
-									if ei = 0 then
-									e_selected = "selected"
-									ei = 1
-									end if
-									%>
-									<option value="<%=e_f_date%>" <%=e_selected%>><%=e_f_date%></option>
-									<%
-									e_f_date = DateAdd("d", 1, e_f_date)
-									Loop
-									end if 
+									' if e_start_date <> "" then
+									' 	ei = 0
+									' 	Do While CDate(e_f_date) < CDate(e_end_date)
+									' 		e_selected = ""
+									' 		if ei = 0 then
+									' 		e_selected = "selected"
+									' 		ei = 1
+									' 		end if
+									' 		%>
+									' 		<option value="<%=e_f_date%>" <%=e_selected%>><%=e_f_date%></option>
+									' 		<%
+									' 		e_f_date = DateAdd("d", 1, e_f_date)
+									' 	Loop
+									' end if 
 									%>
 								</select>
 							</dd>
@@ -2163,16 +2174,6 @@ function calcTotalAmount() {
                             <dd>
                                 <select id="nowTime" name="nowTime">
                                     <option value="">선택</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="11:30">11:30</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="12:30">12:30</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="13:30">13:30</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="14:30">14:30</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="15:30">15:30</option>
                                     <option value="16:00">16:00</option>
                                     <option value="16:30">16:30</option>
                                     <option value="17:00">17:00</option>
@@ -2187,7 +2188,7 @@ function calcTotalAmount() {
                                     <option value="21:30">21:30</option>
                                     <option value="22:00">22:00</option>
                                     <option value="22:30">22:30</option>
-                                    <option value="23:00">23:00</option>-->
+                                    <option value="23:00">23:00</option>
                                 </select>
                             </dd>
                         </dl>
@@ -2199,8 +2200,6 @@ function calcTotalAmount() {
 					<%
 						If order_type = "P" Then
 					%>
-
-
 
 						<dl>
 							<dd>
@@ -2237,6 +2236,45 @@ function calcTotalAmount() {
 							</dd>
 						</dl>
 
+					<%
+						ElseIf order_type = "R" Then
+					%>
+
+						<dl>
+							<dd>
+								<div id="pickup-wrap_div" class="pickup-wrap pickup-wrap2 mar-t30 " style="display:none">
+									<span class="txt">사전예약일</span>
+									<div class="orderType-radio orderType-radio2">
+										<label class="ui-radio2">
+											<input type="radio" name="after" value="30" id="after30" onclick="after_control()" <% if spent_time = "30" then %> checked="checked" <% end if %>>
+											<span></span> 30분 후
+										</label>
+										<label class="ui-radio2">
+											<input type="radio" name="after" value="45" id="after40" onclick="after_control()"<% if spent_time = "45" then %> checked="checked" <% end if %>>
+											<span></span> 45분 후
+										</label>
+										<label class="ui-radio2">
+											<input type="radio" name="after" value="60" id="after50" onclick="after_control()"<% if spent_time = "60" then %> checked="checked" <% end if %>>
+											<span></span> 60분 후
+										</label>
+										<label class="ui-radio2">
+											<input type="radio" name="after" value="90" id="after90" onclick="after_control()"<% if spent_time = "90" then %> checked="checked" <% end if %>>
+											<span></span> 90분 후
+										</label>
+									</div>
+									<div class="txt-basic inner mar-t20">
+										최소 조리시간은 15분 입니다.
+									</div>
+								</div>
+
+								<script type="text/javascript">
+									if (sessionStorage.getItem("ss_order_type") == "P") {
+										$('#pickup-wrap_div').show(0)
+									}
+								</script>
+							</dd>
+						</dl>
+						
 					<%
 						End If
 					%>
@@ -2560,7 +2598,7 @@ function calcTotalAmount() {
 							<dt class="td">총 상품금액</dt>
 							<dd class="td" id="calc_tot_amt"><%=FormatNumber(totalAmount,0)%>원</dd>
 						</dl>
-						<%If order_type = "D" Then%>
+						<%If order_type = "D" Or order_type = "R" Then%>
 						<dl class="tr">
 							<dt class="td">배달비</dt>
 							<dd class="td" id="calc_deli_fee"><%=DSP_DeliveryFee%>원</dd>
@@ -3216,7 +3254,7 @@ function calcTotalAmount() {
         //현금영수증 선택 영역 끝
 
         //홈파티 Test 1248 = 홈파티 트레이 , 치본스테이크가 장바구니에 있으면 배달매장, 예약일자, 결제수단 등 표출 20201204
-        if(sessionStorage.getItem("M_1246_0") || sessionStorage.getItem("M_1247_0") || sessionStorage.getItem("M_1248_0") || sessionStorage.getItem("M_1249_0")){
+        if(sessionStorage.sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
             $("#deliver_event").prop("disabled", false).show();
 			$("#event_book").prop("disabled", false).show();
 			$("#deliver_addr").prop("disabled", true).hide();

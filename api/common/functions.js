@@ -539,8 +539,13 @@ function saveCartSide(key, skey, data) {
 
 function removeCartMenu(key) {
     if(hasCartMenu(key)) {
+        alert(key);
         sessionStorage.removeItem(key);
-
+        if(key == "M_1695_0_" || key == "M_1696_0_"){
+            sessionStorage.removeItem("ss_order_type");
+            sessionStorage.removeItem("ss_branch_id");
+            sessionStorage.removeItem("ss_branch_data");
+        }
         getView();
     }
 }
