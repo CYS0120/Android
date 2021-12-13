@@ -236,7 +236,6 @@
     end if
 
 	If order_type = "P" Then vDeliveryFee = 0
-	If order_type = "R" Then vDeliveryFee = 3000
 
 	Set aRs = Nothing
 
@@ -2089,7 +2088,6 @@ function calcTotalAmount() {
 				<div class="area border">
 					<dl>
 						<dt><%=order_type_name%></dt>
-						<dd id="deliver_event"><strong class="red">홈파티 사전예약 매장</strong>(1588-9282)</dd>
 						<dd id="deliver_addr"><strong class="red"><%=vBranchName%></strong>(<%=vBranchTel%>)</dd>
 					</dl>
 					<dl>
@@ -2123,53 +2121,24 @@ function calcTotalAmount() {
                             <dt>일자</dt>
                             <dd>
 								<select id="nowDate" name="nowDate">
-									<%
-
-									today = Year(NOW())&Month(NOW())&DAY(NOW())
-									e_start_date = ""
-									e_end_date = ""
-									e_f_date = ""
-
-									Set pCmd = Server.CreateObject("ADODB.Command")
-									With pCmd
-										.ActiveConnection = dbconn
-										.NamedParameters = True
-										.CommandType = adCmdStoredProc
-										.CommandText = "UP_BT_EVENT_ORDER"
-			
-										.Parameters.Append .CreateParameter("@TP", adVarChar, adParamInput, 20, "HOME_PARTY_2")
-										.Parameters.Append .CreateParameter("@DT", adVarChar, adParamInput, 8, today)
-			
-										Set pRs = .Execute
-									End With
-									Set pCmd = Nothing
-			
-									If Not (pRs.BOF Or pRs.EOF) Then
-										delivery_date = pRs("DTS_DELIVERY")
-										Do
-											%>
-											<option value="<%=e_f_date%>" <%=e_selected%>><%=e_f_date%></option>'
-											<%
-										Loop
-									End If
-
-									' if e_start_date <> "" then
-									' 	ei = 0
-									' 	Do While CDate(e_f_date) < CDate(e_end_date)
-									' 		e_selected = ""
-									' 		if ei = 0 then
-									' 		e_selected = "selected"
-									' 		ei = 1
-									' 		end if
-									' 		%>
-									' 		<option value="<%=e_f_date%>" <%=e_selected%>><%=e_f_date%></option>
-									' 		<%
-									' 		e_f_date = DateAdd("d", 1, e_f_date)
-									' 	Loop
-									' end if 
-									%>
+									<option value="">선택</option>
+								<%
+								If Date() >= "2021-12-13" And Date() <= "2021-12-19" Then
+								%>
+									<option value="2021-12-24">2021-12-24</option>
+									<option value="2021-12-25">2021-12-25</option>
+								<%
+								ElseIf Date() >= "2021-12-20" And Date() <= "2021-12-26" Then
+								%>
+									<option value="2021-12-31">2021-12-31</option>
+									<option value="2022-01-01">2022-01-01</option>
+								<%
+								End If
+								%>
 								</select>
 							</dd>
+						</dl>
+						<dl>
                             <dt>시간</dt>
                             <dd>
                                 <select id="nowTime" name="nowTime">
@@ -2574,9 +2543,11 @@ function calcTotalAmount() {
 						<dt>현장결제</dt>
 						<dd>
 							<ul>
+							<% If order_type <> "R" Then %>
 								<li><button type="button" id="payment_later" onclick="javascript:setPayMethod('Later');" class="payment_choiceSel">신용카드</button></li>
 								<li><button type="button" id="payment_cash" onclick="javascript:setPayMethod('Cash');" class="payment_choiceSel">현금</button></li>
-                                <li id="payment_text">※예약주문은 선결제만 가능합니다.</li>
+							<% End If %>
+                                <li id="payment_text" style="text-align:center;">※ 예약주문은 선결제만<br>가능합니다.</li>
 								<!-- <li class="cash_text">※현금결제시 100원미만 단위는 거스름이 없습니다<br>Ex)14,425원=14,500원결제</li> -->
 							</ul>
 						</dd>

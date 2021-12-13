@@ -212,6 +212,12 @@
 		order_type_name = "포장매장"
 		address_title = "포장매장주소"
 		address = ""
+	ElseIf order_type = "R" Then
+		order_type_icon_title = "<img src='/images/main/icon_m_out.png'> 예약주문"
+		order_type_title = "예약정보"
+		order_type_name = "배달매장"
+		address_title = "배달주소"
+		address = ""
 	End If
 
 	Select Case pay_type
