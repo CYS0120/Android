@@ -73,8 +73,12 @@
     ' 20201211 예약일자, 예약시간 추가
 	reserv_date = GetReqStr("nowDate","") ' 예약일자
 	reserv_time = GetReqStr("nowTime","") ' 예약시간
-	If  reserv_date <> "" Or reserv_time <> "" Then
-	order_status = "W"
+	' If  reserv_date <> "" Or reserv_time <> "" Then
+	' order_status = "W"
+	' End If
+	If reserv_date = "" Or reserv_time = "" Then
+		Response.Write "{""result"":10,""result_msg"":""예약 일자 및 시간을 선택해주세요.""}"
+        Response.End
 	End If
 
 	If order_type = "R" Then
