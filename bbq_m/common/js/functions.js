@@ -331,6 +331,8 @@ function drawCartPage(page){
     var menu_amt = 0;
     var side_amt = 0;
 	var ec_amt = 0;
+	var partyYn = false;
+	var partyAndEcYn = false;
 
     if(page == "C") {
         $("#cart_list .order_menu").remove();
@@ -352,8 +354,11 @@ function drawCartPage(page){
     } else {
 		//홈파티 메뉴 있을 때, 모바일상품권 지우기
 		if(getCartPartyCount() != 0){
-			showAlertMsg({msg:"홈파티 메뉴에는 모바일상품권을 사용할 수 없습니다."});
-			resetCartMenuEcAmt();
+			partyYn = true;
+		
+			if(getCartEcAmtCount() != 0){
+				partyAndEcYn = true;
+			}
 		}
 		
         for(var i = 0; i < len; i++) {
@@ -363,13 +368,18 @@ function drawCartPage(page){
 			if (sessionStorageException(key) == false) continue;
 
             var it = JSON.parse(sessionStorage.getItem(key));
-			if (it.pin != '')
+			if (it.pin != ''){
+				if(partyYn){
+					partyAndEcYn = true;
+					continue;
+				}
 				if (it.nm.indexOf('[에버랜드 프로모션]') != -1) {
 					it.price = it.price;
 				} else{
 					ec_amt = ec_amt + Number(it.price);
 					it.price = 0;
 				}
+			}
             var it_amt = (Number(it.price) * Number(it.qty)); 
             menu_amt += (Number(it.price) * Number(it.qty));
 
@@ -444,6 +454,7 @@ function drawCartPage(page){
             }
         }
 		
+		
 //        $("#item_amount").text(numberWithCommas(menu_amt+side_amt)+"원");
         $("#total_amount").html(numberWithCommas(menu_amt+side_amt+delivery_amt-Number(getCartEcAmt()))+"<span>원</span>");
 		$("#total_amount_h").val(menu_amt+side_amt+delivery_amt-Number(getCartEcAmt()));
@@ -468,8 +479,11 @@ function drawCartPage(page){
 			$("#divSaveMenu").prepend(ht_ec);
 		}
 	//}
+	if(partyAndEcYn){
+		showAlertMsg({msg:"홈파티 메뉴에는 모바일상품권을 사용할 수 없습니다."});
+		resetCartMenuEcAmt();
+	}
 }
-
 
 function getCartList(it, mkey, key, it_amt, page, side_amt_new) {
 	ht = "<div class=\"order_menu\">\n";
