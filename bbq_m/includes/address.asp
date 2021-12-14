@@ -1,3 +1,13 @@
+<style type="text/css">
+	span.order_type {font-size:0.785em; background:#ff0000; color:#fff; border-radius:10px; padding:1px 10px; vertical-align:t; margin:0 10px 0 5px; }
+</style>
+			<!-- 회원주소 -->
+			<div class="member_address" style="display:none">
+				<p id="ship_address"></p>
+				<p id="branch_name_p"><% if vBranchName <> "" then %>< <%=vBranchName%> ><% end if %></p>
+			</div>
+			<!-- // 회원주소 -->
+
 			<script type="text/javascript">
 				next_page_gubun = "";
 
@@ -121,7 +131,7 @@
 							var var_branch_data = sessionStorage.getItem("ss_branch_data")
 							var jobj = JSON.parse(var_branch_data);
 							jobj.branch_id = "7451401";
-							jobj.branch_name = "홈파티 사전예약";
+							jobj.branch_name = "홈파티 사전예약 매장";
 							sessionStorage.setItem("ss_branch_data", JSON.stringify(jobj));
 						} else if (branch_data.branch_name == "배달불가") {
 							$('#branch_name_p').html("<span style='color: #ff0000'>< "+ branch_data.branch_name +" ></span>");

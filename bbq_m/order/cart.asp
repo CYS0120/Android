@@ -116,24 +116,6 @@
 		<article class="content inbox1000_2">
 
 			<!-- 회원주소 -->
-			<style type="text/css">
-				span.order_type {font-size:0.785em; background:#ff0000; color:#fff; border-radius:10px; padding:1px 10px; vertical-align:t; margin:0 10px 0 5px; }
-			</style>
-
-			<div id="address_div" class="member_address" style="display:none"></div>
-
-			<script type="text/javascript">
-				const ad = document.getElementById("address_div");
-				var cont = "";
-				if(sessionStorage.getItem("ss_order_type") == "R"){
-					cont = "<p id='ship_address'></p><p id='branch_name_p'>🎉 홈파티 사전예약 [배달] 🍗</p>";
-				}else{
-					cont = "<p id='ship_address'></p><p id='branch_name_p'><% if vBranchName <> "" then %>< <%=vBranchName%> ><% end if %></p>"
-				}
-				ad.innerHTML = cont;
-				ad.style.display = "block";		
-			</script>
-
 			<!--#include virtual="/includes/address.asp"-->
 			<!-- // 회원주소 -->
 

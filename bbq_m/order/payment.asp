@@ -2124,13 +2124,11 @@ function calcTotalAmount() {
 								<select id="nowDate" name="nowDate">
 									<option value="">선택</option>
 								<%
-								If Date() >= "2021-12-13" And Date() <= "2021-12-19" Then
+								If Date() >= "2021-12-16" And Date() <= "2021-12-22
+								" Then
 								%>
-									<option value="2021-12-24">2021-12-24</option>
-									<option value="2021-12-25">2021-12-25</option>
-								<%
-								ElseIf Date() >= "2021-12-20" And Date() <= "2021-12-26" Then
-								%>
+									<option value="2021-12-29">2021-12-29</option>
+									<option value="2021-12-30">2021-12-30</option>
 									<option value="2021-12-31">2021-12-31</option>
 									<option value="2022-01-01">2022-01-01</option>
 								<%
