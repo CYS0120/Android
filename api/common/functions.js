@@ -485,6 +485,16 @@ function clearCart() {
         for(var i = 0; i < key_arr.length; i++) {
 			sessionStorage.removeItem(key_arr[i]);
         }
+
+        if(key == "M_1695_0_" || key == "M_1696_0_"){
+            sessionStorage.removeItem("ss_order_type");
+            sessionStorage.removeItem("ss_branch_id");
+            sessionStorage.removeItem("ss_branch_data");
+            sessionStorage.removeItem("ss_addr_idx");
+            sessionStorage.removeItem("ss_addr_data");
+            sessionStorage.removeItem("ss_spent_time");
+        }
+
     }
 }
 
@@ -539,12 +549,16 @@ function saveCartSide(key, skey, data) {
 
 function removeCartMenu(key) {
     if(hasCartMenu(key)) {
-        alert(key);
         sessionStorage.removeItem(key);
         if(key == "M_1695_0_" || key == "M_1696_0_"){
             sessionStorage.removeItem("ss_order_type");
             sessionStorage.removeItem("ss_branch_id");
             sessionStorage.removeItem("ss_branch_data");
+            sessionStorage.removeItem("ss_addr_idx");
+            sessionStorage.removeItem("ss_addr_data");
+            sessionStorage.removeItem("ss_spent_time");
+
+            location.reload(true);
         }
         getView();
     }
