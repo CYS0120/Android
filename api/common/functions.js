@@ -564,6 +564,26 @@ function removeCartMenu(key) {
     }
 }
 
+function getCartPartyCount(){
+    if(supportStorage()) {
+        var len = sessionStorage.length;
+
+        var count = 0;
+
+        for(var i=0; i < len; i++) {
+            var key = sessionStorage.key(i);
+
+			if (key.substring(0, 9) == "M_1695_0_" || key.substring(0, 9) == "M_1696_0_"){
+				count++;
+			}
+        }
+
+        return count;
+    } else {
+        return 0;
+    }
+}
+
 function getCartEcAmtCount() {
     if(supportStorage()) {
         var len = sessionStorage.length;

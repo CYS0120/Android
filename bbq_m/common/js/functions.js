@@ -350,6 +350,12 @@ function drawCartPage(page){
         $("#cart_list").html(ht);
         $("#order_type_info").hide();
     } else {
+		//홈파티 메뉴 있을 때, 모바일상품권 지우기
+		if(getCartPartyCount() != 0){
+			showAlertMsg({msg:"홈파티 메뉴에는 모바일상품권을 사용할 수 없습니다."});
+			resetCartMenuEcAmt();
+		}
+		
         for(var i = 0; i < len; i++) {
 			var side_amt_new = 0;
             var key = sessionStorage.key(i);
@@ -451,7 +457,7 @@ function drawCartPage(page){
 		ht_ec += "<div id=\"div_coupon_amt\"><ul class=\"cart_total\">\n";
 		ht_ec += "<li>모바일상품권 금액</li>\n";
 		ht_ec += "<li id=\"ec_total_amount\">"+numberWithCommas(ec_amt)+"<span>원</span>\n";
-		ht_ec += "&nbsp;&nbsp;<button type=\"button\" class=\"btn btn_small4 btn-red\" onclick=\"javascript:drawCouponFromCart('C');lpOpen('.lp_cartCoupon');\">추가</button></li>\n";
+		ht_ec += "&nbsp;&nbsp;<button type=\"button\" class=\"btn btn_small4 btn-red\" onclick=\"javascript:if(drawCouponFromCart('C')){lpOpen('.lp_cartCoupon');}\">추가</button></li>\n";
 		ht_ec += "</ul><font align='left' color='red'>* 모바일상품권 금액 이상 메뉴 변경 가능</font></div>\n";
 		ht_ec += "<input type=\"hidden\" id=\"ec_total_amount_h\" value=\""+ec_amt+"\" />\n";
 
@@ -825,51 +831,60 @@ function drawCouponFromCart(page){
 	//마이페이지 등록된 모바일상품권 제외하고 Cart에 있는 coupon list 가져오기
     var len = sessionStorage.length;
     var couponList = "";
-
+    var retrun_val = false;
     if(page == "C") {
         $(".divCouponItem .coupon").remove(); //Cart에서 가져온 item 지우기 
     //} else if(page == "P") {
     //    $("#payment_list .order_menu").remove();
     }
     if(supportStorage()) {
-		for(var i = 0; i < len; i++) {
-			var key = sessionStorage.key(i);
-			
-			if(key == null) continue;
-			if(key.substring(0, 3) == "ec_" || key.substring(0, 2) == "M_" ) {
-				var str = sessionStorage.getItem(key);
+		if(getCartPartyCount()==0){
+			for(var i = 0; i < len; i++) {
+				var key = sessionStorage.key(i);
 				
-				if(str === null || str == "" || str === undefined || str == "undefined") continue;
+				if(key == null) continue;
 				
-				var it = JSON.parse(str);
-				if (it.pin != ''){
-					if($("input[name=chkEcoupon]").val() === undefined){
-						if(couponList != "") couponList +=  "||";
-						couponList +=  it.pin;
-					}else{
-						var blnDisplayYn = false;
-						$("input[name=chkEcoupon]").each(function(){
-							if( $(this).val() == it.pin) {
-								//마이페이지 등록되어 이미 화면에 뿌려진 쿠폰이면 skip 
-								blnDisplayYn = true;
-								return false;
-							
-							}
-						});
-						if (!blnDisplayYn) {
+				if(key.substring(0, 3) == "ec_" || key.substring(0, 2) == "M_" ) {
+					var str = sessionStorage.getItem(key);
+					
+					if(str === null || str == "" || str === undefined || str == "undefined") continue;
+					
+					var it = JSON.parse(str);
+					if (it.pin != ''){
+						if($("input[name=chkEcoupon]").val() === undefined){
 							if(couponList != "") couponList +=  "||";
 							couponList +=  it.pin;
-							console.log("key:" + key + ", couponList:" + couponList);
+						}else{
+							var blnDisplayYn = false;
+							$("input[name=chkEcoupon]").each(function(){
+								if( $(this).val() == it.pin) {
+									//마이페이지 등록되어 이미 화면에 뿌려진 쿠폰이면 skip 
+									blnDisplayYn = true;
+									return false; //break loop
+								
+								}
+							});
+							if (!blnDisplayYn) {
+								if(couponList != "") couponList +=  "||";
+								couponList +=  it.pin;
+								console.log("key:" + key + ", couponList:" + couponList);
+							}
 						}
 					}
 				}
 			}
+			
+			//coupon html 만들기 
+			if(couponList != "")
+				getECouponInfo('N', couponList, 'N', 'Y', '');
+			
+			retrun_val = true;
+		}else{
+			showAlertMsg({msg:"홈파티 메뉴에는 모바일상품권을 사용할 수 없습니다."});
+			retrun_val = false;
 		}
-		
-		//coupon html 만들기 
-		if(couponList != "")
-			getECouponInfo('N', couponList, 'N', 'Y', '');
 	}
+	return retrun_val;
 }
 
 
