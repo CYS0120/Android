@@ -2088,6 +2088,7 @@ function calcTotalAmount() {
 				<div class="area border">
 					<dl>
 						<dt><%=order_type_name%></dt>
+						<dd id="deliver_event"><strong class="red">홈파티 사전예약 매장</strong>(1588-9282)</dd>
 						<dd id="deliver_addr"><strong class="red"><%=vBranchName%></strong>(<%=vBranchTel%>)</dd>
 					</dl>
 					<dl>
@@ -3225,7 +3226,7 @@ function calcTotalAmount() {
         //현금영수증 선택 영역 끝
 
         //홈파티 Test 1248 = 홈파티 트레이 , 치본스테이크가 장바구니에 있으면 배달매장, 예약일자, 결제수단 등 표출 20201204
-        if(sessionStorage.sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
+        if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
             $("#deliver_event").prop("disabled", false).show();
 			$("#event_book").prop("disabled", false).show();
 			$("#deliver_addr").prop("disabled", true).hide();

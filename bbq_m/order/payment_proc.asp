@@ -82,7 +82,7 @@
 	End If
 
 	If order_type = "R" Then
-		order_status = "M"
+		order_status = "W"
 	End If
 
 	Dim cart_ec_list : cart_ec_list = GetReqStr("cart_ec_list","")

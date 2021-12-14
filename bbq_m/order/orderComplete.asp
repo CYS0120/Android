@@ -119,6 +119,10 @@
 		End If
 	End If
 	Set aRs = Nothing
+
+	If branch_id = "7451401" Then
+		branch_name = "홈파티 사전예약 매장"
+	End If
 %>
 
 
