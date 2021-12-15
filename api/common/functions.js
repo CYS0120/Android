@@ -484,15 +484,15 @@ function clearCart() {
 		// 이상하게 삭제가 몇개 누락됨;
         for(var i = 0; i < key_arr.length; i++) {
 			sessionStorage.removeItem(key_arr[i]);
-        }
 
-        if(key == "M_1695_0_" || key == "M_1696_0_"){
-            sessionStorage.removeItem("ss_order_type");
-            sessionStorage.removeItem("ss_branch_id");
-            sessionStorage.removeItem("ss_branch_data");
-            sessionStorage.removeItem("ss_addr_idx");
-            sessionStorage.removeItem("ss_addr_data");
-            sessionStorage.removeItem("ss_spent_time");
+            if(key_arr[i] == "M_1695_0_" || key_arr[i] == "M_1696_0_"){
+                sessionStorage.removeItem("ss_order_type");
+                sessionStorage.removeItem("ss_branch_id");
+                sessionStorage.removeItem("ss_branch_data");
+                sessionStorage.removeItem("ss_addr_idx");
+                sessionStorage.removeItem("ss_addr_data");
+                sessionStorage.removeItem("ss_spent_time");
+            }
         }
 
     }
@@ -551,14 +551,17 @@ function removeCartMenu(key) {
     if(hasCartMenu(key)) {
         sessionStorage.removeItem(key);
         if(key == "M_1695_0_" || key == "M_1696_0_"){
-            sessionStorage.removeItem("ss_order_type");
-            sessionStorage.removeItem("ss_branch_id");
-            sessionStorage.removeItem("ss_branch_data");
-            sessionStorage.removeItem("ss_addr_idx");
-            sessionStorage.removeItem("ss_addr_data");
-            sessionStorage.removeItem("ss_spent_time");
+            if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
+            }else{
+                sessionStorage.removeItem("ss_order_type");
+                sessionStorage.removeItem("ss_branch_id");
+                sessionStorage.removeItem("ss_branch_data");
+                sessionStorage.removeItem("ss_addr_idx");
+                sessionStorage.removeItem("ss_addr_data");
+                sessionStorage.removeItem("ss_spent_time");
 
-            location.reload(true);
+                location.reload(true);
+            }
         }
         getView();
     }
@@ -946,15 +949,19 @@ function checkDeliveryShop_new(addrdata, page_type) {
         dataType: "json",
         success: function(res) {
 			console.log(res);
+            console.log(sessionStorage.getItem("ss_order_type"));
 
-			if (res.STORE_AREA == "0") {
-				alert("상권 매장이 현재 영업을 하지 않아 근처 매장으로 주문 이관합니다.");
-			}
+            if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
+            }else{
+                if (res.STORE_AREA == "0") {
+                    alert("상권 매장이 현재 영업을 하지 않아 근처 매장으로 주문 이관합니다.");
+                }
 
-			if (res.result != "0000") {
-				alert(res.message);
-				return false;
-			}
+                if (res.result != "0000") {
+                    alert(res.message);
+                    return false;
+                }
+            }
 
 			if (page_type == "TOP") {
 				var_branch_data = JSON.stringify(res);

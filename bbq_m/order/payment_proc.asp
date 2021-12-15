@@ -76,7 +76,7 @@
 	' If  reserv_date <> "" Or reserv_time <> "" Then
 	' order_status = "W"
 	' End If
-	If reserv_date = "" Or reserv_time = "" Then
+	If order_type = "R" And (reserv_date = "" Or reserv_time = "") Then
 		Response.Write "{""result"":10,""result_msg"":""예약 일자 및 시간을 선택해주세요.""}"
         Response.End
 	End If

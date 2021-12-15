@@ -1209,3 +1209,15 @@
 </div>
 </body>
 </html>
+
+<script>
+	window.onload = function() {
+		sessionStorage.removeItem("ss_order_type");
+		sessionStorage.removeItem("ss_branch_id");
+		sessionStorage.removeItem("ss_branch_data");
+		sessionStorage.removeItem("ss_addr_idx");
+		sessionStorage.removeItem("ss_addr_data");
+		sessionStorage.removeItem("ss_spent_time");	
+		sessionStorage.removeItem("ss_pin_save");	
+	}
+</script>
