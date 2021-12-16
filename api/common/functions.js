@@ -949,7 +949,6 @@ function checkDeliveryShop_new(addrdata, page_type) {
         dataType: "json",
         success: function(res) {
 			console.log(res);
-            console.log(sessionStorage.getItem("ss_order_type"));
 
             if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
             }else{
