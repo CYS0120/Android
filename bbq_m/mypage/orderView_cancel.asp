@@ -1,4 +1,4 @@
-﻿<!-- #include virtual="/inc/config.asp" -->
+﻿<!-- #include virtual="/api/inc/config.asp" -->
 <!--#include virtual="/api/include/db_open.asp"-->
 <%
 	CUR_PAGE_CODE = "B"
