@@ -139,7 +139,11 @@ Set aCmd = Nothing
 								<td><%=aRs("order_type_name")%></td>
 								<td><%=aRs("branch_name")%><br/><%=aRs("branch_tel")%></td>
 								<%If aRs("order_step") = "" Then%>
-									<td></td>
+									<td>
+									<%if aRs("order_type") = "R" Then%>
+									<%=aRs("order_status_name")%>
+									<%end if%>
+									</td>
 								<%ElseIf aRs("order_step") = "05" Then %>
 									<td><%=aRs("order_status_name")%></td>
 								<%ElseIf aRs("order_step") = "01" Or aRs("order_step") = "02" Then %>

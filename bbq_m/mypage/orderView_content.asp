@@ -2,9 +2,9 @@
 			<ul class="reorder_view_top clearfix">
 				<li>
 					<span class="reorder_view_type">
-						<%	If vOrderType = "D" Then %>
+						<%	If vOrderType = "R" or vOrderType = "D" Then %>
 							<img src="/images/main/icon_m_order.png"> 
-						<%	elseIf vOrderType = "R" or vOrderType = "P" Then %>
+						<%	elseIf vOrderType = "P" Then %>
 							<img src="/images/main/icon_m_out.png" alt="">
 						<%	elseIf vOrderType = "X" Then %>
 							<img src="/images/mypage/ico_order_shop.png" alt="">

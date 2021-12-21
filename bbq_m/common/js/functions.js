@@ -480,8 +480,11 @@ function drawCartPage(page){
 		}
 	//}
 	if(partyAndEcYn){
-		showAlertMsg({msg:"홈파티 메뉴에는 모바일상품권을 사용할 수 없습니다."});
 		resetCartMenuEcAmt();
+		alert("홈파티 메뉴에는 모바일상품권을 사용할 수 없습니다.");
+		if(page == "C") {
+			location.href = "/order/cart.asp";
+		}
 	}
 }
 
@@ -1479,6 +1482,8 @@ function setDeliveryShopInfo(data) {
 							ht += "		<li class='reorder_type'><img src='/images/main/icon_m_order.png'> "+ v.order_type_name +"</li>";
 						} else if (v.order_type == "P") {
 							ht += "		<li class='reorder_type'><img src='/images/main/icon_m_out.png'> "+ v.order_type_name +"</li>";
+						} else if (v.order_type == "R") {
+							ht += "		<li class='reorder_type'><img src='/images/main/icon_m_order.png'> "+ v.delivery_time +"</li>";
 						} else {
 							ht += "		<li class='reorder_type'><img src='/images/main/icon_m_order.png'> "+ v.order_type_name +"</li>";
 						}
@@ -1493,8 +1498,12 @@ function setDeliveryShopInfo(data) {
 							if (v.order_status == "P" || v.order_status == "N" || v.order_status == "M") {
 								ht += "			<p class='reorder_view_time'>"+ v.delivery_time +"분 뒤 도착예정</p>";
 							}
+						} else if (v.DELIVERYTIME) {
+							if (v.order_type == "R") {
+								ht += "			<p class='reorder_view_time'>"+ v.DELIVERYTIME +" 예약</p>";
+							}
 						}
-
+						
 						ht += "		</div>";
 						ht += "	</ul>";
 						ht += "	<div class='btn-wrap two-up'>";

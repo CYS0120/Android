@@ -70,6 +70,7 @@
 			orderList = orderList & """branch_name"":""" & aRs("branch_name") & ""","
 			orderList = orderList & """order_date"":""" & aRs("order_date") & ""","
 			orderList = orderList & """order_date_time"":""" & aRs("order_date_time") & ""","
+            orderList = orderList & """DELIVERYTIME"":""" & aRs("DELIVERYTIME") & ""","
 			orderList = orderList & """menu_name"":""" & aRs("menu_name") & ""","
 			orderList = orderList & """menu_count"":" & aRs("menu_count") & ","
 			orderList = orderList & """order_amt"":" & aRs("order_amt")+plus_price & ","

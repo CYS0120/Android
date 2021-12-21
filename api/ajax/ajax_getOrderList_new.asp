@@ -52,7 +52,7 @@
             Do Until aRs.EOF
                 If orderList <> "[" Then orderList = orderList & ","
 
-				' Á¦ÁÖ/»ê°£ =========================================================================================
+				' ì œì£¼/ì‚°ê°„ =========================================================================================
 				plus_price = 0
 				Set pCmd = Server.CreateObject("ADODB.Command")
 				With pCmd
@@ -72,7 +72,7 @@
 					plus_price = (pRs("menu_price")*pRs("menu_qty"))
 				End If
 
-                ' »óÇ°±Ç Àû¿ë À¯¹« Ã¼Å© ÈÄ °¡°İ ÁöÁ¤
+                ' ìƒí’ˆê¶Œ ì ìš© ìœ ë¬´ ì²´í¬ í›„ ê°€ê²© ì§€ì •
                 giftcard_amt = 0
                 giftcardAmt = " SELECT giftcard_amt as amt FROM bt_giftcard WHERE order_num = '" & aRs("order_num") &"'"
                 Set giftAmount = dbconn.Execute(giftcardAmt)
@@ -82,7 +82,7 @@
                     'Response.Write "giftAmount ::::: " & giftAmount("amt")
                     'Response.Write "giftcard_amt ::::: " & giftcard_amt
                 end If
-                ' »óÇ°±Ç Àû¿ë À¯¹« Ã¼Å© ÈÄ °¡°İ ÁöÁ¤
+                ' ìƒí’ˆê¶Œ ì ìš© ìœ ë¬´ ì²´í¬ í›„ ê°€ê²© ì§€ì •
 
 				' =========================================================================================
 
@@ -95,6 +95,7 @@
                 orderList = orderList & """branch_name"":""" & aRs("branch_name") & ""","
                 orderList = orderList & """order_date"":""" & aRs("order_date") & ""","
                 orderList = orderList & """order_date_time"":""" & aRs("order_date_time") & ""","
+                orderList = orderList & """DELIVERYTIME"":""" & aRs("DELIVERYTIME") & ""","
                 orderList = orderList & """menu_name"":""" & aRs("menu_name") & ""","
                 orderList = orderList & """menu_count"":" & aRs("menu_count") & ","
                 orderList = orderList & """order_amt"":" & aRs("order_amt")+plus_price-giftcard_amt & ","
