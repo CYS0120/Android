@@ -21,7 +21,7 @@
 <script src="/api/common/JsBarcode.all.min.js"></script>
 
 <script type="text/javascript">
-    var isLoggedIn = <%If Session("userIdNo") <> "" Then Response.Write "true" Else Response.Write "false" End If%>;
+    var isLoggedIn = <%If Session("userIdx") <> "" and Session("userIdNo") <> "" Then Response.Write "true" Else Response.Write "false" End If%>;
     var returnUrl = "<%=GetReturnUrl%>";
 </script>
 

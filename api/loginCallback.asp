@@ -57,13 +57,14 @@
         ' Response.Write code
 
         Set api = New ApiCall
-
+        url = PAYCO_AUTH_URL & getTokenUri
+        sendData = "grant_type=authorization_code&client_id=" & PAYCO_CLIENT_ID & "&code=" & code
         api.SetMethod = "POST"
         api.RequestContentType = "application/x-www-form-urlencoded"
         api.Authorization = "Basic " & PAYCO_CLIENT_SECRET
         ' api.ResponseContentType = "application/json"
-        api.SetData = "grant_type=authorization_code&client_id=" & PAYCO_CLIENT_ID & "&code=" & code
-        api.SetUrl = PAYCO_AUTH_URL & getTokenUri
+        api.SetData = sendData
+        api.SetUrl = url
 
         result = api.Run
 
@@ -73,15 +74,20 @@
 
         Set api = Nothing
 
+        '인증실패 test result
+        'result = "{""error"":""invalid_grant"",""error_description"":""code does not exists or expired : n1196038c26884a73887fe0f8a353209b""}"
+
+        PLog url, sendData, result
         Set oJson = JSON.Parse(result)
-
-        access_token = IIF(JSON.hasKey(oJson, "access_token"), oJson.access_token, "")
-        access_token_secret = IIF(JSON.hasKey(oJson, "access_token_secret"), oJson.access_token_secret, "")
-        refresh_token = IIF(JSON.hasKey(oJson, "refresh_token"), oJson.refresh_token, "")
-        token_type = IIF(JSON.hasKey(oJson, "token_type"), oJson.token_type, "")
-        expires_in = IIF(JSON.hasKey(oJson, "expires_in"), oJson.expires_in, -1)  'Seconds
-'        auto_login_yn = IIF(JSON.hasKey(oJson, "auto_login_yn"), oJson.auto_login_yn, "") ' 자동로그인 체크
-
+        access_token = "" 
+        if JSON.hasKey(oJson, "access_token") Then 
+            access_token = IIF(JSON.hasKey(oJson, "access_token"), oJson.access_token, "")
+            access_token_secret = IIF(JSON.hasKey(oJson, "access_token_secret"), oJson.access_token_secret, "")
+            refresh_token = IIF(JSON.hasKey(oJson, "refresh_token"), oJson.refresh_token, "")
+            token_type = IIF(JSON.hasKey(oJson, "token_type"), oJson.token_type, "")
+            expires_in = IIF(JSON.hasKey(oJson, "expires_in"), oJson.expires_in, -1)  'Seconds
+    '        auto_login_yn = IIF(JSON.hasKey(oJson, "auto_login_yn"), oJson.auto_login_yn, "") ' 자동로그인 체크
+        End if 
         Set oJson = Nothing
 
 '		response.write "access_token : " & access_token &"<br>"&"<br>"
@@ -96,14 +102,16 @@
 
         If access_token <> "" Then
             Set api = New ApiCall
-
+            url = PAYCO_AUTH_URL & "/api/member/me"
+            sendData = "{""scope"":""ADMIN""}"
             api.SetMethod = "POST"
             api.RequestContentType = "application/json"
             api.Authorization = "Bearer " & access_token
-            api.SetData = "{""scope"":""ADMIN""}"
-            api.SetUrl = PAYCO_AUTH_URL & "/api/member/me"
+            api.SetData = sendData
+            api.SetUrl = url
 
             result = api.Run
+            PLog url, sendData, result
 
 '			response.write access_token&"<br>"
 '			response.write access_token_secret&"<br>"
@@ -192,8 +200,8 @@
                     Session("userId") = uid
                     Session("userIdNo") = idNo
                     Session("userName") = uname
-                    Session("userBirth") = ubirthday
-                    Session("userGender") = ugender
+                    Session("userBirth") = C_STR(ubirthday)
+                    Session("userGender") = C_STR(ugender)
                     Session("userEmail") = uemail
                     Session("userPhone") = ucellphone
                     Session("userType") = "Member"
@@ -202,7 +210,6 @@
                     Session("smsAllowed") = isSmsAllowed
                     Session("emailAllowed") = isEmailAllowed
                     Session("pushAllowed") = isPushAllowed
-
 
 					Response.Cookies("access_token") = access_token
 					Response.Cookies("access_token_secret") = access_token_secret
@@ -355,7 +362,7 @@
 	function after_action()
 	{
 		<%If Not loginSuccess Then%>
-			showAlertMsg({msg:"<%=loginMessage%>"});
+			alert("<%=loginMessage%>");
 		<%End If%>
 			if(window.opener) {
 				opener.location.href = "<%=returnUrl%>";

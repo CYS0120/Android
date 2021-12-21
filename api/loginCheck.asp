@@ -6,14 +6,16 @@
     If access_token <> "" Then
 
         Set api = New ApiCall
-
+		url = PAYCO_AUTH_URL & "/api/member/me"
+		sendData = "{""scope"":""ADMIN""}"
         api.SetMethod = "POST"
         api.RequestContentType = "application/json"
         api.Authorization = "Bearer " & access_token
-        api.SetData = "{""scope"":""ADMIN""}"
-        api.SetUrl = PAYCO_AUTH_URL & "/api/member/me"
+        api.SetData = sendData
+        api.SetUrl = url
 
         result = api.Run
+        PLog url, sendData, result
         Set oJson = JSON.Parse(result)
 
         If JSON.hasKey(oJson.header, "isSuccessful") And oJson.header.isSuccessful Then
@@ -56,14 +58,14 @@
                 Session("userId") = uid
                 Session("userIdNo") = idNo
                 Session("userName") = uname
-				Session("userBirth") = ubirthday
-				Session("userGender") = ugender
+				Session("userBirth") = C_STR(ubirthday)
+				Session("userGender") = C_STR(ugender)
                 Session("userEmail") = uemail
                 Session("userPhone") = ucellphone
                 Session("userType") = "Member"
                 Session("userStatus") = status
 
-				'¸â¹ö½Ê Ä«µå Ã³¸®
+				'ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ Ã³ï¿½ï¿½
 				Set cmd = Server.CreateObject("ADODB.Command")
 				With cmd
 					.ActiveConnection = dbconn

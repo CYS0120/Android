@@ -3,7 +3,6 @@
     Session.CodePage = "65001"
     Response.CharSet = "UTF-8"
     Response.AddHeader "Pragma", "no-cache"
-	Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' 크롬 80이슈
     Response.CacheControl = "no-cache"
     ' Response.CharSet = "euc-kr"
 
@@ -29,47 +28,51 @@
 <%
     Set api = New ApiCall
 
-    ' Response.Write payco_client_secret & " >>>>>>>>>>>> " & payco_client_id & " >>>>>>>>> " & Session("access_token")
-
     Dim sendData : sendData = "client_id=" & PAYCO_CLIENT_ID & "&token=" & Session("access_token")
-
-    ' Response.Write "sendData >>>>> " & sendData & " >>>>> "
-
-    api.SetMethod = "POST"
-    api.RequestContentType = "application/x-www-form-urlencoded"
-    api.Authorization = "Basic " & PAYCO_CLIENT_SECRET
-    ' api.ResponseContentType = "application/json"
-    ' api.SetData = "client_id=" & payco_client_id & "&token=" & Session("access_token")
-    api.SetData = sendData
-    api.SetUrl = PAYCO_AUTH_URL & "/oauth2/revoke"
-
-    result = api.Run
-
-    ' Response.Write "<!-- Request Url : " & PAYCO_AUTH_URL & "/oauth2/revoke" & "<br>"
-    ' Response.Write "Request Method : POST" & "<br>"
-    ' Response.Write "Request ContentType : application/x-www-form-urlencoded" & "<br>"
-    ' Response.Write "Request Authorization : Basic " & PAYCO_CLIENT_SECRET & "<br>"
-    ' Response.Write "Request Data : " & sendData & "<br>  -->"
-
-    ' Response.Write "Result > " & result
-
 	dim logoutStatus
 
-	if G2_SITE_MODE = "production" then 
-	    Set oJson = JSON.Parse(result)
+	if Session("access_token") <> "" Then 
+		url = PAYCO_AUTH_URL & "/oauth2/revoke"
 
-		logoutStatus = oJson.logoutStatus
+		api.SetMethod = "POST"
+		api.RequestContentType = "application/x-www-form-urlencoded"
+		api.Authorization = "Basic " & PAYCO_CLIENT_SECRET
+		' api.ResponseContentType = "application/json"
+		' api.SetData = "client_id=" & payco_client_id & "&token=" & Session("access_token")
+		api.SetData = sendData
+		api.SetUrl = url
 
-	    domain = Session("domain")
-	else
-		domain = "main"
-		logoutStatus = "LOGOUT_SUCCESS"
+		result = api.Run
+
+		' Response.Write "<!-- Request Url : " & PAYCO_AUTH_URL & "/oauth2/revoke" & "<br>"
+		' Response.Write "Request Method : POST" & "<br>"
+		' Response.Write "Request ContentType : application/x-www-form-urlencoded" & "<br>"
+		' Response.Write "Request Authorization : Basic " & PAYCO_CLIENT_SECRET & "<br>"
+		' Response.Write "Request Data : " & sendData & "<br>  -->"
+
+		' Response.Write "Result > " & result
+
+		PLog url, sendData, result
+		
+
+		if G2_SITE_MODE = "production" then 
+			Set oJson = JSON.Parse(result)
+			If JSON.hasKey(oJson, "logoutStatus") Then
+				logoutStatus = oJson.logoutStatus
+			end if 
+			domain = Session("domain")
+		else
+			domain = "main"
+			logoutStatus = "LOGOUT_SUCCESS"
+		end if 
+		
 	end if 
+	
 
     Session.Abandon()
 
 '    If oJson.logoutStatus = "LOGOUT_SUCCESS" Then
-    If logoutStatus = "LOGOUT_SUCCESS" Then
+    If logoutStatus = "LOGOUT_SUCCESS" or Session("access_token") = "" Then
         Select Case domain
             Case "mobile": returnUrl = DEV_BBQ_MOBILE_URL
             Case "main": returnUrl = DEV_BBQ_MAIN_URL

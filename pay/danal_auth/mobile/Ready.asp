@@ -3,7 +3,7 @@
     Session.CodePage = "949"
     Response.AddHeader "Pragma", "no-cache"
     Response.CacheControl = "no-cache"
-    Response.CharSet = "EUC-KR"
+    Response.CharSet = "UTF-8"
 %>
 <!--#include virtual="/api/include/cv.asp"-->
 <!--#include virtual="/api/include/db_open.asp"-->
@@ -11,9 +11,9 @@
 <!--#include file="inc/function.asp"-->
 <html>
 <head>
-<title>´Ù³¯ º»ÀÎÀÎÁõ</title>
+<title>ë‹¤ë‚  ë³¸ì¸ì¸ì¦</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <%
 	Dim TransR
@@ -24,16 +24,16 @@
 
 	'/********************************************************************************
 	' *
-	' * [ Àü¹® ¿äÃ» µ¥ÀÌÅÍ ] *********************************************************
+	' * [ ì „ë¬¸ ìš”ì²­ ë°ì´í„° ] *********************************************************
 	' *
 	' ********************************************************************************/
 
-	'/***[ ÇÊ¼ö µ¥ÀÌÅÍ ]************************************/
+	'/***[ í•„ìˆ˜ ë°ì´í„° ]************************************/
 	Set ByPassValue = CreateObject("Scripting.Dictionary")
 	Set TransR = CreateObject("Scripting.Dictionary")
 
 	'/******************************************************
-	' ** ¾Æ·¡ÀÇ µ¥ÀÌÅÍ´Â °íÁ¤°ªÀÔ´Ï´Ù.( º¯°æÇÏÁö ¸¶¼¼¿ä )
+	' ** ì•„ëž˜ì˜ ë°ì´í„°ëŠ” ê³ ì •ê°’ìž…ë‹ˆë‹¤.( ë³€ê²½í•˜ì§€ ë§ˆì„¸ìš” )
 	' * TXTYPE	: ITEMSEND
 	' * SERVICE	: UAS
 	' * AUTHTYPE	: 36
@@ -43,10 +43,10 @@
 	TransR.Add "AUTHTYPE", "36"
 
 	'/******************************************************
-	' * CPID 	 : ´Ù³¯¿¡¼­ Á¦°øÇØ µå¸° ID( function ÆÄÀÏ ÂüÁ¶ )
-	' * CPPWD	 : ´Ù³¯¿¡¼­ Á¦°øÇØ µå¸° PWD( function ÆÄÀÏ ÂüÁ¶ )
-	' * TARGETURL : ÀÎÁõ ¿Ï·á ½Ã ÀÌµ¿ ÇÒ ÆäÀÌÁöÀÇ FULL URL
-	' * CPTITLE   : °¡¸ÍÁ¡ÀÇ ´ëÇ¥ URL È¤Àº APP ÀÌ¸§ 
+	' * CPID 	 : ë‹¤ë‚ ì—ì„œ ì œê³µí•´ ë“œë¦° ID( function íŒŒì¼ ì°¸ì¡° )
+	' * CPPWD	 : ë‹¤ë‚ ì—ì„œ ì œê³µí•´ ë“œë¦° PWD( function íŒŒì¼ ì°¸ì¡° )
+	' * TARGETURL : ì¸ì¦ ì™„ë£Œ ì‹œ ì´ë™ í•  íŽ˜ì´ì§€ì˜ FULL URL
+	' * CPTITLE   : ê°€ë§¹ì ì˜ ëŒ€í‘œ URL í˜¹ì€ APP ì´ë¦„ 
 	' ******************************************************/
 
 	ID = "B010047230"
@@ -57,11 +57,11 @@
 	TransR.Add "TARGETURL", GetCurrentHost& "/pay/danal_auth/mobile/CPCGI.asp"
 	TransR.Add "CPTITLE", "www.danal.co.kr"
 
-	'/***[ ¼±ÅÃ »çÇ× ]**************************************/
+	'/***[ ì„ íƒ ì‚¬í•­ ]**************************************/
 	'/******************************************************
-	' * USERID	: »ç¿ëÀÚ ID
-	' * ORDERID	: CP ÁÖ¹®¹øÈ£	
-	' * AGELIMIT	: ¼­ºñ½º »ç¿ë Á¦ÇÑ ³ªÀÌ ¼³Á¤( °¡¸ÍÁ¡ ÇÊ¿ä ½Ã »ç¿ë )
+	' * USERID	: ì‚¬ìš©ìž ID
+	' * ORDERID	: CP ì£¼ë¬¸ë²ˆí˜¸	
+	' * AGELIMIT	: ì„œë¹„ìŠ¤ ì‚¬ìš© ì œí•œ ë‚˜ì´ ì„¤ì •( ê°€ë§¹ì  í•„ìš” ì‹œ ì‚¬ìš© )
 	' ******************************************************/
 	TransR.Add "USERID", REQUEST("branch_id")
 	TransR.Add "ORDERID", "ORDERID"
@@ -70,30 +70,29 @@
 	
 	'/********************************************************************************
 	' *
-	' * [ CPCGI¿¡ HTTP POST·Î Àü´ÞµÇ´Â µ¥ÀÌÅÍ ] **************************************
+	' * [ CPCGIì— HTTP POSTë¡œ ì „ë‹¬ë˜ëŠ” ë°ì´í„° ] **************************************
 	' *
 	' ********************************************************************************/
 
-	'/***[ ÇÊ¼ö µ¥ÀÌÅÍ ]************************************/
+	'/***[ í•„ìˆ˜ ë°ì´í„° ]************************************/
 	Dim ByPassValue
 
 	'/******************************************************
-	' * BgColor	: ÀÎÁõ ÆäÀÌÁö Background Color ¼³Á¤
-	' * BackURL	: ¿¡·¯ ¹ß»ý ¹× Ãë¼Ò ½Ã ÀÌµ¿ ÇÒ ÆäÀÌÁöÀÇ FULL URL
-	' * IsCharSet	: charset ÁöÁ¤( EUC-KR:deault, UTF-8 )
+	' * BgColor	: ì¸ì¦ íŽ˜ì´ì§€ Background Color ì„¤ì •
+	' * BackURL	: ì—ëŸ¬ ë°œìƒ ë° ì·¨ì†Œ ì‹œ ì´ë™ í•  íŽ˜ì´ì§€ì˜ FULL URL
+	' * IsCharSet	: charset ì§€ì •( EUC-KR:deault, UTF-8 )
 	' ******************************************************/
 	ByPassValue.Add "BgColor", "00"
 	ByPassValue.Add "BackURL", GetCurrentHost& "/pay/danal_auth/mobile/BackURL.asp"
 	ByPassValue.Add "IsCharSet", CHARSET
 	
-	'/***[ ¼±ÅÃ »çÇ× ]**************************************/
+	'/***[ ì„ íƒ ì‚¬í•­ ]**************************************/
 	'/******************************************************
-	' ** CPCGI¿¡ POST DATA·Î Àü´Þ µË´Ï´Ù.
+	' ** CPCGIì— POST DATAë¡œ ì „ë‹¬ ë©ë‹ˆë‹¤.
 	' **
 	' ******************************************************/  
 	ByPassValue.Add "ByBuffer", "This value bypass to CPCGI Page"
 	ByPassValue.Add "ByAnyName", "AnyValue"
-	
 
 	Response.Cookies("userIdx") = Session("userIdx")
 	Response.Cookies("userId") = Session("userId")
@@ -127,7 +126,7 @@ MakeFormInput ByPassValue , null
 	Else
 		'/**************************************************************************
 		' *
-		' * ÀÎÁõ ½ÇÆÐ¿¡ ´ëÇÑ ÀÛ¾÷
+		' * ì¸ì¦ ì‹¤íŒ¨ì— ëŒ€í•œ ìž‘ì—…
 		' *
 		' **************************************************************************/  
 		RETURNCODE 	= Res.Item("RETURNCODE")

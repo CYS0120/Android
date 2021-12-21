@@ -3,13 +3,25 @@
     Session.CodePage = "65001"
     Response.CharSet = "UTF-8"
     Response.AddHeader "Pragma", "no-cache"
-	Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' Å©·Ò 80ÀÌ½´
+	'Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' í¬ë¡¬ 80ì´ìŠˆ
+
+	'í¬ë¡¬ 80ì´ìŠˆ ì„¸ì…˜ìœ ì‹¤ ë°©ì§€
+    Dim cookie, cookies, cookie_id, cookie_val
+	cookies = Split(Request.ServerVariables("HTTP_COOKIE"),";")
+    For Each cookie In cookies
+        cookie_id = Trim(Split(cookie,"=")(0))
+        cookie_val = Trim(Split(cookie,"=")(1))
+        If Left(trim(cookie),12) = "ASPSESSIONID" Then
+			Response.AddHeader "Set-Cookie", "" & cookie_id & "=" & cookie_val & ";SameSite=None; Secure; path=/; HttpOnly" ' í¬ë¡¬ 80ì´ìŠˆ
+		end if
+	next 
+	
     Response.CacheControl = "no-cache"
     ' Response.CharSet = "euc-kr"
 
-	session.lcid	= 1042	'³¯Â¥Çü½Ä ÇÑ±¹ Çü½ÄÀ¸·Î 
+	session.lcid	= 1042	'ë‚ ì§œí˜•ì‹ í•œêµ­ í˜•ì‹ìœ¼ë¡œ 
 
-    ' // TODO : µð¹ö±×¸¦ À§ÇØ ¸¸µé¾î ³õÀº ÄÚµå
+    '  // TODO : ë””ë²„ê·¸ë¥¼ ìœ„í•´ ë§Œë“¤ì–´ ë†“ì€ ì½”ë“œ
     IS_DEBUG = false
 %>
 <!--#include virtual="/api/include/g2.asp"-->

@@ -11,13 +11,13 @@
 <!--#include file="./inc/function.asp"-->
 <html>
 <head>
-<title>´Ù³¯ º»ÀÎÀÎÁõ</title>
+<title>ë‹¤ë‚  ë³¸ì¸ì¸ì¦</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <%
 	Session.CodePage = 949
-    Response.CharSet = "EUC-KR"
+    Response.CharSet = "UTF-8"
 
 	Dim TransR, Addition, Res
 	Dim nConfirmOption, TID
@@ -35,10 +35,10 @@
 	' * CONFIRM
 	' * - CONFIRMOPTION 
 	' *	0 : NONE( default )
-	' * 	1 : CPID ¹× ORDERID Ã¼Å© 
+	' * 	1 : CPID ë° ORDERID ì²´í¬ 
 	' * - IDENOPTION
-	' * 0 : »ı³â¿ùÀÏ(6ÀÚ¸®) ¹× ¼ºº° IDEN ÇÊµå·Î Return (ex : 1401011)
-	' * 1 : »ı³â¿ùÀÏ(8ÀÚ¸®) ¹× ¼ºº° º°°³ ÇÊµå·Î Return (¿¬µ¿ ¸Å´º¾ó ÂüÁ¶. ex : DOB=20140101&SEX=1)
+	' * 0 : ìƒë…„ì›”ì¼(6ìë¦¬) ë° ì„±ë³„ IDEN í•„ë“œë¡œ Return (ex : 1401011)
+	' * 1 : ìƒë…„ì›”ì¼(8ìë¦¬) ë° ì„±ë³„ ë³„ê°œ í•„ë“œë¡œ Return (ì—°ë™ ë§¤ë‰´ì–¼ ì°¸ì¡°. ex : DOB=20140101&SEX=1)
 	' */
 	nConfirmOption = "0"
 	nIdenOption = "0"
@@ -48,7 +48,7 @@
 	TransR.Add "IDENOPTION", nIdenOption
 	
 	'/*
-	' * CONFIRMOPTIONÀÌ 1ÀÌ¸é CPID, ORDERID ÇÊ¼ö Àü´Ş
+	' * CONFIRMOPTIONì´ 1ì´ë©´ CPID, ORDERID í•„ìˆ˜ ì „ë‹¬
 	' */
 	IF nConfirmOption = "1" Then
 		TransR.Add "CPID", ID
@@ -57,14 +57,14 @@
 	
 	Set Res = CallTrans(TransR,false)
 
-	' ·Î±×ÀÎÀÌ ²öÅ°´Â Çö»óÀÌ ÀÖ¾î¼­ ³ÖÀ½.
+	' ë¡œê·¸ì¸ì´ ëˆí‚¤ëŠ” í˜„ìƒì´ ìˆì–´ì„œ ë„£ìŒ.
 	If Session("userIdx") <> "" Then 
 
 	Else
 		Session("userIdx") = Request.Cookies("userIdx")
 		Session("userId") = Request.Cookies("userId")
 		Session("userIdNo") = Request.Cookies("userIdNo")
-		Session("userName") = Request.Cookies("userName")
+		if Session("userName") = "" then Session("userName") = Request.Cookies("userName")
 		Session("userBirth") = Request.Cookies("userBirth")
 		Session("userGender") = Request.Cookies("userGender")
 		Session("userEmail") = Request.Cookies("userEmail")
@@ -89,7 +89,7 @@
 
 		'/**************************************************************************
 		' *
-		' * ÀÎÁõ ¼º°ø¿¡ ´ëÇÑ ÀÛ¾÷
+		' * ì¸ì¦ ì„±ê³µì— ëŒ€í•œ ì‘ì—…
 		' *
 		' **************************************************************************/
 
@@ -114,7 +114,7 @@
 	Else
  		'/**************************************************************************
 		' *
-		' * ÀÎÁõ ½ÇÆĞ¿¡ ´ëÇÑ ÀÛ¾÷
+		' * ì¸ì¦ ì‹¤íŒ¨ì— ëŒ€í•œ ì‘ì—…
 		' *
 		' **************************************************************************/		
 		RETURNCODE 	= Res.Item("RETURNCODE")

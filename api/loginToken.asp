@@ -62,12 +62,13 @@
 		' refresh_token으로 기존 access_token 유지시간을 늘림. 아래 과정을 꼭 해야됨.
 
         Set api = New ApiCall
-
+		url = PAYCO_AUTH_URL & getTokenUri
+		sendData = "grant_type=refresh_token&client_id=" & PAYCO_CLIENT_ID & "&refresh_token=" & refresh_token
         api.SetMethod = "POST"
         api.RequestContentType = "application/x-www-form-urlencoded"
         api.Authorization = "Basic " & PAYCO_CLIENT_SECRET
-        api.SetData = "grant_type=refresh_token&client_id=" & PAYCO_CLIENT_ID & "&refresh_token=" & refresh_token
-        api.SetUrl = PAYCO_AUTH_URL & getTokenUri
+        api.SetData = sendData
+        api.SetUrl = url
 
 		'  response.write "PAYCO_CLIENT_SECRET : " & PAYCO_CLIENT_SECRET &"<br>"&"<br>"
 		'  response.write "PAYCO_CLIENT_ID : " & PAYCO_CLIENT_ID &"<br>"&"<br>"
@@ -83,6 +84,7 @@
 		end if
 
         Set api = Nothing
+        PLog url, sendData, result
 
         Set oJson = JSON.Parse(result)
 
@@ -109,14 +111,17 @@
 
 
 		Set api = New ApiCall
-
+		url = PAYCO_AUTH_URL & "/api/member/me"
+		sendData = "{""scope"":""ADMIN""}"
 		api.SetMethod = "POST"
 		api.RequestContentType = "application/json"
 		api.Authorization = "Bearer " & access_token
-		api.SetData = "{""scope"":""ADMIN""}"
-		api.SetUrl = PAYCO_AUTH_URL & "/api/member/me"
+		api.SetData = sendData
+		api.SetUrl = url
 
 		result = api.Run
+        Set api = Nothing
+        PLog url, sendData, result
 
 		if IS_DEBUG then
         	Response.Write "Result > " & result & "<br>"
@@ -199,8 +204,8 @@
 				Session("userId") = uid
 				Session("userIdNo") = idNo
 				Session("userName") = uname
-				Session("userBirth") = ubirthday
-				Session("userGender") = ugender
+				Session("userBirth") = C_STR(ubirthday)
+				Session("userGender") = C_STR(ugender)
 				Session("userEmail") = uemail
 				Session("userPhone") = ucellphone
 				Session("userType") = "Member"
@@ -209,7 +214,6 @@
 				Session("smsAllowed") = isSmsAllowed
 				Session("emailAllowed") = isEmailAllowed
 				Session("pushAllowed") = isPushAllowed
-
 
 				Response.Cookies("access_token") = access_token
 				Response.Cookies("access_token_secret") = access_token_secret

@@ -76,7 +76,7 @@ Function CheckLogin
     ' Else
     if Session("userIdNo") = "" or request.cookies("userIdNo") <> "" then
         Session("userIdNo") = request.cookies("userIdNo")
-        Session("userName") = request.cookies("userName")
+        if Session("userName") = "" then Session("userName") = request.cookies("userName")
     end if
 
     If Session("userIdNo") <> "" Then
