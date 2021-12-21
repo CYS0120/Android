@@ -131,6 +131,10 @@
 		order_type_title = "포장정보"
 		order_type_name = "포장매장"
 		address_title = "포장매장 주소"
+	ElseIf vOrderType = "R" Then
+		order_type_title = "예약정보"
+		order_type_name = "배달매장"
+		address_title = "배달주소"
 	End If
 
 	Select Case vPayType

@@ -125,6 +125,10 @@ jQuery(document).ready(function(e) {
 		order_type_title = "포장정보"
 		order_type_name = "포장매장"
 		address_title = "포장매장 주소"
+	ElseIf vOrderType = "R" Then
+		order_type_title = "예약정보"
+		order_type_name = "배달매장"
+		address_title = "배달주소"
 	End If
 
 	Select Case vPayType
@@ -313,7 +317,7 @@ jQuery(document).ready(function(e) {
 								<td class="pay"><%=FormatNumber(aRs("side_sum")+(aRs("menu_price")*aRs("menu_qty")),0)%>원</td>
 <%
 			If order_detail_idx = 0 Then
-				If vOrderType = "D" Then
+				If vOrderType = "R" or vOrderType = "D" Then
 %>
 								<td class="move" rowspan="<%=aRs.RecordCount%>">배달비<br/><%=FormatNumber(vDeliveryFee,0)%>원</td>
 <%
@@ -383,10 +387,16 @@ jQuery(document).ready(function(e) {
 						<span>총 상품금액</span>
 						<strong><%=FormatNumber(vOrderAmt,0)%></strong>
 						<span>원</span>
-						<%If vOrderType = "D" Then%>
+						<%If vOrderType = "D" or vOrderType = "R" Then%>
 						<em><img src="/images/mypage/ico_calc_plus.png" alt=""></em>
 						<span>배달비</span>
 						<strong><%=FormatNumber(vDeliveryFee,0)%></strong>
+						<span>원</span>
+						<%End If%>
+						<%If (vOrderAmt + vDeliveryFee - vDiscountAmt) <> vPayAmt Then%>
+						<em><img src="/images/mypage/ico_calc_plus.png" alt=""></em>
+						<span>추가금액</span>
+						<strong><%=FormatNumber(vPayAmt-(vOrderAmt + vDeliveryFee - vDiscountAmt),0)%></strong>
 						<span>원</span>
 						<%End If%>
 						<em><img src="/images/mypage/ico_calc_minus.png" alt=""></em>
@@ -443,7 +453,8 @@ jQuery(document).ready(function(e) {
 
 				Dim pay_info_html : pay_info_html = "" 
 				if Not (pRs.BOF or pRs.EOF) Then 
-					pay_info_html = pay_info_html & "<table class=""tbl-write""><caption>결제정보</caption><tbody><tr><th scope=""row"">결제방법</th></tr><tr><td>"
+					pay_info_html = pay_info_html & "<h4>결제정보</h4>"
+					pay_info_html = pay_info_html & "<table class=""tbl-write""><caption>결제정보</caption><tbody><tr><td>"
 					Do until pRs.EOF
 						order_detail_idx   = pRs("order_idx")
 						pay_type_name      = pRs("pay_type_nm")
@@ -494,7 +505,7 @@ jQuery(document).ready(function(e) {
 			%>
 			<!-- 결제정보 -->
 			<div class="section-item">
-				<h4>결제정보</h4>
+				
 				<%=pay_info_html%>
 				<!--
 				<table class="tbl-write">

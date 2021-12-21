@@ -4,7 +4,7 @@
 					<span class="reorder_view_type">
 						<%	If vOrderType = "D" Then %>
 							<img src="/images/main/icon_m_order.png"> 
-						<%	elseIf vOrderType = "P" Then %>
+						<%	elseIf vOrderType = "R" or vOrderType = "P" Then %>
 							<img src="/images/main/icon_m_out.png" alt="">
 						<%	elseIf vOrderType = "X" Then %>
 							<img src="/images/mypage/ico_order_shop.png" alt="">
@@ -248,7 +248,7 @@
 					<ul class="reorder_view_payList">
 						<li>총 상품금액 <span><%=FormatNumber(vOrderAmt,0)%><span>원</span></span></li>
 						
-						<%If vOrderType = "D" Then%>
+						<%If vOrderType = "R" or vOrderType = "D" Then%>
 							<li>배달비 <span><%=FormatNumber(vDeliveryFee,0)%><span>원</span></span></li>
 						<%End If%>
 
@@ -273,7 +273,7 @@
 					<li class="reorder_view_address">
 						<h5><%=address_title%></h5>
 
-						<%If vOrderType = "D" Then%>
+						<%If vOrderType = "R" or vOrderType = "D" Then%>
 							<%=vAddressName%>
 							<span class="robotoR"><%=vMobile%></span>
 							(<%=vZipCode%>) 
