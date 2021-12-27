@@ -128,7 +128,7 @@
 		Response.Cookies("paycoin_vSubCPID") = ""
 
 		Dim Write_LogFile
-		Write_LogFile = Server.MapPath(".") + "\log\paycoin_Log_"+Replace(FormatDateTime(Now,2),"-","")+"_asp.txt"
+		Write_LogFile = "C:\Web_Log\pay\paycoin\log\Paycoin_Log_"+Replace(FormatDateTime(Now,2),"-","")+"_asp.txt"
 		LogUse = True
 		Const fsoForAppend = 8		'- Open a file and write to the end of the file. 
 

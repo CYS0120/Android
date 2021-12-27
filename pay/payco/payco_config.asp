@@ -113,6 +113,6 @@
 	' 로그 파일 선언 ( 루트경로부터 \Payco\asp\log 폴더까지 생성을 해 놓습니다. )
 	'---------------------------------------------------------------------------------
 	Dim Write_LogFile
-	Write_LogFile = Server.MapPath(".") + "\log\Payco_Log_"+Replace(FormatDateTime(Now,2),"-","")+"_asp.txt"
+	Write_LogFile = "C:\Web_Log\pay\payco\log\Payco_Log_"+Replace(FormatDateTime(Now,2),"-","")+"_asp.txt"
 
 %>
