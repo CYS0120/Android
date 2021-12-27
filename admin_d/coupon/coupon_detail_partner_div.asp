@@ -173,7 +173,7 @@
 	</tr>
 </table>
 <%
-    If CD_PARTNER <> "20000" And CD_PARTNER <> "" Then
+    If CD_PARTNER = "00000" OR CD_PARTNER = "" Then
 		If MSTSTATUS = 1 Then
 %>
 <table>
