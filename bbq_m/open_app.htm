@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+<title></title>
+
+</head>
+<style>
+	html {
+		background: url("https://m.bbq.co.kr/images/Loading_Image.png") no-repeat 50% 50% fixed;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+</style>
+<body>
+<div>
+	<button style="display:none;" class="tui-app-loader" id="loaderBtn">Launch App</button>
+</div>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//cdn.rawgit.com/faisalman/ua-parser-js/v0.7.1/src/ua-parser.min.js"></script>
+<script src="https://uicdn.toast.com/tui-app-loader/latest/tui-app-loader.js"></script>
+<script class="code-js">
+var appSchem = 'bbqchickenapp://bbqmain';
+
+var iosUrl = "http://itunes.apple.com/kr/app/id415260018";
+var aosUrl = "market://details?id=com.bbq.chicken202001";
+
+
+
+var loader = new tui.AppLoader();
+var osName = new UAParser().getResult().os.name;
+
+var btn = document.getElementById('loaderBtn');
+btn.addEventListener('click', function() {
+
+	console.log('osName: ' + osName);
+	loader.exec({
+		ios: {
+			scheme: appSchem,
+			url: iosUrl
+		},
+		android: {
+			intentURI: appSchem//'intent://open#Intent;scheme=bbqchickenapp;end;'
+		},
+		timerSet: {
+			ios: 2000,
+			android: 1000
+		},
+		etcCallback: function() {
+			if (osName !== 'iOS' && osName !== 'Android') {
+				// alert('AppLoader runs on Android or iOS device.');
+				alert('모바일 환경에서 진행해주세요.');
+			}
+		},
+		notFoundCallback: function() {
+			if (osName === 'iOS') {
+				top.location.href = iosUrl;
+			}else if (osName === 'Android') {
+				top.location.href = aosUrl;
+			}else{
+				alert('Not Found Application');
+			}
+		}
+	});
+}, false);
+</script>
+
+</body>
+</html>
+<script>
+	window.onload = function() {
+		document.getElementById('loaderBtn').click();
+	}
+</script>
+
+
