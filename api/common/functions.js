@@ -304,7 +304,7 @@ function hasDupMenu(cpnId) {
                     // alert('has');
                     return 1;
                 }
-            } catch {}
+            } catch(err) {}
         }
         return 0;
     } else {
@@ -321,7 +321,7 @@ function cpnPinSave() {
             try {
                 var sessionPin = JSON.parse(sessionStorage.getItem(key)).pin;
                 pinsave = pinsave + ',' + sessionPin;
-            } catch {}
+            } catch(err) {}
         }
         
         sessionStorage.setItem("ss_pin_save", pinsave);
