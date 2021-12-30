@@ -1,6 +1,6 @@
-<%@LANGUAGE="VBSCRIPT" CODEPAGE="949"%>
+<%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
 <%
-    Session.CodePage = "949"
+    Session.CodePage = "65001"
     Response.AddHeader "Pragma", "no-cache"
     Response.CacheControl = "no-cache"
     Response.CharSet = "UTF-8"

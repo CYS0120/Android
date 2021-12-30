@@ -16,7 +16,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <%
-	Session.CodePage = 949
+	Session.CodePage = "65001"
     Response.CharSet = "UTF-8"
 
 	Dim TransR, Addition, Res
