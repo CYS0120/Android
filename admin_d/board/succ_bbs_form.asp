@@ -180,10 +180,10 @@
 					<tr>
 						<th>구분</th>
 						<td>
-							<label><input type="radio" name="SGUBUN" value="A"<%If SGUBUN="A" Then%> checked<%End If%>>성공창업</label>
+							<label><input type="radio" name="SGUBUN" value="A"<%If SGUBUN="A" Then%> checked<%End If%>>매출우수</label>
 							<label><input type="radio" name="SGUBUN" value="B"<%If SGUBUN="B" Then%> checked<%End If%>>장수창업</label>
-							<label><input type="radio" name="SGUBUN" value="C"<%If SGUBUN="C" Then%> checked<%End If%>>은퇴창업</label>
-							<label><input type="radio" name="SGUBUN" value="D"<%If SGUBUN="D" Then%> checked<%End If%>>가족창업</label>
+							<label><input type="radio" name="SGUBUN" value="C"<%If SGUBUN="C" Then%> checked<%End If%>>다점포</label>
+							<label><input type="radio" name="SGUBUN" value="D"<%If SGUBUN="D" Then%> checked<%End If%>>업종전환</label>
 							<label><input type="radio" name="SGUBUN" value="E"<%If SGUBUN="E" Then%> checked<%End If%>>청년/여성</label>
 						</td>
 					</tr>

@@ -3,6 +3,8 @@
 	CUR_PAGE_CODE = "A"
 	CUR_PAGE_SUBCODE = ""
 	CD = InjRequest("CD")
+	brandImgPath = GetBrandImgPath(CD)
+
 	If Not FncIsBlank(CD) Then CUR_PAGE_SUBCODE = CD	'현재 선택된 서브메뉴에 대한 권한을 체크하기 위해서 설정
 
 	' If CD = "A" Then	'비비큐에만 배너 등록 기간 설정 기능 제공
@@ -463,7 +465,7 @@ function DateYn(GB, check_){
 <%
 								If len(main_img) > 0 Then
 %>
-									<img src="https://img.bbq.co.kr:449/uploads/bbq_d/main/<%=main_img%>" width="245">
+									<img src="https://img.bbq.co.kr:449/uploads/<%=brandImgPath%>/main/<%=main_img%>" width="245">
 <%
 								End If
 %>

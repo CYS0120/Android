@@ -273,4 +273,22 @@ Sub SET_COOKIES365(BYVAL strVar, Byval strValue)
 	Response.Cookies(strVar).Domain = MALL_DOMAIN
 End Sub
 
+'이미지 불러오는 path
+Function GetBrandImgPath(CD)
+	dim path 
+	select Case CD
+	case "A" 'bbq
+		path = "bbq_d"
+	case "I" '창업전략연구소
+		path = "bbqstartup_d"
+	case "J" '글로벌
+		path = "bbqglobal_d"
+	case "K" '제네시스
+		path = "genesiskorea_d"
+	case else 
+		path = "bbq_d"
+	end select 
+	GetBrandImgPath = path
+End Function 
+
 %>
