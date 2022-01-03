@@ -51,13 +51,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Stack;
 
-import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.iid.FirebaseInstanceId;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -567,12 +571,38 @@ public class MainActivity extends AppCompatActivity {
 
         mContext = this;
         deviceId = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-        String token = FirebaseInstanceId.getInstance().getToken();
+//        String token = FirebaseInstanceId.getInstance().getToken();
+//        if (FirebaseInstanceId.getInstance().getToken() != null) {
+//            //Log.d(TAG, "token = " + FirebaseInstanceId.getInstance().getToken());onCloseWindow
+//        }
 
-        if (FirebaseInstanceId.getInstance().getToken() != null) {
-            //Log.d(TAG, "token = " + FirebaseInstanceId.getInstance().getToken());onCloseWindow
-        }
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
 
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        // intent
+                        Intent pushtype = getIntent();
+                        String pushType = "";
+                        if(pushtype.getStringExtra("PUSHTYPE") != null) {
+                            pushType = pushtype.getStringExtra("PUSHTYPE");
+                        }
+
+                        mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId="+deviceId+"&token="+token+"&osTypeCd=ANDROID&pushtype="+pushType); // 실서버 보안연결
+                        progressBar.setVisibility(View.VISIBLE);
+                        mWebView.setVisibility(View.VISIBLE);
+                    }
+                });
+
+
+        /*
         Intent pushtype = getIntent();
         String pushType = "";
         if(pushtype.getStringExtra("PUSHTYPE") != null) {
@@ -588,10 +618,12 @@ public class MainActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
         mWebView.setVisibility(View.VISIBLE);
+         */
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //권한을 허용 했을 경우
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             int length = permissions.length;
             for (int i = 0; i < length; i++) {

@@ -19,7 +19,9 @@ import androidx.core.app.TaskStackBuilder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+//import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
 
 import java.util.Map;
 import java.util.Random;
@@ -37,11 +39,11 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.e(TAG, "===> log: onCreate()");
-    }
+//    @Override
+//    public void onCreate() {
+//        super.onCreate();
+//        Log.e(TAG, "===> log: onCreate()");
+//    }
 
     @Override
     public void onNewToken(String s) {
