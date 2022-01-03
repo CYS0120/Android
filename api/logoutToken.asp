@@ -3,7 +3,7 @@
     Session.CodePage = "65001"
     Response.CharSet = "UTF-8"
     Response.AddHeader "Pragma", "no-cache"
-	Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' 크롬 80이슈
+	'Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' 크롬 80이슈
     Response.CacheControl = "no-cache"
     ' Response.CharSet = "euc-kr"
 

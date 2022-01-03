@@ -3,7 +3,19 @@
     Session.CodePage = "65001"
     Response.CharSet = "UTF-8"
     Response.AddHeader "Pragma", "no-cache"
-	Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' 크롬 80이슈
+	'Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' 크롬 80이슈
+
+    '크롬 80이슈 세션유실 방지
+    Dim cookie, cookies, cookie_id, cookie_val
+    cookies = Split(Request.ServerVariables("HTTP_COOKIE"),";")
+    For Each cookie In cookies
+        cookie_id = Trim(Split(cookie,"=")(0))
+        cookie_val = Trim(Split(cookie,"=")(1))
+        If Left(trim(cookie),12) = "ASPSESSIONID" Then
+            Response.AddHeader "Set-Cookie", "" & cookie_id & "=" & cookie_val & ";SameSite=None; Secure; path=/; HttpOnly" ' 크롬 80이슈
+        end if
+    next 
+
     Response.CacheControl = "no-cache"
     ' Response.CharSet = "euc-kr"
 
