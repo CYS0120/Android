@@ -12,9 +12,13 @@ import android.os.Build;
 //import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
@@ -30,12 +34,19 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     public static final String TAG = FirebaseMessagingService.class.getSimpleName();
     public FirebaseMessagingService() {
+
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.e(TAG, "===> log: onCreate()");
     }
 
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        Log.d("TokenFireBase",s);
+        Log.e(TAG, "====> onNewToken: " + s);
     }
 
     //경우에 따라 FCM에서 메시지를 전달하지 못할 수 있습니다.

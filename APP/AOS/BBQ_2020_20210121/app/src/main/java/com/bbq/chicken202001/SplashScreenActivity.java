@@ -6,10 +6,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+
 import android.os.Handler;
 //import android.support.v7.app.AlertDialog;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,10 +52,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     private class splashhandler implements Runnable{
         @Override
         public void run() {
+            System.out.println("================ SplashScreenActivity run ==================");
             Intent intent = new Intent(getApplicationContext(),
                     MainActivity.class);
+            System.out.println("================ startActivity(main) ==================");
             startActivity(intent);
-
+            Log.e(this.getClass().getName() , "===========startActivity"  );
             finish();
         }
     }
@@ -75,12 +79,10 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-
             try {
                 Document doc = Jsoup
                         .connect("https://play.google.com/store/apps/details?id=com.bbq.chicken202001")
                         .get();
-//                Elements Version = doc.select(".htlgb ");
 
                 Elements VersionDiv= doc.select(".BgcNfc");
                 Elements Version = doc.select("div.hAyfc div span.htlgb");
@@ -90,14 +92,21 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 }
 
-//                for (int i = 0; i < 10; i++) {
-//                    String compareVersion = Version.get(i).text();
-//                    if (Pattern.matches("^[0-9]{1}.[0-9]{1}.[0-9]{1}$", compareVersion)) {
-//                        marketVersion = Version.get(i).text();
-//                        break;
-//                    }
-//                }
-                //Log.e("marketVersion", "marketVersion : " + marketVersion);
+
+                /*Document doc = Jsoup
+                            .connect("http://mtest.bbq.co.kr/app_version.htm")
+                            .get();
+
+                Elements VersionDiv= doc.select("div");
+                Elements Version = doc.select("span");
+                System.out.println("============VersionDiv.size():"+ VersionDiv.size());
+                for (int i =0; i<VersionDiv.size(); i++){
+                    if(VersionDiv.get(i).text().contains("Current Version")){
+                        return Version.get(i).text();
+                    }
+                }*/
+
+                Log.e("marketVersion", "marketVersion : " + marketVersion);
                 return marketVersion;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -111,15 +120,18 @@ public class SplashScreenActivity extends AppCompatActivity {
             PackageInfo pi = null;
             try {
                 pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+
+                Log.e(this.getClass().getName() , "=========== pi " + pi);
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
             deviceVersion = pi.versionName;
+            Log.e(this.getClass().getName() , "=========== deviceVersion " + deviceVersion);
             marketVersion = result;
+            Log.e(this.getClass().getName() , "=========== result " + result);
             if (marketVersion != null) {
                 if (!deviceVersion.equals(marketVersion)) {
-
-                    if (versionCompare(marketVersion, deviceVersion) > 0) {
+                    if (marketVersion.compareTo(deviceVersion) > 0) {
                         mDialog.setMessage("버전을 업데이트 후 사용해주세요.")
                                 .setCancelable(true)
                                 .setPositiveButton("바로가기",
@@ -133,7 +145,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                                                 startActivity(marketLaunch);
                                                 finish();
                                             }
-                                        });
+                                        }).setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                Handler handler = new Handler();
+                                handler.postDelayed(new splashhandler(), 2000);
+                            }
+                        });
                         AlertDialog alert = mDialog.create();
                         alert.setTitle("안 내");
                         alert.show();
@@ -151,6 +170,9 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     //goMainActivity();
                 }
+            }else {
+                Handler handler = new Handler();
+                handler.postDelayed(new splashhandler(), 2000);
             }
 
             super.onPostExecute(result);
@@ -179,5 +201,4 @@ public class SplashScreenActivity extends AppCompatActivity {
         // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
         return Integer.signum(vals1.length - vals2.length);
     }
-
 }
