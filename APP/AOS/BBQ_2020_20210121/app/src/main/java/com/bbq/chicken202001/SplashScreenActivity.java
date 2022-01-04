@@ -32,10 +32,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+
+
 public class SplashScreenActivity extends AppCompatActivity {
 
     // Package Version Check
     String marketVersion, deviceVersion;
+    final String marketURL = "https://play.google.com/store/apps/details?id=com.bbq.chicken202001";
 
 
     //
@@ -61,72 +64,91 @@ public class SplashScreenActivity extends AppCompatActivity {
         //
         // 2. cloud 버전 획득
         //
-        getVersion();
+        getMarketVersion();
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+
+    //
+    // private 함수 정의
+    //
 
 
     /*-----------------------------------------------------------------------
      * firebase 버전 정보 획득
      *-----------------------------------------------------------------------*/
-    private void getVersion() {
+    private void getMarketVersion() {
         // [파이어베이스에 등록된 key 정의]
         String key   = "AosVersion";
         String value = "0.0.0";
 
         //
-        // [파이어베이스 리모트 객체 생성 실시]
+        // 1. 파이어베이스 리모트 객체 생성 실시 (TODO:
         //
         FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings
                 .Builder()
-                .setMinimumFetchIntervalInSeconds(0)
+                .setMinimumFetchIntervalInSeconds(60*10*6*24)
                 .build();
 
+        // setMinimumFetchIntervalInSeconds(0)       // 실행시마다 체크
+        // setMinimumFetchIntervalInSeconds(60 * 10) // 10 mins
+
         //
-        // [해당 키값이 없을 경우 디폴트 값 삽입]
+        // 2. 디폴트 값 삽입
         //
         HashMap defaultMap = new HashMap <String, String>();
         defaultMap.put(key, value);
         config.setDefaultsAsync(defaultMap);
         config.setConfigSettingsAsync(configSettings);
 
+
         //
-        // [최신 앱 버전 확인 이벤트 리스너 수행 실시]
+        // 3. 최신 앱 버전 확인 이벤트 리스너 수행 실시
         //
         config.fetchAndActivate().addOnCompleteListener(
                 SplashScreenActivity.this, // [액티비티]
                 new OnCompleteListener<Boolean>() { // [이벤트 리스너]
                     @Override
                     public void onComplete(@NonNull Task<Boolean> task) {
-                        if (task.isSuccessful()) { // [해당 키값 확인 성공]
+
+                        // 3.1 해당 키값 확인 성공
+                        if (task.isSuccessful()) {
                             marketVersion = config.getString("AosVersion");
                         }
-                        else { // [해당 키값 확인 실패]
+                        // 3.2 해당 키값 확인 실패
+                        else {
                             marketVersion = "";
                         }
 
-                        //
-                        // 버전 비교
-                        //
+                        // 3.3 버전 비교
                         compareVersion();
                     }
                 });
 
     }
 
+
     /*-----------------------------------------------------------------------
      * 버전 비교
      *-----------------------------------------------------------------------*/
     private void compareVersion() {
+
+        if (marketVersion.equals("")) {
+            goMain();
+            return;
+        }
+
         //
         // 버전같은 경우 - 메인으로 이동
         //
         if (marketVersion.equals(deviceVersion)) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            System.out.println("================ startActivity(main) ==================");
-            startActivity(intent);
-            Log.e(this.getClass().getName() , "===========startActivity"  );
-            finish();
+            goMain();
         }
 
         //
@@ -135,6 +157,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         else {
             showAlert();
         }
+    }
+
+
+    private void goMain() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        System.out.println("================ startActivity(main) ==================");
+        startActivity(intent);
+        Log.e(this.getClass().getName() , "===========startActivity"  );
+        finish();
     }
 
 
@@ -151,10 +182,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int id) {
-                                Intent marketLaunch = new Intent(
-                                        Intent.ACTION_VIEW);
+                                Intent marketLaunch = new Intent(Intent.ACTION_VIEW);
                                 marketLaunch.setData(Uri
-                                        .parse("https://play.google.com/store/apps/details?id=com.bbq.chicken202001"));
+                                        .parse(marketURL));
                                 startActivity(marketLaunch);
                                 finish();
                             }
@@ -171,6 +201,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         alert.show();
     }
 
+
 //    private class splashhandler implements Runnable{
 //        @Override
 //        public void run() {
@@ -184,11 +215,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 //        }
 //    }
 
-    @Override
-    public void finish() {
-        super.finish();
-        this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-    }
 
     // Package Version Check
 //    private class getMarketVersion extends AsyncTask<Void, Void, String> {

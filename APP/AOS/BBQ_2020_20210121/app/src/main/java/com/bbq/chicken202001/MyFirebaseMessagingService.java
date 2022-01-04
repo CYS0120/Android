@@ -15,27 +15,18 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
-//import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.firebase.messaging.RemoteMessage;
-
-
 import java.util.Map;
 import java.util.Random;
 
-//fcm 참조
-//https://galid1.tistory.com/421
+import com.google.firebase.messaging.RemoteMessage;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
-//알림설정관련
-//https://duzi077.tistory.com/191
 
-public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
+
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static final String TAG = FirebaseMessagingService.class.getSimpleName();
-    public FirebaseMessagingService() {
+    public MyFirebaseMessagingService() {
 
     }
 
