@@ -61,7 +61,6 @@ import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Stack;
 
-//import com.google.firebase.iid.FirebaseInstanceId;
 
 
 public class MainActivity extends AppCompatActivity {
