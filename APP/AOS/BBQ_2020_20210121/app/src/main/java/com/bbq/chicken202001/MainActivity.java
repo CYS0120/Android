@@ -589,10 +589,10 @@ public class MainActivity extends AppCompatActivity {
                         String token = task.getResult();
 
                         // intent
-                        Intent pushtype = getIntent();
+                        Intent intent = getIntent();
                         String pushType = "";
-                        if(pushtype.getStringExtra("PUSHTYPE") != null) {
-                            pushType = pushtype.getStringExtra("PUSHTYPE");
+                        if(intent.getStringExtra("PUSHTYPE") != null) {
+                            pushType = intent.getStringExtra("PUSHTYPE");
                         }
 
                         mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId="+deviceId+"&token="+token+"&osTypeCd=ANDROID&pushtype="+pushType); // 실서버 보안연결
