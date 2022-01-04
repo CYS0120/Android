@@ -1,4 +1,4 @@
-package com.bbq.chicken202001;
+package com.bbq.chicken202001.push;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -12,12 +12,13 @@ import android.os.Build;
 //import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 import java.util.Map;
 import java.util.Random;
 
+import com.bbq.chicken202001.R;
+import com.bbq.chicken202001.activity.MainActivity;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
@@ -129,7 +130,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
 // Test 코드
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("PUSHTYPE",pushtype);
 
         intent.setAction(Intent.ACTION_MAIN);

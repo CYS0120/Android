@@ -1,4 +1,4 @@
-package com.bbq.chicken202001;
+package com.bbq.chicken202001.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -51,6 +51,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.bbq.chicken202001.QRScane;
+import com.bbq.chicken202001.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -893,7 +895,7 @@ public class MainActivity extends AppCompatActivity {
             //스캔 시작시 트루
             mBarCode = true;
 
-            Intent intent = new Intent(MainActivity.this,QRScane.class);
+            Intent intent = new Intent(MainActivity.this, QRScane.class);
             startActivityForResult(intent,0);
 
 
