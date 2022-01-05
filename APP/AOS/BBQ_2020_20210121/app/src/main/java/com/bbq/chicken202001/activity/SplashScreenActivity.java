@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -70,15 +71,11 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         context = this;
         imgView = findViewById(R.id.splash_img);
-
-        //
-        // 1. splash 이미지 설정
-        //
-        Glide.with(this).load(R.drawable.splash).into(imgView);
+        imgView.setScaleType(ImageView.ScaleType.FIT_XY);
 
 
         //
-        // 2. Package Version Check
+        // 1. Package Version Check
         //
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
@@ -87,11 +84,13 @@ public class SplashScreenActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         //
-        // 3. cloud 버전 획득
+        // 2. cloud 버전 획득
         //
         getCloudInfo();
     }
+
 
     @Override
     public void finish() {
@@ -171,17 +170,20 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        Animation fadeInAnim  = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.fade_in);
-                        Animation fadeOutAnim = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.fade_out);
 
-                        imgView.startAnimation(fadeOutAnim);
+                        imgView.setImageBitmap(resource);
+                        imgView.setAlpha(1.0f);
+
+                        AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+                        animation.setDuration(1000);
+                        animation.setStartOffset(200);
+                        animation.setFillAfter(true);
+                        imgView.startAnimation(animation);
 
                         final Handler delayHandler = new Handler();
                         delayHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                imgView.startAnimation(fadeInAnim);
-                                imgView.setImageBitmap(resource);
                                 compareVersion();
                             }
                         }, 1000);

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bbq.chicken202001"
     android:versionCode="39"
-    android:versionName="1.0.39"
+    android:versionName="1.0.40"
     android:targetSandboxVersion="1">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -53,18 +53,9 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".push.MyFirebaseMessagingService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <activity
             android:name="com.bbq.chicken202001.activity.SplashScreenActivity"
-            android:theme="@style/SplashScreenTheme">
+            android:theme="@style/AppStartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -80,6 +71,16 @@
                 <data android:scheme="https" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".push.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false"
