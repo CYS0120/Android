@@ -1,5 +1,6 @@
 package com.bbq.chicken202001.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,15 +12,21 @@ import android.net.Uri;
 
 //import android.support.v7.app.AlertDialog;
 //import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.bbq.chicken202001.R;
 import com.bbq.chicken202001.preference.PreferenceManager;
@@ -46,7 +53,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private final String marketURL  = "https://play.google.com/store/apps/details?id=com.bbq.chicken202001";
     private final String splashUrl  = "SplashImage";
-    private final String imageName  = "Splash";
+    private final String imageName  = "Splash.png";
     private final String versionKey = "AosVersion";
 
     String imgUrl;
@@ -63,6 +70,12 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         context = this;
         imgView = findViewById(R.id.splash_img);
+
+//        ImageView rabbit = (ImageView) findViewById(R.id.gif_image);
+//        GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(imgView);
+        Glide.with(this).load(R.drawable.splash).into(imgView);
+
+
 
 
         //
@@ -86,6 +99,27 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.finish();
         this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
+
+    /*
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResult);
+
+        //위 예시에서 requestPermission 메서드를 썼을시 , 마지막 매개변수에 2을 넣어 줬으므로, 매칭
+        if (requestCode == 2) {
+            // requestPermission의 두번째 매개변수는 배열이므로 아이템이 여러개 있을 수 있기 때문에 결과를 배열로 받는다.
+            // 해당 예시는 요청 퍼미션이 한개 이므로 i=0 만 호출한다.
+            if (grantResult[0] == 0) {
+                //해당 권한이 승낙된 경우.
+                downloadImage();
+            } else {
+                //해당 권한이 거절된 경우.
+                goMain();
+            }
+
+        }
+    }
+     */
 
 
     //
@@ -136,6 +170,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                             marketVersion = config.getString(versionKey);
                             imgUrl        = config.getString(splashUrl);
 
+                            downloadImage();
+
+                            /*
                             String imgPath = PreferenceManager.getString(context, splashUrl);
 
                             // 기존에 저장한 bitmap이 있는 경우
@@ -146,19 +183,47 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                             // 새로운 이미지인 경우
                             else {
+
                                 downloadImage();
+//                                checkPermission();
                             }
+                             */
                         }
                         // 3.2 해당 키값 확인 실패
                         else {
 //                            marketVersion = "";
-                            loadImage();
+//                            loadImage();
                             compareVersion();
                         }
                     }
                 });
 
     }
+
+
+    /*
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // 마시멜로우 버전과 같거나 이상이라면
+            if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    Toast.makeText(this, "외부 저장소 사용을 위해 읽기/쓰기 필요", Toast.LENGTH_SHORT).show();
+                }
+
+                requestPermissions(new String[]
+                                {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                        2);  //마지막 인자는 체크해야될 권한 갯수
+
+            } else {
+                //Toast.makeText(this, "권한 승인되었음", Toast.LENGTH_SHORT).show();
+                downloadImage();
+            }
+        } else {
+            downloadImage();
+        }
+    }
+    */
 
 
     /*-----------------------------------------------------------------------
@@ -171,13 +236,28 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        saveImage(resource);
-                        compareVersion();
+//                        saveImageInfo(resource);
+//                        imgView.setImageBitmap(resource);
+
+                        Animation fadeInAnim  = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.fade_in);
+                        Animation fadeOutAnim = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.fade_out);
+
+                        imgView.startAnimation(fadeOutAnim);
+
+                        final Handler delayHandler = new Handler();
+                        delayHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                imgView.startAnimation(fadeInAnim);
+                                imgView.setImageBitmap(resource);
+                                compareVersion();
+                            }
+                        }, 1000);
                     }
 
                     @Override
                     public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                        loadImage();
+//                        loadImage();
                         compareVersion();
                     }
 
@@ -192,7 +272,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     /*-----------------------------------------------------------------------
      * sd 카드에 이미지 저장한다.
      *-----------------------------------------------------------------------*/
-    private void saveImage(Bitmap bitmap) {
+    private void saveImageInfo(Bitmap bitmap) {
         //
         // 이미지 표시
         //
@@ -200,9 +280,11 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
         //
-        // 이미지 저장
+        // 이미지 저장 (권한없어서 저장 안되는 경우)
         //
-        ImageHandler.save(bitmap, imageName);
+        if (ImageHandler.save(bitmap, imageName) == false) {
+            return;
+        }
 
 
         //
