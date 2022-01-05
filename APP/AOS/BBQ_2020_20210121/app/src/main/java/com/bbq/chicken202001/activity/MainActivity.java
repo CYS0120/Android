@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -594,9 +595,18 @@ public class MainActivity extends AppCompatActivity {
                         String pushType = "";
                         if(intent.getStringExtra("PUSHTYPE") != null) {
                             pushType = intent.getStringExtra("PUSHTYPE");
+//                            Toast.makeText(getApplicationContext(),pushType, Toast.LENGTH_LONG);
                         }
 
-                        mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId="+deviceId+"&token="+token+"&osTypeCd=ANDROID&pushtype="+pushType); // 실서버 보안연결
+                        String appVersion = "";
+                        try {
+                            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
+                            appVersion = pInfo.versionName;         // versionName은 1.0.4와 version을 표시하는 String
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+                        mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId="+deviceId+"&token="+token+"&osTypeCd=ANDROID&pushtype="+pushType+"&version="+appVersion); // 실서버 보안연결
                         progressBar.setVisibility(View.VISIBLE);
                         mWebView.setVisibility(View.VISIBLE);
                     }
