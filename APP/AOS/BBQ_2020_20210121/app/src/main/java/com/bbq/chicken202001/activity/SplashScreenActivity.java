@@ -71,11 +71,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         context = this;
         imgView = findViewById(R.id.splash_img);
 
+        //
+        // 1. splash 이미지 설정
+        //
         Glide.with(this).load(R.drawable.splash).into(imgView);
 
 
         //
-        // 1. Package Version Check
+        // 2. Package Version Check
         //
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
@@ -85,7 +88,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
 
         //
-        // 2. cloud 버전 획득
+        // 3. cloud 버전 획득
         //
         getCloudInfo();
     }
@@ -116,7 +119,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings
                 .Builder()
-                .setMinimumFetchIntervalInSeconds(60*10*6*24)
+                .setMinimumFetchIntervalInSeconds(60*10*6*24)   // 하루에 한번만 체크 하도록 처리
                 .build();
 
         // setMinimumFetchIntervalInSeconds(0)       // 실행시마다 체크
