@@ -22,7 +22,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bbq.chicken202001.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideContext;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -34,6 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private Context   context;
     private ImageView imgView;
+    private ImageView imgBaseView;
 
     private String marketVersion;
     private String deviceVersion;
@@ -42,6 +50,10 @@ public class SplashScreenActivity extends AppCompatActivity {
     private final String marketURL  = "https://play.google.com/store/apps/details?id=com.bbq.chicken202001";
     private final String splashKey  = "SplashImage";
     private final String versionKey = "AosVersion";
+
+    private Boolean gifFinish = false;
+    private Boolean downloadFinish = false;
+    private Bitmap bitmap = null;
 
 
     //
@@ -54,13 +66,43 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        context = this;
-        imgView = findViewById(R.id.splash_img);
+        context     = this;
+        imgView     = findViewById(R.id.splash_img);
+        imgBaseView = findViewById(R.id.base_img);
         imgView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imgBaseView.setScaleType(ImageView.ScaleType.FIT_XY);
 
- 
+
         //
-        // 1. Package Version Check
+        // 1. glide image load 및 gif 1번만 발생
+        //
+        Glide.with(this)
+                .load(R.drawable.splash_animation)
+                .into(new DrawableImageViewTarget(imgBaseView) {
+                    @Override public void onResourceReady(Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        if (resource instanceof GifDrawable) {
+                            ((GifDrawable)resource).setLoopCount(1);
+                        }
+                        super.onResourceReady(resource, transition);
+                    }
+                });
+
+
+        //
+        // 2. gif 완료 처리
+        //
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                gifFinish = true;
+                showDownloadImage();
+            }
+        }, 1000);
+
+
+        //
+        // 3. Package Version Check
         //
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
@@ -71,7 +113,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
         //
-        // 2. cloud 버전 획득
+        // 4. cloud 버전 획득
         //
         getCloudInfo();
     }
@@ -144,6 +186,34 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
     /*-----------------------------------------------------------------------
+     * gif animation 이후에 download image 보여준다.
+     *-----------------------------------------------------------------------*/
+    private void showDownloadImage() {
+        if (downloadFinish && gifFinish) {
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // 이미지 전환
+                    imgView.setImageBitmap(bitmap);
+                    imgView.setAlpha(1.0f);
+
+                    AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+                    animation.setDuration(1000);
+                    animation.setStartOffset(0);
+                    animation.setFillAfter(true);
+                    imgView.startAnimation(animation);
+
+                    // 버전 비교
+                    final Handler delayHandler = new Handler();
+                    delayHandler.postDelayed(() -> compareVersion(), 1000);
+                }
+            }, 1800);
+        }
+    }
+
+
+    /*-----------------------------------------------------------------------
      * Glide 이용하여 이미지 다운로드 한다.
      *-----------------------------------------------------------------------*/
     private void downloadImage() {
@@ -153,17 +223,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        imgView.setImageBitmap(resource);
-                        imgView.setAlpha(1.0f);
+                        downloadFinish = true;
+                        bitmap = resource;
 
-                        AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
-                        animation.setDuration(1000);
-                        animation.setStartOffset(200);
-                        animation.setFillAfter(true);
-                        imgView.startAnimation(animation);
-
-                        final Handler delayHandler = new Handler();
-                        delayHandler.postDelayed(() -> compareVersion(), 1000);
+                        showDownloadImage();
                     }
 
                     @Override
