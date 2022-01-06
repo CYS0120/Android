@@ -1,6 +1,5 @@
 package com.bbq.chicken202001.activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,37 +9,23 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
-//import android.support.v7.app.AlertDialog;
-//import android.support.v7.app.AppCompatActivity;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.bbq.chicken202001.R;
-import com.bbq.chicken202001.preference.PreferenceManager;
-import com.bbq.chicken202001.util.ImageHandler;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-//import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-//import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.util.HashMap;
 
@@ -50,9 +35,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     private Context   context;
     private ImageView imgView;
 
-    String marketVersion;
-    String deviceVersion;
-    String imgUrl;
+    private String marketVersion;
+    private String deviceVersion;
+    private String imgUrl;
 
     private final String marketURL  = "https://play.google.com/store/apps/details?id=com.bbq.chicken202001";
     private final String splashKey  = "SplashImage";
@@ -73,13 +58,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         imgView = findViewById(R.id.splash_img);
         imgView.setScaleType(ImageView.ScaleType.FIT_XY);
 
-
+ 
         //
         // 1. Package Version Check
         //
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
-            deviceVersion = pInfo.versionName;         // versionName은 1.0.4와 version을 표시하는 String
+            deviceVersion = pInfo.versionName;         // version name 은 1.0.4와 version 을 표시하는 String
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -109,7 +94,7 @@ public class SplashScreenActivity extends AppCompatActivity {
      *-----------------------------------------------------------------------*/
     private void getCloudInfo() {
         // [파이어베이스에 등록된 key 정의]
-        String key   = versionKey;
+//        String key   = versionKey;
         String value = "0.0.0";
 
         //
@@ -128,7 +113,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         // 2. 디폴트 값 삽입
         //
         HashMap defaultMap = new HashMap <String, String>();
-        defaultMap.put(key, value);
+        defaultMap.put(versionKey, value);
         config.setDefaultsAsync(defaultMap);
         config.setConfigSettingsAsync(configSettings);
 
@@ -136,24 +121,22 @@ public class SplashScreenActivity extends AppCompatActivity {
         //
         // 3. 최신 앱 버전 확인 이벤트 리스너 수행 실시
         //
+        // [이벤트 리스너]
         config.fetchAndActivate().addOnCompleteListener(
                 SplashScreenActivity.this, // [액티비티]
-                new OnCompleteListener<Boolean>() { // [이벤트 리스너]
-                    @Override
-                    public void onComplete(@NonNull Task<Boolean> task) {
+                task -> {
 
-                        // 3.1 해당 키값 확인 성공
-                        if (task.isSuccessful()) {
-                            marketVersion = config.getString(versionKey);
-                            imgUrl        = config.getString(splashKey);
+                    // 3.1 해당 키값 확인 성공
+                    if (task.isSuccessful()) {
+                        marketVersion = config.getString(versionKey);
+                        imgUrl        = config.getString(splashKey);
 
-                            downloadImage();
-                        }
-                        // 3.2 해당 키값 확인 실패
-                        else {
+                        downloadImage();
+                    }
+                    // 3.2 해당 키값 확인 실패
+                    else {
 //                            marketVersion = "";
-                            compareVersion();
-                        }
+                        compareVersion();
                     }
                 });
 
@@ -170,7 +153,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-
                         imgView.setImageBitmap(resource);
                         imgView.setAlpha(1.0f);
 
@@ -181,12 +163,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         imgView.startAnimation(animation);
 
                         final Handler delayHandler = new Handler();
-                        delayHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                compareVersion();
-                            }
-                        }, 1000);
+                        delayHandler.postDelayed(() -> compareVersion(), 1000);
                     }
 
                     @Override
@@ -244,7 +221,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
     /*-----------------------------------------------------------------------
-     * alert 보여준다. (play store로 이동)
+     * alert 보여준다. (play store 로 이동)
      *-----------------------------------------------------------------------*/
     private void showAlert() {
         AlertDialog.Builder dialog;
@@ -254,11 +231,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .setCancelable(true)
                 .setPositiveButton("바로가기",
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int id) {
+                            public void onClick(DialogInterface dialog, int id) {
                                 Intent marketLaunch = new Intent(Intent.ACTION_VIEW);
-                                marketLaunch.setData(Uri
-                                        .parse(marketURL));
+                                marketLaunch.setData(Uri.parse(marketURL));
                                 startActivity(marketLaunch);
                                 finish();
                             }
