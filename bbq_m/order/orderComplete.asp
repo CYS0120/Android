@@ -40,7 +40,7 @@
 			end if
 
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','orderComplete-000')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] start','0','orderComplete-000')"
 	dbconn.Execute(Sql)
 
 	dim pg_RollBack : pg_RollBack = 0
@@ -271,7 +271,7 @@
 		payMethodCode = "99"
 	End Select
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& order_channel &"','0','orderComplete-001')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] "& order_channel &"','0','orderComplete-001')"
 	dbconn.Execute(Sql)
 
 	If errCode <> 0 Then
@@ -279,7 +279,7 @@
 		'페이지 리로드일 경우
 		'POS에서 가져갈 상태로 만들지 못함......
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& errMsg &"','0','orderComplete-err')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] "& errMsg &"','0','orderComplete-err')"
 		dbconn.Execute(Sql)
 
 	Else
@@ -989,6 +989,7 @@
 			</div>
 			<!-- 포장, 배달정보 -->
             <!-- 예약정보 -->
+		<% If false Then %>
 			<div class="section-wrap section-orderInfo" id="book_area">
 				<div class="section-header order_head">
 					<h3>예약정보</h3>
@@ -1008,7 +1009,7 @@
 					}
 				});
 			</script>
-
+		<% End If %>
 			<!-- 예약정보 -->
 			<!-- 결제정보 -->
 			<%
