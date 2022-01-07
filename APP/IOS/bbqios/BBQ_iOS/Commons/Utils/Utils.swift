@@ -55,6 +55,7 @@ class Utils: NSObject {
     //UUID 얻기
     func setUUID() {
         let keychain = KeychainSwift()
+//        print("setUUID :: \(keychain.get("key_uuid"))")
         if getUUID() == "" {
             let uuid = UUID().uuidString
             keychain.set(uuid, forKey: "key_uuid")
@@ -65,7 +66,8 @@ class Utils: NSObject {
     
     func getUUID() -> String {
         let keychain = KeychainSwift()
-        
+        print("getUUID :: \(keychain.get("key_uuid"))")
+
         if let uuid = keychain.get("key_uuid") {
             return uuid
         }
