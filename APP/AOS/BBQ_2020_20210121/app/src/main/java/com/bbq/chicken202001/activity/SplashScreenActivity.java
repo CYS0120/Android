@@ -22,14 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bbq.chicken202001.R;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.GlideContext;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
-import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -53,7 +48,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private Boolean gifFinish = false;
     private Boolean downloadFinish = false;
-    private Bitmap bitmap = null;
+    private Bitmap  bitmap = null;
 
 
     //
@@ -89,7 +84,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
         //
-        // 2. gif 완료 처리
+        // 2. gif 애니메이션 완료 처리
         //
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -135,10 +130,6 @@ public class SplashScreenActivity extends AppCompatActivity {
      * firebase 버전 정보 획득
      *-----------------------------------------------------------------------*/
     private void getCloudInfo() {
-        // [파이어베이스에 등록된 key 정의]
-//        String key   = versionKey;
-        String value = "0.0.0";
-
         //
         // 1. 파이어베이스 리모트 객체 생성
         //
@@ -155,7 +146,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         // 2. 디폴트 값 삽입
         //
         HashMap defaultMap = new HashMap <String, String>();
-        defaultMap.put(versionKey, value);
+        defaultMap.put(versionKey, "0.0.0");
         config.setDefaultsAsync(defaultMap);
         config.setConfigSettingsAsync(configSettings);
 
@@ -181,7 +172,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                         compareVersion();
                     }
                 });
-
     }
 
 
@@ -194,7 +184,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    // 이미지 전환
+                    // alpha 애니메이션 적용
                     imgView.setImageBitmap(bitmap);
                     imgView.setAlpha(1.0f);
 
@@ -225,7 +215,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         downloadFinish = true;
                         bitmap = resource;
-
                         showDownloadImage();
                     }
 

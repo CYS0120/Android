@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-//import android.support.v4.app.NotificationCompat;
-//import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -109,15 +107,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
 
-
-
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,NOTIFICATION_CHANNEL_ID);
         notificationBuilder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
-
                 .setContentInfo("Infobackground");
 
         if(!body.isEmpty())
@@ -128,38 +123,52 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
 
-
 // Test 코드
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("PUSHTYPE",pushtype);
 
         intent.setAction(Intent.ACTION_MAIN);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-           notificationBuilder.setContentIntent(pendingIntent);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        notificationBuilder.setContentIntent(pendingIntent);
 
 
+        /*
+        Intent intent = getPackageManager()
+                .getLaunchIntentForPackage(getPackageName())
+                .setPackage(null)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        intent.putExtra("PUSHTYPE",pushtype);
+         */
+
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.putExtra("PUSHTYPE",pushtype);
+//
+//        intent.setAction(Intent.ACTION_MAIN);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // 중복 생성 방지
+//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+
+
+
+
+        // mNM.notify(mId, builder.build());
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(intent);
-        PendingIntent pi = stackBuilder.getPendingIntent(0,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pi = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationBuilder.setContentIntent(pi);
-
-        // mNM.notify(mId, builder.build());
-
 //                .setContentIntent(pendingIntent);
 // Test Code !!
 
         notificationManager.notify(new Random().nextInt(),notificationBuilder.build());
 //        notificationManager.notify(1,notificationBuilder.build());
-
-
-
-
 
     }
 
@@ -167,9 +176,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void showNotification(String title, String body) {
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "com.bbq.chicken2019.AndroidPush";
-
-
-
 
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -199,11 +205,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this,MainActivity.class);
         intent.setAction(Intent.ACTION_MAIN);
         intent.setFlags( Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         notificationBuilder.setContentIntent(pendingIntent);
-
-
 
 
         notificationManager.notify(new Random().nextInt(),notificationBuilder.build());
