@@ -35,11 +35,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // launchscreen delay
        // Thread.sleep(forTimeInterval: 1.5)
         
-        
 //        let storyboard = UIStoryboard(name: "Splash", bundle: nil)
 //        let splashViewController = storyboard.instantiateViewController(withIdentifier: "SplashViewController") as! SplashViewController
         // Override point for customization after application launch.
-        
         UIApplication.shared.applicationIconBadgeNumber = 0
         
         FirebaseApp.configure()
@@ -64,21 +62,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // [START register_for_notifications]
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
-            UNUserNotificationCenter.current().delegate = self
-            
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions,
-                completionHandler: {isCheck, error in
-                    if isCheck {
-                        Utils().setDevicePushYn(yn: "Y")
-                        Utils().setUserPushYn(yn: "Y")
-                    } else {
-                        Utils().setDevicePushYn(yn: "N")
-                        Utils().setUserPushYn(yn: "N")
-                    }
-            })
+//            UNUserNotificationCenter.current().delegate = self
+//
+//            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+//
+//            UNUserNotificationCenter.current().requestAuthorization(
+//                options: authOptions,
+//                completionHandler: { isCheck, error in
+//                    if isCheck {
+//                        Utils().setDevicePushYn(yn: "Y")
+//                        Utils().setUserPushYn(yn: "Y")
+//                    } else {
+//                        Utils().setDevicePushYn(yn: "N")
+//                        Utils().setUserPushYn(yn: "N")
+//                    }
+//            })
         } else {
             let settings: UIUserNotificationSettings =
                 UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
@@ -87,6 +85,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         application.registerForRemoteNotifications()
         let token : String! = Messaging.messaging().fcmToken
+        print("messaging().fcmToken :: \(String(describing: token))")
+//        let deviceId = UIDevice.current.identifierForVendor!.uuidString
+//        print("deviceId :: \(deviceId)")
+//        let uuid = UUID().uuidString
+//        print("UUID :: \(uuid)")
+
         Utils().setPushToken(token:token)
         
         let storyboard = UIStoryboard(name: "Splash", bundle: nil)
@@ -127,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let url = URL(string: "http://itunes.apple.com/kr/lookup?bundleId=\(identifier)") else {
                 throw VersionError.invalidBundleInfo
         }
-        print(currentVersion)
+//        print(currentVersion)
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             do {
                 if let error = error { throw error }
@@ -165,18 +169,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func goMain(_ url_type: String) {
         Utils().setUUID()
-
-        mainViewController.url_type = url_type
-    
-        self.setNavigationController(nvc)
+        UNUserNotificationCenter.current().delegate = self
         
-        nvc.isNavigationBarHidden = true
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: authOptions,
+            completionHandler: { isCheck, error in
+                if isCheck {
+                    Utils().setDevicePushYn(yn: "Y")
+                    Utils().setUserPushYn(yn: "Y")
+                } else {
+                    Utils().setDevicePushYn(yn: "N")
+                    Utils().setUserPushYn(yn: "N")
+                }
+                
+                self.mainViewController.url_type = url_type
+            
+                self.setNavigationController(self.nvc)
+                
+                DispatchQueue.main.async {
+                    self.nvc.isNavigationBarHidden = true
 
-        self.window?.backgroundColor = UIColor.white
+                    self.window?.backgroundColor = UIColor.white
+                    self.window?.rootViewController = self.nvc//mainViewController//nvc
+                    self.window?.makeKeyAndVisible()
+
+                }
+
+        })
+
+//        mainViewController.url_type = url_type
+//
+//        self.setNavigationController(nvc)
+//
+//        DispatchQueue.main.async {
+//            self.nvc.isNavigationBarHidden = true
+//
+//            self.window?.backgroundColor = UIColor.white
+//            self.window?.rootViewController = self.nvc//mainViewController//nvc
+//            self.window?.makeKeyAndVisible()
+//
+//        }
 
 
-        self.window?.rootViewController = nvc//mainViewController//nvc
-        self.window?.makeKeyAndVisible()
         
         //        self.removeTabbarItemsText(tabBarController)
     }
@@ -300,7 +336,10 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         UIApplication.shared.applicationIconBadgeNumber = 0
         let deviceId = UIDevice.current.identifierForVendor!.uuidString
-        
+        print("deviceId :: \(deviceId)")
+        let uuid = UUID().uuidString
+        print("UUID :: \(uuid)")
+
         //푸시 분기처리
         var push_type : String = ""
         if userInfo["PUSHTYPE"] != nil {

@@ -9,7 +9,8 @@
 import UIKit
 
 class SplashViewController: BasicViewController {
- 
+//    @IBOutlet weak var splashImageView: UIImageView!
+    
 //    @IBOutlet weak var backgroundImageView : UIImageView!
     
     
@@ -54,7 +55,7 @@ class SplashViewController: BasicViewController {
 //            UIGraphicsEndImageContext()
 //            debugPrint("Image not available")
 //        }
-        
+
         // test 추후 버전체크로 처리해야 함
         _ = try? isUpdateAvailable { (update, error) in
             if let error = error {

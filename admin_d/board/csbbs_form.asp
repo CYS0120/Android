@@ -32,6 +32,7 @@
 	regdate	= Binfo("regdate")
 	member_id	= Binfo("member_id")
 	member_name	= Binfo("member_name")
+    member_idno = Binfo("member_idno")
 	member_hp	= Binfo("member_hp")
 	filename	= Binfo("filename")
 	filename2	= Binfo("filename2")
@@ -168,6 +169,10 @@
                     <tr>
                         <th>작성자(성명/아이디)</th>
                         <td><%=member_id%>/<%=member_name%></td>
+                    </tr>
+                    <tr>
+                        <th>회원번호</th>
+                        <td><%=member_idno%></td>
                     </tr>
                     <tr>
                         <th>연락처</th>

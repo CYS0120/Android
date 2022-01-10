@@ -126,15 +126,23 @@ class QRScanViewController: UIViewController {
 extension QRScanViewController: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject {
-            self.resultsLabel.text = object.stringValue
+//            self.resultsLabel.text = object.stringValue
             
             guard let transformedObject = previewLayer.transformedMetadataObject(for: object) as? AVMetadataMachineReadableCodeObject else {
                 return
             }
             if let vc = mainVC as? MainViewController
             {
-                vc.strBarCode = object.stringValue
-                self.presentingViewController?.dismiss(animated: false, completion: nil)
+//                vc.strBarCode = object.stringValue
+                captureSession.stopRunning()
+                self.presentingViewController?.dismiss(animated: false, completion: {
+                    vc.wkWebView.evaluateJavaScript("barCodeData('\(object.stringValue ?? "")')", completionHandler: {(result, error) in
+                        if let result = result {
+                            print("barCodeData result :: \(result)")
+                        }
+                    })
+                })
+
             }
 //            updateBoundingBox(transformedObject.corners)
 //            hideBoundingBox(after: 0.25)

@@ -13,6 +13,10 @@ import QuickLook
 import SwiftEventBus
 
 import SafariServices
+import Lottie
+
+
+
 
 //class NavigationController: UINavigationController {
 //    override var shouldAutorotate: Bool {
@@ -37,7 +41,8 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
 
     @IBOutlet weak var btnHome: UIButton!
     @IBOutlet weak var btnBack: UIButton!
-
+    @IBOutlet weak var splashImageView: UIImageView!
+    
     var wkWebViewBottomConstraint: NSLayoutConstraint!
     var wkWebViewTopConstraint: NSLayoutConstraint!
     var wkWebViewRightConstraint: NSLayoutConstraint!
@@ -101,12 +106,37 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(url_type)
-        self.initWebKit()
-
-        lastContentOffset = CGPoint(x: 0.0, y: 0.0)
-        
+//        let imageView = GIFImageView(frame: self.view.frame)
+//        imageView.prepareForAnimation(withGIFNamed: "logo_animation", loopCount: 1) {
+//            DispatchQueue.main.async {
+//                imageView.contentMode = .scaleAspectFit
+//                self.view.addSubview(imageView)
+//                imageView.startAnimatingGIF()
+//            }
+//        }
         self.btnBack.isHidden = true
+
+        
+        let animationView = AnimationView(name:"bbq-logo")
+        animationView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 200 , height: self.view.frame.height)
+        animationView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 40)
+        animationView.contentMode = .scaleAspectFit
+        self.view.addSubview(animationView)
+
+        animationView.play { _ in
+            UIView.transition(with: self.view, duration: 0.4, options: [.transitionCrossDissolve], animations: {
+                animationView.removeFromSuperview()
+            })
+
+            let url = URL(string: "https://m.bbq.co.kr/images/Loading_Image.png")
+            if let data = try? Data(contentsOf: url!) {
+                self.splashImageView.image = UIImage(data: data)
+            }
+            
+            self.initWebKit()
+            self.lastContentOffset = CGPoint(x: 0.0, y: 0.0)
+        }
+
         
 //        // 비동기 호출방식일경우
 //        _ = try? self.updateVersionInfo { (update, error) in
@@ -421,8 +451,9 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         }
         
         self.loadUrl()
-      
+
         self.bringToFromWebViewNavigationItems(topWebView: wkWebView)
+
         
     }
 
@@ -461,19 +492,24 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
     func loadUrl() {
 //        // push token test...
 //        Utils().setPushToken(token: "testtoken")
-        let deviceId = Utils().getUUID();
-        if self.url_type == "MAIN" {
-            if let url = URL(string: MAIN_URL+"/main.asp?osTypeCd=IOS&deviceId="+deviceId+"&token="+Utils().getPushToken()) {
-                let request = URLRequest(url: url)
-                self.wkWebView.load(request)
-            }
-        } else {
-//            if let url = URL(string: LOGIN_URL+Utils().getPushToken()) {
-            if let url = URL(string: MAIN_URL) {
-                let request = URLRequest(url: url)
-                self.wkWebView.load(request)
+        let DELAY_SECONDS = 1.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + DELAY_SECONDS) {
+            let deviceId = Utils().getUUID();
+            print("self.url_type :: \(self.url_type)")
+            if self.url_type == "MAIN" {
+                if let url = URL(string: MAIN_URL+"/main.asp?osTypeCd=IOS&deviceId=" + deviceId + "&token="+Utils().getPushToken()) {
+                    let request = URLRequest(url: url)
+                    self.wkWebView.load(request)
+                }
+            } else {
+    //            if let url = URL(string: LOGIN_URL+Utils().getPushToken()) {
+                if let url = URL(string: MAIN_URL) {
+                    let request = URLRequest(url: url)
+                    self.wkWebView.load(request)
+                }
             }
         }
+
     }
 
     
@@ -579,18 +615,21 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
             self.bringToFromWebViewNavigationItems(topWebView: self.wkWebView)
         }
         self.btnBack.isHidden = true
+        print("webViewDidClose :: \(webView.url)");
+
     }
 
     func webView(_ webView: WKWebView,
                  runJavaScriptAlertPanelWithMessage message: String,
                  initiatedByFrame frame: WKFrameInfo,
                  completionHandler: @escaping () -> Swift.Void) {
-        
+
         self.dismissProgreeForWebView()
         
         self.showConfirmDialog(title: "", message: message) {() -> Void
              in completionHandler()
         }
+        print("runJavaScriptAlertPanelWithMessage :: \(webView.url)");
 
     }
 
@@ -612,6 +651,8 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
         self.showDialog(title: "",
                         message: message,
                         button1: cancel, button2: confirm)
+        print("runJavaScriptConfirmPanelWithMessage :: \(webView.url)");
+
 
     }
 
@@ -620,8 +661,9 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
                  decisionHandler: @escaping ((WKNavigationActionPolicy) -> Void)) {
 
         let url = navigationAction.request.url//?.absoluteString
-        print("url="+(url?.absoluteString)!)
-//
+        print("decidePolicyFor :: \(url)");
+
+//        print("url="+(url?.absoluteString)!)
         let findKeyword = "back://"
 
         if openInDocumentPreview(url!) {
@@ -791,11 +833,15 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         // get header and print it
         decisionHandler(.allow)
+        print("decidePolicyFor navigationResponse :: \(webView.url)");
+
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
        
         wkWebView.frame = self.view.frame
+        print("viewWillTransition :: \(wkWebView.url)");
+
     }
     
     /*
@@ -835,6 +881,8 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
             self.documentPreviewController.refreshCurrentPreviewItem()
             self.present(self.documentPreviewController, animated: true, completion: nil)
         }
+        print("previewDocument :: \(wkWebView.url)");
+
     }
     
     func deleteCookie() {
@@ -843,12 +891,16 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
 //        let date_data = NSDate(timeIntervalSince1970: 0)
 //
 //        WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set, modifiedSince: date_data as Date, completionHandler: {})
+        print("deleteCookie :: \(wkWebView.url)");
+
     }
 
     /*
      Implementation for QLPreviewControllerDataSource
      */
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        print("previewController :: \(wkWebView.url)");
+
         return documentUrl as QLPreviewItem
     }
 
@@ -880,6 +932,8 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
      */
     private func executeDocumentDownloadScript(forAbsoluteUrl absoluteUrl : String) {
         // TODO: Add more supported mime-types for missing content-disposition headers
+        print("executeDocumentDownloadScript :: \(absoluteUrl)");
+
         wkWebView.evaluateJavaScript("""
             (async function download() {
             const url = '\(absoluteUrl)';
@@ -1007,7 +1061,9 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
         self.initWebViewConstraints(webView: newWebView.webView!)
 
         self.btnBack.isHidden = false
-        
+        print("createWebViewWith 1 :: \(wkWebView?.url)");
+        print("createWebViewWith 2 :: \(newWebView.webView?.url)");
+
         return newWebView.webView
 
     }
@@ -1021,6 +1077,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         //        self.showProgressForWebView()
+        print("didStartProvisionalNavigation :: \(webView.url)");
         self.showProgressForWebView()
        
         
@@ -1052,7 +1109,8 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
         }
 
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.dismissProgreeForWebView), userInfo: nil, repeats: false)
-      
+        print("didCommit 1 :: \(wkWebView?.url)");
+
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -1065,6 +1123,8 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
 //            }
            self.layerView.isHidden = true
            self.view.bringSubviewToFront(self.btnHome)
+        print("didFinish 1 :: \(wkWebView?.url)");
+
     }
 
     func webView(_ webView: WKWebView,
@@ -1072,6 +1132,8 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
                  withError error: Error) {
         print(error.localizedDescription)
           self.layerView.isHidden = true
+        print("didFail 1 :: \(wkWebView?.url)");
+
     }
 
 //    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
@@ -1105,7 +1167,8 @@ extension MainViewController: WKScriptMessageHandler {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
             controller.url = message.body as! String
-            
+            print("controller.url :: \(controller.url)");
+
             self.navigationController?.pushViewController(controller, animated: false)
             
         } else {
@@ -1143,7 +1206,7 @@ extension MainViewController: WKScriptMessageHandler {
                                 }
                                 uvc.mainVC = self
                                 self.isSetBarCode = true
-                               self.present(uvc,animated: false,completion: nil)
+                                self.present(uvc,animated: false,completion: nil)
 //                            wkWebView.evaluateJavaScript("iosbarCodeData('barcodetestdata');",completionHandler: nil)
                         }
                         else if message == "echoData"
