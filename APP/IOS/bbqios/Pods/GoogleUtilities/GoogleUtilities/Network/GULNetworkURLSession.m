@@ -14,16 +14,18 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Private/GULNetworkURLSession.h"
+#import "GoogleUtilities/Network/Public/GoogleUtilities/GULNetworkURLSession.h"
 
-#import <GoogleUtilities/GULLogger.h>
-#import "Private/GULMutableDictionary.h"
-#import "Private/GULNetworkConstants.h"
-#import "Private/GULNetworkMessageCode.h"
+#import "GoogleUtilities/Logger/Public/GoogleUtilities/GULLogger.h"
+#import "GoogleUtilities/Network/GULNetworkInternal.h"
+#import "GoogleUtilities/Network/Public/GoogleUtilities/GULMutableDictionary.h"
+#import "GoogleUtilities/Network/Public/GoogleUtilities/GULNetworkConstants.h"
+#import "GoogleUtilities/Network/Public/GoogleUtilities/GULNetworkMessageCode.h"
 
 @interface GULNetworkURLSession () <NSURLSessionDelegate,
-                                    NSURLSessionTaskDelegate,
-                                    NSURLSessionDownloadDelegate>
+                                    NSURLSessionDataDelegate,
+                                    NSURLSessionDownloadDelegate,
+                                    NSURLSessionTaskDelegate>
 @end
 
 @implementation GULNetworkURLSession {
@@ -37,6 +39,9 @@
 #pragma clang diagnostic ignored "-Wunguarded-availability"
   /// The session configuration. NSURLSessionConfiguration' is only available on iOS 7.0 or newer.
   NSURLSessionConfiguration *_sessionConfig;
+
+  /// The current NSURLSession.
+  NSURLSession *__weak _Nullable _URLSession;
 #pragma clang diagnostic pop
 
   /// The path to the directory where all temporary files are stored before uploading.
@@ -50,9 +55,6 @@
 
   /// The current request.
   NSURLRequest *_request;
-
-  /// The current NSURLSession.
-  NSURLSession *__weak _Nullable _URLSession;
 }
 
 #pragma mark - Init
@@ -61,12 +63,15 @@
   self = [super init];
   if (self) {
     // Create URL to the directory where all temporary files to upload have to be stored.
+#if TARGET_OS_TV
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+#else
     NSArray *paths =
         NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString *applicationSupportDirectory = paths.firstObject;
+#endif
+    NSString *storageDirectory = paths.firstObject;
     NSArray *tempPathComponents = @[
-      applicationSupportDirectory, kGULNetworkApplicationSupportSubdirectory,
-      kGULNetworkTempDirectoryName
+      storageDirectory, kGULNetworkApplicationSupportSubdirectory, kGULNetworkTempDirectoryName
     ];
     _networkDirectoryURL = [NSURL fileURLWithPathComponents:tempPathComponents];
     _sessionID = [NSString stringWithFormat:@"%@-%@", kGULNetworkBackgroundSessionConfigIDPrefix,
@@ -221,6 +226,24 @@
   return _sessionID;
 }
 
+#pragma mark - NSURLSessionDataDelegate
+
+/// Called by the NSURLSession when the data task has received some of the expected data.
+/// Once the session is completed, URLSession:task:didCompleteWithError will be called and the
+/// completion handler will be called with the downloaded data.
+- (void)URLSession:(NSURLSession *)session
+          dataTask:(NSURLSessionDataTask *)dataTask
+    didReceiveData:(NSData *)data {
+  @synchronized(self) {
+    NSMutableData *mutableData = [[NSMutableData alloc] init];
+    if (_downloadedData) {
+      mutableData = _downloadedData.mutableCopy;
+    }
+    [mutableData appendData:data];
+    _downloadedData = mutableData;
+  }
+}
+
 #pragma mark - NSURLSessionTaskDelegate
 
 /// Called by the NSURLSession once the download task is completed. The file is saved in the
@@ -368,7 +391,10 @@
       OSStatus trustError;
 
       @synchronized([GULNetworkURLSession class]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         trustError = SecTrustEvaluate(serverTrust, &trustEval);
+#pragma clang dianostic pop
       }
 
       if (trustError != errSecSuccess) {
@@ -413,9 +439,8 @@
     [_loggerDelegate
         GULNetwork_logWithLevel:kGULNetworkLogLevelError
                     messageCode:kGULNetworkMessageCodeURLSession010
-                        message:
-                            @"Cannot store system completion handler with empty network "
-                             "session identifier"];
+                        message:@"Cannot store system completion handler with empty network "
+                                 "session identifier"];
     return;
   }
 
@@ -517,8 +542,9 @@
   NSTimeInterval now = [NSDate date].timeIntervalSince1970;
   for (NSURL *tempFile in directoryContent) {
     NSDate *creationDate;
-    BOOL getCreationDate =
-        [tempFile getResourceValue:&creationDate forKey:NSURLCreationDateKey error:NULL];
+    BOOL getCreationDate = [tempFile getResourceValue:&creationDate
+                                               forKey:NSURLCreationDateKey
+                                                error:NULL];
     if (!getCreationDate) {
       continue;
     }

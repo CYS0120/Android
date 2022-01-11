@@ -48,7 +48,14 @@ public enum MultiTarget: TargetType {
     /// The embedded `TargetType`.
     public var target: TargetType {
         switch self {
-        case .target(let t): return t
+        case .target(let target): return target
         }
+    }
+}
+
+extension MultiTarget: AccessTokenAuthorizable {
+    public var authorizationType: AuthorizationType? {
+        guard let authorizableTarget = target as? AccessTokenAuthorizable else { return nil }
+        return authorizableTarget.authorizationType
     }
 }

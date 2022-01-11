@@ -3,13 +3,16 @@ import Darwin.POSIX.pthread
 #else
 import Glibc
 #endif
-import enum Result.NoError
+
+// FIXME: The `Error == Never` constraint is retained for Swift 4.0.x
+//        compatibility, since `BindingSource` did not impose such constraint
+//        due to the absence of conditional conformance.
 
 /// Represents a property that allows observation of its changes.
 ///
 /// Only classes can conform to this protocol, because having a signal
 /// for changes over time implies the origin must have a unique identity.
-public protocol PropertyProtocol: class, BindingSource where Error == NoError {
+public protocol PropertyProtocol: AnyObject, BindingSource {
 	/// The current value of the property.
 	var value: Value { get }
 
@@ -21,7 +24,7 @@ public protocol PropertyProtocol: class, BindingSource where Error == NoError {
 	///
 	/// - note: If `self` is a composed property, the producer would be
 	///         bound to the lifetime of its sources.
-	var producer: SignalProducer<Value, NoError> { get }
+	var producer: SignalProducer<Value, Never> { get }
 
 	/// A signal that will send the property's changes over time. It
 	/// completes when the property has deinitialized, or has no further
@@ -29,7 +32,7 @@ public protocol PropertyProtocol: class, BindingSource where Error == NoError {
 	///
 	/// - note: If `self` is a composed property, the signal would be
 	///         bound to the lifetime of its sources.
-	var signal: Signal<Value, NoError> { get }
+	var signal: Signal<Value, Never> { get }
 }
 
 /// Represents an observable property that can be mutated directly.
@@ -78,12 +81,17 @@ public protocol ComposableMutablePropertyProtocol: MutablePropertyProtocol {
 
 extension PropertyProtocol {
 	/// Lifts a unary SignalProducer operator to operate upon PropertyProtocol instead.
-	fileprivate func lift<U>(_ transform: @escaping (SignalProducer<Value, NoError>) -> SignalProducer<U, NoError>) -> Property<U> {
+	fileprivate func lift<U>(_ transform: @escaping (SignalProducer<Value, Never>) -> SignalProducer<U, Never>) -> Property<U> {
 		return Property(unsafeProducer: transform(producer))
 	}
 
+	/// Lifts a unary SignalProducer operator to operate upon PropertyProtocol instead.
+	fileprivate func liftUnserialized<U>(_ transform: @escaping (SignalProducer<Value, Never>) -> SignalProducer<U, Never>) -> Property<U> {
+		return Property(unsafeProducer: transform(producer), unserialized: true)
+	}
+
 	/// Lifts a binary SignalProducer operator to operate upon PropertyProtocol instead.
-	fileprivate func lift<P: PropertyProtocol, U>(_ transform: @escaping (SignalProducer<Value, NoError>) -> (SignalProducer<P.Value, NoError>) -> SignalProducer<U, NoError>) -> (P) -> Property<U> {
+	fileprivate func lift<P: PropertyProtocol, U>(_ transform: @escaping (SignalProducer<Value, Never>) -> (SignalProducer<P.Value, Never>) -> SignalProducer<U, Never>) -> (P) -> Property<U> {
 		return { other in
 			return Property(unsafeProducer: transform(self.producer)(other.producer))
 		}
@@ -99,7 +107,17 @@ extension PropertyProtocol {
 	///
 	/// - returns: A property that holds a mapped value from `self`.
 	public func map<U>(_ transform: @escaping (Value) -> U) -> Property<U> {
-		return lift { $0.map(transform) }
+		return liftUnserialized { $0.map(transform) }
+	}
+	
+	/// Map the current value and all susequent values to a new constant property.
+	///
+	/// - parameters:
+	///   - value: A new value.
+	///
+	/// - returns: A property that holds a mapped value from `self`.
+	public func map<U>(value: U) -> Property<U> {
+		return liftUnserialized { $0.map(value: value) }
 	}
 
 	/// Maps the current value and all subsequent values to a new property
@@ -110,7 +128,21 @@ extension PropertyProtocol {
 	///
 	/// - returns: A property that holds a mapped value from `self`.
 	public func map<U>(_ keyPath: KeyPath<Value, U>) -> Property<U> {
-		return lift { $0.map(keyPath) }
+		return liftUnserialized { $0.map(keyPath) }
+	}
+
+	/// Passes only the values of the property that pass the given predicate
+	/// to a new property.
+	///
+	/// - parameters:
+	///   - initial: A `Property` always needs a `value`. The initial `value` is necessary in case the
+	///              predicate excludes the first (or all) `value`s of this `Property`
+	///   - predicate: A closure that accepts value and returns `Bool` denoting
+	///                whether current `value` of this `Property`  has passed the test.
+	///
+	/// - returns: A property that holds only values from `self` passing the given predicate.
+	public func filter(initial: Value, _ predicate: @escaping (Value) -> Bool) -> Property<Value> {
+		return Property(initial: initial, then: self.producer.filter(predicate))
 	}
 
 	/// Combines the current value and the subsequent values of two `Property`s in
@@ -149,7 +181,7 @@ extension PropertyProtocol {
 	/// - returns: A property that holds tuples that contain previous and
 	///            current values of `self`.
 	public func combinePrevious(_ initial: Value) -> Property<(Value, Value)> {
-		return lift { $0.combinePrevious(initial) }
+		return liftUnserialized { $0.combinePrevious(initial) }
 	}
 
 	/// Forward only values from `self` that are not considered equivalent to its
@@ -162,7 +194,7 @@ extension PropertyProtocol {
 	///
 	/// - returns: A property which conditionally forwards values from `self`.
 	public func skipRepeats(_ isEquivalent: @escaping (Value, Value) -> Bool) -> Property<Value> {
-		return lift { $0.skipRepeats(isEquivalent) }
+		return liftUnserialized { $0.skipRepeats(isEquivalent) }
 	}
 }
 
@@ -173,7 +205,7 @@ extension PropertyProtocol where Value: Equatable {
 	///
 	/// - returns: A property which conditionally forwards values from `self`.
 	public func skipRepeats() -> Property<Value> {
-		return lift { $0.skipRepeats() }
+		return liftUnserialized { $0.skipRepeats() }
 	}
 }
 
@@ -216,7 +248,7 @@ extension PropertyProtocol {
 	///
 	/// - returns: A property that sends unique values during its lifetime.
 	public func uniqueValues<Identity: Hashable>(_ transform: @escaping (Value) -> Identity) -> Property<Value> {
-		return lift { $0.uniqueValues(transform) }
+		return liftUnserialized { $0.uniqueValues(transform) }
 	}
 }
 
@@ -230,7 +262,7 @@ extension PropertyProtocol where Value: Hashable {
 	///
 	/// - returns: A property that sends unique values during its lifetime.
 	public func uniqueValues() -> Property<Value> {
-		return lift { $0.uniqueValues() }
+		return liftUnserialized { $0.uniqueValues() }
 	}
 }
 
@@ -300,6 +332,17 @@ extension PropertyProtocol {
 		return Property(unsafeProducer: SignalProducer.combineLatest(producers))
 	}
 
+	/// Combines the values of all the given `Property`s, in the manner described by
+	/// `combineLatest(with:)`. If `properties` is empty, the resulting `Property` would have `emptySentinel` as its
+	/// constant value.
+	public static func combineLatest<S: Sequence>(
+		_ properties: S,
+		emptySentinel: [S.Iterator.Element.Value]
+	) -> Property<[S.Iterator.Element.Value]> where S.Iterator.Element: PropertyProtocol {
+		let producers = properties.map { $0.producer }
+		return Property(unsafeProducer: SignalProducer.combineLatest(producers, emptySentinel: emptySentinel))
+	}
+
 	/// Zips the values of all the given properties, in the manner described by
 	/// `zip(with:)`.
 	public static func zip<A: PropertyProtocol, B: PropertyProtocol>(_ a: A, _ b: B) -> Property<(Value, B.Value)> where A.Value == Value {
@@ -364,14 +407,25 @@ extension PropertyProtocol {
 
 		return Property(unsafeProducer: SignalProducer.zip(producers))
 	}
+
+	/// Combines the values of all the given `Property`s, in the manner described by
+	/// `zip(with:)`. If `properties` is empty, the resulting `Property` would have `emptySentinel` as its
+	/// constant value.
+	public static func zip<S: Sequence>(
+		_ properties: S,
+		emptySentinel: [S.Iterator.Element.Value]
+	) -> Property<[S.Iterator.Element.Value]> where S.Iterator.Element: PropertyProtocol {
+		let producers = properties.map { $0.producer }
+		return Property(unsafeProducer: SignalProducer.zip(producers, emptySentinel: emptySentinel))
+	}
 }
 
 extension PropertyProtocol where Value == Bool {
 	/// Create a property that computes a logical NOT in the latest values of `self`.
 	///
-	/// - returns: A property that contains the logial NOT results.
+	/// - returns: A property that contains the logical NOT results.
 	public func negate() -> Property<Value> {
-		return self.lift { $0.negate() }
+		return liftUnserialized { $0.negate() }
 	}
 
 	/// Create a property that computes a logical AND between the latest values of `self`
@@ -380,10 +434,30 @@ extension PropertyProtocol where Value == Bool {
 	/// - parameters:
 	///   - property: Property to be combined with `self`.
 	///
-	/// - returns: A property that contains the logial AND results.
+	/// - returns: A property that contains the logical AND results.
 	public func and<P: PropertyProtocol>(_ property: P) -> Property<Value> where P.Value == Value {
 		return self.lift(SignalProducer.and)(property)
 	}
+	
+	/// Create a property that computes a logical AND between the latest values of `properties`.
+	///
+	/// - parameters:
+	///   - property: Collection of properties to be combined.
+	///
+	/// - returns: A property that contains the logical AND results.
+	public static func all<P: PropertyProtocol, Properties: Collection>(_ properties: Properties) -> Property<Value> where P.Value == Value, Properties.Element == P {
+		return Property(initial: properties.map { $0.value }.reduce(true) { $0 && $1 }, then: SignalProducer.all(properties))
+	}
+    
+    /// Create a property that computes a logical AND between the latest values of `properties`.
+    ///
+    /// - parameters:
+    ///   - property: Properties to be combined.
+    ///
+    /// - returns: A property that contains the logical AND results.
+    public static func all<P: PropertyProtocol>(_ properties: P...) -> Property<Value> where P.Value == Value {
+        return .all(properties)
+    }
 
 	/// Create a property that computes a logical OR between the latest values of `self`
 	/// and `property`.
@@ -391,10 +465,30 @@ extension PropertyProtocol where Value == Bool {
 	/// - parameters:
 	///   - property: Property to be combined with `self`.
 	///
-	/// - returns: A property that contains the logial OR results.
+	/// - returns: A property that contains the logical OR results.
 	public func or<P: PropertyProtocol>(_ property: P) -> Property<Value> where P.Value == Value {
 		return self.lift(SignalProducer.or)(property)
 	}
+	
+	/// Create a property that computes a logical OR between the latest values of `properties`.
+	///
+	/// - parameters:
+	///   - properties: Collection of properties to be combined.
+	///
+	/// - returns: A property that contains the logical OR results.
+	public static func any<P: PropertyProtocol, Properties: Collection>(_ properties: Properties) -> Property<Value> where P.Value == Value, Properties.Element == P {
+		return Property(initial: properties.map { $0.value }.reduce(false) { $0 || $1 }, then: SignalProducer.any(properties))
+	}
+    
+    /// Create a property that computes a logical OR between the latest values of `properties`.
+    ///
+    /// - parameters:
+    ///   - properties: Properties to be combined.
+    ///
+    /// - returns: A property that contains the logical OR results.
+    public static func any<P: PropertyProtocol>(_ properties: P...) -> Property<Value> where P.Value == Value {
+        return .any(properties)
+    }
 }
 
 /// A read-only property that can be observed for its changes over time. There
@@ -423,6 +517,7 @@ extension PropertyProtocol where Value == Bool {
 /// deinitializing.
 ///
 /// Note that composed properties do not retain any of its sources.
+@propertyWrapper
 public final class Property<Value>: PropertyProtocol {
 	private let _value: () -> Value
 
@@ -431,20 +526,30 @@ public final class Property<Value>: PropertyProtocol {
 		return _value()
 	}
 
+	@inlinable
+	public var wrappedValue: Value {
+		return value
+	}
+
+	@inlinable
+	public var projectedValue: Property<Value> {
+		return self
+	}
+
 	/// A producer for Signals that will send the property's current
 	/// value, followed by all changes over time, then complete when the
 	/// property has deinitialized or has no further changes.
 	///
 	/// - note: If `self` is a composed property, the producer would be
 	///         bound to the lifetime of its sources.
-	public let producer: SignalProducer<Value, NoError>
+	public let producer: SignalProducer<Value, Never>
 
 	/// A signal that will send the property's changes over time, then
 	/// complete when the property has deinitialized or has no further changes.
 	///
 	/// - note: If `self` is a composed property, the signal would be
 	///         bound to the lifetime of its sources.
-	public let signal: Signal<Value, NoError>
+	public let signal: Signal<Value, Never>
 
 	/// Initializes a constant property.
 	///
@@ -453,7 +558,7 @@ public final class Property<Value>: PropertyProtocol {
 	public init(value: Value) {
 		_value = { value }
 		producer = SignalProducer(value: value)
-		signal = Signal<Value, NoError>.empty
+		signal = Signal<Value, Never>.empty
 	}
 
 	/// Initializes an existential property which wraps the given property.
@@ -485,21 +590,22 @@ public final class Property<Value>: PropertyProtocol {
 	///   - initial: Starting value for the property.
 	///   - values: A producer that will start immediately and send values to
 	///             the property.
-	public convenience init(initial: Value, then values: SignalProducer<Value, NoError>) {
+	public convenience init(initial: Value, then values: SignalProducer<Value, Never>) {
 		self.init(unsafeProducer: SignalProducer { observer, lifetime in
 			observer.send(value: initial)
 			lifetime += values.start(Signal.Observer(mappingInterruptedToCompleted: observer))
 		})
 	}
 
-	/// Initialize a composed property that first takes on `initial`, then each
-	/// value sent on `signal`.
+	/// Initializes a composed property that first takes on `initial`, then each
+	/// value sent on a signal created by `producer`.
 	///
 	/// - parameters:
-	///   - initialValue: Starting value for the property.
-	///   - values: A signal that will send values to the property.
-	public convenience init(initial: Value, then values: Signal<Value, NoError>) {
-		self.init(initial: initial, then: SignalProducer(values))
+	///   - initial: Starting value for the property.
+	///   - values: A producer that will start immediately and send values to
+	///             the property.
+	public convenience init<Values: SignalProducerConvertible>(initial: Value, then values: Values) where Values.Value == Value, Values.Error == Never {
+		self.init(initial: initial, then: values.producer)
 	}
 
 	/// Initialize a composed property from a producer that promises to send
@@ -517,7 +623,7 @@ public final class Property<Value>: PropertyProtocol {
 	///
 	/// - parameters:
 	///   - unsafeProducer: The composed producer for creating the property.
-	fileprivate init(unsafeProducer: SignalProducer<Value, NoError>) {
+	fileprivate init(unsafeProducer: SignalProducer<Value, Never>, unserialized: Bool = false) {
 		// The ownership graph:
 		//
 		// ------------     weak  -----------    strong ------------------
@@ -533,7 +639,9 @@ public final class Property<Value>: PropertyProtocol {
 		// A composed property tracks its active consumers through its relay signal, and
 		// interrupts `unsafeProducer` if the relay signal terminates.
 		let disposable = SerialDisposable()
-		let (relay, observer) = Signal<Value, NoError>.pipe(disposable: disposable)
+		let (relay, observer) = unserialized
+			? Signal<Value, Never>.unserializedPipe(disposable: disposable)
+			: Signal<Value, Never>.pipe(disposable: disposable)
 
 		disposable.inner = unsafeProducer.start { [weak box] event in
 			// `observer` receives `interrupted` only as a result of the termination of
@@ -565,7 +673,7 @@ public final class Property<Value>: PropertyProtocol {
 		_value = { box.value! }
 		signal = relay
 
-		producer = SignalProducer { [box, relay] observer, lifetime in
+		producer = SignalProducer.unserialized { [box, relay] observer, lifetime in
 			box.withValue { value in
 				observer.send(value: value!)
 				lifetime += relay.observe(Signal.Observer(mappingInterruptedToCompleted: observer))
@@ -582,27 +690,29 @@ extension Property where Value: OptionalProtocol {
 	///   - initial: Starting value for the property.
 	///   - values: A producer that will start immediately and send values to
 	///             the property.
-	public convenience init(initial: Value, then values: SignalProducer<Value.Wrapped, NoError>) {
+	public convenience init(initial: Value, then values: SignalProducer<Value.Wrapped, Never>) {
 		self.init(initial: initial, then: values.map(Value.init(reconstructing:)))
 	}
 
-	/// Initialize a composed property that first takes on `initial`, then each
-	/// value sent on `signal`.
+	/// Initializes a composed property that first takes on `initial`, then each
+	/// value sent on a signal created by `producer`.
 	///
 	/// - parameters:
-	///   - initialValue: Starting value for the property.
-	///   - values: A signal that will send values to the property.
-	public convenience init(initial: Value, then values: Signal<Value.Wrapped, NoError>) {
-		self.init(initial: initial, then: SignalProducer(values))
+	///   - initial: Starting value for the property.
+	///   - values: A producer that will start immediately and send values to
+	///             the property.
+	public convenience init<Values: SignalProducerConvertible>(initial: Value, then values: Values) where Values.Value == Value.Wrapped, Values.Error == Never {
+		self.init(initial: initial, then: values.producer)
 	}
 }
 
 /// A mutable property of type `Value` that allows observation of its changes.
 ///
 /// Instances of this class are thread-safe.
+@propertyWrapper
 public final class MutableProperty<Value>: ComposableMutablePropertyProtocol {
 	private let token: Lifetime.Token
-	private let observer: Signal<Value, NoError>.Observer
+	private let observer: Signal<Value, Never>.Observer
 	private let box: PropertyBox<Value>
 
 	/// The current value of the property.
@@ -614,18 +724,29 @@ public final class MutableProperty<Value>: ComposableMutablePropertyProtocol {
 		set { modify { $0 = newValue } }
 	}
 
+	@inlinable
+	public var wrappedValue: Value {
+		get { value }
+		set { value = newValue }
+	}
+
+	@inlinable
+	public var projectedValue: MutableProperty<Value> {
+		return self
+	}
+
 	/// The lifetime of the property.
 	public let lifetime: Lifetime
 
 	/// A signal that will send the property's changes over time,
 	/// then complete when the property has deinitialized.
-	public let signal: Signal<Value, NoError>
+	public let signal: Signal<Value, Never>
 
 	/// A producer for Signals that will send the property's current value,
 	/// followed by all changes over time, then complete when the property has
 	/// deinitialized.
-	public var producer: SignalProducer<Value, NoError> {
-		return SignalProducer { [box, signal] observer, lifetime in
+	public var producer: SignalProducer<Value, Never> {
+		return SignalProducer.unserialized { [box, signal] observer, lifetime in
 			box.withValue { value in
 				observer.send(value: value)
 				lifetime += signal.observe(Signal.Observer(mappingInterruptedToCompleted: observer))
@@ -638,13 +759,21 @@ public final class MutableProperty<Value>: ComposableMutablePropertyProtocol {
 	/// - parameters:
 	///   - initialValue: Starting value for the mutable property.
 	public init(_ initialValue: Value) {
-		(signal, observer) = Signal.pipe()
+		(signal, observer) = Signal.unserializedPipe()
 		(lifetime, token) = Lifetime.make()
 
 		/// Need a recursive lock around `value` to allow recursive access to
 		/// `value`. Note that recursive sets will still deadlock because the
 		/// underlying producer prevents sending recursive events.
 		box = PropertyBox(initialValue)
+	}
+
+	/// Initializes a mutable property that first takes on `initialValue`
+	///
+	/// - parameters:
+	///   - initialValue: Starting value for the mutable property.
+	public convenience init(wrappedValue: Value) {
+		self.init(wrappedValue)
 	}
 
 	/// Atomically replaces the contents of the variable.

@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 /// Represents a serial queue of work items.
-public protocol Scheduler: class {
+public protocol Scheduler: AnyObject {
 	/// Enqueues an action on the scheduler.
 	///
 	/// When the work is executed depends on the scheduler in use.
@@ -111,8 +111,8 @@ public final class UIScheduler: Scheduler {
 	}()
 
 	deinit {
-		queueLength.deinitialize()
-		queueLength.deallocate(capacity: 1)
+		queueLength.deinitialize(count: 1)
+		queueLength.deallocate()
 	}
 	#endif
 
@@ -184,15 +184,22 @@ public final class UIScheduler: Scheduler {
 private final class DispatchSourceTimerWrapper: Hashable {
 	private let value: DispatchSourceTimer
 	
+	#if swift(>=4.1.50)
+	fileprivate func hash(into hasher: inout Hasher) {
+		hasher.combine(ObjectIdentifier(self))
+	}
+	#else
 	fileprivate var hashValue: Int {
 		return ObjectIdentifier(self).hashValue
 	}
+	#endif
 	
 	fileprivate init(_ value: DispatchSourceTimer) {
 		self.value = value
 	}
 	
 	fileprivate static func ==(lhs: DispatchSourceTimerWrapper, rhs: DispatchSourceTimerWrapper) -> Bool {
+		// Note that this isn't infinite recursion thanks to `===`.
 		return lhs === rhs
 	}
 }
@@ -393,7 +400,7 @@ public final class TestScheduler: DateScheduler {
 		}
 
 		func less(_ rhs: ScheduledAction) -> Bool {
-			return date.compare(rhs.date) == .orderedAscending
+			return date < rhs.date
 		}
 	}
 
@@ -556,6 +563,17 @@ public final class TestScheduler: DateScheduler {
 		lock.unlock()
 	}
 
+	/// Advances the virtualized clock by the given interval, dequeuing and
+	/// executing any actions along the way.
+	///
+	/// - parameters:
+	///   - interval: Interval by which the current date will be advanced.
+	public func advance(by interval: TimeInterval) {
+		lock.lock()
+		advance(to: currentDate.addingTimeInterval(interval))
+		lock.unlock()
+	}
+
 	/// Advances the virtualized clock to the given future date, dequeuing and
 	/// executing any actions up until that point.
 	///
@@ -564,10 +582,10 @@ public final class TestScheduler: DateScheduler {
 	public func advance(to newDate: Date) {
 		lock.lock()
 
-		assert(currentDate.compare(newDate) != .orderedDescending)
+		assert(currentDate <= newDate)
 
 		while scheduledActions.count > 0 {
-			if newDate.compare(scheduledActions[0].date) == .orderedAscending {
+			if newDate < scheduledActions[0].date {
 				break
 			}
 
@@ -597,7 +615,7 @@ public final class TestScheduler: DateScheduler {
 		lock.lock()
 
 		let newDate = currentDate.addingTimeInterval(-interval)
-		assert(currentDate.compare(newDate) != .orderedAscending)
+		assert(currentDate >= newDate)
 		_currentDate = newDate
 
 		lock.unlock()

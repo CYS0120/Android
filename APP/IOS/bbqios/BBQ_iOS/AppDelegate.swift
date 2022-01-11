@@ -118,10 +118,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        //  세로방향으로 고정.
 //    }
     
+
     enum VersionError: Error {
         case invalidResponse, invalidBundleInfo
     }
     
+    
+    /*
     func isUpdateAvailable(completion: @escaping (Bool?, Error?) -> Void) throws -> URLSessionDataTask {
         guard let info = Bundle.main.infoDictionary,
             let currentVersion = info["CFBundleShortVersionString"] as? String,
@@ -164,8 +167,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIApplication.shared.openURL(URL(string: URL_UPDATE_STORE)!)
         }
     }
-
+     */
     
+
 
     func goMain(_ url_type: String) {
         Utils().setUUID()
@@ -212,10 +216,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //
 //        }
 
-
         
         //        self.removeTabbarItemsText(tabBarController)
     }
+     
     
     func setNavigationController(_ navigationController : UINavigationController) {
         
@@ -360,8 +364,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 
 extension AppDelegate : MessagingDelegate {
     // [START refresh_token]
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        print("Firebase registration token: \(fcmToken)")
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        print("Firebase registration token: \(String(describing: fcmToken))")
         Utils().setPushToken(token: fcmToken)
         //Messaging.messaging().subscribe(toTopic: "news")
         // TODO: If necessary send token to application server.
@@ -372,9 +376,11 @@ extension AppDelegate : MessagingDelegate {
     // [START ios_10_data_message]
     // Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.
     // To enable direct data messages, you can set Messaging.messaging().shouldEstablishDirectChannel to true.
-    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
-        print("Received data message: \(remoteMessage.appData)")
-    }
+//    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+//        print("Received data message: \(remoteMessage.appData)")
+//    }
+    
+    
     // [END ios_10_data_message]
 }
 

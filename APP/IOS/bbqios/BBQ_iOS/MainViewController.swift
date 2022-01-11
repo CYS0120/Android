@@ -93,11 +93,11 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         self.day   = UserDefaults.standard.value(forKey: "day") as? Int
         self.hour  = UserDefaults.standard.value(forKey: "hour") as? Int
         self.min   = UserDefaults.standard.value(forKey: "min") as? Int
-        print(self.year)
-        print(self.month)
-        print(self.day)
-        print(self.hour)
-        print(self.min)
+        print(self.year ?? 0)
+        print(self.month ?? 0)
+        print(self.day ?? 0)
+        print(self.hour ?? 0)
+        print(self.min ?? 0)
 
         super.init(coder: aDecoder)
     }
@@ -128,9 +128,11 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
                 animationView.removeFromSuperview()
             })
 
-            let url = URL(string: "https://m.bbq.co.kr/images/Loading_Image.png")
-            if let data = try? Data(contentsOf: url!) {
-                self.splashImageView.image = UIImage(data: data)
+//            let url = URL(string: "https://m.bbq.co.kr/images/Loading_Image.png")
+            if let splash = UserDefaults.standard.string(forKey: "SplashImage"), let url = URL(string: splash) {
+                if let data = try? Data(contentsOf: url) {
+                    self.splashImageView.image = UIImage(data: data)
+                }
             }
             
             self.initWebKit()
@@ -150,9 +152,9 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
 //        self.createUserPassword()
     }
 
-    enum VersionError: Error {
-        case invalidResponse, invalidBundleInfo
-    }
+//    enum VersionError: Error {
+//        case invalidResponse, invalidBundleInfo
+//    }
     
     
     @IBAction func onPressedWebViewHomeButton(_ sender: Any) {
@@ -230,15 +232,15 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         
         let userDefaults = UserDefaults.standard
         userDefaults.set(arr.year,forKey: "year")
-        print(self.year)
+        print(self.year ?? 0)
         userDefaults.set(arr.month,forKey: "month")
-        print(self.month)
+        print(self.month ?? 0)
         userDefaults.set(arr.day,forKey: "day")
-        print(self.day)
+        print(self.day ?? 0)
         userDefaults.set(arr.hour,forKey: "hour")
-        print(self.hour)
+        print(self.hour ?? 0)
         userDefaults.set(arr.minute,forKey: "min")
-        print(self.min)
+        print(self.min ?? 0)
     }
     
     func initWebKit() {
@@ -276,9 +278,9 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         config.preferences.javaScriptCanOpenWindowsAutomatically = true
         
         //calendar 정보 받아오기
-        var cal = Calendar.current
-        var date = Date()
-        var arr = cal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        let cal = Calendar.current
+        let date = Date()
+        let arr = cal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
         
         print(arr)
         
@@ -362,15 +364,15 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         {
             let userDefaults = UserDefaults.standard
             userDefaults.set(arr.year,forKey: "year")
-            print(self.year)
+            print(self.year ?? 0)
             userDefaults.set(arr.month,forKey: "month")
-            print(self.month)
+            print(self.month ?? 0)
             userDefaults.set(arr.day,forKey: "day")
-            print(self.day)
+            print(self.day ?? 0)
             userDefaults.set(arr.hour,forKey: "hour")
-            print(self.hour)
+            print(self.hour ?? 0)
             userDefaults.set(arr.minute,forKey: "min")
-            print(self.min)
+            print(self.min ?? 0)
         }
         
 

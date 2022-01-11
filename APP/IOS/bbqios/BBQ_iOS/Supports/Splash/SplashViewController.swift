@@ -7,55 +7,21 @@
 //
 
 import UIKit
+import Firebase
+
 
 class SplashViewController: BasicViewController {
-//    @IBOutlet weak var splashImageView: UIImageView!
-    
-//    @IBOutlet weak var backgroundImageView : UIImageView!
-    
-    
-
-    
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-//        UIGraphicsBeginImageContext(view.frame.size)
-//        UIImage(named: "splash_pattern")?.draw(in: self.view.bounds)
-//        let image = UIGraphicsGetImageFromCurrentImageContext()
-//        UIGraphicsEndImageContext()
-//
-//
-//        self.view.backgroundColor = UIColor.init(patternImage: image!)
-//
-  
-//        if let bgColor = UIImage(named: "splash_pattern") {
-//            let backgroundImageView = UIImageView(frame: UIScreen.main.bounds)
-//            backgroundImageView.backgroundColor = UIColor.init(patternImage: bgColor)
-//            self.view.insertSubview(backgroundImageView, at: 0)
-//        }
-//        self.backgroundImageView.backgroundColor = UIColor.green
         
-//        let backgroundImage = UIImageView(frame: UIScreen.mainScreen().bounds)
-//        backgroundImage.image = UIImage(named: "splash_pattern")
-//        self.view.insertSubview(backgroundImage, atIndex: 0)
-
+        checkVersion()
+    
         
-//        backgroundImageView.backgroundColor = UIColor.init(patternImage: UIImage(named: "splash_pattern")!)
+        /////////////////////////////////////////
         
-//        UIGraphicsBeginImageContext(self.view.frame.size)
-//        UIImage(named: "splash_pattern")?.draw(in: self.view.bounds)
-//
-//        if let image = UIGraphicsGetImageFromCurrentImageContext(){
-//            UIGraphicsEndImageContext()
-//            self.view.backgroundColor = UIColor(patternImage: image)
-//        }else{
-//            UIGraphicsEndImageContext()
-//            debugPrint("Image not available")
-//        }
-
+        /*
         // test 추후 버전체크로 처리해야 함
         _ = try? isUpdateAvailable { (update, error) in
             if let error = error {
@@ -109,51 +75,29 @@ class SplashViewController: BasicViewController {
                 
             }
         }
+         */
+        /////////////////////////////////////////
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated) // No need for semicolon
-        
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
-//        UIGraphicsBeginImageContext(view.frame.size)
-//        UIImage(named: "splash_pattern")?.draw(in: self.view.bounds)
-//        let image = UIGraphicsGetImageFromCurrentImageContext()
-//        UIGraphicsEndImageContext()
-//
-//
-//        self.view.backgroundColor = UIColor.init(patternImage: image!)
-//        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "splash_pattern")!)
-//        if let bgColor = UIImage(named: "splash_pattern") {
-//            self.backgroundImageView.backgroundColor = UIColor.init(patternImage: bgColor)
+//        if UIDevice.current.orientation != UIDeviceOrientation.portrait {
+//            let value = UIInterfaceOrientation.portrait.rawValue
+//            UIDevice.current.setValue(value, forKey: "orientation")
+//            //            _ = self.shouldAutorotate
 //        }
-        
-        if UIDevice.current.orientation != UIDeviceOrientation.portrait {
-            let value = UIInterfaceOrientation.portrait.rawValue
-            UIDevice.current.setValue(value, forKey: "orientation")
-            //            _ = self.shouldAutorotate
-        }
-        
-//        self.goMain()
-
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-     
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//
-//    }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
 //        if bool_autorotation {
@@ -163,10 +107,19 @@ class SplashViewController: BasicViewController {
 //        }
     }
     
-    override var shouldAutorotate: Bool {
-        return true
-    }
+//    override var shouldAutorotate: Bool {
+//        return true
+//    }
     
+    
+    //
+    // MARK: private
+    //
+    
+    
+    
+    
+    /*
     enum VersionError: Error {
         case invalidResponse, invalidBundleInfo
     }
@@ -202,13 +155,112 @@ class SplashViewController: BasicViewController {
         task.resume()
         return task
     }
+     */
     
+    
+    
+    /*-----------------------------------------------------------------------
+     * firebase에 등록된 iOS 버전 정보 획득
+     *-----------------------------------------------------------------------*/
+    func checkVersion() {
+        
+        let remoteConfig = RemoteConfig.remoteConfig()
+        
+        /*
+        let settings = RemoteConfigSettings()
+        settings.minimumFetchInterval = 60*10*6*24 // 하루에 한번만 체크
+//        settings.minimumFetchInterval = 0               // 계속 체크
+        remoteConfig.configSettings = settings
+         */
+        
+        
+        //remote config 에서 매개변수 값 가져오기
+        remoteConfig.fetch(withExpirationDuration: TimeInterval(60*10*6*24)) { status, error in
+            if let _ = error {
+                self.goMain("MAIN")
+                return
+            }
+            
+            remoteConfig.activate { status, error in
+                if error == nil {
+                    
+                    // splash 이미지 url 정보
+                    if let splashImg = remoteConfig["SplashImage"].stringValue {
+                        UserDefaults.standard.set(splashImg, forKey: "SplashImage")
+                    }
+                    
+                    // cloud 버전
+                    guard let cloudVersion = remoteConfig["IosVersion"].stringValue else {
+                        self.goMain("MAIN")
+                        return
+                    }
+                    
+                    // 현재 앱 버전
+                    guard let info       = Bundle.main.infoDictionary,
+                          let curVersion = info["CFBundleShortVersionString"] as? String else {
+                              self.goMain("MAIN")
+                              return
+                    }
+                    
+                    // 버전 비교 처리 
+                    if cloudVersion == curVersion {
+                        self.goMain("MAIN")
+                    }
+                    else {
+                        DispatchQueue.main.async {
+                            self.showAlert()
+                        }
+                    }
+                } else {
+                    self.goMain("MAIN")
+                }
+            }
+        }
+    }
+    
+    
+    /*-----------------------------------------------------------------------
+     * 새로운 버전에 대한 alert 보여준다.
+     *-----------------------------------------------------------------------*/
+    func showAlert() {
+        
+        //
+        // 1. alert 생성
+        //
+        let alert = UIAlertController(title: "", message: "새로운 버전이 등록 되었습니다.\n업데이트 하시겠습니까?.", preferredStyle: .alert)
+
+        
+        //
+        // 2. 취소 추가
+        //
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (action) in
+            self.goMain("MAIN")
+        }
+        alert.addAction(cancelAction)
+
+        
+        //
+        // 3. 앱스토어로 이동 추가
+        //
+        let okAction = UIAlertAction(title: "이동", style: .default) { (action) in
+            self.openScheme()
+            self.goMain("MAIN")
+        }
+        alert.addAction(okAction)
+
+//        print(Utils().getNowDateOnly())
+//        Utils().setUpdateCheckDate(date: Utils().getNowDateOnly())
+        
+        //
+        // 4. alert 보여준다.
+        //
+        self.present(alert, animated: true)
+    }
     
     
     func openScheme() {
         if #available(iOS 10.0, *) {
             UIApplication.shared.open(URL(string: URL_UPDATE_STORE)!, options: [:], completionHandler: nil)
-            
         } else {
             UIApplication.shared.openURL(URL(string: URL_UPDATE_STORE)!)
         }
@@ -220,10 +272,5 @@ class SplashViewController: BasicViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //        appDelegate.shouldSupportAllOrientation = true
         appDelegate.goMain(url_type)
-
     }
-    
-    
-
-    
 }
