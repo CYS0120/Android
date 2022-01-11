@@ -326,14 +326,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(this.getClass().getName() , "onReceivedError = " + description )	;
                 Log.e(this.getClass().getName() , "onReceivedError = " + failingUrl )	;
 
-                Intent intent = getIntent();
-                String pushType = "";
-                if(intent.getStringExtra("PUSHTYPE") != null) {
-                    pushType = intent.getStringExtra("PUSHTYPE");
-                }
-
-                Toast.makeText(getApplicationContext(),pushType, Toast.LENGTH_LONG).show();
-
                 mWebView.setVisibility(View.GONE);
                 errorView.setVisibility(View.VISIBLE);
             }
@@ -605,7 +597,7 @@ public class MainActivity extends AppCompatActivity {
                             pushType = intent.getStringExtra("PUSHTYPE");
                         }
 
-                        Toast.makeText(getApplicationContext(),pushType, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),pushType, Toast.LENGTH_LONG).show();
 
 
                         String appVersion = "";
