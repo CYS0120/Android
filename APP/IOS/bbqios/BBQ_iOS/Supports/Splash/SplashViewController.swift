@@ -173,14 +173,18 @@ class SplashViewController: BasicViewController {
         remoteConfig.configSettings = settings
          */
         
-        
-        //remote config 에서 매개변수 값 가져오기
+        //
+        // remote config 에서 매개변수 값 가져오기 - 60*10*6*24(하루에 한번)
+        //
         remoteConfig.fetch(withExpirationDuration: TimeInterval(60*10*6*24)) { status, error in
             if let _ = error {
                 self.goMain("MAIN")
                 return
             }
             
+            //
+            // 정보추출 및 화면 이동 관련 처리
+            //
             remoteConfig.activate { status, error in
                 if error == nil {
                     
@@ -205,8 +209,7 @@ class SplashViewController: BasicViewController {
                     // 버전 비교 처리 
                     if cloudVersion == curVersion {
                         self.goMain("MAIN")
-                    }
-                    else {
+                    } else {
                         DispatchQueue.main.async {
                             self.showAlert()
                         }
@@ -220,7 +223,7 @@ class SplashViewController: BasicViewController {
     
     
     /*-----------------------------------------------------------------------
-     * 새로운 버전에 대한 alert 보여준다.
+     * 새로운 버전 등록에 대한 alert 보여준다.
      *-----------------------------------------------------------------------*/
     func showAlert() {
         
@@ -267,8 +270,7 @@ class SplashViewController: BasicViewController {
     }
 
     
-    func goMain (_ url_type: String) {
-
+    func goMain(_ url_type: String) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //        appDelegate.shouldSupportAllOrientation = true
         appDelegate.goMain(url_type)

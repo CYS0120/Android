@@ -28,20 +28,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         nvc = MainNavigationController(rootViewController: mainViewController)
 //        setNavigationController(nvc)
-       
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // launchscreen delay
-       // Thread.sleep(forTimeInterval: 1.5)
-        
-//        let storyboard = UIStoryboard(name: "Splash", bundle: nil)
-//        let splashViewController = storyboard.instantiateViewController(withIdentifier: "SplashViewController") as! SplashViewController
-        // Override point for customization after application launch.
+
         UIApplication.shared.applicationIconBadgeNumber = 0
         
-        FirebaseApp.configure()
-        Messaging.messaging().delegate = self
         
         //앱 최초 실행시 키체인 비워준다.
         if !UserDefaults.standard.bool(forKey:"FirstRun") {
@@ -51,78 +43,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always
         
-      
-//        self.goMain("MAIN")
-//        UserDefaults.standard.set("", forKey: "mb_id")
-//        UserDefaults.standard.set("", forKey: "wContentId")
-//        UserDefaults.standard.set("", forKey: "channel_num")
-
-        // Register for remote notifications. This shows a permission dialog on first run, to
-        // show the dialog at a more appropriate time move this registration accordingly.
-        // [START register_for_notifications]
+        
+        //
+        // push(원격 알림 등록)
+        //
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+        
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
-//            UNUserNotificationCenter.current().delegate = self
-//
-//            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-//
-//            UNUserNotificationCenter.current().requestAuthorization(
-//                options: authOptions,
-//                completionHandler: { isCheck, error in
-//                    if isCheck {
-//                        Utils().setDevicePushYn(yn: "Y")
-//                        Utils().setUserPushYn(yn: "Y")
-//                    } else {
-//                        Utils().setDevicePushYn(yn: "N")
-//                        Utils().setUserPushYn(yn: "N")
-//                    }
-//            })
+            UNUserNotificationCenter.current().delegate = self
+
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { _, _ in })
         } else {
-            let settings: UIUserNotificationSettings =
-                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            let settings: UIUserNotificationSettings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
             application.registerUserNotificationSettings(settings)
         }
         
         application.registerForRemoteNotifications()
-        let token : String! = Messaging.messaging().fcmToken
-        print("messaging().fcmToken :: \(String(describing: token))")
-//        let deviceId = UIDevice.current.identifierForVendor!.uuidString
-//        print("deviceId :: \(deviceId)")
-//        let uuid = UUID().uuidString
-//        print("UUID :: \(uuid)")
-
-        Utils().setPushToken(token:token)
         
+        
+        //
+        // token 정보 저장 ??, 여기서 하는지 확인 할 것
+        //
+        if let token = Messaging.messaging().fcmToken {
+            Utils().setPushToken(token: token)
+        }
+        
+        
+        //
+        // splash 화면 보여준다.
+        //
         let storyboard = UIStoryboard(name: "Splash", bundle: nil)
         let splashViewController = storyboard.instantiateViewController(withIdentifier: "SplashViewController") as! SplashViewController
 
         // self.window?.backgroundColor = UIColor.white
         self.window?.rootViewController = splashViewController
         self.window?.makeKeyAndVisible()
+        
         return true
     }
     
-//    var shouldSupportAllOrientation = false
-//
-//    //화면회전을 잠그고 고정할 목적의 플래그 변수를 추가한다.
-//
-//    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-//
-//        if (shouldSupportAllOrientation == true){
-//
-//            return UIInterfaceOrientationMask.allButUpsideDown
-//            //  모든방향 회전 가능
-//        }
-//
-//        return UIInterfaceOrientationMask.portrait
-//        //  세로방향으로 고정.
-//    }
-    
 
-    enum VersionError: Error {
-        case invalidResponse, invalidBundleInfo
-    }
-    
+//    enum VersionError: Error {
+//        case invalidResponse, invalidBundleInfo
+//    }
+//
     
     /*
     func isUpdateAvailable(completion: @escaping (Bool?, Error?) -> Void) throws -> URLSessionDataTask {
@@ -198,26 +165,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     self.window?.backgroundColor = UIColor.white
                     self.window?.rootViewController = self.nvc//mainViewController//nvc
                     self.window?.makeKeyAndVisible()
-
                 }
 
         })
-
-//        mainViewController.url_type = url_type
-//
-//        self.setNavigationController(nvc)
-//
-//        DispatchQueue.main.async {
-//            self.nvc.isNavigationBarHidden = true
-//
-//            self.window?.backgroundColor = UIColor.white
-//            self.window?.rootViewController = self.nvc//mainViewController//nvc
-//            self.window?.makeKeyAndVisible()
-//
-//        }
-
-        
-        //        self.removeTabbarItemsText(tabBarController)
     }
      
     
@@ -265,23 +215,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(userInfo)
     }
     
-//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-//                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//        // If you are receiving a notification message while your app is in the background,
-//        // this callback will not be fired till the user taps on the notification launching the application.
-//        // TODO: Handle data of notification
-//        // With swizzling disabled you must let Messaging know about the message, for Analytics
-//        // Messaging.messaging().appDidReceiveMessage(userInfo)
-//        // Print message ID.
-//        if let messageID = userInfo[gcmMessageIDKey] {
-//            print("Message ID: \(messageID)")
-//        }
-//        
-//        // Print full message.
-//        print(userInfo)
-//        
-//        completionHandler(UIBackgroundFetchResult.newData)
-//    }
+
     // [END receive_message]
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Unable to register for remote notifications: \(error.localizedDescription)")
@@ -295,9 +229,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // With swizzling disabled you must set the APNs token here.
         Messaging.messaging().apnsToken = deviceToken
+        
+        
+        //
+        // TODO: token 정보 여기서 저장하는게 나은지 확인 할 것
+        //
+        let deviceToken = deviceToken.map { String(format: "%02x", $0) }.joined()
+        Utils().setPushToken(token: deviceToken)
+        print("deviceToken: \(deviceToken)")
     }
-    
 }
+
 
 // [START ios_10_message_handling]
 @available(iOS 10, *)
@@ -320,17 +262,15 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         print(userInfo)
         
         
-        
         // Change this to your preferred presentation option
-//        completionHandler([])
-        completionHandler([UNNotificationPresentationOptions.alert,UNNotificationPresentationOptions.sound])
+        completionHandler([UNNotificationPresentationOptions.alert, UNNotificationPresentationOptions.sound])
     }
+
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
@@ -339,12 +279,11 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         print(userInfo)
         
         UIApplication.shared.applicationIconBadgeNumber = 0
-        let deviceId = UIDevice.current.identifierForVendor!.uuidString
-        print("deviceId :: \(deviceId)")
-        let uuid = UUID().uuidString
-        print("UUID :: \(uuid)")
+//        let deviceId = UIDevice.current.identifierForVendor!.uuidString
+//        print("deviceId :: \(deviceId)")
 
         //푸시 분기처리
+        /*
         var push_type : String = ""
         if userInfo["PUSHTYPE"] != nil {
             push_type = userInfo["PUSHTYPE"] as! String
@@ -355,6 +294,15 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                 UIApplication.shared.open(url, options: [:])
             }
         }
+         */
+        
+        if let pushType = userInfo["PUSHTYPE"] as? String {
+            
+            // TODO: main으로 broadcast 한다.
+            if let url = URL(string: "https://m.bbq.co.kr/main.asp?pushtype=" + pushType) {
+                UIApplication.shared.open(url, options: [:])
+            }
+        }
 
         
         completionHandler()
@@ -362,14 +310,15 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 }
 // [END ios_10_message_handling]
 
-extension AppDelegate : MessagingDelegate {
+extension AppDelegate: MessagingDelegate {
     // [START refresh_token]
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("Firebase registration token: \(String(describing: fcmToken))")
+        
+        //
+        // TODO: token 정보 여기서 저장하는게 나은지 확인 할 것
+        //
         Utils().setPushToken(token: fcmToken)
-        //Messaging.messaging().subscribe(toTopic: "news")
-        // TODO: If necessary send token to application server.
-        // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
     
     // [END refresh_token]

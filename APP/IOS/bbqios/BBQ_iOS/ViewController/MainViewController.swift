@@ -18,16 +18,6 @@ import Lottie
 
 
 
-//class NavigationController: UINavigationController {
-//    override var shouldAutorotate: Bool {
-//        return topViewController?.shouldAutorotate ?? super.shouldAutorotate
-//    }
-//
-//    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-//        return topViewController?.supportedInterfaceOrientations ?? super.supportedInterfaceOrientations
-//    }
-//}
-
 class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewControllerDataSource, SFSafariViewControllerDelegate {
 
     var wkWebView: WKWebView!
@@ -106,14 +96,7 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let imageView = GIFImageView(frame: self.view.frame)
-//        imageView.prepareForAnimation(withGIFNamed: "logo_animation", loopCount: 1) {
-//            DispatchQueue.main.async {
-//                imageView.contentMode = .scaleAspectFit
-//                self.view.addSubview(imageView)
-//                imageView.startAnimatingGIF()
-//            }
-//        }
+
         self.btnBack.isHidden = true
 
         
@@ -168,7 +151,7 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         if(isSetBarCode)
         {
             isSetBarCode = false
-            wkWebView.evaluateJavaScript("iosbarCodeData('\(strBarCode)')",completionHandler: nil)
+            wkWebView.evaluateJavaScript("iosbarCodeData('\(strBarCode ?? "")')",completionHandler: nil)
         }
 
     }
@@ -491,6 +474,11 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         return true
     }
     
+    
+    /*
+        TODO
+        이동하는 url 정보 : https://m.bbq.co.kr/main.asp?deviceId="+deviceId+"&token="+token+"&osTypeCd=ANDROID&pushtype="+pushType+"&version="+appVersion
+     */
     func loadUrl() {
 //        // push token test...
 //        Utils().setPushToken(token: "testtoken")
@@ -504,7 +492,6 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
                     self.wkWebView.load(request)
                 }
             } else {
-    //            if let url = URL(string: LOGIN_URL+Utils().getPushToken()) {
                 if let url = URL(string: MAIN_URL) {
                     let request = URLRequest(url: url)
                     self.wkWebView.load(request)
@@ -835,16 +822,15 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         // get header and print it
         decisionHandler(.allow)
-        print("decidePolicyFor navigationResponse :: \(webView.url)");
+        print("decidePolicyFor navigationResponse :: \(String(describing: webView.url))")
 
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-       
         wkWebView.frame = self.view.frame
-        print("viewWillTransition :: \(wkWebView.url)");
-
+        print("viewWillTransition :: \(String(describing: wkWebView.url))")
     }
+    
     
     /*
      Open downloaded document in QuickLook preview
@@ -883,7 +869,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
             self.documentPreviewController.refreshCurrentPreviewItem()
             self.present(self.documentPreviewController, animated: true, completion: nil)
         }
-        print("previewDocument :: \(wkWebView.url)");
+        print("previewDocument :: \(String(describing: wkWebView.url))");
 
     }
     
@@ -893,7 +879,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
 //        let date_data = NSDate(timeIntervalSince1970: 0)
 //
 //        WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set, modifiedSince: date_data as Date, completionHandler: {})
-        print("deleteCookie :: \(wkWebView.url)");
+        print("deleteCookie :: \(String(describing: wkWebView.url))");
 
     }
 
@@ -901,7 +887,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
      Implementation for QLPreviewControllerDataSource
      */
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        print("previewController :: \(wkWebView.url)");
+        print("previewController :: \(String(describing: wkWebView.url))");
 
         return documentUrl as QLPreviewItem
     }
@@ -1063,23 +1049,17 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
         self.initWebViewConstraints(webView: newWebView.webView!)
 
         self.btnBack.isHidden = false
-        print("createWebViewWith 1 :: \(wkWebView?.url)");
-        print("createWebViewWith 2 :: \(newWebView.webView?.url)");
+        print("createWebViewWith 1 :: \(String(describing: wkWebView?.url))")
+        print("createWebViewWith 2 :: \(String(describing: newWebView.webView?.url))");
 
         return newWebView.webView
 
     }
 
-//    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-//        if navigationAction.targetFrame == nil {
-//            webView.load(navigationAction.request)
-//        }
-//        return nil
-//    }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         //        self.showProgressForWebView()
-        print("didStartProvisionalNavigation :: \(webView.url)");
+        print("didStartProvisionalNavigation :: \(String(describing: webView.url))");
         self.showProgressForWebView()
        
         
@@ -1111,8 +1091,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
         }
 
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.dismissProgreeForWebView), userInfo: nil, repeats: false)
-        print("didCommit 1 :: \(wkWebView?.url)");
-
+        print("didCommit 1 :: \(String(describing: wkWebView?.url))");
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -1125,7 +1104,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
 //            }
            self.layerView.isHidden = true
            self.view.bringSubviewToFront(self.btnHome)
-        print("didFinish 1 :: \(wkWebView?.url)");
+        print("didFinish 1 :: \(String(describing: wkWebView?.url))");
 
     }
 
@@ -1134,7 +1113,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
                  withError error: Error) {
         print(error.localizedDescription)
           self.layerView.isHidden = true
-        print("didFail 1 :: \(wkWebView?.url)");
+        print("didFail 1 :: \(String(describing: wkWebView?.url))");
 
     }
 
@@ -1203,7 +1182,7 @@ extension MainViewController: WKScriptMessageHandler {
 //                            self.isSetBarCode = true
 //                            self.present(uvc,animated: false,completion: nil)
                             
-                            guard let uvc : QRScanViewController = self.storyboard?.instantiateViewController(withIdentifier: "QRScanCode") as? QRScanViewController else{
+                            guard let uvc : QRScanViewController = self.storyboard?.instantiateViewController(withIdentifier: "QRScanCode") as? QRScanViewController else {
                                     return
                                 }
                                 uvc.mainVC = self
@@ -1211,8 +1190,7 @@ extension MainViewController: WKScriptMessageHandler {
                                 self.present(uvc,animated: false,completion: nil)
 //                            wkWebView.evaluateJavaScript("iosbarCodeData('barcodetestdata');",completionHandler: nil)
                         }
-                        else if message == "echoData"
-                        {
+                        else if message == "echoData" {
                           print("call echoData")
                         }
                     }
