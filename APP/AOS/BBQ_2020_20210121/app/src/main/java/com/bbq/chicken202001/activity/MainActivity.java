@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(TAG, "onCreate");
+
         setContentView(R.layout.activity_main);
         checkLocationPermission();
         checkSelfPermission();
@@ -745,6 +747,8 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onStart();
 
+        Log.d(TAG, "onStart");
+
         Calendar cal = Calendar.getInstance();
         //년
         int year = cal.get(cal.YEAR);
@@ -843,10 +847,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-   public void onResume()
-    {
-        super.onResume();
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy");
+        super.onDestroy();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
 //        progressBar.setAnimation(mfadeIn);
 //        progressBar.setVisibility(View.VISIBLE);
@@ -858,8 +866,9 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        },500);
         //mWebView.setVisibility(View.VISIBLE);
-        Log.e(this.getClass().getName() , "public void onResume()");
+        Log.d(this.getClass().getName() , "public void onResume()");
     }
+
 
     /**
      * 요기요 이벤트에서 안드로이드만 로그인이 안되는부분처리,
@@ -953,15 +962,25 @@ public class MainActivity extends AppCompatActivity {
     }
     // webView
     // 웹뷰에서는 뒤로 가기를 눌렀을때 이전 페이지로 가지 않고, 앱이 닫혀 버리는 현상이 발생 합니다
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            if (mWebView.canGoBack()) {
+//                mWebView.goBack();
+//                return false;
+//            }
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mWebView.canGoBack()) {
-                mWebView.goBack();
-                return false;
-            }
+    public void onBackPressed() {
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+        } else {
+            super.onBackPressed();
+            finish();
         }
-        return super.onKeyDown(keyCode, event);
     }
 
     // 바코드 스캔값을 QRScane에서  받는다.

@@ -120,9 +120,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         /*
-        ** 참고 
+        ** 참고
         현재는 MainActivity로 바로 이동하게 하였으나 webView 히스토리 기능
-        적용하려면 NoticeAcitivy를 만들고 해당 화면으로 이동한후 pushType을
+        사용하려면 NoticeAcitivy를 만들고 해당 화면으로 이동한후 pushType을
         MainActivity로 broadcast 한다.
          */
 
