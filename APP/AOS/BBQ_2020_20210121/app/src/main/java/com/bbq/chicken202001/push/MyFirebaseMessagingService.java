@@ -94,8 +94,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "com.bbq.chicken2019.AndroidPush";
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)  {
             // NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,"Notification", NotificationManager.IMPORTANCE_MAX);
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,"Notification", NotificationManager.IMPORTANCE_HIGH);
 
@@ -115,15 +114,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentInfo("Infobackground");
 
-        if(!body.isEmpty())
-        {
+        if(!body.isEmpty()) {
             notificationBuilder.setContentText(body);
         }
-       // notificationBuilder.setContentText(msg);
 
 
+        /*
+        ** 참고 
+        현재는 MainActivity로 바로 이동하게 하였으나 webView 히스토리 기능
+        적용하려면 NoticeAcitivy를 만들고 해당 화면으로 이동한후 pushType을
+        MainActivity로 broadcast 한다.
+         */
 
-// Test 코드
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("PUSHTYPE",pushtype);
@@ -133,30 +135,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        notificationBuilder.setContentIntent(pendingIntent);
-
-
-        /*
-        Intent intent = getPackageManager()
-                .getLaunchIntentForPackage(getPackageName())
-                .setPackage(null)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-        intent.putExtra("PUSHTYPE",pushtype);
-         */
-
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.putExtra("PUSHTYPE",pushtype);
-//
-//        intent.setAction(Intent.ACTION_MAIN);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // 중복 생성 방지
-//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-
-
-
 
         // mNM.notify(mId, builder.build());
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -165,11 +143,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pi = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationBuilder.setContentIntent(pi);
 //                .setContentIntent(pendingIntent);
-// Test Code !!
 
         notificationManager.notify(new Random().nextInt(),notificationBuilder.build());
 //        notificationManager.notify(1,notificationBuilder.build());
-
     }
 
 
@@ -178,8 +154,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String NOTIFICATION_CHANNEL_ID = "com.bbq.chicken2019.AndroidPush";
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,"Notification",NotificationManager.IMPORTANCE_HIGH);
 
             notificationChannel.setDescription("BBQ Chicken Channel");
@@ -196,8 +171,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentInfo("Info");
-        if(!body.isEmpty())
-        {
+        if(!body.isEmpty()) {
             notificationBuilder.setContentText(body);
         }
 
