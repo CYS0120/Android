@@ -3,6 +3,8 @@
 	CUR_PAGE_CODE = "A"
 	CUR_PAGE_SUBCODE = ""
 	CD = InjRequest("CD")
+	brandImgPath = GetBrandImgPath(CD)
+
 	If Not FncIsBlank(CD) Then CUR_PAGE_SUBCODE = CD	'현재 선택된 서브메뉴에 대한 권한을 체크하기 위해서 설정
 %>
 <!-- #include virtual="/inc/admin_check.asp" -->
@@ -304,26 +306,7 @@ function DateYn(GB, check_){
 <!--//NAV-->
         <div class="content">
             <div class="section section_main_seo">
-				<div class="section_main_sel">
-					<table>
-						<tbody>
-							<tr>
-								<th>
-									<ul>
-										<li><label><input type="radio" name="curpage" onClick="document.location.href='main_set.asp?CD=<%=CD%>'">메인 이미지 관리</label></li>
-										<li><label><input type="radio" name="curpage" onClick="document.location.href='main_seo.asp?CD=<%=CD%>'">검색엔진 최적화(SEO)</label></li>
-										<% if CD = "A" then %>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_hit_m.asp?CD=<%=CD%>'">실시간 인기</label></li>
-											<li><label><input type="radio" name="curpage" checked>모바일 메인 이미지 관리</label></li>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_set_sub.asp?CD=<%=CD%>'">서브 이미지 관리</label></li>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_set_sub_m.asp?CD=<%=CD%>'">모바일 서브 이미지 관리</label></li>
-										<% end if %>
-									</ul>
-								</th>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+            <!-- #include virtual="/main/inc_sub_menu.asp" -->
 			</div>
 <%
 	UploadDir	= FncGetUploadDir(CD)
@@ -458,11 +441,11 @@ function DateYn(GB, check_){
 								<div class="filebox">
 									<input id="WMAINIMG<%=i%>" name="WMAINIMG<%=i%>" class="upload-name" value="<%=main_img%>" readonly>
 									<label for="WMAINIMG<%=i%>" onClick="OpenUploadIMG('WMAINIMG<%=i%>','UPIMG_DIR')">찾아보기</label>
-									<span>이미지 사이즈(단위:픽셀)-가로 958px, 세로 448px, 확장자 jpg <%If Not FncIsBlank(main_img) Then%><%=main_img%><%End If%></span>
+									<span>이미지 사이즈(단위:픽셀)-가로 958px, 세로 448px, 확장자 jpg. <%If Not FncIsBlank(main_img) Then%><%=main_img%><%End If%></span>
 <%
 								If len(main_img) > 0 Then
 %>
-									<img src="https://img.bbq.co.kr:449/uploads/bbq_d/main/<%=main_img%>" width="245">
+									<img src="https://img.bbq.co.kr:449/uploads/<%=brandImgPath%>/main/<%=main_img%>" width="245">
 <%
 								End If
 %>
@@ -544,12 +527,13 @@ function DateYn(GB, check_){
 %>
 
 				<input type="hidden" id="IMGNUM" name="IMGNUM" value="<%=IMGNUM%>">
-
+<% if CD = "A" then %>
 				<div class="section_main_sel">
 					<div class="section_main_sel_btn">
 						<input type="button" value="추가" class="btn_white125" onClick="AdjustDiv('INS_M', '')"> 
 					</div>
 				</div>
+<% end if %>
 				<div class="section_main_sel">
 					<div style="padding-top:20px;">
 						<input type="button" value="통합저장" style="letter-spacing:2px;" class="btn_red125" onClick="SaveAll('<%=main_kind%>')"> 

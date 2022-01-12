@@ -156,6 +156,7 @@ function ExcelDown(IS_IMG){
 										<option value="I"<%If SM="I" Then%> selected<%End If%>>아이디</option> 
 										<option value="K"<%If SM="K" Then%> selected<%End If%>>키워드</option> 
 										<option value="O"<%If SM="O" Then%> selected<%End If%>>접수NO</option> 
+										<option value="M"<%If SM="M" Then%> selected<%End If%>>회원번호</option> 
 									</select>
 									<input type="text" name="SW" value="<%=SW%>">
 									<input type="submit" value="검색" class="btn_white">
@@ -191,6 +192,8 @@ function ExcelDown(IS_IMG){
 			SqlWhere = SqlWhere & " And member_id like '%" & SW & "%'"
 		ElseIf SM = "B" Then
 			SqlWhere = SqlWhere & " And branch_name like '%" & SW & "%'"
+		ElseIf SM = "M" Then
+			SqlWhere = SqlWhere & " And member_idno = " & SW
 		End If 
 	End If
 	SqlOrder = " Order By q_idx Desc "

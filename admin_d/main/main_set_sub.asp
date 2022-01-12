@@ -73,26 +73,7 @@ function DivShow(GB){
 <!--//NAV-->
         <div class="content">
             <div class="section section_main_seo">
-				<div class="section_main_sel">
-					<table>
-						<tbody>
-							<tr>
-								<th>
-									<ul>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_set.asp?CD=<%=CD%>'">메인 이미지 관리</label></li>
-										<li><label><input type="radio" name="curpage" onClick="document.location.href='main_seo.asp?CD=<%=CD%>'">검색엔진 최적화(SEO)</label></li>
-										<% if CD = "A" then %>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_hit_m.asp?CD=<%=CD%>'">실시간 인기</label></li>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_set_m.asp?CD=<%=CD%>'">모바일 메인 이미지 관리</label></li>
-											<li><label><input type="radio" name="curpage" checked>서브 이미지 관리</label></li>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_set_sub_m.asp?CD=<%=CD%>'">모바일 서브 이미지 관리</label></li>
-										<% end if %>
-									</ul>
-								</th>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+            <!-- #include virtual="/main/inc_sub_menu.asp" -->
 			</div>
             <div class="section section_main">
 <%
