@@ -43,6 +43,7 @@ function AdjustDiv(proc_type, main_kind){
 }
 
 function InputCheck(main_kind){
+	<% if CD = "A" then %>
 	var f = document.inputfrm;
 	// alert(f.IMGNUM.value);
 	if (f.IMGNUM.value == "W1") {
@@ -64,6 +65,7 @@ function InputCheck(main_kind){
 	} else if (f.IMGNUM.value == "W9") {
 		if (document.getElementById("txtToDate_9").value == ""){alert("9번 배너 종료일자를 입력해주세요.");f.txtToDate_9.focus(); return false;}
 	}		
+	<% end if %>
 
 	$.ajax({
 		async: true,
@@ -85,6 +87,7 @@ function InputCheck(main_kind){
 
 
 function SaveAll(main_kind){
+	<% if CD = "A" then %>
 	var f = document.inputfrm;
 	// alert(f.IMGNUM.value);
 	if (f.IMGNUM.value == "W1") {
@@ -142,7 +145,7 @@ function SaveAll(main_kind){
 		if (document.getElementById("txtToDate_8").value == ""){alert("8번 배너 종료일자를 입력해주세요.");f.txtToDate_8.focus(); return false;}
 		if (document.getElementById("txtToDate_9").value == ""){alert("9번 배너 종료일자를 입력해주세요.");f.txtToDate_9.focus(); return false;}
 	}		
-
+	<% end if %>
 	$.ajax({
 		async: true,
 		type: "POST",
@@ -330,26 +333,7 @@ function DateYn(GB, check_){
 <!--//NAV-->
         <div class="content">
             <div class="section section_main_seo">
-				<div class="section_main_sel">
-					<table>
-						<tbody>
-							<tr>
-								<th>
-									<ul>
-										<li><label><input type="radio" name="curpage" checked>메인 이미지 관리</label></li>
-										<li><label><input type="radio" name="curpage" onClick="document.location.href='main_seo.asp?CD=<%=CD%>'">검색엔진 최적화(SEO)</label></li>
-										<% if CD = "A" then %>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_hit_m.asp?CD=<%=CD%>'">실시간 인기</label></li>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_set_m.asp?CD=<%=CD%>'">모바일 메인 이미지 관리</label></li>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_set_sub.asp?CD=<%=CD%>'">서브 이미지 관리</label></li>
-											<li><label><input type="radio" name="curpage" onClick="document.location.href='main_set_sub_m.asp?CD=<%=CD%>'">모바일 서브 이미지 관리</label></li>
-										<% end if %>
-									</ul>
-								</th>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+            <!-- #include virtual="/main/inc_sub_menu.asp" -->
 			</div>
 <%
 	UploadDir	= FncGetUploadDir(CD)
@@ -461,7 +445,7 @@ function DateYn(GB, check_){
 								<div class="filebox">
 									<input id="WMAINIMG<%=i%>" name="WMAINIMG<%=i%>" class="upload-name" value="<%=main_img%>" readonly>
 									<label for="WMAINIMG<%=i%>" onClick="OpenUploadIMG('WMAINIMG<%=i%>','UPIMG_DIR')">찾아보기</label>
-									<span>이미지 사이즈(단위:픽셀)-가로 958px, 세로 448px, 확장자 jpg <%If Not FncIsBlank(main_img) Then%><%=main_img%><%End If%></span>
+									<span>이미지 사이즈(단위:픽셀)-가로 958px, 세로 448px, 확장자 jpg. <%If Not FncIsBlank(main_img) Then%><%=main_img%><%End If%></span>
 <%
 								If len(main_img) > 0 Then
 %>
@@ -550,12 +534,13 @@ function DateYn(GB, check_){
 %>
 
 				<input type="hidden" id="IMGNUM" name="IMGNUM" value="<%=IMGNUM%>">
-
+<% if CD = "A" then %>
 				<div class="section_main_sel">
 					<div class="section_main_sel_btn">
 						<input type="button" value="추가" class="btn_white125" onClick="AdjustDiv('INS_W', '')"> 
 					</div>
 				</div>
+<% end if %>
 				<div class="section_main_sel">
 					<div style="padding-top:20px;">
 						<input type="button" value="통합저장" style="letter-spacing:2px;" class="btn_red125" onClick="SaveAll('<%=main_kind%>')"> 
