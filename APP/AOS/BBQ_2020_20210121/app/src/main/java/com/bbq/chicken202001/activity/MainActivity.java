@@ -988,17 +988,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        /*
-        if (mWebView.canGoBack()) {
-            mWebView.goBack();
-        } else {
-            super.onBackPressed();
-            finish();
-        }
-        */
-
-        // TODO: 수정 내용 테스트 할 것
-
         if (mWebView.canGoBack()) {
             mWebView.goBack();
             return;
