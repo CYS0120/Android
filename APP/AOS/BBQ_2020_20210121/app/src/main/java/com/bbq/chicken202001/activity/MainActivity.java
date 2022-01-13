@@ -59,6 +59,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.Calendar;
@@ -575,10 +576,6 @@ public class MainActivity extends AppCompatActivity {
 
         mContext = this;
         deviceId = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-//        String token = FirebaseInstanceId.getInstance().getToken();
-//        if (FirebaseInstanceId.getInstance().getToken() != null) {
-//            //Log.d(TAG, "token = " + FirebaseInstanceId.getInstance().getToken());onCloseWindow
-//        }
 
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -590,19 +587,10 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         // Get new FCM registration token
-                        String token = task.getResult();
+                        String token        = task.getResult();
+                        String pushType     = "";
+                        String appVersion   = "";
 
-                        // intent
-                        Intent intent = getIntent();
-                        String pushType = "";
-                        if(intent.getStringExtra("PUSHTYPE") != null) {
-                            pushType = intent.getStringExtra("PUSHTYPE");
-                        }
-
-//                        Toast.makeText(getApplicationContext(),pushType, Toast.LENGTH_LONG).show();
-
-
-                        String appVersion = "";
                         try {
                             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
                             appVersion = pInfo.versionName;         // versionName은 1.0.4와 version을 표시하는 String
@@ -610,11 +598,36 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
+
+                        Intent intent = getIntent();
+
+                        //
+                        // deepLink 처리 (bbqchickenapp://bbqmain?pushType=COUPON)
+                        //
+                        if (intent.getAction() == intent.ACTION_VIEW) {
+                            Uri data = intent.getData();
+                            pushType = data.getQueryParameter("pushType");
+                        }
+
+                        //
+                        // push를 통한 앱 처리
+                        //
+                        else {
+                            if(intent.getStringExtra("PUSHTYPE") != null) {
+                                pushType = intent.getStringExtra("PUSHTYPE");
+                            }
+                        }
+
+
+                        //
+                        // url 이동
+                        //
                         mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId="+deviceId+"&token="+token+"&osTypeCd=ANDROID&pushtype="+pushType+"&version="+appVersion); // 실서버 보안연결
                         progressBar.setVisibility(View.VISIBLE);
                         mWebView.setVisibility(View.VISIBLE);
                     }
                 });
+
 
 
         /*
@@ -975,12 +988,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        /*
         if (mWebView.canGoBack()) {
             mWebView.goBack();
         } else {
             super.onBackPressed();
             finish();
         }
+        */
+
+        // TODO: 수정 내용 테스트 할 것
+
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+            return;
+        }
+
+        super.onBackPressed();
     }
 
     // 바코드 스캔값을 QRScane에서  받는다.
