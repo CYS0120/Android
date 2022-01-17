@@ -65,7 +65,6 @@
                 Session("userType") = "Member"
                 Session("userStatus") = status
 
-				'����� ī�� ó��
 				Set cmd = Server.CreateObject("ADODB.Command")
 				With cmd
 					.ActiveConnection = dbconn
