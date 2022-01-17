@@ -408,9 +408,9 @@
 		end if         
     End If
 
-       If  reserv_date <> "" Or reserv_time <> "" Then
-        	branch_id = "7451401" '1146001
-        End If
+	' If  reserv_date <> "" Or reserv_time <> "" Then
+	' 	branch_id = "7451401" '1146001
+	' End If
 
     Set aCmd = Server.CreateObject("ADODB.Command")
 
