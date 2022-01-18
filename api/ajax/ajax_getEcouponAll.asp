@@ -16,8 +16,15 @@
     txtPIN = GetReqStr("txtPIN","")
     PIN_save = GetReqStr("PIN_save","")
     
-    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','"& txtPIN &"','0','ajax_getEcouponAll-01')"
+    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] "& PIN_save & "/" & txtPIN & "/" & Session("userIdx") & "/" & TypeName(Session("userIdx")) &"','0','ajax_getEcouponAll-01')"
     dbconn.Execute(Sql)
+
+    If PIN_save = "Y" Then 
+        If IsEmpty(Session("userIdx")) Or IsNull(Session("userIdx")) Or Session("userIdx") = "" Then 
+            Response.Write "{""result"":1,""message"":""계정 정보가 없습니다. 다시 로그인하시기 바랍니다.""}"
+            Response.End 
+        End If 
+    End If
 
     if txtPIN <> "" Then  
         dim returnMenuJson : returnMenuJson = ""

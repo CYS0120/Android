@@ -99,6 +99,9 @@
 		Response.Cookies("bbq_app_type").Expires = date() - 1
 		response.cookies("ui").Expires = date() - 1
 
+		response.cookies("userIdNo") = ""
+		response.cookies("userName") = ""
+
 		Session.Abandon()
 
 		' 순수 도메인
