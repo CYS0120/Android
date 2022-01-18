@@ -126,9 +126,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     //
 
 
-    /*-----------------------------------------------------------------------
+    /**
      * firebase 버전 정보 획득
-     *-----------------------------------------------------------------------*/
+     */
     private void getCloudInfo() {
         //
         // 1. 파이어베이스 리모트 객체 생성
@@ -175,9 +175,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
 
-    /*-----------------------------------------------------------------------
+    /**
      * gif animation 이후에 download image 보여준다.
-     *-----------------------------------------------------------------------*/
+     */
     private void showDownloadImage() {
         if (downloadFinish && gifFinish) {
             final Handler handler = new Handler();
@@ -203,9 +203,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
 
-    /*-----------------------------------------------------------------------
+    /**
      * Glide 이용하여 이미지 다운로드 한다.
-     *-----------------------------------------------------------------------*/
+     */
     private void downloadImage() {
         Glide.with(context)
                 .asBitmap()
@@ -231,9 +231,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
 
-    /*-----------------------------------------------------------------------
+    /**
      * 버전 비교
-     *-----------------------------------------------------------------------*/
+     */
     private void compareVersion() {
         //
         // 마켓 버전정보 없는 경우
@@ -255,9 +255,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
 
-    /*-----------------------------------------------------------------------
+    /**
      * 메인화면으로 이동한다.
-     *-----------------------------------------------------------------------*/
+     */
     private void goMain() {
         Handler delayHandler = new Handler();
         delayHandler.postDelayed(new Runnable() {
@@ -272,9 +272,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
 
-    /*-----------------------------------------------------------------------
+    /**
      * alert 보여준다. (play store 로 이동)
-     *-----------------------------------------------------------------------*/
+     */
     private void showAlert() {
         AlertDialog.Builder dialog;
         dialog = new AlertDialog.Builder(this);
