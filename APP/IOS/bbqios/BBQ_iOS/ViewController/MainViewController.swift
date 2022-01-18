@@ -16,19 +16,14 @@ import SafariServices
 import Lottie
 
 
-
-
 class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewControllerDataSource, SFSafariViewControllerDelegate {
 
     var wkWebView: WKWebView!
+    var webViews: Array<PopupWebViewModel> = []
+    var currentTopWebView: WKWebView?
+    var isFirst: Bool = true
 
     @IBOutlet weak var layerView: UIView!
-    var webViews: Array<PopupWebViewModel> = []
-
-    var currentTopWebView: WKWebView?
-    
-    var isFirst : Bool = true;
-
     @IBOutlet weak var btnHome: UIButton!
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var splashImageView: UIImageView!
@@ -158,6 +153,24 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if bool_autorotation {
+            return .allButUpsideDown
+        } else if bool_liveautorotation {
+            return .landscape
+        } else {
+            return .portrait
+        }
+    }
+    
+    override var shouldAutorotate: Bool {
+        return true
     }
 
     func bringToFromWebViewNavigationItems(topWebView: WKWebView) {
@@ -358,11 +371,6 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
             print(self.min ?? 0)
         }
         
-
- 
-
-        
-        
 //        //default data store 캐쉬 저장여부 작업 20190507
 //        config.websiteDataStore = WKWebsiteDataStore.default()
 //        //no data cache will be written to the file 아래의 웹뷰 디스크캐시 삭제와 같이 적용,이부분안해주면 안된다고
@@ -460,19 +468,6 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
 //        return navigationController.visibleViewController?.supportedInterfaceOrientations ?? .portrait
 //    }
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if bool_autorotation {
-            return .allButUpsideDown
-        } else if bool_liveautorotation {
-            return .landscape
-        } else {
-            return .portrait
-        }
-    }
-    
-    override var shouldAutorotate: Bool {
-        return true
-    }
     
     
     /*
@@ -484,10 +479,14 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
 //        Utils().setPushToken(token: "testtoken")
         let DELAY_SECONDS = 1.0
         DispatchQueue.main.asyncAfter(deadline: .now() + DELAY_SECONDS) {
-            let deviceId = Utils().getUUID();
+            let deviceId = Utils().getUUID()
+            let token    = Utils().getPushToken()
+            let version  = Utils().getAppVersion()
+            
+            
             print("self.url_type :: \(self.url_type)")
             if self.url_type == "MAIN" {
-                if let url = URL(string: MAIN_URL+"/main.asp?osTypeCd=IOS&deviceId=" + deviceId + "&token="+Utils().getPushToken()) {
+                if let url = URL(string: MAIN_URL+"/main.asp?osTypeCd=IOS&deviceId=" + deviceId + "&token=" + token + "&version=" + version) {
                     let request = URLRequest(url: url)
                     self.wkWebView.load(request)
                 }
@@ -498,9 +497,26 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
                 }
             }
         }
-
     }
 
+        
+    //
+    // 수신한 push 정보로 webView url 이동
+    //
+    func loadPushUrl(_ pushType: String) {
+        let deviceId = Utils().getUUID()
+        let token    = Utils().getPushToken()
+        let version  = Utils().getAppVersion()
+        
+        let move     = MAIN_URL + "main.asp?osTypeCd=IOS&deviceId=" + deviceId + "&token=" + token + "&pushtype=" + pushType + "&version=" + version
+        
+        guard let url = URL(string: move) else {
+            return
+        }
+        
+        let request = URLRequest(url: url)
+        self.wkWebView.load(request)
+    }
     
     
     func showProgressForWebView() {
@@ -534,25 +550,18 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
     }
 
     func initWebViewConstraints(webView: WKWebView) {
-
         if #available(iOS 11.0, *) {
-
             let safeArea = self.view.safeAreaLayoutGuide
             wkWebView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor).isActive = true
             wkWebView.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
             wkWebView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor).isActive = true
             wkWebView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor).isActive = true
-
         } else {
-
             wkWebView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             wkWebView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
             wkWebView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             wkWebView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor).isActive = true
-
         }
-        
-
     }
 
 
@@ -567,10 +576,6 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
                 }
             }
         }
-    }
-    
-    override var prefersStatusBarHidden: Bool {
-        return false
     }
 }
 
@@ -604,7 +609,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
             self.bringToFromWebViewNavigationItems(topWebView: self.wkWebView)
         }
         self.btnBack.isHidden = true
-        print("webViewDidClose :: \(webView.url)");
+        print("webViewDidClose :: \(String(describing: webView.url))")
 
     }
 
@@ -618,7 +623,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
         self.showConfirmDialog(title: "", message: message) {() -> Void
              in completionHandler()
         }
-        print("runJavaScriptAlertPanelWithMessage :: \(webView.url)");
+        print("runJavaScriptAlertPanelWithMessage :: \(String(describing: webView.url))")
 
     }
 
@@ -640,9 +645,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
         self.showDialog(title: "",
                         message: message,
                         button1: cancel, button2: confirm)
-        print("runJavaScriptConfirmPanelWithMessage :: \(webView.url)");
-
-
+        print("runJavaScriptConfirmPanelWithMessage :: \(String(describing: webView.url))");
     }
 
     func webView(_ webView: WKWebView,
@@ -650,7 +653,7 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
                  decisionHandler: @escaping ((WKNavigationActionPolicy) -> Void)) {
 
         let url = navigationAction.request.url//?.absoluteString
-        print("decidePolicyFor :: \(url)");
+        print("decidePolicyFor :: \(String(describing: url))");
 
 //        print("url="+(url?.absoluteString)!)
         let findKeyword = "back://"
@@ -880,7 +883,6 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
 //
 //        WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set, modifiedSince: date_data as Date, completionHandler: {})
         print("deleteCookie :: \(String(describing: wkWebView.url))");
-
     }
 
     /*
@@ -1053,7 +1055,6 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
         print("createWebViewWith 2 :: \(String(describing: newWebView.webView?.url))");
 
         return newWebView.webView
-
     }
 
     

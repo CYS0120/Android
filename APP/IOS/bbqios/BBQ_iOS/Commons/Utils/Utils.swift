@@ -60,8 +60,6 @@ class Utils: NSObject {
             let uuid = UUID().uuidString
             keychain.set(uuid, forKey: "key_uuid")
         }
-        
-        
     }
     
     func getUUID() -> String {

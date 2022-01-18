@@ -362,8 +362,6 @@ public class MainActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                     }
                 },500);
-
-
             }
 
             // 웹페이지 로딩 종료시 호출
