@@ -106,6 +106,12 @@
 		address_title = "배달주소"
 	End If
 
+	If instr(cart_value, "pin") = 0 Then
+		'pin 번호 확인을 위한 로그 
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] cart_value : "& cart_value &"','0','payment-pin')"
+		dbconn.Execute(Sql)
+	End If 
+
 	Dim aCmd, aRs
 
 	Dim cJson : Set cJson = JSON.Parse(cart_value)
@@ -331,7 +337,7 @@
 
 <script type="text/javascript">
 
-	<%if order_type = "D" and Session("userPhone") <> "" Then%>
+	<%if Session("userPhone") <> "" Then%>
 		sessionStorage.setItem("ss_user_phone", "<%=Session("userPhone")%>");
 	<%end if%>
 		
@@ -666,19 +672,54 @@ function coupon_apply() {
                         $("#coupon_amt").css('display','none');
                         $("#coupon_amt_prod").css('display','inline');
                         $("#coupon_amt_prod").val(res.name);
+
+						//주류 쿠폰 있을 때 성인인증 노출
+						if($("#giftproductcode").val() === "1735"){
+							<% If CheckLogin() Then %>
+								$("#Danal_adult_chk_button").show();
+								$(".order_calc").get(0).scrollIntoView(true);
+								$("#Danal_adult_chk_ok").val("");
+								$('#pay_ok_go_btn', document).removeClass('btn-red').addClass('btn-lightGray');
+								adult_chk = "Y"; // 주류금액이 있으면 Y로 변경.
+							<% Else %>
+								alert("주류 판매는 회원만 가능합니다.");
+								history.back();
+							<% end if %>
+
+							<% if beer_yn <> "Y" then ' 주류판매 가능 매장인지 
+							%>
+								alert("주류 판매 가능한 매장이 아닙니다.");
+								history.back();
+							<% end if %>
+						} else {
+							$("#Danal_adult_chk_button").hide();
+							$('#pay_ok_go_btn', document).removeClass('btn-lightGray').addClass('btn-red');
+							adult_chk = ""; 
+						}
+
                         calcTotalAmount();
                 },
                 error: function(xhr) {
                     showAlertMsg({msg:"모바일 상품권 적용에 실패하였습니다."});
                 }
             });
-	    }
+		}
 		//증정쿠폰 적용
 		
 	}else{
 		$("#coupon_no").val('');
 		$("#coupon_id").val('');
 		$("#coupon_amt").val('');
+		
+		$("#Danal_adult_chk_button").hide();
+		$('#pay_ok_go_btn', document).removeClass('btn-lightGray').addClass('btn-red');
+		adult_chk = ""; 
+		
+		$("#order_product").html('');
+		$("#total_amt").val($("#og-total_amt").val()); // 총 상품금액
+		$("#gift_prod").val('0');
+        $("#prod_list").css('display','none');
+		$("#coupon_amt_prod").val('');
 	}
 
 	// checkPointCoupon();
@@ -1151,7 +1192,8 @@ function calcTotalAmount() {
 			adult_chk_ok = $("#Danal_adult_chk_ok").val(); // 실명인증을 했다면 Y로 변경
 
 			if (adult_chk == "Y" && adult_chk != adult_chk_ok) {
-				showAlertMsg({msg:"실명인증이 필요합니다"});
+				showAlertMsg({msg:"주류구매 성인인증이 필요합니다"});
+				$(".order_calc").get(0).scrollIntoView(true);
 				return false;
 			}
 		}
@@ -1994,12 +2036,11 @@ function calcTotalAmount() {
 				</section>
 			</div>
 			<!-- //장바구니 리스트 -->
-			<% if adult_Y_Price > 0 then %>
+			
 				<!-- 주류 실명인증 -->
-				<div class="btn-wrap one mar-t20" id="Danal_adult_chk_button">
+				<div class="btn-wrap one mar-t20<% if adult_Y_Price <= 0 then %> hide<% End If %>" id="Danal_adult_chk_button">
 					<button type="button" onclick="javascript: member_alcohol_chk();" class="btn btn_big btn-red">주류구매 성인인증</button>
 				</div>
-			<% End If %>
 
 			<script type="text/javascript">
 				$("#total_amt").val(<%=totalAmount%>);
@@ -3207,13 +3248,12 @@ function calcTotalAmount() {
     </script>
 
 	<script type="text/javascript">
-	
-	$(document).ready(function (){
-	    Giftcard_ListCount()
-	    if(localStorage.getItem("Adult_yn") == "Y"){
-	        setACheck("Y");
-	    }
-	})
+		$(document).ready(function (){
+			Giftcard_ListCount()
+			if(localStorage.getItem("Adult_yn") == "Y"){
+				setACheck("Y");
+			}
+		});
 	    //현금영수증 선택 영역 시작 , (test M_1156_0 황올한닭발튀김)
 	    var item = JSON.parse(sessionStorage.getItem("ss_branch_data"));
 	        /*if(item.branch_id == 1146001){
