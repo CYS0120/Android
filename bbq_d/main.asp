@@ -500,6 +500,7 @@
 		popup_close	= bPopRs("popup_close")
 		popup_title	= bPopRs("popup_title")
 		popup_img	= bPopRs("popup_img")
+		popup_link	= bPopRs("popup_link")
 
 		popup_img = FILE_SERVERURL & "/uploads/popup/" & popup_img
 
@@ -511,7 +512,7 @@
 		<aside class="popup">
 			<div class="inner" id="pop1">
 				<div class="area" style="width:<%=popup_width%>px;">
-					<img src="<%=popup_img%>" alt="POPUP">
+					<img src="<%=popup_img%>" alt="POPUP" onClick="location.href='<%=replace(popup_link,"https://m.","https://www.")%>';">
 				</div>
 				<%If popup_close = "1" Then%>
 				<button type="button" class="today" onClick="PopupNoDispaly()"><span>하루동안 보지않기</span> <i
