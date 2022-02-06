@@ -3,6 +3,10 @@
 	if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
 		sessionStorage.setItem("ss_order_type", "R");
 	}
+
+	window.onload = function(){
+		sessionStorage.removeItem("olympic_winter");
+	}
 </script>
 <%
 
