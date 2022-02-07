@@ -626,8 +626,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
-
+        
         /*
         Intent pushtype = getIntent();
         String pushType = "";
