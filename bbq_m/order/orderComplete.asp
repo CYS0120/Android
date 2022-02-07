@@ -747,6 +747,18 @@
 	end if 
 %>
 
+		<script type="text/javascript">
+			if (sessionStorage.getItem("olympic_winter") == "Y"){
+<%
+				If Session("useridno") <> "" Then
+%>
+					alert('황금올리브치킨 1마리 쿠폰 응모 완료\n\n※ 자세한 내용은 이벤트 페이지를 확인해주세요.');
+<%
+				End If
+%>
+			}
+			sessionStorage.removeItem("olympic_winter");
+		</script>
 
 		<!-- Content -->
 		<article class="content inbox1000">
@@ -1186,8 +1198,7 @@
 			<!--주문완료 문구-->
 			<div class="order_CompleteTxt2">
 				<p>
-					고객님께서 주문완료 하신 건은, 매장에서 확인 전까지만 온라인에서 취소 가능합니다.<br>
-					추가 문의는 콜센터<strong>(1588-9282)</strong>로 연락 바랍니다.
+					문의는 콜센터<strong>(1588-9282)</strong>로 연락 바랍니다.
 				</p>
 			</div>
 			<!--//주문완료 문구-->

@@ -483,7 +483,10 @@ function clearCart() {
 		// 위에서 바로 삭제하면 5개이상일때
 		// 이상하게 삭제가 몇개 누락됨;
         for(var i = 0; i < key_arr.length; i++) {
-			sessionStorage.removeItem(key_arr[i]);
+            if(key_arr[i] == "olympic_winter"){
+            }else{
+                sessionStorage.removeItem(key_arr[i]);
+            }            
 
             if(key_arr[i] == "M_1695_0_" || key_arr[i] == "M_1696_0_"){
                 sessionStorage.removeItem("ss_order_type");
