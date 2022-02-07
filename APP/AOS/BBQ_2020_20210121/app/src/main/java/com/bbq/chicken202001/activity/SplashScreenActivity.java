@@ -136,11 +136,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings
                 .Builder()
-                .setMinimumFetchIntervalInSeconds(60*10*6*24)   // 하루에 한번만 체크 하도록 처리
+                .setMinimumFetchIntervalInSeconds(0)    // 실행시마다 체크
                 .build();
 
-        // setMinimumFetchIntervalInSeconds(0)       // 실행시마다 체크
-        // setMinimumFetchIntervalInSeconds(60 * 10) // 10 mins
+        // setMinimumFetchIntervalInSeconds(60*10*6*24) // 하루에 한번
+        // setMinimumFetchIntervalInSeconds(0)          // 실행시마다 체크
+        // setMinimumFetchIntervalInSeconds(60 * 10)    // 10 mins
 
         //
         // 2. 디폴트 값 삽입
@@ -244,13 +245,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
 
         //
-        // 마켓정보와 디바이스 정보 비교 처리
+        // 마켓에 있는 앱 정보가 디바이스 앱 정보보다 큰 경우 업데이트 알림창
         //
-        if (marketVersion.equals(deviceVersion)) {
-            goMain();
-        }
-        else {
+        int market = Integer.parseInt(marketVersion.replace(".", ""));
+        int device = Integer.parseInt(deviceVersion.replace(".", ""));
+        if (market>device) {
             showAlert();
+        } else {
+            goMain();
         }
     }
 
