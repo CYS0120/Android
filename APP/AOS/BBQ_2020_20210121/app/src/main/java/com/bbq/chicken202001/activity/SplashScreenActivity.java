@@ -38,8 +38,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     private ImageView imgView;
     private ImageView imgBaseView;
 
-    private String marketVersion;
-    private String deviceVersion;
+    private String marketVersion = "";
+    private String deviceVersion = "";
     private String imgUrl;
 
     private final String marketURL  = "https://play.google.com/store/apps/details?id=com.bbq.chicken202001";
@@ -48,7 +48,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private Boolean gifFinish = false;
     private Boolean downloadFinish = false;
-    private Bitmap  bitmap = null;
+//    private Bitmap  bitmap = null;
 
 
     //
@@ -66,6 +66,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         imgBaseView = findViewById(R.id.base_img);
         imgView.setScaleType(ImageView.ScaleType.FIT_XY);
         imgBaseView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        marketVersion = "";
+        deviceVersion = "";
 
 
         //
@@ -186,7 +189,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     // alpha 애니메이션 적용
-                    imgView.setImageBitmap(bitmap);
+//                    imgView.setImageBitmap(bitmap);
                     imgView.setAlpha(1.0f);
 
                     AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
@@ -199,7 +202,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     final Handler delayHandler = new Handler();
                     delayHandler.postDelayed(() -> compareVersion(), 1000);
                 }
-            }, 1800);
+            }, 1500);
         }
     }
 
@@ -208,6 +211,7 @@ public class SplashScreenActivity extends AppCompatActivity {
      * Glide 이용하여 이미지 다운로드 한다.
      */
     private void downloadImage() {
+        /*
         Glide.with(context)
                 .asBitmap()
                 .load(imgUrl)
@@ -227,6 +231,29 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onLoadCleared(@Nullable Drawable placeholder) {
 
+                    }
+                });
+
+         */
+
+        Glide.with(context)
+                .load(imgUrl)
+                .into(new DrawableImageViewTarget(imgView) {
+                    @Override public void onResourceReady(Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        downloadFinish = true;
+//                        bitmap = resource;
+                        imgView.setImageDrawable(resource);
+                        showDownloadImage();
+                    }
+
+                    @Override
+                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                        compareVersion();
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        super.onLoadCleared(placeholder);
                     }
                 });
     }
