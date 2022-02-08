@@ -69,6 +69,7 @@ function delAddress(addr_idx) {
                 if(res.result == 0) {
                     showAlertMsg({msg:res.message, ok: function(){
                         $("#addr_"+addr_idx).remove();
+						$("#delivery_addr_"+addr_idx).remove();
                     }});
                 } else {
                     showAlertMsg({msg:res.message});
@@ -1573,14 +1574,21 @@ function setDeliveryShopInfo(data) {
 //						console.log(v);
 //						console.log('---');
 
-						ht += "<ul class='find_shop'>";
+						ht += "<ul class='find_shop' id='delivery_addr_"+ v.addr_idx +"'>";
 						ht += "	<li>";
 
 						if (v.is_main == "Y") {
 							ht += "	<span class=\"red\">[기본배달지]</span><br> ";
 						}
 
-						ht += "		"+ v.address_main +' '+ v.address_detail +" ";
+						ht += "		<span>"+ v.address_main +' '+ v.address_detail +"</span> ";
+						ht += "	</li>";
+						ht += "	<li>";
+						ht += " 	<span class='add_del_span' id='add_del_"+ v.addr_idx +"' style='text-decoration:underline; font-size:13px; "
+						if (v.is_main == "Y") {
+							ht += "display:none;";
+						}
+						ht += " 	'<button type='button' onClick='javascript:delAddress("+ v.addr_idx +");' class='btn_small2 btn-grayLine btn_lp_open'>삭제</button></span>"
 						ht += "	</li>";
                         ht += "	<li><a href=\"javascript: addr_img_control('"+ v.addr_idx +"', '"+ v.branch_id +"')\" class='btn btn_middle btn-lightGray' style='border-radius: 50px;'>선택</a></li>";
                         ht += "</ul>";

@@ -277,12 +277,12 @@
 						.CommandType = adCmdStoredProc
 						.CommandText = "bp_member_addr_select"
 
-						.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 50, Session("userIdNo"))
-						.Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
+						.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, Session("userIdNo"))
+						' .Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
 
 						Set aRs = .Execute
 
-						TotalCount = .Parameters("@totalCount").Value
+						' TotalCount = .Parameters("@totalCount").Value
 					End With
 					Set aCmd = Nothing
 				%>
