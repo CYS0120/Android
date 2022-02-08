@@ -265,8 +265,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
      * 앱이 실행, 미실행 상관없이 로컬알림을 클릭했을때 동일하게 호출된다.
      *-----------------------------------------------------------------------*/
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
         
+        let userInfo = response.notification.request.content.userInfo
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }

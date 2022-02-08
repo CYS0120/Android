@@ -447,7 +447,7 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
 
         self.bringToFromWebViewNavigationItems(topWebView: wkWebView)
 
-        
+
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -1148,8 +1148,8 @@ extension MainViewController: WKScriptMessageHandler {
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
-            controller.url = message.body as! String
-            print("controller.url :: \(controller.url)");
+//            controller.url = message.body as! String
+//            print("controller.url :: \(controller.url)");
 
             self.navigationController?.pushViewController(controller, animated: false)
             

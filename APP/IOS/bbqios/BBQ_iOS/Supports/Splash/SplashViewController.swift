@@ -176,7 +176,8 @@ class SplashViewController: BasicViewController {
         //
         // remote config 에서 매개변수 값 가져오기 - 60*10*6*24(하루에 한번)
         //
-        remoteConfig.fetch(withExpirationDuration: TimeInterval(60*10*6*24)) { status, error in
+//        remoteConfig.fetch(withExpirationDuration: TimeInterval(60*10*6*24)) { status, error in
+        remoteConfig.fetch(withExpirationDuration: TimeInterval(0)) { status, error in
             if let _ = error {
                 self.goMain("MAIN")
                 return
@@ -206,6 +207,19 @@ class SplashViewController: BasicViewController {
                               return
                     }
                     
+                    let cloud = Int(cloudVersion.replacingOccurrences(of: ".", with: "")) ?? 0
+                    let cur   = Int(curVersion.replacingOccurrences(of: ".", with: "")) ?? 0
+                    
+                    // cloud 버전이 current 버전보다 큰 경우에만 업데이트 알림
+                    if cloud > cur {
+                        DispatchQueue.main.async {
+                            self.showAlert()
+                        }
+                    } else {
+                        self.goMain("MAIN")
+                    }
+                    
+                    /*
                     // 버전 비교 처리 
                     if cloudVersion == curVersion {
                         self.goMain("MAIN")
@@ -214,6 +228,7 @@ class SplashViewController: BasicViewController {
                             self.showAlert()
                         }
                     }
+                     */
                 } else {
                     self.goMain("MAIN")
                 }
