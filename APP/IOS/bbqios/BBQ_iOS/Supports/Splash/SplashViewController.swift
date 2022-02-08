@@ -17,66 +17,6 @@ class SplashViewController: BasicViewController {
         super.viewDidLoad()
         
         checkVersion()
-    
-        
-        /////////////////////////////////////////
-        
-        /*
-        // test 추후 버전체크로 처리해야 함
-        _ = try? isUpdateAvailable { (update, error) in
-            if let error = error {
-                print(error)
-                self.goMain("MAIN")
-            } else if let update = update {
-                print(update)
-                
-//                _ = try? self.updateVersionInfo { (update, error) in
-//                    if let error = error {
-//                        print(error)
-//                    } else if let update = update {
-//                        print(update)
-//                        
-//                        
-//                    }
-//                }
-                
-                DispatchQueue.main.async {
-                    if update { // 강제 업데이트 처리
-
-                        if Utils().getUpdateCheckDate() == Utils().getNowDateOnly() {
-                            self.goMain("MAIN")
-                        } else {
-                            let alertController = UIAlertController(title: "", message: "새로운 버전이 등록 되었습니다.\n업데이트 하시겠습니까?.", preferredStyle: .alert)
-
-                            let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (action) in
-                                // do something
-                                self.goMain("MAIN")
-                            }
-                            alertController.addAction(cancelAction)
-
-                            let okAction = UIAlertAction(title: "이동", style: .default) { (action) in
-                                // do something
-                                self.openScheme()
-                                self.goMain("MAIN")
-                            }
-                            alertController.addAction(okAction)
-
-                            print(Utils().getNowDateOnly())
-                            Utils().setUpdateCheckDate(date: Utils().getNowDateOnly())
-                            self.present(alertController, animated: true)
-                        
-    //                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    //                        appDelegate.goAppStore()
-                        }
-                    } else {
-                        self.goMain("MAIN")
-                    }
-                }
-                
-            }
-        }
-         */
-        /////////////////////////////////////////
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,12 +25,6 @@ class SplashViewController: BasicViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        
-//        if UIDevice.current.orientation != UIDeviceOrientation.portrait {
-//            let value = UIInterfaceOrientation.portrait.rawValue
-//            UIDevice.current.setValue(value, forKey: "orientation")
-//            //            _ = self.shouldAutorotate
-//        }
     }
     
     
@@ -116,47 +50,7 @@ class SplashViewController: BasicViewController {
     // MARK: private
     //
     
-    
-    
-    
-    /*
-    enum VersionError: Error {
-        case invalidResponse, invalidBundleInfo
-    }
-    
-    func isUpdateAvailable(completion: @escaping (Bool?, Error?) -> Void) throws -> URLSessionDataTask {
-        guard let info = Bundle.main.infoDictionary,
-            let currentVersion = info["CFBundleShortVersionString"] as? String,
-            let identifier = info["CFBundleIdentifier"] as? String,
-//            let url = URL(string: "http://itunes.apple.com/lookup?bundleId=com.fuzewire.t-tube") else {
-//                throw VersionError.invalidBundleInfo
-            let url = URL(string: "http://itunes.apple.com/kr/lookup?bundleId=\(identifier)") else {
-                    throw VersionError.invalidBundleInfo
-        }
-        print(currentVersion)
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            do {
-                if let error = error { throw error }
-                guard let data = data else { throw VersionError.invalidResponse }
-                let json = try JSONSerialization.jsonObject(with: data, options: [.allowFragments]) as? [String: Any]
-                print(json as Any)
-                guard let result = (json?["results"] as? [Any])?.first as? [String: Any], let version = result["version"] as? String else {
-                    throw VersionError.invalidResponse
-                }
-                let result_compare = Utils().checkVersionWithServerVersion(version, 1)
-                
-//                completion(version != currentVersion, nil)
-//                print(Utils().checkVersionWithServerVersion(version, 1))
-                completion(result_compare != 1, nil)
-            } catch {
-                completion(nil, error)
-            }
-        }
-        task.resume()
-        return task
-    }
-     */
-    
+
     
     
     /*-----------------------------------------------------------------------
