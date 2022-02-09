@@ -423,6 +423,18 @@
 
 <script>
 $(document).ready(function (){
+	//안드로이드 버전 체크 
+	<% 
+	If osTypeCd = "ANDROID" Then 
+		If IsEmpty(osVersion) Or IsNull(osVersion) Or osVersion = "" Then 
+	%>	
+			showAlertMsg({msg:"BBQ 어플이 업데이트 되었습니다. 스토어로 이동합니다.", ok: function(){
+				location.href = "market://details?id=com.bbq.chicken202001";
+			}});
+	<%
+		End If 
+	End If 
+	%>
    $.ajax({
          method: "post",
          url: "/api/ajax/ajax_getGiftCard.asp",
@@ -436,7 +448,7 @@ $(document).ready(function (){
            }
          }
      });
-})
+});
   // 상품권 
   
   // 실시간 인기 롤링 

@@ -4,6 +4,7 @@
 push_token = request("token") '푸시 토큰을 받아
 deviceUid = request("deviceId") '폰 기기정보
 osTypeCd = request("osTypeCd") 'ANDROID / IOS
+osVersion = request("version") 
 access_token = Session("access_token") '회원로그인
 pushTypeCd = "FCM"
 
