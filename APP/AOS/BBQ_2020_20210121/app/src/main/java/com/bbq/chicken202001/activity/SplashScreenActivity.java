@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
@@ -15,7 +14,6 @@ import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bbq.chicken202001.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -40,7 +37,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private String marketVersion = "";
     private String deviceVersion = "";
-    private String imgUrl;
+    private String imgUrl = "";
 
     private final String marketURL  = "https://play.google.com/store/apps/details?id=com.bbq.chicken202001";
     private final String splashKey  = "SplashImage";
@@ -48,7 +45,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private Boolean gifFinish = false;
     private Boolean downloadFinish = false;
-//    private Bitmap  bitmap = null;
 
 
     //
@@ -69,6 +65,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         marketVersion = "";
         deviceVersion = "";
+        imgUrl = "";
 
 
         //
@@ -158,7 +155,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         //
         // 3. 최신 앱 버전 확인 이벤트 리스너 수행 실시
         //
-        // [이벤트 리스너]
         config.fetchAndActivate().addOnCompleteListener(
                 SplashScreenActivity.this, // [액티비티]
                 task -> {
@@ -172,7 +168,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                     // 3.2 해당 키값 확인 실패
                     else {
-//                            marketVersion = "";
                         compareVersion();
                     }
                 });
@@ -189,7 +184,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     // alpha 애니메이션 적용
-//                    imgView.setImageBitmap(bitmap);
                     imgView.setAlpha(1.0f);
 
                     AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
@@ -211,37 +205,11 @@ public class SplashScreenActivity extends AppCompatActivity {
      * Glide 이용하여 이미지 다운로드 한다.
      */
     private void downloadImage() {
-        /*
-        Glide.with(context)
-                .asBitmap()
-                .load(imgUrl)
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        downloadFinish = true;
-                        bitmap = resource;
-                        showDownloadImage();
-                    }
-
-                    @Override
-                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                        compareVersion();
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                    }
-                });
-
-         */
-
         Glide.with(context)
                 .load(imgUrl)
                 .into(new DrawableImageViewTarget(imgView) {
                     @Override public void onResourceReady(Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         downloadFinish = true;
-//                        bitmap = resource;
                         imgView.setImageDrawable(resource);
                         showDownloadImage();
                     }
