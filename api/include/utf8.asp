@@ -6,15 +6,18 @@
 	'Response.AddHeader "Set-Cookie", "SameSite=None; Secure; path=/; HttpOnly" ' 크롬 80이슈
 
 	'크롬 80이슈 세션유실 방지
-    Dim cookie, cookies, cookie_id, cookie_val
-	cookies = Split(Request.ServerVariables("HTTP_COOKIE"),";")
-    For Each cookie In cookies
-        cookie_id = Trim(Split(cookie,"=")(0))
-        cookie_val = Trim(Split(cookie,"=")(1))
-        If Left(trim(cookie),12) = "ASPSESSIONID" Then
-			Response.AddHeader "Set-Cookie", "" & cookie_id & "=" & cookie_val & ";SameSite=None; Secure; path=/; HttpOnly" ' 크롬 80이슈
-		end if
-	next 
+    Dim httpCookies, httpCookie, arrCookie, cookie_id, cookie_val
+    httpCookies = Split(Request.ServerVariables("HTTP_COOKIE"),";")
+    For Each httpCookie In httpCookies
+        arrCookie = Split(httpCookie,"=")
+        if ubound(arrCookie) > 0 then 'key-value 쌍 이루는 쿠키만 확인
+            cookie_id = Trim(arrCookie(0))
+            cookie_val = Trim(arrCookie(1))
+            If Left(trim(httpCookie),12) = "ASPSESSIONID" Then
+                Response.AddHeader "Set-Cookie", "" & cookie_id & "=" & cookie_val & ";SameSite=None; Secure; path=/; HttpOnly" ' 크롬 80이슈
+            end if
+        end if 
+    next 
 	
     Response.CacheControl = "no-cache"
     ' Response.CharSet = "euc-kr"
