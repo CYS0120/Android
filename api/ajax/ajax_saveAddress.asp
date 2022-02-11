@@ -49,7 +49,10 @@
 
     Dim aCmd, aRs, ErrCode, ErrMsg
 
-    If vMode = "I" Then
+    If Session("userIdx") = "" Then 
+        result = "{""success"":false, ""addr_idx"":0}"
+        
+    ElseIf vMode = "I" Then
         Set aCmd = Server.CreateObject("ADODB.Command")
 
         With aCmd
