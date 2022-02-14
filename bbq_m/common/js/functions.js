@@ -1575,7 +1575,7 @@ function setDeliveryShopInfo(data) {
 //						console.log('---');
 
 						ht += "<ul class='find_shop' id='delivery_addr_"+ v.addr_idx +"'>";
-						ht += "	<li>";
+						ht += "	<li class='find_shop_delivery_1'>";
 
 						if (v.is_main == "Y") {
 							ht += "	<span class=\"red\">[기본배달지]</span><br> ";
@@ -1632,7 +1632,7 @@ function setDeliveryShopInfo(data) {
 
 						ht += "<ul class='find_shop'>";
 						ht += "	<li></li>";
-						ht += "	<li>";
+						ht += "	<li class='find_shop_1'>";
 						ht += "		<a href='/shop/shopView.asp?branch_id="+ v.branch_id +"' class='find_shop_name'>"+ v.branch_name +"</a> ";
 
 						if (v.branch_type == "올리브카페")
@@ -1640,14 +1640,14 @@ function setDeliveryShopInfo(data) {
 
 						ht += "	</li>";
 
-						ht += "	<li>";
+						ht += "	<li class='find_shop_2'>";
 						ht += "		"+ v.delivery_address +" ";
 
 						if (v.membership_yn_code == "50")
 							ht += "		<a href='javascript: void(0)' class='btn btn-red btn_small4'>멤버십</a>";
 
 						ht += "	</li>";
-						ht += "	<li>";
+						ht += "	<li class='find_shop_3'>";
 						ht += "		"+ v.branch_tel +" ";
 						ht += "		<button type='button' id='btn_map' class='' onclick='show_map(\""+ z +"\", \""+ v.wgs84_y +"\", \""+ v.wgs84_x +"\")'><img src='/images/order/icon_map.png' alt='지도보기'></button>";
 						ht += "		<div id='mapWrap_"+ z +"' style='display: none;'>";

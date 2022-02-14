@@ -151,7 +151,7 @@
 
 								slideHtml1 += "<ul class='find_shop'>";
 								slideHtml1 += "	<li><a href=\"javascript: selectStore('"+ json[i].branch_id +"')\" class='btn btn_middle btn-lightGray'>선택</a></li>";
-								slideHtml1 += "	<li>";
+								slideHtml1 += "	<li class='find_shop_1'>";
 								slideHtml1 += "		<a href='/shop/shopView.asp?branch_id="+ json[i].branch_id +"' class='find_shop_name'>"+ json[i].branch_name +"</a> ";
 
 								if (json[i].branch_type == "올리브카페")
@@ -159,14 +159,14 @@
 
 								slideHtml1 += "	</li>";
 
-								slideHtml1 += "	<li>";
+								slideHtml1 += "	<li class='find_shop_2'>";
 								slideHtml1 += "		"+ json[i].branch_address +" ";
 
 								if (json[i].membership_yn_code == "50")
 									slideHtml1 += "		<a href='javascript: void(0)' class='btn btn-red btn_small4'>멤버십</a>";
 
 								slideHtml1 += "	</li>";
-								slideHtml1 += "	<li>";
+								slideHtml1 += "	<li class='find_shop_3'>";
 								slideHtml1 += "		"+ json[i].branch_tel +" ";
 								slideHtml1 += "		<button type='button' id='btn_map' class='' onclick='show_map(\""+ z +"\", \""+ json[i].wgs84_y +"\", \""+ json[i].wgs84_x +"\")'><!-- <img src='/images/order/icon_map.png' alt='지도보기'> --></button>";
 								slideHtml1 += "		<div id='mapWrap_"+ z +"' style='display: none;'>";
