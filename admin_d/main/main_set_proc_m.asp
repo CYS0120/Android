@@ -49,7 +49,7 @@
 			date_e		= "99991231"
 			date_yn		= "N"
 		Else
-			i = Cint(replace(main_kind, "W", ""))
+			i = Cint(replace(replace(main_kind, "W", ""), "M", ""))
 
 			main_text	= InjRequest("WMAINTEXT"&i)
 			main_img	= InjRequest("WMAINIMG"&i)
