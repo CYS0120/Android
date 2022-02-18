@@ -44,11 +44,12 @@
         End Property
 
         Public Function Run
+            On Error Resume Next
             Set req = Server.CreateObject("MSXML2.ServerXMLHTTP")
 			lResolve = 10 * 1000		'도메인 확인 시간, default 무한대
-			lConnect = 15 * 1000	'서버와의 연결 시간, default 60 초
-			lSend    = 15 * 1000	'데이터 전송 시간, default 30 초
-			lReceive = 15 * 1000	'데이터 수신 시간, default 30 초
+			lConnect = 10 * 1000	'서버와의 연결 시간, default 60 초
+			lSend    = 10 * 1000	'데이터 전송 시간, default 30 초
+			lReceive = 10 * 1000	'데이터 수신 시간, default 30 초
 
 			req.setTimeouts lResolve, lConnect, lSend, lReceive
             req.Open reqMethod, apiUrl, False
@@ -71,6 +72,15 @@
 
             Set req = Nothing
 
+            If Err.Number <> 0 Then
+                result = Err.Description
+                Err.Clear
+                
+                'API 통신 확인을 위한 로그
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& Session("userIdx") &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / ApiUrl "& C_STR(apiUrl) & " / Data " & C_STR(data) & " / Err.Description " & result & " / HOST " & Request.ServerVariables("HTTP_HOST") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / REFERER " & Request.ServerVariables("HTTP_REFERER") & " / REMOTE_ADDR " & Request.ServerVariables("REMOTE_ADDR") & " / " & Request.ServerVariables("HTTP_USER_AGENT") & "','0','call_api')"
+                dbconn.Execute(Sql)
+
+            End If
             Run = result
         End Function
 
