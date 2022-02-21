@@ -23,11 +23,6 @@
 <title>BBQ치킨</title>
 
  </head>
-<script>
-	window.onload = function(){
-		sessionStorage.removeItem("olympic_winter");
-	}
-</script>
  <body>
 	<div class="h-wrapper">
 		<!-- Header -->

@@ -625,11 +625,6 @@ function reset_coupon_apply(obj) {
 }
 
 function coupon_apply() {
-			
-	if($("#giftproductcode").val() === "271"){
-		sessionStorage.setItem("olympic_winter","N");
-	}
-
 	// 할인 모바일 상품권 적용
 	if ($("#c_Id").val() != "") {
 		$("#coupon_no").val($("#c_No").val());
@@ -1152,11 +1147,6 @@ function calcTotalAmount() {
 		if (ClickCheck == 1){
 			showAlertMsg({msg:"처리중입니다. 잠시만 기다려주세요."});
 			return;
-		}
-
-		if (sessionStorage.getItem("olympic_winter")){
-		}else{
-			sessionStorage.setItem("olympic_winter","Y");
 		}
 
         // 2021-07 더페이 상품권 중복체크 시작    
