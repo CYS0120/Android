@@ -207,10 +207,13 @@
 					<!-- 포인트 -->
           <%
             '// 회원정보 
-            'If CheckLogin() Then 
+			dim member_point : member_point = 0 
+            If CheckLogin() Then 
                 Set pMemberPoint = PointGetPointBalance("SAVE", "0") '// 포인트
+				member_point = pMemberPoint.mSavePoint
+				Set pMemberPoint = Nothing
                 'Set pCouponList = CouponGetHoldList("NONE", "N", 100, 1) '// 쿠폰
-            'End If
+            End If
           %>	  
 					<div class="h-main_point_set">
                     <%
@@ -227,7 +230,7 @@
 						<div class="h-main_point">
 							<dl>
 								<dt><a href="/mypage/mileage.asp">포인트</a></dt>
-								<dd><span><%=FormatNumber(pMemberPoint.mSavePoint,0)%></span>P&nbsp;&nbsp;</dd>
+								<dd><span><%=FormatNumber(member_point,0)%></span>P&nbsp;&nbsp;</dd>
 							</dl>	
 
 							<%

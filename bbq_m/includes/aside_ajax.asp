@@ -81,6 +81,7 @@ end if
 					</dl>
 
 					<% 
+						Set pMemberPoint = Nothing
 						'Set pCouponList = CouponGetHoldList("NONE", "N", 100, 1) 
 					%>
 
