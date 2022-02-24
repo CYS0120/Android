@@ -710,7 +710,7 @@
 			if(res.result == 0) {
 				showAlertMsg({msg:"멤버십사용이 취소되었습니다."});
 			} else {
-				showAlertMsg({msg:"멤버십사용이 취소되지 않았습니다."});
+				//showAlertMsg({msg:"멤버십사용이 취소되지 않았습니다."});
 			}
 		},
 		error: function(xhr) {
