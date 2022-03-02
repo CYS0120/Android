@@ -180,6 +180,7 @@
                         Response.End
                         
                         Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] 없는 상품권 PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & C_STR(Session("userIdx")) & "/" & "P"&Session.sessionid & " / REMOTE_ADDR " & Request.ServerVariables("REMOTE_ADDR") & " / RESULT " & RESULT & " / RESULT_MSG " & RESULT_MSG & "','0','ajax_getEcouponAll-err2')"
+                        dbconn.Execute(Sql)
 
                         exit for
                     End If
@@ -188,6 +189,7 @@
                     Response.End
                     
                     Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] 없는 상품권 PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & C_STR(Session("userIdx")) & "/" & "P"&Session.sessionid & " / REMOTE_ADDR " & Request.ServerVariables("REMOTE_ADDR") & " / RESULT " & RESULT & " / RESULT_MSG " & RESULT_MSG & "','0','ajax_getEcouponAll-err3')"
+                    dbconn.Execute(Sql)
                     
                     exit for
                 End If
