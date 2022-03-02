@@ -15,9 +15,6 @@
     Dim txtPIN, PIN_save 
     txtPIN = GetReqStr("txtPIN","")
     PIN_save = GetReqStr("PIN_save","")
-    
-    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] "& PIN_save & "/" & txtPIN & "/" & Session("userIdx") & "/" & TypeName(Session("userIdx")) &"','0','ajax_getEcouponAll-01')"
-    dbconn.Execute(Sql)
 
     If PIN_save = "Y" Then 
         If IsEmpty(Session("userIdx")) Or IsNull(Session("userIdx")) Or Session("userIdx") = "" Then 
@@ -25,7 +22,7 @@
             Response.End 
         End If 
     End If
-
+    
     if txtPIN <> "" Then  
         dim returnMenuJson : returnMenuJson = ""
         dim arrPin : arrPin = split(txtPIN, "||") 
@@ -75,6 +72,9 @@
                 RESULT_MSG = smartcon_Result.m_ErrorMessage
                 RESULT_PRODUCT_CODE = smartcon_Result.m_ProductCode
             end if 
+
+            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & C_STR(Session("userIdx")) & "/" & "P"&Session.sessionid & " / REMOTE_ADDR " & Request.ServerVariables("REMOTE_ADDR") & " / RESULT " & RESULT & " / RESULT_MSG " & RESULT_MSG & "','0','ajax_getEcouponAll')"
+            dbconn.Execute(Sql)
 
             Dim cmd, rs
 
@@ -158,6 +158,10 @@
                                 if ErrCode <> 0 then 
                                     Response.Write "{""result"":1,""message"":""해당하는 모바일 상품권은 이미 등록 되어있습니다.""}"
                                     response.end 
+                                    
+                                    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] 이미 등록 PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & C_STR(Session("userIdx")) & "/" & "P"&Session.sessionid & " / REMOTE_ADDR " & Request.ServerVariables("REMOTE_ADDR") & " / RESULT " & RESULT & " / RESULT_MSG " & RESULT_MSG & "','0','ajax_getEcouponAll-err1')"
+                                    dbconn.Execute(Sql)
+                                    
                                     exit for
                                 end if 
                             End If
@@ -174,12 +178,18 @@
                     Else
                         Response.Write "{""result"":1,""message"":""해당하는 모바일 상품권이 없습니다.""}"
                         Response.End
+                        
+                        Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] 없는 상품권 PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & C_STR(Session("userIdx")) & "/" & "P"&Session.sessionid & " / REMOTE_ADDR " & Request.ServerVariables("REMOTE_ADDR") & " / RESULT " & RESULT & " / RESULT_MSG " & RESULT_MSG & "','0','ajax_getEcouponAll-err2')"
+
                         exit for
                     End If
                 Else
                     Response.Write "{""result"":3,""message"":""" & "모바일 상품권 정보가 존재하지 않습니다." & """}"
                     Response.End
-                exit for
+                    
+                    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] 없는 상품권 PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & C_STR(Session("userIdx")) & "/" & "P"&Session.sessionid & " / REMOTE_ADDR " & Request.ServerVariables("REMOTE_ADDR") & " / RESULT " & RESULT & " / RESULT_MSG " & RESULT_MSG & "','0','ajax_getEcouponAll-err3')"
+                    
+                    exit for
                 End If
             Else
                 Response.Write "{""result"":1,""message"":""" & RESULT_MSG & ".""}"
