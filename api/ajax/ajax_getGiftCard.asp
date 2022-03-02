@@ -90,7 +90,7 @@
 	    jsonGiftcard = jsonGiftcard & "{""SN"":""" & giftPIN & """}"
         jsonGiftcard = jsonGiftcard & "]}"	
      
-		Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+		Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
 		httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
 		httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
 		httpRequest.SetRequestHeader "Content-Type", "application/json"

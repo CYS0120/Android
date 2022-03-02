@@ -7,7 +7,7 @@
     Function URL_Send(host, params)
         url = host&"?"&params
 '        Response.write url & "<BR>"
-        Set objHttp = server.CreateObject("Msxml2.ServerXMLHTTP")
+        Set objHttp = server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("Msxml2.ServerXMLHTTP")
 
         If IsNull(objHttp) Then
             URL_Send = ""
@@ -261,6 +261,7 @@
 					errCode = .Parameters("@iRETURN")
 
 				End with
+				Set Cmd = Nothing
 
 			End If
 		Else

@@ -10,7 +10,7 @@
     Function URL_Send(host, params)
         url = host&"?"&params
 '        Response.write url & "<BR>"
-        Set objHttp = server.CreateObject("Msxml2.ServerXMLHTTP")
+        Set objHttp = server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("Msxml2.ServerXMLHTTP")
 
         If IsNull(objHttp) Then
             URL_Send = ""
@@ -234,7 +234,7 @@
 			' 상품권 취소처리 data set
             Set httpRequest = Nothing ' 초기화
 			' 상품권 취소처리 API 
-			Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+			Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
 			httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherCancel/", False
 			httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"
 			httpRequest.SetRequestHeader "Content-Type", "application/json"
@@ -244,6 +244,8 @@
 			'사용 상품권 text -> json
 			Set gJSON = New aspJSON
 			gpostResponse = "{""list"" : " & httpRequest.responseText & "}"  
+			Set httpRequest = Nothing 
+
 			'Response.Write "^" & gpostResponse
 			gJSON.loadJSON(gpostResponse)
 			Set this = gJSON.data("list")  
@@ -461,6 +463,7 @@
 					errCode = .Parameters("@iRETURN")
 
 				End with
+				Set Cmd = Nothing
 
 			End If
 		Else
