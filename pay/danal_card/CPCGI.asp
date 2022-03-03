@@ -423,6 +423,9 @@
 				response.write "		document.getElementById('err_iframe').src = '"& returnUrl &"'; "
 				response.write "	}"
 				response.write "</script>"
+				
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"','0','danal_card-004')"
+				dbconn.Execute(Sql)
 
 '				Response.Redirect "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Card"
 				Response.End

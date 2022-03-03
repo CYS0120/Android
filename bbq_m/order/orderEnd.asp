@@ -18,6 +18,9 @@
 
 	If IsEmpty(order_idx) Or IsNull(order_idx) Or Trim(order_idx) = "" Or Not IsNumeric(order_idx) Then order_idx = ""
 
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','end-START')"
+	dbconn.Execute(Sql)
+
 	If order_idx = "" Then
 %>
 	<script type="text/javascript">
