@@ -177,13 +177,13 @@
 					<%
 							Else
 					%>
-						<a href="/mypage/orderListNonMem.asp?gotopage=<%=gotopage%>" class="btn-gray btn_middle" <% if vOrderStatus_chk <> "Y" then ' 고객주문접수 %> style="width:100%;" <% end if %>>목록</a>
+						<a href="/mypage/orderListNonMem.asp?gotopage=<%=gotopage%>" class="btn-gray btn_middle" <% if true then ' vOrderStatus_chk <> "Y" 고객주문접수 %> style="width:100%;" <% end if %>>목록</a>
 					<%
 							End If
 						End if
 					%>
 
-					<% if vOrderStatus_chk = "Y" then ' 고객주문접수 %>
+					<% if false then ' vOrderStatus_chk = "Y" 고객주문접수 %>
 						<a href="javascript: void(0)" onclick="CheckInput()" class="btn-red btn_middle">결제 취소</a>
 						<!-- <a href="javascript: void(0)" onclick="location.href='/order/orderCancel.asp'" class="btn-red btn_middle">결제 취소</a> -->
 					<% end if %>
