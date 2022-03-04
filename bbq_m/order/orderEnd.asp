@@ -18,7 +18,7 @@
 
 	If IsEmpty(order_idx) Or IsNull(order_idx) Or Trim(order_idx) = "" Or Not IsNumeric(order_idx) Then order_idx = ""
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','end-START')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] start','0','end-START')"
 	dbconn.Execute(Sql)
 
 	If order_idx = "" Then
@@ -31,7 +31,7 @@
 		Response.End
 	End If
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','end-000')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] start','0','end-000')"
 	dbconn.Execute(Sql)
 
 	dim pg_RollBack : pg_RollBack = 0
@@ -155,7 +155,7 @@
 		payMethodCode = "99"
 	End Select
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& order_channel &"','0','end-001')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] "& order_channel &"','0','end-001')"
 	dbconn.Execute(Sql)
 
 	'지류상품권 사용 처리 inc_giftcard_use.asp (2021. 10 더페이)
@@ -168,7 +168,7 @@
 		'상태업데이트가 제대로 이루어지지 않음
 		'페이지 리로드일 경우
 		'POS에서 가져갈 상태로 만들지 못함......
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','errCode-"&errCode&"','0','end-err')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] errCode-"&errCode&"','0','end-err')"
 		dbconn.Execute(Sql)
 	Else
 		If member_type = "Member" Then
