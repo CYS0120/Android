@@ -57,12 +57,9 @@
 			order_idx = GetReqStr("ORDER_IDX","")
 		end if 
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0','0','danal_card-000')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 0','0','danal_card-000')"
 		dbconn.Execute(Sql)
         
-        Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Session("UserId") &"','0','danal_card-session-001')"
-        dbconn.Execute(Sql)
-
         returnUrl = "/order/orderComplete.asp"
 
         'i_order_idx = CLng(order_idx)
@@ -84,13 +81,13 @@
             coupon_pin = pinRs("coupon_pin")	
         End If
     
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-1','0','danal_card-000 "&coupon_pin&"')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 0-1','0','danal_card-000 "&coupon_pin&"')"
 		dbconn.Execute(Sql)    
 
         If Len(coupon_pin) > 0 Then
             prefix_coupon_no = LEFT(trim(coupon_pin), 1)
 
-            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-2','0','danal_card-000 "&prefix_coupon_no&"')"
+            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 0-2','0','danal_card-000 "&prefix_coupon_no&"')"
             dbconn.Execute(Sql)        
 
             If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
@@ -99,14 +96,14 @@
                 eCouponType = "KTR"
             End If
 
-            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-3','0','danal_card-000 "&prefix_coupon_no&"')"
+            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 0-3','0','danal_card-000 "&prefix_coupon_no&"')"
             dbconn.Execute(Sql)   
 
             Dim Msg : Msg =""
             If eCouponType = "Coop" Then
                 cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
 
-                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-4','0','danal_card-000 "&eCouponType&"')"
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 0-4','0','danal_card-000 "&eCouponType&"')"
                 dbconn.Execute(Sql)   
 
                 if cl_eCouponCoop.m_cd = "0" then
@@ -116,11 +113,11 @@
                     Msg = cl_eCouponCoop.m_message
                 end if
 
-                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-5','0','danal_card-000 "&cl_eCouponCoop.m_cd&"-"&Msg&"-"&CouponUseCheck&"')"
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 0-5','0','danal_card-000 "&cl_eCouponCoop.m_cd&"-"&Msg&"-"&CouponUseCheck&"')"
                 dbconn.Execute(Sql)              
             Else
                 cl_eCoupon.KTR_Check_Order_Coupon order_idx, dbconn     
-                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-4','0','danal_card-000 "&eCouponType&"')"
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 0-4','0','danal_card-000 "&eCouponType&"')"
                 dbconn.Execute(Sql)  
 
                 if cl_eCoupon.m_cd = "0" then
@@ -130,7 +127,7 @@
                     Msg = cl_eCoupon.m_message                
                 end if
 
-                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','0-5','0','danal_card-000 "&cl_eCoupon.m_cd&"-"&Msg&"-"&CouponUseCheck&"')"
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 0-5','0','danal_card-000 "&cl_eCoupon.m_cd&"-"&Msg&"-"&CouponUseCheck&"')"
                 dbconn.Execute(Sql)              
             End If 
         End If
@@ -149,7 +146,7 @@
 		End If 
         ' ###############################################
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','1','0','danal_card-000')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 1','0','danal_card-000')"
 		dbconn.Execute(Sql)
 
         Set pCmd = Server.CreateObject("ADODB.Command")
@@ -201,7 +198,7 @@
         End If
 		' =========================================================================================
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','2','"& cstr(AMOUNT) &"','danal_card-000')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 2','"& cstr(AMOUNT) &"','danal_card-000')"
 		dbconn.Execute(Sql)
 
     ElseIf gubun = "Charge" Or gubun = "Gift" Then
@@ -243,7 +240,7 @@
             AMOUNT = ""
         End If
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','3','"& cstr(AMOUNT) &"','danal_card-000')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 3','"& cstr(AMOUNT) &"','danal_card-000')"
 		dbconn.Execute(Sql)
 		
     End If
@@ -312,7 +309,7 @@
         'Response.write "res(ORDERID) : " & RES_DATA.Item("ORDERID") & "<BR>"
         'Response.write "res(AMOUNT) : " & RES_DATA.Item("AMOUNT") & "<BR>"
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"/"& Replace(RES_DATA.Item("ORDERID"),"'","") &"/"& AMOUNT &"/"& Replace(RES_DATA.Item("AMOUNT"),"'","") &"','0','danal_card-000')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / "& Replace(ORDER_NUM,"'","") &"/"& Replace(RES_DATA.Item("ORDERID"),"'","") &"/"& AMOUNT &"/"& Replace(RES_DATA.Item("AMOUNT"),"'","") &"','0','danal_card-000')"
 		dbconn.Execute(Sql)
 
         If ORDER_NUM = RES_DATA.Item("ORDERID") And CStr(AMOUNT) = RES_DATA.Item("AMOUNT") Then
@@ -326,7 +323,7 @@
             query = query & "VALUES('PAY', '"&ORDER_NUM&"', "&AMOUNT&", '"&CPID&"', '"&SUBCPID&"', '"&TID&"', '"&CARDCODE&"', '"&CARDNO&"', '"&QUOTA&"', '"&CARDAUTHNO&"', '"&RES_DATA.Item("RETURNCODE")&"', '"&RES_DATA.Item("RETURNMSG")&"', GETDATE()) "
             dbconn.Execute(query)
 
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"','0','danal_card-001')"
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / "& Replace(ORDER_NUM,"'","") &"','0','danal_card-001')"
 			dbconn.Execute(Sql)
 
             If gubun = "Order" Then
@@ -375,7 +372,7 @@
                 End If
                 Set aRs = Nothing
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"','0','danal_card-002')"
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / "& Replace(ORDER_NUM,"'","") &"','0','danal_card-002')"
 				dbconn.Execute(Sql)
 
                 'pay_detail »ý¼º'
@@ -404,7 +401,7 @@
                 End With
                 Set aCmd = Nothing
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"','0','danal_card-003')"
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / "& Replace(ORDER_NUM,"'","") &"','0','danal_card-003')"
 				dbconn.Execute(Sql)
 
 				returnUrl = "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Card"
@@ -424,7 +421,7 @@
 				response.write "	}"
 				response.write "</script>"
 				
-                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"','0','danal_card-004')"
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / "& Replace(ORDER_NUM,"'","") &"','0','danal_card-004')"
 				dbconn.Execute(Sql)
 
 '				Response.Redirect "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Card"
@@ -462,7 +459,7 @@
                 End With
                 Set aCmd = Nothing
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"','0','danal_card-005')"
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / "& Replace(ORDER_NUM,"'","") &"','0','danal_card-005')"
 				dbconn.Execute(Sql)
 
                 If pay_idx > 0 Then
@@ -510,7 +507,7 @@
                     Set aCmd = Nothing
                 End If
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"','0','danal_card-006')"
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / "& Replace(ORDER_NUM,"'","") &"','0','danal_card-006')"
 				dbconn.Execute(Sql)
             End If
         Else
