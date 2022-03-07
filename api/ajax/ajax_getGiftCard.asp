@@ -123,8 +123,8 @@
 			& " VALUES ( '\api\ajax\ajax_getGiftCard.asp', '"& "" &"','"& giftPIN &"','http://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','"& this.item("Voucher_INFO").item("MA_RTN_CD") &"','"& this.item("Voucher_INFO").item("MA_RTN_MSG") &"', GETDATE() ) "
 		dbconn.Execute(Sql)
 
-
-    	For Each row In this.item("Voucher_INFO").item("data")
+        If this.Exists("Voucher_INFO") Then 'item 여부 확인 
+            For Each row In this.item("Voucher_INFO").item("data")
 			Set this1 = this.item("Voucher_INFO").item("data").item(row) 
 			 			
 	        GiftPrice = this1.item("AMT")       ' 상품권 가격
@@ -154,6 +154,9 @@
 
 		Next
 
+        Else
+            Response.Write "{""result"":""4"", ""message"":""상품권 조회 중 오류 발생. 잠시 후 다시 시도하시기 바랍니다.""}" ' 오류 발생
+        End If 
       
 
 
@@ -290,4 +293,6 @@ If callMode = "productSearch" Then
 End If
 
 '지급품목 조회
+
+Call DBClose
 %>
