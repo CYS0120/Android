@@ -77,6 +77,7 @@
 			Set oJSON = New aspJSON
 
 			postResponse = "{""list"" : " & httpRequest.responseText & "}"
+            Set httpRequest = Nothing
 			oJSON.loadJSON(postResponse)
 			Set this = oJSON.data("list")
 
@@ -113,6 +114,7 @@
 					'사용 상품권 text -> json
 					Set gJSON = New aspJSON
 					gpostResponse = "{""list"" : " & httpRequest.responseText & "}" 
+            		Set httpRequest = Nothing
 
 					gJSON.loadJSON(gpostResponse)
 					Set this = gJSON.data("list") 
