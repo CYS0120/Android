@@ -29,6 +29,13 @@
     If IsEmpty(lat) Or IsNull(lat) Or Trim(lat) = "" Or Not IsNumeric(lat) Then lat = "" End If
 
     If lat = "" Then
+	    lat = "null"
+    End If
+    If lng = "" Then
+	    lng = "null"
+    End If
+
+    If lat = "" Then
         result = "[]"
     Else
         Set aCmd = Server.CreateObject("ADODB.Command")

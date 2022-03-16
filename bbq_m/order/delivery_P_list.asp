@@ -281,6 +281,11 @@
 
 					var uluru = {lat: 37.491872, lng: 127.115922};
 
+						var options = {
+							enableHighAccuracy: false, //false 덜 정확하지만 빠름
+							timeout: 1500,
+							maximumAge: 0
+						}
 
 					// Try HTML5 geolocation.
 					if (navigator.geolocation) {
@@ -311,7 +316,7 @@
 							setMarkers(map, uluru);
 							$('#lat').val(uluru.lat);
 							$('#lng').val(uluru.lng);
-					  });
+					  }, options);
 					} else {
 						// Browser doesn't support Geolocation
 						map = new google.maps.Map(document.getElementById('map'), {
