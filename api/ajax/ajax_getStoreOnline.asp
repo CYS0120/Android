@@ -28,7 +28,7 @@
 		If rs("online_status") = "Y" Then 
 			result = "{""result"":""0000"",""message"":""포장주문이 가능합니다.""}"
 		Else
-			result = "{""result"":""0001"",""message"":""해당 매장은 영업시간이 아닙니다. 잠시 후 다시 시도해주세요""}"
+			result = "{""result"":""0001"",""message"":""해당 매장은 영업시간이 아닙니다.<br>잠시 후 다시 시도해주세요""}"
 		End If 
 	Else
 		result = "{""result"":""0001"",""message"":""검색된 매장이 없습니다.""}"
