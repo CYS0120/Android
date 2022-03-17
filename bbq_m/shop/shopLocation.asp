@@ -360,7 +360,7 @@
 
 					// Try HTML5 geolocation.
 					if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(function(position) {
+					navigator.geolocation.watchPosition(function(position) { //getCurrentPosition -> watchPosition
 						var pos = {
 							lat: position.coords.latitude,
 							lng: position.coords.longitude
@@ -506,7 +506,7 @@
 				maximumAge: 0
 			}
 			// GeoLocation을 이용해서 접속 위치를 얻어옵니다
-			navigator.geolocation.getCurrentPosition(function(position) {
+			navigator.geolocation.watchPosition(function(position) { //getCurrentPosition -> watchPosition
 				
 				var lat = position.coords.latitude, // 위도
 					lon = position.coords.longitude; // 경도

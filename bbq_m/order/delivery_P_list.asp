@@ -281,15 +281,15 @@
 
 					var uluru = {lat: 37.491872, lng: 127.115922};
 
-						var options = {
-							enableHighAccuracy: false, //false 덜 정확하지만 빠름
-							timeout: 1500,
-							maximumAge: 0
-						}
+					var options = {
+						enableHighAccuracy: false, //false 덜 정확하지만 빠름
+						timeout: 1500,
+						maximumAge: 0
+					}
 
 					// Try HTML5 geolocation.
 					if (navigator.geolocation) {
-					  navigator.geolocation.getCurrentPosition(function(position) {
+					  navigator.geolocation.watchPosition(function(position) { //getCurrentPosition -> watchPosition
 						var pos = {
 						  lat: position.coords.latitude,
 						  lng: position.coords.longitude
