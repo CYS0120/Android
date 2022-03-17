@@ -85,11 +85,6 @@ Class PosResult_Coop
 
     '-- 실제 통신 | 시작 --
     Set httpObj = Server.CreateObject("WinHttp.WinHttpRequest.5.1")
-        lResolve = 15 * 1000	'도메인 확인 시간, default 무한대
-        lConnect = 15 * 1000	'서버와의 연결 시간, default 60 초
-        lSend    = 15 * 1000	'데이터 전송 시간, default 30 초
-        lReceive = 15 * 1000	'데이터 수신 시간, default 30 초
-        httpObj.SetTimeouts lResolve, lConnect, lSend, lReceive
         httpObj.open "POST", Url, False
         httpObj.SetRequestHeader "Content-Type", "application/json"
         httpObj.SetRequestHeader "x-api-key", AuthKey
