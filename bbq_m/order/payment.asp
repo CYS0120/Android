@@ -108,7 +108,7 @@
 
 	If instr(cart_value, "pin") = 0 Then
 		'pin 번호 확인을 위한 로그 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] cart_value : "& cart_value &"','0','payment-pin')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] cart_value : "& cart_value &"','0','payment-pin-1')"
 		dbconn.Execute(Sql)
 	End If 
 
@@ -195,6 +195,11 @@
 
 	Dim iLen : iLen = cJson.length
 	For i = 0 To iLen - 1
+		if Not cJson.get(i).hasOwnProperty("value") then 
+			'pin 번호 확인을 위한 로그 
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] cart_value : "& cart_value & " / i : "& i &" / iLen : " & iLen & "','0','payment-pin-2')"
+			dbconn.Execute(Sql)
+		end if 
 		CouponPin = cJson.get(i).value.pin
 		If CouponPin <> "" Then 
 			If vCoupon_yn = "N" Then 
@@ -1539,12 +1544,13 @@ function calcTotalAmount() {
 				break;
 		}
 
-		if (win_pay == null || typeof(win_pay) == "undefined" || (win_pay == null && win_pay.outerWidth == 0) || (win_pay != null && win_pay.outerHeight == 0) || win_pay.test == "undefined")
-		{
-			if (agent.indexOf("safari") != -1 || agent.indexOf("chrome") != -1 || agent.indexOf("firefox") != -1) {
+		//사용하지 않는 alert 주석 처리 (2022. 3. 17)
+		//if (win_pay == null || typeof(win_pay) == "undefined" || (win_pay == null && win_pay.outerWidth == 0) || (win_pay != null && win_pay.outerHeight == 0) || win_pay.test == "undefined")
+		//{
+		//	if (agent.indexOf("safari") != -1 || agent.indexOf("chrome") != -1 || agent.indexOf("firefox") != -1) {
 				// alert("팝업 차단 기능이 설정되어있습니다\n\n차단 기능을 해제(팝업허용) 한 후 다시 이용해 주십시오.\n\n만약 팝업 차단 기능을 해제하지 않으면\n정상적인 주문이 이루어지지 않습니다.");
-			}
-		}
+		//	}
+		//}
 	}
 
 	var pointInfo = [];
