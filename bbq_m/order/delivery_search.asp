@@ -781,11 +781,11 @@
 									});
 
 								} else {
-									sessionStorage.setItem("ss_branch_id", br_id);
-									sessionStorage.setItem("ss_branch_data", br_data);
+									// sessionStorage.setItem("ss_branch_id", br_id);
+									// sessionStorage.setItem("ss_branch_data", br_data);
 
-									showAlertMsg({msg:res.message+"  메뉴리스트로 이동합니다", ok: function(){
-										location.href='/menu/menuList.asp?order_type=<%=order_type%>';
+									showAlertMsg({msg:res.message, ok: function(){
+										// location.href='/menu/menuList.asp?order_type=<%=order_type%>';
 									}});
 								}
 							},
