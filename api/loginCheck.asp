@@ -52,7 +52,11 @@
 				Session("refresh_token") = refresh_token
 				Session("token_type") = token_type
 				Session("expires_in") = expires_in
-				Session.Timeout = expires_in / 60
+				If IsEmpty(expires_in) Or Not IsNumeric(expires_in) Then 
+					Session.Timeout = 20 'expires_in 값 없을 때 default 20분으로 셋팅 
+				Else
+					Session.Timeout = expires_in / 60
+				End If 
 
                 Session("userIdx") = pRs("member_idx")
                 Session("userId") = uid
