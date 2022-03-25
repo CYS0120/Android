@@ -329,6 +329,10 @@
 
 	' 자동로그인으로 왔을때만 다른도메인쪽도 로그인
 	if rtnUrl <> "" then 
+		'자동로그인 확인을 위한 로그
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& Session("userIdx") &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / rtnUrl "& C_STR(rtnUrl) & " / MULTI_DOMAIN " & C_STR(multi_domail_login_url) & " / HOST " & Request.ServerVariables("HTTP_HOST") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','loginToken-rtnUrl')"
+		dbconn.Execute(Sql)
+
 		g2_bbq_d_url_str = g2_domain_filter(g2_bbq_d_url)
 		now_bbq_url_str = g2_domain_filter(request.servervariables("HTTP_HOST"))
 
@@ -339,10 +343,15 @@
 		else
 			multi_domail_login_url = g2_bbq_d_url & multi_domail_login_url ' PC 로그인
 		end if 
+
+		dim referUrl 
+		referUrl = Request.ServerVariables("HTTP_REFERER")
+		if instr(referUrl, "/api/loginToken.asp") = 0 Then 
 %>
 
 		<iframe src="<%=multi_domail_login_url%>" style="display:none"></iframe>
 <%
+		end if 
 	end if 
 
 	'자동로그인 확인을 위한 로그

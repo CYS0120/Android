@@ -252,6 +252,7 @@
 										Set aRs = .Execute
 										EcoupontotalCount = .Parameters("@totalCount").Value
 									End With
+									Set aRs = Nothing
 									Set aCmd = Nothing 
 							%>
 							<dl>
@@ -264,7 +265,6 @@
 								<dd><span>0</span>개</dd>
 							</dl>							
 							<%
-								Set aRs = Nothing
 								End If
 							%>	
 							<dl>
@@ -358,8 +358,9 @@
 		</script>
 
 		<%
-			End If 
-		End If
+			End If '//If Request.Cookies(CookName) = "done" Then 
+		End If '//If bPopRs.BOF Or bPopRs.EOF Then
+		Set bPopRs = Nothing 
 
 		Set bCmd = Server.CreateObject("ADODB.Command")
 		With bCmd
@@ -392,10 +393,11 @@
 		</script>
 
 		<%
-					End If 
+					End If  '//If Request.Cookies(CookName) = "done" Then 
 					bPopRs.MoveNext
 				Loop 
-			End If 
+			End If '//If bPopRs.BOF Or bPopRs.EOF Then
+			Set bPopRs = Nothing 
 		%>
 
 		<script>
