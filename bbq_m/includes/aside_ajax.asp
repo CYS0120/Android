@@ -1,9 +1,19 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <%
+dim sIdHtml :  sIdHtml = ""
 If CheckLogin() Then
 	Set pUserInfo = UserGetInfo
 
 	mMemberGradeName_str = trim(replace(pUserInfo.mMemberGradeName, "딹", ""))
+
+	If mMemberGradeName_str = "브론즈" or mMemberGradeName_str = "실버" or mMemberGradeName_str = "골드" Then 
+		sTmpTag = "div"
+	Else
+		sTmpTag = "span"
+	End If 
+	If session("userId") <> "" Then 
+		sIdHtml = "<" & sTmpTag & " id='loginInfo_userid'>(" & session("userId") & ")</" & sTmpTag & ">"
+	End If
 end if 
 %>
 <!-- Aside Menu -->
@@ -36,7 +46,8 @@ end if
 				<% if mMemberGradeName_str = "브론즈" then %><img src="/images/common/ico_memGrade_bronze2.png" alt="브론즈"> <span class="bronze"><%=mMemberGradeName_str%></span><% end if %>
 				<% if mMemberGradeName_str = "실버" then %><img src="/images/common/ico_memGrade_silver2.png" alt="실버"> <span class="silver"><%=mMemberGradeName_str%></span><% end if %>
 				<% if mMemberGradeName_str = "골드" then %><img src="/images/common/ico_memGrade_gold2.png" alt="골드"> <span class="gold"><%=mMemberGradeName_str%></span><% end if %>
-				<span class="name"><%=LoginUserName%></span> 고객님
+				<span class="name"><%=LoginUserName%></span> 고객님 
+				<%=sIdHtml%> 
 			</p>
 		</div>
 	</div>
@@ -81,7 +92,6 @@ end if
 					</dl>
 
 					<% 
-						Set pMemberPoint = Nothing
 						'Set pCouponList = CouponGetHoldList("NONE", "N", 100, 1) 
 					%>
 
