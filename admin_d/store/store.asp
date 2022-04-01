@@ -7,8 +7,6 @@
 %>
 <!-- #include virtual="/inc/admin_check.asp" -->
 <%
-	BRAND_CODE	= FncBrandDBCode(CD)
-
 	SM		= InjRequest("SM")
 	SW		= InjRequest("SW")
 	LNUM	= InjRequest("LNUM")
@@ -82,16 +80,6 @@ function ExcelDown(){
 				<input type="hidden" name="CD" value="<%=CD%>">
 				<input type="hidden" name="LNUM" value="<%=LNUM%>">
 				<table>
-<%	IF BRAND_CODE = "01" THEN %>
-					<tr>
-						<th>
-							<ul>
-								<li><label><input type="radio" name="curpage" checked onClick="document.location.href='store.asp?CD=<%=CD%>'">매장관리</label></li>
-								<li><label><input type="radio" name="curpage" onClick="document.location.href='address.asp?CD=<%=CD%>'">주소관리</label></li>
-							</ul>
-						</th>
-					</tr>
-<%	END IF %>
 					<tr>
 						<th>
 							<div class="board_select">
@@ -110,6 +98,8 @@ function ExcelDown(){
 				</table>
 				</form>
 <%
+	BRAND_CODE	= FncBrandDBCode(CD)
+
 
 	SELCODE_B = ""	'서비스 유형 관리
 	SELCODE_E = ""	'멤버십 사용 여부 관리
