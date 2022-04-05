@@ -620,7 +620,8 @@ public class MainActivity extends AppCompatActivity {
                         //
                         // url 이동
                         //
-                        mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId="+deviceId+"&token="+token+"&osTypeCd=ANDROID&pushtype="+pushType+"&version="+appVersion); // 실서버 보안연결
+                      mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId="+deviceId+"&token="+token+"&osTypeCd=ANDROID&pushtype="+pushType+"&version="+appVersion); // 실서버 보안연결
+//                        mWebView.loadUrl("https://m.bbq.co.kr/gps_test.asp");
                         progressBar.setVisibility(View.VISIBLE);
                         mWebView.setVisibility(View.VISIBLE);
                     }
@@ -662,10 +663,16 @@ public class MainActivity extends AppCompatActivity {
     }
     public void checkLocationPermission() {
         String temp = "";
+
         //위치 권한 확인
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             temp += Manifest.permission.ACCESS_COARSE_LOCATION + " ";
         }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            temp += Manifest.permission.ACCESS_FINE_LOCATION + " ";
+        }
+
         if (TextUtils.isEmpty(temp) == false) {
             // 권한 요청
             ActivityCompat.requestPermissions(this, temp.trim().split(" "), 1);
