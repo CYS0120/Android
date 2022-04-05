@@ -148,6 +148,143 @@ function calculateStore() {
 		}
 	});
 }
+var checkClick = 0;
+function CheckInput(tp, num){
+	var run = 0;
+	if (tp == "update") {
+		if ( checkClick == 1 ) {
+			alert('등록중입니다. 잠시 기다려 주시기 바랍니다.');
+			return;
+		}
+
+		// 동, 배달비 미입력 시 알림 → each 사용하기
+		$('[id^="delfee_tr_"]').each(function(index) {
+			if($('[id^="dong"]:eq('+index+')').val() == "undefined" || $('[id^="dong"]:eq('+index+')').val() == "" || $('[id^="dong"]:eq('+index+')').val() == null){
+				run = 0;
+				alert("동을 입력해주세요");
+				$('[id^="dong"]:eq('+index+')').focus();
+				return false;
+			}
+			if($('[id^="add_delFee"]:eq('+index+')').val() <= 0 || $('[id^="add_delFee"]:eq('+index+')').val() == "" || $('[id^="add_delFee"]:eq('+index+')').val() == null){
+				run = 0;
+				alert("추가배달료를 입력해주세요");
+				$('[id^="add_delFee"]:eq('+index+')').focus();
+				return false;
+			}
+		})
+
+		// 같은 동을 여러 번 세팅하면 알림
+		for (var i = 1; i <= cnt; ++i) {
+			var dong1 = "#dong" + i;
+			for (var j = i+1; j <= cnt; ++j) {
+				var dong2 = "#dong" + j;
+				alert(dong1 + " && " + dong2);
+				alert($(dong1).val() + " && " + $(dong2).val());
+				if ($(dong1).val() == $(dong2).val()){run = 0;alert("하나의 동에 추가배달료 한 번만 설정해주세요");$(dong2).focus();return false;}
+			}
+		}
+
+		run = 1;
+	} else if (tp == "delete") {
+		// 삭제 행에 내용 없으면 해당 div만 삭제하도록
+		var delete_dong = "#dong" + num;
+		var delete_tr = "#delfee_tr_" + num;
+		if($(delete_dong).val() == "undefined" || $(delete_dong).val() == "" || $(delete_dong).val() == null) {
+			$(delete_tr).remove();
+			// var cnt = $("#cnt").val();
+			// cnt = Number(cnt) - 1;
+			// $("#cnt").val(cnt);
+			return;
+		} else{
+			run = 1;
+		}
+	}
+
+	if (run == 1) {
+		checkClick = 1;
+		$.ajax({
+			async: true,
+			type: "POST",
+			url: "store_info_delFee_proc.asp",
+			data: $("#inputfrm").serialize()+$("#inputfrm2").serialize()+"&tp="+tp+"&num="+num,
+			dataType: "text",
+			success: function (data) {
+				alert(data);
+				$('.mask, .window').hide();
+				location.reload();
+			},
+			error: function(data, status, err) {
+				alert(err + '서버와의 통신이 실패했습니다.');
+				checkClick = 0;
+			}
+		});
+	}
+}
+
+function AddDelDiv(){
+	var html = "";
+	var cnt = $("#cnt").val();
+	cnt = Number(cnt) + 1;
+	$("#cnt").val(cnt);
+
+	html = html + "";
+
+	html = html + "	<tr id='delfee_tr_" + cnt + "'>"
+	html = html + "		<td>" + cnt + "</td>"
+	html = html + "		<td>"
+	html = html + "			<select id='sido" + cnt + "' name='sido" + cnt + "' onchange=onChange_sigungu('#sido" + cnt + "','#sigungu" + cnt + "')>"
+	html = html + "				<option value=''></option>"
+<%
+			Sql = "select distinct sido_name from bt_address_dong with (nolock) "
+			Set Sidolist = conn.Execute(Sql)
+			If Not Sidolist.eof Then 
+				Do While Not Sidolist.Eof
+					sido_select = Sidolist("sido_name")
+%>
+	html = html + "				<option value='<%=sido_select%>'><%=sido_select%></option>"
+<%	
+					Sidolist.MoveNext
+				Loop 
+			End If
+%>
+	html = html + "			</select>"
+	html = html + "		</td>"
+	html = html + "		<td>"
+	html = html + "			<select id='sigungu" + cnt + "' name='sigungu" + cnt + "' onchange=onChange_dong('#sido" + cnt + "','#sigungu" + cnt + "','#dong" + cnt + "')></select>"
+	html = html + "		</td>"
+	html = html + "		<td>"
+	html = html + "			<select id='dong" + cnt + "' name='dong" + cnt + "'></select>"
+	html = html + "		</td>"
+	html = html + "		<td><input type='number' step='100' id='add_delFee" + cnt +"' name='add_delFee" + cnt + "' value='' style='width:80px;' onkeyup='onlyNum(this);'>원</td>"
+	html = html + "		<td><input type='button' value='삭제' class='btn_white' onClick=CheckInput('delete'," + cnt + ")></td>"
+	html = html + "	</tr>"
+
+	$("#AddDel_table").append(html);
+}
+
+function AddDelFee(){
+	wrapWindowByMask();
+}
+
+function onChange_sigungu(sido_id, sigungu_id)
+{
+	$.post(
+		"/store/ajax_sigungu_list.asp"
+		, {sido_name: $(sido_id).val()}
+		, function(data) {
+			$(sigungu_id).html(data);
+	});
+}
+
+function onChange_dong(sido_id, sigungu_id, dong_id)
+{
+	$.post(
+		"/store/ajax_dong_list.asp"
+		, {sido_name: $(sido_id).val(), sigungu_name: $(sigungu_id).val()}
+		, function(data) {
+			$(dong_id).html(data);
+	});
+}
 </script>
 </head>
 <body>
@@ -163,6 +300,100 @@ function calculateStore() {
 	<!--//GNB-->
 </div>
 <!--//NAV-->
+
+
+		<!--popup-->
+        <div class="mask"></div>
+        <div class="window">
+            <div class="sitemap_wrap">
+                <!--content-->
+                <div class="delfee_popup_area">
+                    <form id="inputfrm2" name="inputfrm2">
+					<div class="popup_title">
+						<span>동별 추가 배달료 설정</span>
+						<span><input type="button" value="추가" class="btn_white" onClick="AddDelDiv()"></span>
+						<a class="close" onClick="location.reload();"><img src="../img/close.png" alt=""></a>
+					</div>
+					<table id="AddDel_table" name="AddDel_table">
+						<tr>
+							<th>NO</th>
+							<th>시도</th>
+							<th>시군구</th>
+							<th>행정동(법정동)</th>
+							<th>추가배달료</th>
+							<th>관리</th>
+						</tr>
+<%
+	Sql = "	select t2.branch_id, t1.sido_name, t1.sigungu_name, t1.h_code, t1.h_name, t1.b_code, t1.b_name, t1.h_name+'('+t1.b_name+')' as dong_name, t2.delivery_fee as add_delFee " & _
+		  "	from bt_address_dong t1 with (nolock) " & _
+		  "	inner join bt_branch_delivery_fee t2 with (nolock) " & _
+		  "	on t1.h_code = t2.h_code and t1.b_code = t2.b_code " & _
+		  "		and t2.branch_id = '" & BRCD & "' and t2.use_yn = 'Y' "
+	Set DelFeelist = conn.Execute(Sql)
+	cnt = 0
+	If Not DelFeelist.eof Then 
+		Do While Not DelFeelist.Eof
+			add_delFee = DelFeelist("add_delFee")
+			sido_name = DelFeelist("sido_name")
+			sigungu_name = DelFeelist("sigungu_name")
+			h_code = DelFeelist("h_code")
+			b_code = DelFeelist("b_code")
+			dong_code = DelFeelist("h_code") & "|" & DelFeelist("b_code")
+			dong_name = DelFeelist("dong_name")
+			
+			cnt = cnt + 1
+%>
+						<tr id="delfee_tr_<%=cnt%>">
+							<td><%=cnt%></td>
+							<td>
+								<select id="sido<%=cnt%>" name="sido<%=cnt%>" onchange="onChange_sigungu('#sido<%=cnt%>', '#sigungu<%=cnt%>')">
+									<option value="<%=sido_name%>"><%=sido_name%></option>
+<%
+							Sql = "select distinct sido_name from bt_address_dong with (nolock) where sido_name not in ('" & sido_name & "') "
+							Set Sidolist = conn.Execute(Sql)
+							If Not Sidolist.eof Then 
+								Do While Not Sidolist.Eof
+									sido_select = Sidolist("sido_name")
+%>
+									<option value="<%=sido_select%>"><%=sido_select%></option>
+<%	
+									Sidolist.MoveNext
+								Loop 
+							End If
+%>
+								</select>
+							</td>
+							<td>
+								<select id="sigungu<%=cnt%>" name="sigungu<%=cnt%>" onchange="onChange_dong('#sido<%=cnt%>', '#sigungu<%=cnt%>', '#dong<%=cnt%>')">
+									<option value="<%=sigungu_name%>"><%=sigungu_name%></option>
+								</select>
+							</td>
+							<td>
+								<select id="dong<%=cnt%>" name="dong<%=cnt%>">
+									<option value="<%=dong_code%>"><%=dong_name%></option>
+								</select>
+							</td>
+							<td><input type="number" step="100" id="add_delFee<%=cnt%>" name="add_delFee<%=cnt%>" value="<%=add_delFee%>" style="width:80px;" onkeyup="onlyNum(this);">원</td>
+							<td><input type="button" value="삭제" class="btn_white" onClick="CheckInput('delete',<%=cnt%>)"></td>
+						</tr>
+<%	
+			DelFeelist.MoveNext
+		Loop
+	End If
+%>
+					</table>
+					<div class="popup_btn">
+						<input type="button" value="등록" class="btn_red125" onClick="CheckInput('update',0)">
+						<input type="button" value="취소" class="btn_white125" onClick="$('.mask, .window').hide();location.reload();">
+					</div>
+					<input type="hidden" id="cnt" name="cnt" value="<%=cnt%>">
+                    </form>
+                </div>
+                <!--//content-->
+            </div>
+        </div>
+        <!--//popup-->
+
         <div class="content">
 			<div class="section section_store">
 				<div class="store_info">
@@ -421,8 +652,9 @@ function calculateStore() {
 							<tr>
 								<th>배달비</th>
 								<td>
-									<input type="number" name="delivery_fee" value="<%=delivery_fee%>" onkeyup="onlyNum(this);">원 
+									<input type="number" step="100" name="delivery_fee" value="<%=delivery_fee%>" onkeyup="onlyNum(this);">원 
 									<span>(숫자만 입력)</span>
+									<input type="button" value="추가 배달비" class="btn_white125" style="margin-left:10px;" onClick="AddDelFee()"></input>
 								</td>
 							</tr>
 							<tr>
