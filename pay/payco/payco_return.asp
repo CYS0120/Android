@@ -1,4 +1,5 @@
 <!--#include file="payco_config.asp"-->
+<!--#include virtual="/api/include/g2.asp"-->
 <!--#include virtual="/api/include/cv.asp"-->
 <!--#include virtual="/includes/cv.asp"-->
 <!--#include virtual="/api/include/json2.asp"-->

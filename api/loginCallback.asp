@@ -229,6 +229,10 @@
 						Response.Cookies("refresh_token").Expires = DateAdd("yyyy", 1, now())
 					end if 
 
+                    '자동로그인 확인을 위한 로그
+                    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& pRs("member_idx") &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / SESSION " & Session("UserId") & " / BBQ_APP " & Request.Cookies("bbq_app_type") & " / AutoLogin " & C_STR(auto_login_yn) & " / RtnURL " & rtnUrl & " / " & Request.ServerVariables("HTTP_USER_AGENT") & " / " & Request.Cookies("refresh_token") & "','0','loginCallback-auto_login_yn')"
+                    dbconn.Execute(Sql)
+                    
                     loginSuccess = True
                     loginMessage = ""
                     returnUrl = returnUrl & "&error="
@@ -337,9 +341,6 @@
 '<%
     End If
 
-    DBClose
-
-
 	' 순수 도메인
 	g2_bbq_d_url_str = g2_domain_filter(g2_bbq_d_url)
 	now_bbq_url_str = g2_domain_filter(request.servervariables("HTTP_HOST"))
@@ -352,6 +353,12 @@
 	else
 		multi_domail_login_url = g2_bbq_d_url & multi_domail_login_url ' PC 로그인
 	end if 
+    
+	'자동로그인 확인을 위한 로그
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& Session("userIdx") &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / RedirectUrl "& C_STR(returnUrl) & " / MULTI_DOMAIN " & C_STR(multi_domail_login_url) & " / HOST " & Request.ServerVariables("HTTP_HOST") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','loginCallback-returnUrl')"
+	dbconn.Execute(Sql)
+
+    DBClose
 %>
 
 <iframe src="<%=multi_domail_login_url%>" style="display:none"></iframe>

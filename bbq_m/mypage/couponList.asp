@@ -276,7 +276,7 @@
 							<h3>할인/증정쿠폰 번호를<br>입력하여 주세요.</h3>
 							<form action="" class="form">
 								<ul class="area">
-									<li><input type="text" id="paycoPIN" name="paycoPIN" placeholder="할인/증정쿠폰 번호 입력" class="w-100p" maxlength="12" value=""></li>
+									<li><input type="text" id="paycoPIN" name="paycoPIN" placeholder="할인/증정쿠폰 번호 입력" class="w-100p" maxlength="16" value=""></li>
                                     <li class="mar-t15"><button type="button" onclick="paycoCoupon_Check_Json_url();" class="btn btn_middle btn-red">확인</button></li>
                                     <%
                                         ' Set couponIssueByPin = CouponIssueByPinV2("페이코 핀번호  paycoPIN.value")

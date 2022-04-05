@@ -151,7 +151,7 @@
 
 								slideHtml1 += "<ul class='find_shop'>";
 								slideHtml1 += "	<li><a href=\"javascript: selectStore('"+ json[i].branch_id +"')\" class='btn btn_middle btn-lightGray'>선택</a></li>";
-								slideHtml1 += "	<li>";
+								slideHtml1 += "	<li class='find_shop_1'>";
 								slideHtml1 += "		<a href='/shop/shopView.asp?branch_id="+ json[i].branch_id +"' class='find_shop_name'>"+ json[i].branch_name +"</a> ";
 
 								if (json[i].branch_type == "올리브카페")
@@ -159,14 +159,14 @@
 
 								slideHtml1 += "	</li>";
 
-								slideHtml1 += "	<li>";
+								slideHtml1 += "	<li class='find_shop_2'>";
 								slideHtml1 += "		"+ json[i].branch_address +" ";
 
 								if (json[i].membership_yn_code == "50")
 									slideHtml1 += "		<a href='javascript: void(0)' class='btn btn-red btn_small4'>멤버십</a>";
 
 								slideHtml1 += "	</li>";
-								slideHtml1 += "	<li>";
+								slideHtml1 += "	<li class='find_shop_3'>";
 								slideHtml1 += "		"+ json[i].branch_tel +" ";
 								slideHtml1 += "		<button type='button' id='btn_map' class='' onclick='show_map(\""+ z +"\", \""+ json[i].wgs84_y +"\", \""+ json[i].wgs84_x +"\")'><!-- <img src='/images/order/icon_map.png' alt='지도보기'> --></button>";
 								slideHtml1 += "		<div id='mapWrap_"+ z +"' style='display: none;'>";
@@ -255,15 +255,15 @@
 							} else {
 								var br_data = $("#br_"+br_id).attr("value");
 
-								sessionStorage.setItem("ss_branch_id", br_id);
-								sessionStorage.setItem("ss_branch_data", br_data);
-								sessionStorage.setItem("ss_order_type", "P");
+								// sessionStorage.setItem("ss_branch_id", br_id);
+								// sessionStorage.setItem("ss_branch_data", br_data);
+								// sessionStorage.setItem("ss_order_type", "P");
 
 								sessionStorage.removeItem("ss_addr_idx");
 								sessionStorage.removeItem("ss_addr_data");
 
-								showAlertMsg({msg:res.message+"  메뉴리스트로 이동합니다", ok: function(){
-									location.href='/menu/menuList.asp?order_type=<%=order_type%>';
+								showAlertMsg({msg:res.message, ok: function(){
+									// location.href='/menu/menuList.asp?order_type=<%=order_type%>';
 								}});
 							}
 						},
@@ -281,10 +281,15 @@
 
 					var uluru = {lat: 37.491872, lng: 127.115922};
 
+					var options = {
+						enableHighAccuracy: false, //false 덜 정확하지만 빠름
+						timeout: 1500,
+						maximumAge: 0
+					}
 
 					// Try HTML5 geolocation.
 					if (navigator.geolocation) {
-					  navigator.geolocation.getCurrentPosition(function(position) {
+					  navigator.geolocation.watchPosition(function(position) { //getCurrentPosition -> watchPosition
 						var pos = {
 						  lat: position.coords.latitude,
 						  lng: position.coords.longitude
@@ -311,7 +316,7 @@
 							setMarkers(map, uluru);
 							$('#lat').val(uluru.lat);
 							$('#lng').val(uluru.lng);
-					  });
+					  }, options);
 					} else {
 						// Browser doesn't support Geolocation
 						map = new google.maps.Map(document.getElementById('map'), {

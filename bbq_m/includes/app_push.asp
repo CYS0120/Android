@@ -4,6 +4,7 @@
 push_token = request("token") '푸시 토큰을 받아
 deviceUid = request("deviceId") '폰 기기정보
 osTypeCd = request("osTypeCd") 'ANDROID / IOS
+osVersion = request("version") 
 access_token = Session("access_token") '회원로그인
 pushTypeCd = "FCM"
 
@@ -18,6 +19,9 @@ end if
 if len(osTypeCd) = 0 and len(Session("osTypeCd")) > 0 then
 	osTypeCd = Session("osTypeCd")
 end if
+if len(osVersion) = 0 and len(Session("osVersion")) > 0 then
+	osVersion = Session("osVersion")
+end if
 
 if push_token <> "" then
 	Session("push_token") = push_token
@@ -27,6 +31,9 @@ if deviceUid <> "" then
 end if
 if osTypeCd <> "" then
 	Session("osTypeCd") = osTypeCd
+end if
+if osVersion <> "" then
+	Session("osVersion") = osVersion
 end if
 
 If Session("push_token") <> "" Then
@@ -136,9 +143,9 @@ If push_check = "1" Then
 					end if
 
 				End if
-				Session("push_token") = ""
-				Session("deviceUid") = ""
-				Session("osTypeCd") = ""
+				'Session("push_token") = ""
+				'Session("deviceUid") = ""
+				'Session("osTypeCd") = ""
 			Else 
 				'loginMessage = "PUSH 토큰 등록 실패"
 

@@ -359,7 +359,7 @@ Function Ceil(ByVal intParam)
 End Function
 
 Function SendXMLHTTP(url)
-	set objHTTP = Server.CreateObject("MSXML2.ServerXMLHTTP")
+	set objHTTP = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
 
 	lResolve = 5 * 1000 
 	lConnect = 7200 * 1000	'(default : 60s)
@@ -438,4 +438,11 @@ Function fNullCheck(ByVal pStr, ByVal pVal, ByVal pType)
 		End If
 	End If
 End Function
+
+function Sleep(seconds)
+    set oShell = CreateObject("Wscript.Shell")
+    cmd = "%COMSPEC% /c timeout " & seconds & " /nobreak"
+    oShell.Run cmd, 0, 1
+    set oShell = Nothing 
+End function
 %>

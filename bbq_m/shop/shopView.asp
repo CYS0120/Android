@@ -30,6 +30,10 @@
 		End With
 		Set cmd = Nothing
 
+        If  (rs.BOF Or rs.EOF) Then
+			response.write "존재하지 않는 매장입니다."
+			response.end 
+		end if 
 		Dim branch_type, branch_type_arr, cnt, wgs84_x, wgs84_y, branch_weekday_open, branch_weekday_close, branch_services
 		branch_type_arr = split(rs("branch_type"),";")
 		cnt = UBound(branch_type_arr)
@@ -85,12 +89,13 @@
 						</dl>
 						<dl class="service_provided">
 							<dt>제공서비스</dt>
-							<dd>
+							<dd><!--
 								<ul>
 									<li><p><img src="/images/shop/ico_parking.png" alt=""></p> 주차</li>
 									<li><p><img src="/images/shop/ico_wifi.png" alt=""></p> 와이파이</li>
 									<li><p><img src="/images/shop/ico_people.png" alt=""></p> 단체</li>
 								</ul>
+								-->
 								<ul>
 									<%If Left(branch_services,1) = "1" THEN%>
 									<li><em><img src="/images/shop/ico_parking.png" alt=""></em> <span>주차</span></li>

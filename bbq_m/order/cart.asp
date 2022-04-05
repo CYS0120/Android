@@ -3,10 +3,6 @@
 	if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
 		sessionStorage.setItem("ss_order_type", "R");
 	}
-
-	window.onload = function(){
-		sessionStorage.removeItem("olympic_winter");
-	}
 </script>
 <%
 
@@ -714,7 +710,7 @@
 			if(res.result == 0) {
 				showAlertMsg({msg:"멤버십사용이 취소되었습니다."});
 			} else {
-				showAlertMsg({msg:"멤버십사용이 취소되지 않았습니다."});
+				//showAlertMsg({msg:"멤버십사용이 취소되지 않았습니다."});
 			}
 		},
 		error: function(xhr) {

@@ -30,6 +30,7 @@
     Dim vBName : vBName = Request("b_name")
     Dim vBCode : vBCode = Request("b_code")
     Dim vMobile : vMobile = Request("mobile")
+    Dim vHCode : vHCode = Request("h_code") '행정동 코드 추가 (2022. 3. 22)
 
     If IsEmpty(vMode) Or IsNull(vMode) Or Trim(vMode) = "" Then vMode = "" End If
     If IsEmpty(vAddrIdx) Or IsNull(vAddrIdx) Or Trim(vAddrIdx) = "" Then vAddrIdx = 0 End If
@@ -46,10 +47,14 @@
     If IsEmpty(vBName) Or IsNull(vBName) Or Trim(vBName) = "" Then vBName = "" End If
     If IsEmpty(vBCode) Or IsNull(vBCode) Or Trim(vBCode) = "" Then vBCode = "" End If
     If IsEmpty(vMobile) Or IsNull(vMobile) Or Trim(vMobile) = "" Then vMobile = "" End If
+    If IsEmpty(vHCode) Or IsNull(vHCode) Or Trim(vHCode) = "" Then vHCode = "" End If '행정동 코드 추가 (2022. 3. 22)
 
     Dim aCmd, aRs, ErrCode, ErrMsg
 
-    If vMode = "I" Then
+    If Session("userIdx") = "" Then 
+        result = "{""success"":false, ""addr_idx"":0}"
+        
+    ElseIf vMode = "I" Then
         Set aCmd = Server.CreateObject("ADODB.Command")
 
         With aCmd
@@ -74,6 +79,7 @@
             .Parameters.Append .CreateParameter("@bname", adVarChar, adParamInput, 100, vBName)
             .Parameters.Append .CreateParameter("@b_code", adVarChar, adParamInput, 20, vBCode)
             .Parameters.Append .CreateParameter("@mobile", adVarChar, adParamInput, 20, vMobile)
+            .Parameters.Append .CreateParameter("@h_code", adVarChar, adParamInput, 20, vHCode) '행정동 코드 추가 (2022. 3. 22)
             .Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
             .Parameters.Append .CreateParameter("@ERRMSG", adVarChar, adParamOutput, 500)
 
@@ -122,6 +128,7 @@
             .Parameters.Append .CreateParameter("@bname", adVarChar, adParamInput, 100, vBName)
             .Parameters.Append .CreateParameter("@b_code", adVarChar, adParamInput, 20, vBCode)
             .Parameters.Append .CreateParameter("@mobile", adVarChar, adParamInput, 20, vMobile)
+            .Parameters.Append .CreateParameter("@h_code", adVarChar, adParamInput, 20, vHCode) '행정동 코드 추가 (2022. 3. 22)
             .Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
             .Parameters.Append .CreateParameter("@ERRMSG", adVarChar, adParamOutput, 500)
 

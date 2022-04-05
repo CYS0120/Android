@@ -40,7 +40,7 @@ Class PosResult
         strUrl = strUrl & "&AdmitNum=" & AdmitNum
         strUrl = strUrl & "&BranchName=" & Server.URLEncode(BranchName)
 
-        Set xmlHttp = Server.Createobject("MSXML2.ServerXMLHTTP")
+        Set xmlHttp = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) Createobject("MSXML2.ServerXMLHTTP")
         xmlHttp.Open "GET", strUrl, False
         xmlHttp.SetTimeouts 6000, 6000, 6000, 6000  ' 6초 타임아웃 설정
 
@@ -130,7 +130,7 @@ Class PosResult
         strUrl = strUrl & "&AdmitNum=" & ""
         strUrl = strUrl & "&BranchName=" & Server.URLEncode(BranchName)
 
-        Set xmlHttp = Server.Createobject("MSXML2.ServerXMLHTTP")
+        Set xmlHttp = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) Createobject("MSXML2.ServerXMLHTTP")
         xmlHttp.Open "GET", strUrl, False
         xmlHttp.setRequestHeader "User-Agent", "asp httprequest"
 		xmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded,charset=euc-kr"
@@ -218,7 +218,7 @@ Class PosResult
         strUrl = strUrl & "&PosTime=" & PosTime
         strUrl = strUrl & "&BranchName=" & Server.URLEncode(BranchName)
 
-        Set xmlHttp = Server.Createobject("MSXML2.ServerXMLHTTP")
+        Set xmlHttp = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) Createobject("MSXML2.ServerXMLHTTP")
         xmlHttp.Open "GET", strUrl, False
         xmlHttp.setRequestHeader "User-Agent", "asp httprequest"
 		xmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded,charset=euc-kr"
@@ -306,7 +306,7 @@ Class PosResult
         strUrl = strUrl & "&PosTime=" & PosTime
         strUrl = strUrl & "&BranchName=" & Server.URLEncode(BranchName)
 
-        Set xmlHttp = Server.Createobject("MSXML2.ServerXMLHTTP")
+        Set xmlHttp = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) Createobject("MSXML2.ServerXMLHTTP")
         xmlHttp.Open "GET", strUrl, False
         xmlHttp.setRequestHeader "User-Agent", "asp httprequest"
 		xmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded,charset=euc-kr"

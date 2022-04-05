@@ -430,7 +430,7 @@
                 'Response.End
             Else
                 req_str = ""
-                api_url = "/order/cancelListForOrder"
+                api_url = "/order/membership/cancel" '(2022.02.25 변경) "/order/cancelListForOrder"
                 result = ""
                 ' If Request.ServerVariables("SERVER_NAME") = "localhost" Then
                 '     result = "{""code"":0,""message"":""SUCCESS"",""result"":{""cancelDate"":""20190128204023"",""couponCancelList"":[],""pointCancelList"":[{""accountTypeCode"":""SAVE"",""usePoint"":5000,""cancelDate"":""20190128204024"",""cardNo"":""""}]}}"
@@ -465,7 +465,7 @@
 
     Function OrderCancelListForOrderV2(serviceTradeNo, branch_id)
         req_str = ""
-        api_url = "/order/cancelListForOrder"
+        api_url = "/order/membership/cancel" '(2022.02.25 변경) "/order/cancelListForOrder"
         result = ""
         ' If Request.ServerVariables("SERVER_NAME") = "localhost" Then
         '     result = "{""code"":0,""message"":""SUCCESS"",""result"":{""cancelDate"":""20190128204023"",""couponCancelList"":[],""pointCancelList"":[{""accountTypeCode"":""SAVE"",""usePoint"":5000,""cancelDate"":""20190128204024"",""cardNo"":""""}]}}"

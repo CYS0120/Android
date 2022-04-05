@@ -747,18 +747,6 @@
 	end if 
 %>
 
-		<script type="text/javascript">
-			if (sessionStorage.getItem("olympic_winter") == "Y"){
-<%
-				If Session("useridno") <> "" Then
-%>
-					alert('황금올리브치킨 1마리 쿠폰 응모 완료\n\n※ 자세한 내용은 이벤트 페이지를 확인해주세요.');
-<%
-				End If
-%>
-			}
-			sessionStorage.removeItem("olympic_winter");
-		</script>
 
 		<!-- Content -->
 		<article class="content inbox1000">

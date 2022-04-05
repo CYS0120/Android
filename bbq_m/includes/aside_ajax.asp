@@ -1,9 +1,19 @@
 <!--#include virtual="/api/include/utf8.asp"-->
 <%
+dim sIdHtml :  sIdHtml = ""
 If CheckLogin() Then
 	Set pUserInfo = UserGetInfo
 
 	mMemberGradeName_str = trim(replace(pUserInfo.mMemberGradeName, "딹", ""))
+
+	If mMemberGradeName_str = "브론즈" or mMemberGradeName_str = "실버" or mMemberGradeName_str = "골드" Then 
+		sTmpTag = "div"
+	Else
+		sTmpTag = "span"
+	End If 
+	If session("userId") <> "" Then 
+		sIdHtml = "<" & sTmpTag & " id='loginInfo_userid'>(" & session("userId") & ")</" & sTmpTag & ">"
+	End If
 end if 
 %>
 <!-- Aside Menu -->
@@ -36,7 +46,8 @@ end if
 				<% if mMemberGradeName_str = "브론즈" then %><img src="/images/common/ico_memGrade_bronze2.png" alt="브론즈"> <span class="bronze"><%=mMemberGradeName_str%></span><% end if %>
 				<% if mMemberGradeName_str = "실버" then %><img src="/images/common/ico_memGrade_silver2.png" alt="실버"> <span class="silver"><%=mMemberGradeName_str%></span><% end if %>
 				<% if mMemberGradeName_str = "골드" then %><img src="/images/common/ico_memGrade_gold2.png" alt="골드"> <span class="gold"><%=mMemberGradeName_str%></span><% end if %>
-				<span class="name"><%=LoginUserName%></span> 고객님
+				<span class="name"><%=LoginUserName%></span> 고객님 
+				<%=sIdHtml%> 
 			</p>
 		</div>
 	</div>
@@ -247,7 +258,7 @@ end if
 		
 		<dl class="Aside_footer">				
 			<dt><span>주식회사 </span>제너시스비비큐</dt>						
-			<dd>서울시 송파구 중대로 64(문정동)<span>/</span>대표자 : 정승인</dd>
+			<dd>서울시 송파구 중대로 64(문정동)<span>/</span>대표자 : 이승재</dd>
 			<dd>통신판매업신고 : 2010-서울송파-1181호</dd>
 			<dd>사업자등록번호 : 207-81-43555</dd>
 			<dd>고객센터 : <%=SERVICE_CENTER_TEL%><span>/</span>창업문의 : 080-383-9000</dd>

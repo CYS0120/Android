@@ -195,6 +195,7 @@
 			<input type="hidden" name="roadname_code" value="">
 			<input type="hidden" name="b_name" value="">
 			<input type="hidden" name="b_code" value="">
+			<input type="hidden" name="h_code" value=""> <!-- 행정동 코드 추가 (2022. 3. 22) -->
 			<input type="hidden" name="mobile" value="">
 
 			<div class="page_title">
@@ -515,7 +516,7 @@
 
 //		after_control_new('<%=order_type%>'); // 시간 
 
-	})
+	});
 
 	function go_next_page()
 	{
@@ -983,8 +984,8 @@ function getAddr(){
 									sessionStorage.removeItem("ss_addr_idx");
 									sessionStorage.removeItem("ss_addr_data");
 
-									showAlertMsg({msg:res.message+"  메뉴리스트로 이동합니다", ok: function(){
-										location.href='/menu/menuList.asp?order_type=<%=order_type%>';
+									showAlertMsg({msg:res.message, ok: function(){
+										//location.href='/menu/menuList.asp?order_type=<%=order_type%>';
 									}});
 								}
 							},
@@ -1074,15 +1075,15 @@ function getAddr(){
 								});
 
 							} else {
-								sessionStorage.setItem("ss_branch_id", br_id);
-								sessionStorage.setItem("ss_branch_data", br_data);
-								sessionStorage.setItem("ss_order_type", "P");
+								// sessionStorage.setItem("ss_branch_id", br_id);
+								// sessionStorage.setItem("ss_branch_data", br_data);
+								// sessionStorage.setItem("ss_order_type", "P");
 
 								sessionStorage.removeItem("ss_addr_idx");
 								sessionStorage.removeItem("ss_addr_data");
 
-								showAlertMsg({msg:res.message+"  메뉴리스트로 이동합니다", ok: function(){
-									location.href='/menu/menuList.asp?order_type=<%=order_type%>';
+								showAlertMsg({msg:res.message, ok: function(){
+									// location.href='/menu/menuList.asp?order_type=<%=order_type%>';
 								}});
 							}
 						},

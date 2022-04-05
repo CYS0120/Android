@@ -125,8 +125,8 @@ Const JUSO_API_KEY_XY = "U01TX0FVVEgyMDIwMTAwNjExNDc1MDExMDI1OTk="
 	Const SITE_DOMAINURL_HAPPY		= "NO"	'행복한집밥
 	Const SITE_DOMAINURL_CKPLACE	= "https://www.ckpalace.co.kr"		'닭익는마을
 	Const SITE_DOMAINURL_BARBECUE	= "https://www.bbqbarbecue.co.kr"		'참숯바베큐
-	Const SITE_DOMAINURL_UNINE		= "http://www.ukuya.co.kr"		'우쿠야
-	Const SITE_DOMAINURL_ALLTOKK	= "https://www.alltokk.co.kr"		'올떡
+	Const SITE_DOMAINURL_UNINE		= "http://ukuya-family.co.kr/" '"http://www.ukuya.co.kr"		'우쿠야
+	Const SITE_DOMAINURL_ALLTOKK	= "http://www.alltokk.co.kr"		'올떡
 	Const SITE_DOMAINURL_BELIEF		= "https://www.soshin.co.kr"		'소신275°C
 	Const SITE_DOMAINURL_WATAMI		= "http://www.watamikorea.com"		'와타미
 	Const SITE_DOMAINURL_CHICKEN_UNI	= "http://www.ckuniversity.com"		'치킨대학
@@ -139,7 +139,7 @@ Const JUSO_API_KEY_XY = "U01TX0FVVEgyMDIwMTAwNjExNDc1MDExMDI1OTk="
 	Const MSITE_DOMAINURL_HAPPY		= "NO"	'행복한집밥
 	Const MSITE_DOMAINURL_CKPLACE	= "http://m.ckpalace.co.kr"		'닭익는마을
 	Const MSITE_DOMAINURL_BARBECUE	= "http://m.bbqbarbecue.co.kr"		'참숯바베큐
-	Const MSITE_DOMAINURL_UNINE		= "http://m.ukuya.co.kr"		'우쿠야
+	Const MSITE_DOMAINURL_UNINE		= "http://ukuya-family.co.kr/" '"http://m.ukuya.co.kr"		'우쿠야
 	Const MSITE_DOMAINURL_ALLTOKK	= "http://m.alltokk.co.kr"		'올떡
 	Const MSITE_DOMAINURL_BELIEF	= "http://m.soshin.co.kr"		'소신275°C
 	Const MSITE_DOMAINURL_WATAMI	= "http://www.watamikorea.com/m/"		'와타미

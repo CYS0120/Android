@@ -62,7 +62,7 @@
 			jsonGiftcard = jsonGiftcard & "]}"
 		
 			' 상품권 조회
-			Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+			Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
 			httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
 			httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
 			httpRequest.SetRequestHeader "Content-Type", "application/json"
@@ -77,6 +77,7 @@
 			Set oJSON = New aspJSON
 
 			postResponse = "{""list"" : " & httpRequest.responseText & "}"
+            Set httpRequest = Nothing
 			oJSON.loadJSON(postResponse)
 			Set this = oJSON.data("list")
 
@@ -99,7 +100,7 @@
 					jsonGiftcard = jsonGiftcard & "]}" 
 
 					' 상품권 사용
-					Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+					Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
 					httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherUse/", False
 					httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
 					httpRequest.SetRequestHeader "Content-Type", "application/json"
@@ -113,6 +114,7 @@
 					'사용 상품권 text -> json
 					Set gJSON = New aspJSON
 					gpostResponse = "{""list"" : " & httpRequest.responseText & "}" 
+            		Set httpRequest = Nothing
 
 					gJSON.loadJSON(gpostResponse)
 					Set this = gJSON.data("list") 

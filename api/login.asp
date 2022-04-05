@@ -198,6 +198,10 @@
 
 			multi_domail_login_url = "/api/loginToken.asp?access_token="& access_token &"&access_token_secret="& access_token_secret &"&refresh_token="& refresh_token &"&token_type="& token_type &"&expires_in="& expires_in &"&auto_login_yn="& auto_login_yn &"&domain="& domain &"&rtnUrl="& rtnUrl
 
+            '자동로그인 확인을 위한 로그
+            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& Session("userIdx") &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / rtnUrl "& C_STR(rtnUrl) & " / MULTI_DOMAIN " & C_STR(multi_domail_login_url) & " / HOST " & Request.ServerVariables("HTTP_HOST") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','login-rtnUrl')"
+            dbconn.Execute(Sql)
+
 			Response.Redirect multi_domail_login_url
 		else 
 '	        Response.Redirect PAYCO_AUTH_URL & "/oauth2/authorize?redirect_uri=" & Server.URLEncode(redirect_uri) & "&appYn=N&logoYn=Y&titleYn=N"

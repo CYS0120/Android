@@ -15,6 +15,7 @@
 					<!--<li><a href="javascript:;" onClick="go_site('BELIEF')">소신275°C</a></li>-->
 					<!--li><a href="javascript:;" onClick="go_site('WATAMI')">와타미</a></li-->
 					<!--li><a href="javascript:;" onClick="go_site('HAPPY')">행복한집밥</a></li>-->
+					<li><a href="javascript:;" onClick="window.open('http://www.bbqopen.co.kr');">창업</a></li>
 				</ul>
 				<ul class="gnb">
 				<%If CheckLogin() Then%>

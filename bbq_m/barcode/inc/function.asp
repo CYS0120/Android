@@ -46,7 +46,7 @@
         REQ_STR = URLEncodeToEuc(REQ_STR)
         REQ_STR = "CPID=" & CPID & "&DATA=" & REQ_STR
 
-		Set xmlHttp = CreateObject("MSXML2.ServerXMLHTTP")
+		Set xmlHttp = CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25) CreateObject("MSXML2.ServerXMLHTTP")
 				
 		xmlHttp.setTimeouts lresolv, lconnect, lsend, lreceive
 		

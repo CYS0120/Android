@@ -323,15 +323,15 @@
 								});
 
 							} else {
-								sessionStorage.setItem("ss_branch_id", br_id);
-								sessionStorage.setItem("ss_branch_data", br_data);
-								sessionStorage.setItem("ss_order_type", "P");
+								// sessionStorage.setItem("ss_branch_id", br_id);
+								// sessionStorage.setItem("ss_branch_data", br_data);
+								// sessionStorage.setItem("ss_order_type", "P");
 
 								sessionStorage.removeItem("ss_addr_idx");
 								sessionStorage.removeItem("ss_addr_data");
 
-								showAlertMsg({msg:res.message+"  메뉴리스트로 이동합니다", ok: function(){
-									location.href='/menu/menuList.asp?order_type=<%=request("order_type")%>';
+								showAlertMsg({msg:res.message, ok: function(){
+									// location.href='/menu/menuList.asp?order_type=<%=request("order_type")%>';
 								}});
 							}
 						},
@@ -352,10 +352,15 @@
 
 				function initLoc() {
 					var uluru = {lat: d_lat, lng: d_lng};
+					var options = {
+						enableHighAccuracy: false, //false 덜 정확하지만 빠름
+						timeout: 1500,
+						maximumAge: 0
+					}
 
 					// Try HTML5 geolocation.
 					if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(function(position) {
+					navigator.geolocation.watchPosition(function(position) { //getCurrentPosition -> watchPosition
 						var pos = {
 							lat: position.coords.latitude,
 							lng: position.coords.longitude
@@ -369,7 +374,7 @@
 							$('#lat').val(uluru.lat);
 							$('#lng').val(uluru.lng);
 							textSearch();
-					});
+					}, options);
 					} else {
 						$('#lat').val(uluru.lat);
 						$('#lng').val(uluru.lng);
@@ -495,8 +500,13 @@
 		// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 		if (navigator.geolocation) {
 			
+			var options = {
+				enableHighAccuracy: false, //false 덜 정확하지만 빠름
+				timeout: 1500,
+				maximumAge: 0
+			}
 			// GeoLocation을 이용해서 접속 위치를 얻어옵니다
-			navigator.geolocation.getCurrentPosition(function(position) {
+			navigator.geolocation.watchPosition(function(position) { //getCurrentPosition -> watchPosition
 				
 				var lat = position.coords.latitude, // 위도
 					lon = position.coords.longitude; // 경도
@@ -518,7 +528,7 @@
 					map.setCenter(coord);
 				});
 
-			});
+			}, options);
 			
 		} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
 			

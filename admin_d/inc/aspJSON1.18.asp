@@ -27,7 +27,7 @@ Class aspJSON
 		select case Left(inputsource, 1)
 			case "{", "["
 			case else
-				Set aj_XmlHttp = Server.CreateObject("Msxml2.ServerXMLHTTP")
+				Set aj_XmlHttp = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("Msxml2.ServerXMLHTTP")
 				aj_XmlHttp.open "POST", inputsource, False
 				aj_XmlHttp.setRequestHeader "Content-Type", "text/json"
 				aj_XmlHttp.setRequestHeader "CharSet", "UTF-8"

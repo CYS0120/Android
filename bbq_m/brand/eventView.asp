@@ -25,7 +25,7 @@
 			bbs_code = "A02"
 		end if 
 
-		If eidx = "" Then
+		If eidx = "" Or isEmpty(eidx) Or Not isNumeric(eidx) Then 
 	%>
 		<script type="text/javascript">
 			showAlertMsg({msg:"잘못된 접근입니다.", ok: function(){

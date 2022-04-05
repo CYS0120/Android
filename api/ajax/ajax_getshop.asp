@@ -95,7 +95,7 @@
     "</soapenv:Body>" & _
     "</soapenv:Envelope>"
 
-    Set req = Server.CreateObject("MSXML2.ServerXMLHTTP")
+    Set req = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
     req.Open "POST", reqUrl, False
     req.SetRequestHeader "Content-Type", "text/xml; charset=utf-8"
     ' req.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
@@ -263,6 +263,7 @@
             If xmlResult <> "" Then xmlResult = xmlResult &","
             xmlResult = xmlResult & """STORE_AREA"":""" & node(0).text & """"
         End If
+        Set node = Nothing
 
         ' Set searchResult = searchResult.ChildNodes(0)
         ' For i = 0 To searchResult.ChildNodes.length -1

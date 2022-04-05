@@ -90,7 +90,8 @@
 	    jsonGiftcard = jsonGiftcard & "{""SN"":""" & giftPIN & """}"
         jsonGiftcard = jsonGiftcard & "]}"	
      
-		Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
+		Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
+
 		httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
 		httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
 		httpRequest.SetRequestHeader "Content-Type", "application/json"
@@ -116,47 +117,45 @@
       
 		Set oJSON = New aspJSON 
 		postResponse = "{""list"" : " & httpRequest.responseText & "}"
+        Set httpRequest = Nothing
 		oJSON.loadJSON(postResponse)
 		Set this = oJSON.data("list")
      
 		Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) "_
-			& " VALUES ( '\api\ajax\ajax_getGiftCard.asp', '"& "" &"','"& giftPIN &"','http://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','"& this.item("Voucher_INFO").item("MA_RTN_CD") &"','"& this.item("Voucher_INFO").item("MA_RTN_MSG") &"', GETDATE() ) "
+			& " VALUES ( '\api\ajax\ajax_getGiftCard.asp', '"& "" &"','"& giftPIN &"','http://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','','', GETDATE() ) "
 		dbconn.Execute(Sql)
 
+        If this.Exists("Voucher_INFO") Then 'item 여부 확인 
+            For Each row In this.item("Voucher_INFO").item("data")
+                Set this1 = this.item("Voucher_INFO").item("data").item(row) 
+                            
+                GiftPrice = this1.item("AMT")       ' 상품권 가격
+                From_date = this1.item("FROM_DATE") ' 상품권 발행일자
+                To_date   = this1.item("TO_DATE")   ' 상품권 종료일자
+                Gift_SEQ  = this1.item("SEQ")       ' 상품권 일련번호
+                U_YN      = this1.item("U_YN")      ' 상품권 교환여부
+        
+                'CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WHERE used_date is null AND giftcard_number = '"& giftPIN &"'"
+                CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WITH(NOLOCK) WHERE giftcard_number = '"& giftPIN &"'"
+                Set Gift_Count = dbconn.Execute(CountQuery)
+                Gift_Count.movefirst
+        
 
-    	For Each row In this.item("Voucher_INFO").item("data")
-			Set this1 = this.item("Voucher_INFO").item("data").item(row) 
-			 			
-	        GiftPrice = this1.item("AMT")       ' 상품권 가격
-            From_date = this1.item("FROM_DATE") ' 상품권 발행일자
-            To_date   = this1.item("TO_DATE")   ' 상품권 종료일자
-            Gift_SEQ  = this1.item("SEQ")       ' 상품권 일련번호
-            U_YN      = this1.item("U_YN")      ' 상품권 교환여부
-    
-            'CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WHERE used_date is null AND giftcard_number = '"& giftPIN &"'"
-            CountQuery = " SELECT COUNT(*) as cnt FROM bt_giftcard WITH(NOLOCK) WHERE giftcard_number = '"& giftPIN &"'"
-            Set Gift_Count = dbconn.Execute(CountQuery)
-            Gift_Count.movefirst
-     
-
-            If U_YN <> "N"  Then
-                Response.Write "{""result"":""3""}" ' 이미 사용한 상품권입니다.
-            ElseIf Gift_Count("cnt") > 0 Then
-                Response.Write "{""result"":""1""}" ' 이미 등록 된 상품권입니다.
-            ElseIf Gift_SEQ = 0 Then
-                Response.Write "{""result"":""2""}" ' 존재하지않는 상품권입니다.
-            Else 
-                Sql = "Insert Into bt_giftcard(giftcard_number, giftcard_amt, member_id, publish_date, usedate_from, usedate_to) values('"& giftPIN &"','"& GiftPrice &"','"& mmidno &"',SYSDATETIME(),'"& From_date &"','"& To_date &"')"
-                dbconn.Execute(Sql)
-                Response.Write "{""result"":0,""giftPIN"":""" & giftPIN &"""}" 
-            End If 
-     
-
-		Next
-
-      
-
-
+                If U_YN <> "N"  Then
+                    Response.Write "{""result"":""3""}" ' 이미 사용한 상품권입니다.
+                ElseIf Gift_Count("cnt") > 0 Then
+                    Response.Write "{""result"":""1""}" ' 이미 등록 된 상품권입니다.
+                ElseIf Gift_SEQ = 0 Then
+                    Response.Write "{""result"":""2""}" ' 존재하지않는 상품권입니다.
+                Else 
+                    Sql = "Insert Into bt_giftcard(giftcard_number, giftcard_amt, member_id, publish_date, usedate_from, usedate_to) values('"& giftPIN &"','"& GiftPrice &"','"& mmidno &"',SYSDATETIME(),'"& From_date &"','"& To_date &"')"
+                    dbconn.Execute(Sql)
+                    Response.Write "{""result"":0,""giftPIN"":""" & giftPIN &"""}" 
+                End If 
+		    Next
+        Else
+            Response.Write "{""result"":""4"", ""message"":""상품권 조회 중 오류 발생. 잠시 후 다시 시도하시기 바랍니다.""}" ' 오류 발생
+        End If 
 	    ' 2021-07 더페이 상품권 끝 
         
     End If
@@ -203,21 +202,21 @@
         If Not (Gc_list.BOF Or Gc_list.EOF) Then
             Gc_list.movefirst
             Giftcard_list = "["
-                Do Until Gc_list.EOF
-                    If Giftcard_list <> "[" Then Giftcard_list = Giftcard_list & "," End If
-                    Giftcard_list = Giftcard_list & "{"
-                    Giftcard_list = Giftcard_list & """giftcard_idx"":""" & Gc_list("giftcard_idx") & ""","
-                    Giftcard_list = Giftcard_list & """giftcard_number"":""" & Gc_list("giftcard_number") & ""","
-                    Giftcard_list = Giftcard_list & """giftcard_amt"":""" & Gc_list("giftcard_amt") & ""","
-                    Giftcard_list = Giftcard_list & """member_id"":""" & Gc_list("member_id") & ""","
-                    Giftcard_list = Giftcard_list & """order_num"":""" & Gc_list("order_num") & ""","
-                    Giftcard_list = Giftcard_list & """used_date"":""" & Gc_list("used_date") & ""","
-                    Giftcard_list = Giftcard_list & """usedate_from"":""" & Gc_list("usedate_from") & ""","
-                    Giftcard_list = Giftcard_list & """usedate_to"":""" & Gc_list("usedate_to") & ""","
-                    Giftcard_list = Giftcard_list & """publish_date"":""" & Gc_list("publish_date") & """"
-                    Giftcard_list = Giftcard_list & "}"
-                    Gc_List.MoveNext
-                LOOP
+            Do Until Gc_list.EOF
+                If Giftcard_list <> "[" Then Giftcard_list = Giftcard_list & "," End If
+                Giftcard_list = Giftcard_list & "{"
+                Giftcard_list = Giftcard_list & """giftcard_idx"":""" & Gc_list("giftcard_idx") & ""","
+                Giftcard_list = Giftcard_list & """giftcard_number"":""" & Gc_list("giftcard_number") & ""","
+                Giftcard_list = Giftcard_list & """giftcard_amt"":""" & Gc_list("giftcard_amt") & ""","
+                Giftcard_list = Giftcard_list & """member_id"":""" & Gc_list("member_id") & ""","
+                Giftcard_list = Giftcard_list & """order_num"":""" & Gc_list("order_num") & ""","
+                Giftcard_list = Giftcard_list & """used_date"":""" & Gc_list("used_date") & ""","
+                Giftcard_list = Giftcard_list & """usedate_from"":""" & Gc_list("usedate_from") & ""","
+                Giftcard_list = Giftcard_list & """usedate_to"":""" & Gc_list("usedate_to") & ""","
+                Giftcard_list = Giftcard_list & """publish_date"":""" & Gc_list("publish_date") & """"
+                Giftcard_list = Giftcard_list & "}"
+                Gc_List.MoveNext
+            LOOP
             Giftcard_list = Giftcard_list & "]"
             Response.Write "{""result"":0,""Count"":" & Giftcard_list &"}"
         Else
@@ -229,12 +228,12 @@
 
 '상품권 사용처리
 If callMode = "use" Then
-        serial = GetReqStr("serial","")
-        Response.Write serial
-        Sql = "UPDATE bt_giftcard SET used_date = GETDATE() WHERE member_id = '"& mmidno &"' AND giftcard_number = '"& serial &"'"
-        dbconn.Execute(Sql)
-        Response.Write "{""result"":0,""giftPIN"":""" & giftPIN &"""}"
-    End If
+    serial = GetReqStr("serial","")
+    Response.Write serial
+    Sql = "UPDATE bt_giftcard SET used_date = GETDATE() WHERE member_id = '"& mmidno &"' AND giftcard_number = '"& serial &"'"
+    dbconn.Execute(Sql)
+    Response.Write "{""result"":0,""giftPIN"":""" & giftPIN &"""}"
+End If
 
 '상품권 사용처리
 
@@ -279,7 +278,6 @@ End If
 '지급쿠폰 조회
 
 '지급품목 조회
-
 If callMode = "productSearch" Then
     giftProductCode = GetReqStr("giftProductCode","")
     sql = " SELECT menu_name as m_name, menu_price as m_price, (SELECT file_name FROM bt_menu_file WITH(NOLOCK) where menu_idx = '"& giftProductCode &"' AND file_type = 'THUMB') as m_file FROM bt_menu WITH(NOLOCK) WHERE menu_idx = '"& giftProductCode &"'"
@@ -288,6 +286,7 @@ If callMode = "productSearch" Then
 		Response.Write "{""result"":0,""name"":""" & Product("m_name") &""",""price"":"""& Product("m_price") &""",""file"":""" & Product("m_file") &"""}"
     end If
 End If
-
 '지급품목 조회
+
+Call DBClose
 %>

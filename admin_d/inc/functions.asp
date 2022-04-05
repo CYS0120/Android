@@ -181,7 +181,7 @@ Sub subOpenerReload(msg)
 End Sub 
 
 Function SendXMLHTTP(url)
-	set objHTTP = Server.CreateObject("MSXML2.ServerXMLHTTP")
+	set objHTTP = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
 
 	lResolve = 5 * 1000 
 	lConnect = 7200 * 1000	'(default : 60s)
@@ -200,7 +200,7 @@ End Function
 Function URL_Send(host, params)
 	url = host&"?"&params
 '	Response.write url & "<BR>"
-	Set objHttp = server.CreateObject("Msxml2.ServerXMLHTTP")
+	Set objHttp = server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("Msxml2.ServerXMLHTTP")
 
 	If IsNull(objHttp) Then
 		URL_Send = ""

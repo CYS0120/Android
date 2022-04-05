@@ -23,11 +23,6 @@
 <title>BBQ치킨</title>
 
  </head>
-<script>
-	window.onload = function(){
-		sessionStorage.removeItem("olympic_winter");
-	}
-</script>
  <body>
 	<div class="h-wrapper">
 		<!-- Header -->
@@ -212,10 +207,13 @@
 					<!-- 포인트 -->
           <%
             '// 회원정보 
-            'If CheckLogin() Then 
+			dim member_point : member_point = 0 
+            If CheckLogin() Then 
                 Set pMemberPoint = PointGetPointBalance("SAVE", "0") '// 포인트
+				member_point = pMemberPoint.mSavePoint
+				Set pMemberPoint = Nothing
                 'Set pCouponList = CouponGetHoldList("NONE", "N", 100, 1) '// 쿠폰
-            'End If
+            End If
           %>	  
 					<div class="h-main_point_set">
                     <%
@@ -232,7 +230,7 @@
 						<div class="h-main_point">
 							<dl>
 								<dt><a href="/mypage/mileage.asp">포인트</a></dt>
-								<dd><span><%=FormatNumber(pMemberPoint.mSavePoint,0)%></span>P&nbsp;&nbsp;</dd>
+								<dd><span><%=FormatNumber(member_point,0)%></span>P&nbsp;&nbsp;</dd>
 							</dl>	
 
 							<%
@@ -254,6 +252,7 @@
 										Set aRs = .Execute
 										EcoupontotalCount = .Parameters("@totalCount").Value
 									End With
+									Set aRs = Nothing
 									Set aCmd = Nothing 
 							%>
 							<dl>
@@ -266,7 +265,6 @@
 								<dd><span>0</span>개</dd>
 							</dl>							
 							<%
-								Set aRs = Nothing
 								End If
 							%>	
 							<dl>
@@ -360,8 +358,9 @@
 		</script>
 
 		<%
-			End If 
-		End If
+			End If '//If Request.Cookies(CookName) = "done" Then 
+		End If '//If bPopRs.BOF Or bPopRs.EOF Then
+		Set bPopRs = Nothing 
 
 		Set bCmd = Server.CreateObject("ADODB.Command")
 		With bCmd
@@ -394,10 +393,11 @@
 		</script>
 
 		<%
-					End If 
+					End If  '//If Request.Cookies(CookName) = "done" Then 
 					bPopRs.MoveNext
 				Loop 
-			End If 
+			End If '//If bPopRs.BOF Or bPopRs.EOF Then
+			Set bPopRs = Nothing 
 		%>
 
 		<script>
@@ -423,6 +423,18 @@
 
 <script>
 $(document).ready(function (){
+	//안드로이드 버전 체크 
+	<% 
+	If osTypeCd = "ANDROID" Then 
+		If IsEmpty(osVersion) Or IsNull(osVersion) Or osVersion = "" Then 
+	%>	
+			showAlertMsg({msg:"BBQ 어플이 업데이트 되었습니다. 스토어로 이동합니다.", ok: function(){
+				location.href = "market://details?id=com.bbq.chicken202001";
+			}});
+	<%
+		End If 
+	End If 
+	%>
    $.ajax({
          method: "post",
          url: "/api/ajax/ajax_getGiftCard.asp",
@@ -436,7 +448,7 @@ $(document).ready(function (){
            }
          }
      });
-})
+});
   // 상품권 
   
   // 실시간 인기 롤링 
