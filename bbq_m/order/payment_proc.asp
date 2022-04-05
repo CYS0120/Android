@@ -12,6 +12,8 @@
 	Dim reserv_date, reserv_time ' 예약일자, 예약시간 
 	Dim order_status
 
+	Dim vBcode, vHcode '동별 배달비 가져오기 위한 법정동코드, 행정동코드 (2022. 3. 22)
+
 	Calc_Discount_amt = 0	'마지막 할인금액 검증을 위해서
 
     reg_ip = Request.ServerVariables("REMOTE_ADDR")
@@ -65,6 +67,9 @@
 	sgpay_event_amt = Replace(sgpay_event_amt,",","")
 
 	SAMSUNG_USEFG = GetReqStr("SAMSUNG_USEFG","")
+
+	vBcode = GetReqStr("b_code","")
+	vHcode = GetReqStr("h_code","")
 
 	total_amount = CDbl(total_amount) + CDbl(ecoupon_amt)	'E 쿠폰금액을 총금액으로 더함
 	discount_amt = CDbl(discount_amt) + CDbl(ecoupon_amt)	'E 쿠폰금액을 할인금액으로 더함
@@ -159,7 +164,35 @@
 
 	If Not (aRs.BOF Or aRs.EOF) Then
 		vDeliveryFee = aRs("delivery_fee")
-		BREAK_TIME = aRs("BREAK_TIME")
+		BREAK_TIME = aRs("BREAK_TIME")	
+
+		'동별 배달비 조회 (2022. 3. 22)
+		dim fRs, iDongFee
+		If (order_type = "D" Or order_type = "R") And (vBcode <> "" Or vHcode <> "") Then
+			Set aCmd = Server.CreateObject("ADODB.Command")
+			With aCmd
+				.ActiveConnection = dbconn
+				.NamedParameters = True
+				.CommandType = adCmdStoredProc
+				.CommandText = "bp_branch_dong_fee_select"
+
+				.Parameters.Append .CreateParameter("@branch_id", adInteger, adParamInput, , branch_id)
+				.Parameters.Append .CreateParameter("@b_code", advarchar, adParamInput, 10, vBcode)
+				.Parameters.Append .CreateParameter("@h_code", advarchar, adParamInput, 10, vHcode)
+
+				Set fRs = .Execute
+				
+				If Not (fRs.BOF Or fRs.EOF) Then
+					iDongFee = fRs("delivery_fee") 
+					If IsNumeric(iDongFee) Then 
+						vDeliveryFee = vDeliveryFee + iDongFee
+					End If
+				End If
+			End With
+			Set fRs = Nothing
+			Set aCmd = Nothing
+		End If
+		'// 동별 배달비 조회
 	End If
 
 	If BREAK_TIME <> "" Then 
@@ -466,8 +499,8 @@
 
     End With
 
-
     Set aCmd = Nothing
+
     giftcard_serial = GetReqStr("giftcard_id","")
     brand_code = Request.Cookies("brand_code")
 	

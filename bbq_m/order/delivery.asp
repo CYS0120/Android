@@ -195,6 +195,7 @@
 			<input type="hidden" name="roadname_code" value="">
 			<input type="hidden" name="b_name" value="">
 			<input type="hidden" name="b_code" value="">
+			<input type="hidden" name="h_code" value=""> <!-- 행정동 코드 추가 (2022. 3. 22) -->
 			<input type="hidden" name="mobile" value="">
 
 			<div class="page_title">
@@ -515,7 +516,7 @@
 
 //		after_control_new('<%=order_type%>'); // 시간 
 
-	})
+	});
 
 	function go_next_page()
 	{
@@ -984,7 +985,7 @@ function getAddr(){
 									sessionStorage.removeItem("ss_addr_data");
 
 									showAlertMsg({msg:res.message, ok: function(){
-										// location.href='/menu/menuList.asp?order_type=<%=order_type%>';
+										//location.href='/menu/menuList.asp?order_type=<%=order_type%>';
 									}});
 								}
 							},

@@ -112,12 +112,60 @@
 		dbconn.Execute(Sql)
 	End If 
 
+	Dim vAddrName, vMobile, vZipCode, vAddress, vAddressMain, vAddressDetail
+	Dim vBcode, vHcode '동별 배달비 가져오기 위한 법정동코드, 행정동코드 (2022. 3. 22)
+	vBcode = ""
+	vHcode = ""
+	Set bJson = JSON.Parse(branch_data)
+	If order_type = "D" Or order_type = "R" Then
+		Set aJson = JSON.Parse(addr_data)
+
+		vAddrName = aJson.addr_name
+		vMobile = aJson.mobile
+		' 휴대전화번호 회원정보로 셋팅
+		If CheckLogin() Then
+			If Session("userPhone") <> "" And Len(Session("userPhone")) > 10 Then
+				temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
+				vMobile = "0"&left(temp_mobile, 2)&"-"&mid(temp_mobile, 3, 4)&"-"&mid(temp_mobile, 7)
+            ElseIf Session("userPhone") <> "" And Len(Session("userPhone")) = 9 Then
+                temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
+				vMobile = left(temp_mobile, 3)&"-"&mid(temp_mobile, 4, 3)&"-"&mid(temp_mobile, 7, 10)
+			End If
+		End If
+		vZipCode = aJson.zip_code
+		vAddress = aJson.address_main&" "&aJson.address_detail
+		vAddressMain = aJson.address_main
+		vAddressDetail = aJson.address_detail
+		
+		if aJson.hasOwnProperty("b_code") then 
+			vBcode = C_STR(aJson.b_code)  '동별 배달비 가져오기 위한 법정동코드 (2022. 3. 22)
+		end if 
+		if aJson.hasOwnProperty("h_code") then 
+			vHcode = C_STR(aJson.h_code)  '동별 배달비 가져오기 위한 행정동코드 (2022. 3. 22)
+		end if 
+		Set aJson = Nothing
+	ElseIf order_type = "P" Then
+		aJson = ""
+		' 휴대전화번호 회원정보로 셋팅
+		If CheckLogin() Then
+			If Session("userPhone") <> "" And Len(Session("userPhone")) > 10 Then
+				temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
+				vMobile = "0"&left(temp_mobile, 2)&"-"&mid(temp_mobile, 3, 4)&"-"&mid(temp_mobile, 7)
+            ElseIf Session("userPhone") <> "" And Len(Session("userPhone")) = 9 Then
+                temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
+				vMobile = left(temp_mobile, 3)&"-"&mid(temp_mobile, 4, 3)&"-"&mid(temp_mobile, 7, 10)
+			End If
+		End If
+		vAddress = bJson.branch_address
+		vAddressMain = bJson.branch_address
+	End If
+	Set bJson = Nothing
+
 	Dim aCmd, aRs
 
 	Dim cJson : Set cJson = JSON.Parse(cart_value)
 
 	Dim vBranchName, vBranchTel, vDeliveryFee, vBran, vCPID, vSubCPID
-	Dim vAddrName, vMobile, vZipCode, vAddress, vAddressMain, vAddressDetail
 	Dim vMenuPrice, vAdultPrice
 
 	Set aCmd = Server.CreateObject("ADODB.Command")
@@ -157,7 +205,36 @@
 		BREAK_TIME = aRs("BREAK_TIME")
 		vAdd_price_yn = aRs("add_price_yn")
 		beer_yn = fNullCheck(aRs("beer_yn"), "N", "")
+
+		'동별 배달비 조회 (2022. 3. 22)
+		dim fRs, iDongFee
+		If (order_type = "D" Or order_type = "R") And (vBcode <> "" Or vHcode <> "") Then
+			Set aCmd = Server.CreateObject("ADODB.Command")
+			With aCmd
+				.ActiveConnection = dbconn
+				.NamedParameters = True
+				.CommandType = adCmdStoredProc
+				.CommandText = "bp_branch_dong_fee_select"
+
+				.Parameters.Append .CreateParameter("@branch_id", adInteger, adParamInput, , branch_id)
+				.Parameters.Append .CreateParameter("@b_code", advarchar, adParamInput, 10, vBcode)
+				.Parameters.Append .CreateParameter("@h_code", advarchar, adParamInput, 10, vHcode)
+
+				Set fRs = .Execute
+				
+				If Not (fRs.BOF Or fRs.EOF) Then
+					iDongFee = fRs("delivery_fee") 
+					If IsNumeric(iDongFee) Then 
+						vDeliveryFee = vDeliveryFee + iDongFee
+					End If
+				End If
+			End With
+			Set fRs = Nothing
+			Set aCmd = Nothing
+		End If
+		'// 동별 배달비 조회
 	End If
+	Set aRs = Nothing
 
 	If vUseSGPAY = "Y" Then
 			set sgPayRs=server.createobject("adodb.recordset")
@@ -247,46 +324,6 @@
     end if
 
 	If order_type = "P" Then vDeliveryFee = 0
-
-	Set aRs = Nothing
-
-	Set bJson = JSON.Parse(branch_data)
-
-	If order_type = "D" Or order_type = "R" Then
-		Set aJson = JSON.Parse(addr_data)
-
-		vAddrName = aJson.addr_name
-		vMobile = aJson.mobile
-		' 휴대전화번호 회원정보로 셋팅
-		If CheckLogin() Then
-			If Session("userPhone") <> "" And Len(Session("userPhone")) > 10 Then
-				temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
-				vMobile = "0"&left(temp_mobile, 2)&"-"&mid(temp_mobile, 3, 4)&"-"&mid(temp_mobile, 7)
-            ElseIf Session("userPhone") <> "" And Len(Session("userPhone")) = 9 Then
-                temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
-				vMobile = left(temp_mobile, 3)&"-"&mid(temp_mobile, 4, 3)&"-"&mid(temp_mobile, 7, 10)
-			End If
-		End If
-		vZipCode = aJson.zip_code
-		vAddress = aJson.address_main&" "&aJson.address_detail
-		vAddressMain = aJson.address_main
-		vAddressDetail = aJson.address_detail
-	ElseIf order_type = "P" Then
-		aJson = ""
-		' 휴대전화번호 회원정보로 셋팅
-		If CheckLogin() Then
-			If Session("userPhone") <> "" And Len(Session("userPhone")) > 10 Then
-				temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
-				vMobile = "0"&left(temp_mobile, 2)&"-"&mid(temp_mobile, 3, 4)&"-"&mid(temp_mobile, 7)
-            ElseIf Session("userPhone") <> "" And Len(Session("userPhone")) = 9 Then
-                temp_mobile = right(Replace(Session("userPhone"), "+82", "0"), 10)
-				vMobile = left(temp_mobile, 3)&"-"&mid(temp_mobile, 4, 3)&"-"&mid(temp_mobile, 7, 10)
-			End If
-		End If
-		vAddress = bJson.branch_address
-		vAddressMain = bJson.branch_address
-	End If
-
 %>
 
 <!doctype html>
@@ -1737,6 +1774,9 @@ function calcTotalAmount() {
             <input type="hidden" id="gift_prod" name="gift_prod">
 
 			<input type="hidden" name="Danal_adult_chk_ok" id="Danal_adult_chk_ok" value=""><!-- 주류 인증 -->
+
+			<input type="hidden" name="b_code" value="<%=vBcode%>"><!-- 법정동 코드 2022. 3. 22) -->
+			<input type="hidden" name="h_code" value="<%=vHcode%>"><!-- 행정동 코드 2022. 3. 22) -->
 
 			<!-- 장바구니 리스트 -->
 			<div class="section-wrap">

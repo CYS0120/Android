@@ -481,6 +481,7 @@ function validInfo() {
 										<input type="hidden" name="b_name" value="">
 										<input type="hidden" name="b_code" value="">
 										<input type="hidden" name="mobile" value="">
+										<input type="hidden" name="h_code" value=""> <!-- 행정동 코드 추가 (2022. 3. 22) -->
 
 										<table border="1" cellspacing="0" class="tbl-member black-line">
 											<caption>추가정보</caption>

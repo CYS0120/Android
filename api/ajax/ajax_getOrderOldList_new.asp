@@ -54,7 +54,8 @@
                 orderList = orderList & """is_main"":""" & aRs("is_main") & ""","
                 orderList = orderList & """address_main"":""" & aRs("address_main") & ""","
                 orderList = orderList & """address_detail"":""" & aRs("address_detail") & ""","
-                orderList = orderList & """addr_idx"":""" & aRs("addr_idx") & """"
+                orderList = orderList & """addr_idx"":""" & aRs("addr_idx") & ""","
+                orderList = orderList & """h_code"":""" & aRs("h_code") & """" '행정동 코드 추가 (2022. 3. 22)
                 orderList = orderList & "}"
 
                 aRs.MoveNext

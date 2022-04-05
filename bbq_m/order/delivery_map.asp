@@ -878,9 +878,10 @@ function jusoCallBack(roadAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr,ji
 					var lat = jsonStr.results.juso[0].entY;
 					var lng = jsonStr.results.juso[0].entX;
 
-					var p = new Proj4js.Point(lng, lat);
+					var p = new Proj4js.Point(lng, lat); // 포인트 생성
 
-					Proj4js.transform(grs80, wgs84, p);
+					var result = Proj4js.transform(grs80, wgs84, p); // 좌표계 변경
+					console.log("좌표:" + result);
 
 					lat = p.y.toFixed(6) +'0'; // 6자리 까지 하고 7자리 0 처리 (즉 7자리부터는 버림.)
 					lng = p.x.toFixed(6) +'0'; // 6자리 까지 하고 7자리 0 처리 (즉 7자리부터는 버림.)
@@ -963,6 +964,7 @@ function link_move() {
 				<input type="hidden" name="roadname_code" value="">
 				<input type="hidden" name="b_name" value="">
 				<input type="hidden" name="b_code" value="">
+				<input type="hidden" name="h_code" value=""> <!-- 행정동 코드 추가 (2022. 3. 22) -->
 				<input type="hidden" name="mobile" value="">
 				<input type="hidden" name="lat" value="">
 				<input type="hidden" name="lng" value="">
@@ -1012,8 +1014,10 @@ function link_move() {
 
 						<div class="btn_shopSearch inbox1000">
 
+							<a href="/order/delivery.asp?order_type=<%=order_type%>" class="btn btn-redLine btn_big">취소</a> <a href="javascript:;" onclick="javascript:selectCoordHCode(<% If CheckLogin() Then %>'Y'<% Else %>'N'<% End If %>, '0', $('#form_addr input[name=address_road]').val(), $('#form_addr input[name=h_code]'));" class="btn btn-red btn_big">확인</a>
+							<!--
 							<a href="/order/delivery.asp?order_type=<%=order_type%>" class="btn btn-redLine btn_big">취소</a> <a href="javascript:;" onclick="javascript:<% If CheckLogin() Then %>validAddress()<% Else %>validAddressNoMember()<% End If %>;" class="btn btn-red btn_big">확인</a>
-
+							-->
 						</div>
 
 					</div>

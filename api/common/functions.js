@@ -1030,12 +1030,12 @@ function getDeliveryShopInfo_hill(br_id) {
 // }
 
 function selectShipAddress_new(addr_idx, page_type) {
-    if(addr_idx == 0) {
+    if(addr_idx == 0) { //검색한 배달지를 선택한 경우
 		console.log(5);
 		console.log(getTempAddress());
 		console.log(page_type);
         drawShipAddress_new(getTempAddress(), page_type);
-    } else {
+    } else { // 저장된 배달지를 선택한 경우
         $.ajax({
             method: "post",
             url: "/api/ajax/ajax_getAddress.asp",
@@ -1151,6 +1151,118 @@ function selectShipAddress(addr_idx) {
             }
         });
     }
+}
+
+//selectCoordHCode(구분자, 저장할 addr_idx, 주소 질의어, 다음 작업 관련 param)
+function selectCoordHCode(mode, addr_idx, query, param){
+	var err_msg = "행정동 코드 조회 중 오류 발생";
+	var h_code = "";
+	
+	// 1. 주소 질의값 
+	if(query != ""){ 
+		// 2. kakao api key 가져오기 
+		$.ajax({
+			url : "/api/ajax/ajax_getCoordApiKey.asp",
+			dataType: "json"
+		})
+		.done(function(res_ak){
+			if(res_ak.hasOwnProperty("result") && res_ak.result == 0) {
+				// 3. 주소 질의어로 주소 정보 가져오기
+				$.ajax({
+					url :"https://dapi.kakao.com/v2/local/search/address.json?query="+ query +"&page=1&size=1"+""
+					,type: "GET"
+					,beforeSend: function (xhr) {
+						xhr.setRequestHeader("Content-type", "application/json");
+						xhr.setRequestHeader("Authorization", "KakaoAK " + res_ak.message);
+					}
+				})
+				.done(function(res){
+					if(res.hasOwnProperty("meta") && res.hasOwnProperty("documents")) { //정상 결과값 있을 때 
+						if(res.documents[0].hasOwnProperty("address") && res.documents[0].address.hasOwnProperty("h_code")){ // 행정동코드 정보 있을 때 
+							err_msg = ""; //오류 없음
+							h_code = res.documents[0].address.h_code;
+														
+							// 4. 회원 주소 정보에 행정동코드 저장하기 
+							if(h_code != ""){
+								if(addr_idx != "" && addr_idx > 0){
+									var err_msg2 = "행정동 코드 저장 오류";
+									$.ajax({
+										method: "post",
+										data: {"addr_idx": addr_idx, "h_code": h_code},
+										url : "/api/ajax/ajax_saveMemberAddressHCode.asp",
+										dataType: "json"
+									})
+									.done(function(res_save){
+										if(res_save.hasOwnProperty("result") && res_save.result == 0){
+											err_msg2 = ""; //저장 성공
+											
+										}else{
+											err_msg2 = res_save.message; //저장 실패
+										}
+									})
+									.fail(function(xhr, status, error) {
+										if(xhr) {
+											err_msg2 += '<br>' + xhr.status + ' ' + error
+										}
+									})
+									.always(function(){
+										if(err_msg2 != ""){
+											showAlertMsg({msg:err_msg2});
+										}
+									});
+								}
+								
+								//h_code 있을 때 mode에 따라서 다음 동작 처리
+								if(mode=="S"){ //회원 기존 배달지 목록에서 선택된 배달지
+									addr_img_control(addr_idx, param);
+								}
+								if(typeof(param) == 'object' && param.prop('tagName')=="INPUT") { //행정동 코드 form에 저장
+									$(param).val(h_code);
+								}
+								if(mode=="Y"){ //배달지선택-회원
+									validAddress();
+								}
+								if(mode=="N"){ //배달지선택-비회원
+									validAddressNoMember();
+								}
+							}
+						} 
+					} else if(res.hasOwnProperty("msg")){ //비정상 결과 msg값 있을 때 
+						err_msg += '<br>' + res.msg;
+					}
+				})
+				.fail(function(xhr, status, error) {
+					if(xhr) {
+						err_msg += '<br>' + xhr.status + ' ' + error
+						if(xhr.hasOwnProperty("responseText")){
+							var err_json = JSON.parse(xhr.responseText)
+							if(err_json.hasOwnProperty("msg"))
+								err_msg += '<br>' + err_json.msg
+						}
+					}
+				})
+				.always(function(){
+					if(err_msg != ""){
+						showAlertMsg({msg:err_msg});
+					}
+				});
+			}else{
+				showAlertMsg({msg:'배달지(AP) 선택 중 오류 발생'});
+			}
+		})
+		.always(function() {
+			
+		})
+		.fail(function(xhr, status, error) {
+			if(xhr) {
+				showAlertMsg({msg:'배달지(AP) 선택 중 오류 발생<br>' + xhr.status + ' ' + error});
+			}
+		});
+						
+						
+	}else{
+		showAlertMsg({msg:'잘못된 값이 사용되었습니다.'});
+	}
 }
 
 // function loginPop(domain, returnUrl){
