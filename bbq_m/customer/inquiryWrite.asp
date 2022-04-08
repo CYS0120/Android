@@ -47,7 +47,7 @@ var ClickCheck = 0;
 			}, error: function(){
                 ClickCheck = 0;
             }
-		})
+		});
 	}
 	function Store_Search(){
 		SW = $('#txtBranch').val();

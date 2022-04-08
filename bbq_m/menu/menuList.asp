@@ -278,7 +278,7 @@
 								//freeMode:true
 							});	
 						}, 300);
-					})
+					});
 					//메뉴 카테고리 클릭
 					$('.swiper-wrapper span button').click(function(){
 						var $this = $(this);
@@ -398,7 +398,7 @@ function menu_list_cate_all_open()
 	<% if anc <> "" then %>
 		$(function(){
 //			fnMove(<%=anc%>)
-		})
+		});
 	<% end if %>
 </script>
 

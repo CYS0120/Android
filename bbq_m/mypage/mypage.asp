@@ -460,6 +460,6 @@ $(document).ready(function (){
            }
          }
      });
-})
+});
   // 상품권 
 </script>

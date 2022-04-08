@@ -156,7 +156,7 @@
 						if(res.result == 0) {
 							showAlertMsg({msg:res.message, ok: function(){
 								$('#coupon_list_'+ txtPIN_str).remove();
-							}})
+							}});
 						} else {
 							showAlertMsg({msg:res.message});
 						}

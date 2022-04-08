@@ -35,7 +35,7 @@
 			error: function(res) {
 				showAlertMsg({msg:res.message});
 			}
-		})
+		});
 	}
 </script>
 

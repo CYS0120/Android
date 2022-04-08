@@ -20,7 +20,7 @@
 					location.href = "/mypage/inquiryList.asp";
 				}
 			}
-		})
+		});
 	}
 </script>
 

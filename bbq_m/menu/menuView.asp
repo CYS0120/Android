@@ -30,7 +30,7 @@ $(function(){
 		}else{
 			$("#menu_top").removeClass("fixed");
 		}
-	})
+	});
 });
 </script>
 </head>

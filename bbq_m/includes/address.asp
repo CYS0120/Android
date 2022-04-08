@@ -70,10 +70,10 @@
 									} else {
 										var_addr_idx = "";
 										var_addr_data = "";
-										var_branch_data = ""
-										var_branch_id = ""
-										var_branch_name = ""
-										var_order_type = ""
+										var_branch_data = "";
+										var_branch_id = "";
+										var_branch_name = "";
+										var_order_type = "";
 
 										// 기본주소지로 매장 자동선택
 										next_page_gubun = "D";
