@@ -33,6 +33,6 @@
 	Else
 		result = "{""result"":""0001"",""message"":""검색된 매장이 없습니다.""}"
     End If
-
+    Set rs = Nothing
     Response.Write result
 %>

@@ -58,6 +58,6 @@
 
         result = result & "}"
     End If
-
+    Set rs = Nothing
     Response.Write result
 %>

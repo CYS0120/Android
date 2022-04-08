@@ -370,7 +370,7 @@
     End If
 
     Response.Write xmlResult
-
+    Call DBClose
 
     ' Dim sql : sql = "select top 1 * from bt_branch (nolock) where brand_code='01' and branch_status='10' and del_yn <> 'Y' and use_yn = 'Y' order by newid()"
 
