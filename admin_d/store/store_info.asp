@@ -148,6 +148,7 @@ function calculateStore() {
 		}
 	});
 }
+
 var checkClick = 0;
 function CheckInput(tp, num){
 	var run = 0;
@@ -158,48 +159,54 @@ function CheckInput(tp, num){
 		}
 
 		// 동, 배달비 미입력 시 알림 → each 사용하기
+		var do_ = "";
 		$('[id^="delfee_tr_"]').each(function(index) {
 			if($('[id^="dong"]:eq('+index+')').val() == "undefined" || $('[id^="dong"]:eq('+index+')').val() == "" || $('[id^="dong"]:eq('+index+')').val() == null){
-				run = 0;
+				do_ = do_ + "0";
 				alert("동을 입력해주세요");
 				$('[id^="dong"]:eq('+index+')').focus();
 				return false;
 			}
-			if($('[id^="add_delFee"]:eq('+index+')').val() <= 0 || $('[id^="add_delFee"]:eq('+index+')').val() == "" || $('[id^="add_delFee"]:eq('+index+')').val() == null){
-				run = 0;
+			if($('[id^="add_delFee"]:eq('+index+')').val() == 0 || $('[id^="add_delFee"]:eq('+index+')').val() == "" || $('[id^="add_delFee"]:eq('+index+')').val() == null){
+				do_ = do_ + "0";
 				alert("추가배달료를 입력해주세요");
 				$('[id^="add_delFee"]:eq('+index+')').focus();
 				return false;
 			}
 		})
-
+		// alert(do_.length);
 		// 같은 동을 여러 번 세팅하면 알림
-		for (var i = 1; i <= cnt; ++i) {
-			var dong1 = "#dong" + i;
-			for (var j = i+1; j <= cnt; ++j) {
-				var dong2 = "#dong" + j;
-				alert(dong1 + " && " + dong2);
-				alert($(dong1).val() + " && " + $(dong2).val());
-				if ($(dong1).val() == $(dong2).val()){run = 0;alert("하나의 동에 추가배달료 한 번만 설정해주세요");$(dong2).focus();return false;}
+		if (do_.length == 0){
+			var cnt = $("#cnt").val();
+			for (var i = 1; i <= cnt; ++i) {
+				var dong1 = "#dong" + i;
+				for (var j = i+1; j <= cnt; ++j) {
+					var dong2 = "#dong" + j;
+					if ($(dong1).val() == $(dong2).val() && $(dong1).val() != "" && $(dong1).val() != null){
+						do_ = do_ + "0";
+						alert("하나의 동에 추가배달료 한 번만 설정해주세요");
+						$(dong2).focus();
+						return false;}
+				}
 			}
 		}
+		// alert(do_.length);
+		if (do_.length == 0){
+			var run = 1;
+		}
 
-		run = 1;
 	} else if (tp == "delete") {
 		// 삭제 행에 내용 없으면 해당 div만 삭제하도록
 		var delete_dong = "#dong" + num;
 		var delete_tr = "#delfee_tr_" + num;
 		if($(delete_dong).val() == "undefined" || $(delete_dong).val() == "" || $(delete_dong).val() == null) {
 			$(delete_tr).remove();
-			// var cnt = $("#cnt").val();
-			// cnt = Number(cnt) - 1;
-			// $("#cnt").val(cnt);
-			return;
+			return false;
 		} else{
 			run = 1;
 		}
 	}
-
+	// alert("run: "+run);
 	if (run == 1) {
 		checkClick = 1;
 		$.ajax({
@@ -209,9 +216,14 @@ function CheckInput(tp, num){
 			data: $("#inputfrm").serialize()+$("#inputfrm2").serialize()+"&tp="+tp+"&num="+num,
 			dataType: "text",
 			success: function (data) {
-				alert(data);
-				$('.mask, .window').hide();
-				location.reload();
+				if (data.split("^")[0]=='0'){ // 동에 내용 있는데 DB에 없으면 해당 div만 삭제하도록
+					$(delete_tr).remove();
+				} else {
+					alert(data.split("^")[1]);
+					$('.mask, .window').hide();
+					location.reload();
+				}
+				checkClick = 0;
 			},
 			error: function(data, status, err) {
 				alert(err + '서버와의 통신이 실패했습니다.');

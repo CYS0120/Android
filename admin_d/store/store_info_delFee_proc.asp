@@ -13,10 +13,10 @@
 		i = 0
 		Do While i < Cint(cnt)
 			i = i + 1
-			response.write i & "/" & cnt & "/"
+			' response.write i & "/" & cnt & "/"
 			
 			dong_code	= InjRequest("dong"&i)
-			response.write Len(dong_code) & " ◆ "
+			' response.write Len(dong_code) & " ◆ "
 			If Len(dong_code) = 0 Then
 			Else
 				dong_split	= Split(dong_code,"|")
@@ -44,13 +44,16 @@
 			End If
 		Loop
 
-		result = "등록되었습니다."
+		result = "1^등록되었습니다."
 
 	ElseIf tp = "delete" Then
 		dong_code	= Split(InjRequest("dong"&num),"|")
 		h_code	= Cstr(dong_code(0))
 		b_code	= Cstr(dong_code(1))
 		delivery_fee	= InjRequest("add_delFee"&num)
+		If delivery_fee = "" Then
+			delivery_fee = 0
+		End If
 
 		Set pCmd = Server.CreateObject("ADODB.Command")
 		With pCmd
@@ -70,7 +73,7 @@
 		End With
 		Set pCmd = Nothing
 		
-		result = "삭제되었습니다."
+		result = pRs("RESULT") & "^삭제되었습니다."
 
 	End If
 
