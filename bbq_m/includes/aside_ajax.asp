@@ -88,10 +88,11 @@ end if
 					%>
 					<dl>
 						<dt>적립금 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</dt> 
-						<dd style="text-align:right;"><a href="/mypage/mileage.asp"><strong><%=pMemberPoint.mSavePoint%></strong> P</a></dd>
+						<dd style="text-align:right;"><a href="/mypage/mileage.asp"><strong><%=FormatNumber(pMemberPoint.mSavePoint,0)%></strong> P</a></dd>
 					</dl>
 
 					<% 
+						Set pMemberPoint = Nothing
 						'Set pCouponList = CouponGetHoldList("NONE", "N", 100, 1) 
 					%>
 
@@ -148,6 +149,7 @@ end if
 				.swiper-container {
 					width: 100%;
 					height: 100%;
+					max-height: 108px;
 				}
 				.swiper-slide {
 					text-align: center;
