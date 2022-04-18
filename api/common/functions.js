@@ -1184,6 +1184,9 @@ function selectCoordHCode(mode, addr_idx, query, param){
 														
 							// 4. 회원 주소 정보에 행정동코드 저장하기 
 							if(h_code != ""){
+                                if(typeof(param) == 'object' && param.prop('tagName')=="INPUT") { //행정동 코드 form에 저장
+                                    $(param).val(h_code);
+                                }
 								if(addr_idx != "" && addr_idx > 0){
 									var err_msg2 = "행정동 코드 저장 오류";
 									$.ajax({
@@ -1208,23 +1211,27 @@ function selectCoordHCode(mode, addr_idx, query, param){
 									.always(function(){
 										if(err_msg2 != ""){
 											showAlertMsg({msg:err_msg2});
+										}else{
+											//h_code 있을 때 mode에 따라서 다음 동작 처리
+											if(mode=="S"){ //회원 기존 배달지 목록에서 선택된 배달지
+												addr_img_control(addr_idx, param);
+											}
+                                            if(mode=="Y"){ //배달지선택-회원
+                                                validAddress();
+                                            }
+                                            if(mode=="N"){ //배달지선택-비회원
+                                                validAddressNoMember();
+                                            }
 										}
 									});
-								}
-								
-								//h_code 있을 때 mode에 따라서 다음 동작 처리
-								if(mode=="S"){ //회원 기존 배달지 목록에서 선택된 배달지
-									addr_img_control(addr_idx, param);
-								}
-								if(typeof(param) == 'object' && param.prop('tagName')=="INPUT") { //행정동 코드 form에 저장
-									$(param).val(h_code);
-								}
-								if(mode=="Y"){ //배달지선택-회원
-									validAddress();
-								}
-								if(mode=="N"){ //배달지선택-비회원
-									validAddressNoMember();
-								}
+								}else{  
+                                    if(mode=="Y"){ //배달지선택-회원
+                                        validAddress();
+                                    }
+                                    if(mode=="N"){ //배달지선택-비회원
+                                        validAddressNoMember();
+                                    }
+                                }
 							}
 						} 
 					} else if(res.hasOwnProperty("msg")){ //비정상 결과 msg값 있을 때 
