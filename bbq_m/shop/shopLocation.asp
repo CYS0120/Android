@@ -185,7 +185,7 @@
 								slideHtml +=					"</a></dt>" ;
 								slideHtml +=					"<dd>";
 								slideHtml +=						"<p class=\"wrap\">";
-								slideHtml +=							"<span class=\"img\"><img src=\"http://placehold.it/130x130?text="+Number(i+1)+"\" alt=\"\"/></span>";
+								slideHtml +=							"<span class=\"img\"><img src=\"https://via.placeholder.com/130x130/cf152d/ffffff/?text="+Number(i+1)+"\" alt=\"\"/></span>";
 								slideHtml +=							"<span class=\"info\">";
 								slideHtml +=								"<strong>"+json[i].branch_address+"</strong>";
 								slideHtml +=								"<strong>"+json[i].branch_tel+"</strong>";
@@ -239,9 +239,12 @@
 							}
 
 							// 맨 첫번째 매장위치 Show
-							map.setCenter(new kakao.maps.LatLng(positions[0].getLat(), positions[0].getLng()));
-
-
+							if(positions.length > 0){
+								map.setCenter(new kakao.maps.LatLng(positions[0].getLat(), positions[0].getLng()));
+							}else{
+								showAlertMsg({msg:"검색된 매장이 없습니다."});
+							}
+							
 							//매장 하단 스와이프
 							// $('.find_shopRoll').slick("unslick");
 							//$('.find_shopRoll').slick({
@@ -353,35 +356,48 @@
 				function initLoc() {
 					var uluru = {lat: d_lat, lng: d_lng};
 					var options = {
-						enableHighAccuracy: false, //false 덜 정확하지만 빠름
-						timeout: 1500,
+						enableHighAccuracy: true, 
+						timeout: 3500,
 						maximumAge: 0
 					}
 
 					// Try HTML5 geolocation.
-					if (navigator.geolocation) {
-					navigator.geolocation.watchPosition(function(position) { //getCurrentPosition -> watchPosition
-						var pos = {
-							lat: position.coords.latitude,
-							lng: position.coords.longitude
-						};
+					var geoLoc = navigator.geolocation;
+					var geoWatchID = null;
+					if (geoLoc) {
+						geoWatchID = geoLoc.watchPosition(function(position) { //getCurrentPosition -> watchPosition
+							var pos = {
+								lat: position.coords.latitude,
+								lng: position.coords.longitude
+							};
 
-						$('#lat').val(pos.lat);
-						$('#lng').val(pos.lng);
-						// loadTabList(pos);
-						textSearch();
-					}, function() {
+							$('#lat').val(pos.lat);
+							$('#lng').val(pos.lng);
+							// loadTabList(pos);
+							geoClear();
+							textSearch();
+						}, function(error) {
+							if(error == GeolocationPositionError.PERMISSION_DENIED){
+								alert('위치(GPS)를 활성화하세요.');
+							}
+							geoClear();
 							$('#lat').val(uluru.lat);
 							$('#lng').val(uluru.lng);
 							textSearch();
-					}, options);
+						}, options);
 					} else {
 						$('#lat').val(uluru.lat);
 						$('#lng').val(uluru.lng);
 						textSearch();
 					}
+
+					function geoClear(){
+						geoLoc.clearWatch(geoWatchID);
+						geoWatchID = null;
+					}
 				}
 				
+
 				//특수문자, 특정문자열(sql예약어의 앞뒤공백포함) 제거
 				function checkSearchedWord(obj){
 					if(obj.value.length >0){
@@ -497,16 +513,17 @@
 			});			
 		}
 
+		var options = {
+			enableHighAccuracy: true, 
+			timeout: 1500,
+			maximumAge: 0
+		}
 		// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
-		if (navigator.geolocation) {
-			
-			var options = {
-				enableHighAccuracy: false, //false 덜 정확하지만 빠름
-				timeout: 1500,
-				maximumAge: 0
-			}
+		var geoLoc2 = navigator.geolocation;
+		var geoWatchID2 = null;
+		if (geoLoc2) {
 			// GeoLocation을 이용해서 접속 위치를 얻어옵니다
-			navigator.geolocation.watchPosition(function(position) { //getCurrentPosition -> watchPosition
+			var geoWatchID2 = geoLoc2.watchPosition(function(position) { //getCurrentPosition -> watchPosition
 				
 				var lat = position.coords.latitude, // 위도
 					lon = position.coords.longitude; // 경도
@@ -520,8 +537,11 @@
 
 				//fnSearchDetailAddrFromCoords(locPosition);
 				/********** 접속 위치 마커찍고 위치 이동인데.. 일단 주석 End ****************/
-			}, function(){
-
+				geoClear2();
+			}, function(error){
+				const { code } = error;
+				//alert('위치(GPS)를 활성화 하세요.');
+				geoClear2();
 				$( document ).ready(function() {
 					var coord = new kakao.maps.LatLng(d_lat, d_lng);
 
@@ -538,6 +558,10 @@
 			/********** 접속 위치 마커찍고 위치 이동인데.. 일단 주석 Start ****************/
 			//displayMarker(locPosition, message);
 			/********** 접속 위치 마커찍고 위치 이동인데.. 일단 주석 End ****************/
+		}
+		function geoClear2(){
+			geoLoc2.clearWatch(geoWatchID2);
+			geoWatchID2 = null;
 		}
 
 		// 지도에 마커와 인포윈도우를 표시하는 함수입니다

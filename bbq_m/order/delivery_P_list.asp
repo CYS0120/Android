@@ -282,7 +282,7 @@
 					var uluru = {lat: 37.491872, lng: 127.115922};
 
 					var options = {
-						enableHighAccuracy: false, //false 덜 정확하지만 빠름
+						enableHighAccuracy: true, 
 						timeout: 1500,
 						maximumAge: 0
 					}
