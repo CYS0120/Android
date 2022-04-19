@@ -553,7 +553,7 @@ jQuery(document).ready(function(e) {
 										5. 우쿠야 (http://www.unine.co.kr) <br/>
 										6. 와타미 (http://www.atamikorea.com)<br/>
 									<!--	7. 소신275도씨 (http://www.        )<br/>-->
-										7. 비비큐몰 (http://mall.bbq.co.kr)<br/>
+										7. 비비큐몰 (https://mall.bbq.co.kr)<br/>
 									<!--	9. 행복한집밥 (http://www. )<br/>-->
 										8. 치킨대학 (http://www.ckuniversity.com)<br/>
 										9. 창업센터 (http://www.bbqchangup.co.kr)<br/>

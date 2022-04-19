@@ -16,7 +16,7 @@
 							4. 올떡 (http://www.alltokk.co.kr) <br/>
 							5. 우쿠야 (http://www.unine.co.kr) <br/>
 							6. 와타미 (http://www.watamikorea.com)<br/>
-							7. 비비큐몰 (http://mall.bbq.co.kr)<br/>
+							7. 비비큐몰 (https://mall.bbq.co.kr)<br/>
 							8. 치킨대학 (http://www.ckuniversity.com)<br/>
 							9. 창업센터 (http://www.bbqchangup.co.kr)<br/>
 

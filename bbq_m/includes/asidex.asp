@@ -177,7 +177,7 @@ End If
 					<h2>FAMILY BRAND</h2>
 					<!-- <ul class="brandMenu">
 						<li><a href="javascript:alert('준비중입니다');">창업센터</a></li>
-						<li><a href="http://mall.bbq.co.kr/" target="_blank">비비큐몰</a></li>
+						<li><a href="https://mall.bbq.co.kr/" target="_blank">비비큐몰</a></li>
 					</ul> -->
 				</div>
 				<!--// Aside Header -->
