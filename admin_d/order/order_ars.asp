@@ -151,11 +151,11 @@ function setDate(SD,ED){
 	End If
 
 	If Not FncIsBlank(SW) Then 
-		If SM = "ORDERID" Then SqlWhere = SqlWhere & " AND A.ORDER_ID='"& SW &"' "
-		If SM = "NAME" Then SqlWhere = SqlWhere & " AND A.CUST_NAME LIKE '%"& SW &"%' "
-		If SM = "BRANCH_NAME" Then SqlWhere = SqlWhere & " AND B.BRANCH_NAME LIKE '"& SW &"%' "
-		If SM = "CUST_ID" Then SqlWhere = SqlWhere & " AND A.CUST_ID LIKE '"& SW &"%' "
-		If SM = "PHONE" Then SqlWhere = SqlWhere & " AND REPLACE(REPLACE(PHONE_REGION+PHONE,'-',''),' ', '') LIKE '%" & Replace(SW,"-","") &"%' "
+		If SM = "orderid" Then SqlWhere = SqlWhere & " AND A.ORDER_ID='"& SW &"' " End If
+		If SM = "name" Then SqlWhere = SqlWhere & " AND A.CUST_NAME LIKE '%"& SW &"%' " End If
+		If SM = "branch_name" Then SqlWhere = SqlWhere & " AND B.BRANCH_NAME LIKE '"& SW &"%' " End If
+		If SM = "cust_id" Then SqlWhere = SqlWhere & " AND A.CUST_ID LIKE '"& SW &"%' " End If
+		If SM = "phone" Then SqlWhere = SqlWhere & " AND REPLACE(REPLACE(PHONE_REGION+PHONE,'-',''),' ', '') LIKE '%" & Replace(SW,"-","") &"%' " End If
 	End If
 	
 	SqlOrder	= "ORDER BY ORDER_DATE DESC, ORDER_TIME DESC"
