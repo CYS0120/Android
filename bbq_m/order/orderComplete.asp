@@ -3,6 +3,7 @@
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/order/class_order_db.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
+<!--#include virtual="/includes/inc_encript.asp"-->
 
 <%
 	Dim criteo_str : criteo_str = ""
@@ -16,6 +17,23 @@
 	Dim order_idx : order_idx = Request("order_idx")
 	Dim paytype : paytype = Request("pm")
 	Dim eCouponType : eCouponType = ""
+
+	if len(order_idx) <= 10 then '암호화되지 않은 order_idx
+		'order_idx 암호화 체크 (2022. 4. 27)
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] ORDER_IDX " & order_idx & " / HTTP_REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','orderComplete-decrypt_err')"
+		dbconn.Execute(Sql)
+%>
+	<script type="text/javascript">
+		alert("잘못된 접근입니다.");
+		location.href = "/";
+	</script>
+<%
+		Response.End
+	else 
+		'암호화된 경우 복호화
+		order_idx = seedDecrypt(order_idx, g_SEEDKEY, g_SEEDIV)
+	end if 
+	'// order_idx 암호화 체크 (2022. 4. 27)
 
 	If IsEmpty(order_idx) Or IsNull(order_idx) Or Trim(order_idx) = "" Or Not IsNumeric(order_idx) Then order_idx = ""
 

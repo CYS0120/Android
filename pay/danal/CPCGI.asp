@@ -2,14 +2,28 @@
 <%
 	Response.AddHeader "pragma","no-cache"
 	
+	'í¬ë¡¬ 80ì´ìŠˆ ì„¸ì…˜ìœ ì‹¤ ë°©ì§€
+    Dim httpCookies, httpCookie, arrCookie, cookie_id, cookie_val
+    httpCookies = Split(Request.ServerVariables("HTTP_COOKIE"),";")
+    For Each httpCookie In httpCookies
+        arrCookie = Split(httpCookie,"=")
+        if ubound(arrCookie) > 0 then 'unpairí•œ ì¿ í‚¤ skip
+            cookie_id = Trim(arrCookie(0))
+            cookie_val = Trim(arrCookie(1))
+            If Left(trim(httpCookie),12) = "ASPSESSIONID" Then
+                Response.AddHeader "Set-Cookie", "" & cookie_id & "=" & cookie_val & ";SameSite=None; Secure; path=/; HttpOnly" ' í¬ë¡¬ 80ì´ìŠˆ
+            end if
+        end if 
+    next 
+
 	'/******************************************************************************** 
 	' *
-	' * ´Ù³¯ ÈŞ´ëÆù °áÁ¦
+	' * ë‹¤ë‚  íœ´ëŒ€í° ê²°ì œ
 	' *
-	' * - °áÁ¦ ¿äÃ» ÆäÀÌÁö 
-	' *	±İ¾× È®ÀÎ ¹× °áÁ¦ ¿äÃ»
+	' * - ê²°ì œ ìš”ì²­ í˜ì´ì§€ 
+	' *	ê¸ˆì•¡ í™•ì¸ ë° ê²°ì œ ìš”ì²­
 	' *
-	' * °áÁ¦ ½Ã½ºÅÛ ¿¬µ¿¿¡ ´ëÇÑ ¹®ÀÇ»çÇ×ÀÌ ÀÖÀ¸½Ã¸é ¼­ºñ½º°³¹ßÆÀÀ¸·Î ¿¬¶ô ÁÖ½Ê½Ã¿À.
+	' * ê²°ì œ ì‹œìŠ¤í…œ ì—°ë™ì— ëŒ€í•œ ë¬¸ì˜ì‚¬í•­ì´ ìˆìœ¼ì‹œë©´ ì„œë¹„ìŠ¤ê°œë°œíŒ€ìœ¼ë¡œ ì—°ë½ ì£¼ì‹­ì‹œì˜¤.
 	' * DANAL Commerce Division Technique supporting Team 
 	' * EMail : tech@danal.co.kr 
 	' *
@@ -21,9 +35,11 @@
 <!--#include virtual="/pay/coupon_use.asp"-->
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include file="./inc/function.asp"-->
+<!--#include virtual="/includes/inc_encript.asp"-->
 <%
     Session.CodePage = 949
     Response.Charset = "euc-kr"
+    Server.ScriptTimeout = 90 'second
 
     Response.AddHeader "pragma","no-cache"
 
@@ -40,11 +56,11 @@
 		Dim oTextStream 
 		Set oTextStream = oFSO.OpenTextFile(Write_LogFile, fsoForAppend, True, 0)
 		'-----------------------------------------------------------------------------
-		' ³»¿ë ±â·Ï
+		' ë‚´ìš© ê¸°ë¡
 		'-----------------------------------------------------------------------------
 		oTextStream.WriteLine  CStr(FormatDateTime(Now,0)) + " " + Replace(CStr(Log_String),Chr(0),"'")
 		'-----------------------------------------------------------------------------
-		' ¸®¼Ò½º ÇØÁ¦
+		' ë¦¬ì†ŒìŠ¤ í•´ì œ
 		'-----------------------------------------------------------------------------
 		oTextStream.Close 
 		Set oTextStream = Nothing 
@@ -76,7 +92,7 @@
         dim cl_eCoupon : set cl_eCoupon = new eCoupon
         dim cl_eCouponCoop : set cl_eCouponCoop = new eCouponCoop
 
-        ' ÁÖ¹®³»¿¡ eÄíÆù ¹øÈ£·Î ¾÷Ã¼ Ã¼Å© ##################
+        ' ì£¼ë¬¸ë‚´ì— eì¿ í° ë²ˆí˜¸ë¡œ ì—…ì²´ ì²´í¬ ##################
 		Set pinCmd = Server.CreateObject("ADODB.Command")
 		with pinCmd
 			.ActiveConnection = dbconn
@@ -124,8 +140,12 @@
 
 		If CouponUseCheck = "Y" Then 
 			Result 		= "COUPON"
-'			ErrMsg 		= "ÁÖ¹®³»¿ë¿¡ ÀÌ¹Ì »ç¿ëµÈ ÄíÆùÀÌ ÀÖ½À´Ï´Ù."
+'			ErrMsg 		= "ì£¼ë¬¸ë‚´ìš©ì— ì´ë¯¸ ì‚¬ìš©ëœ ì¿ í°ì´ ìˆìŠµë‹ˆë‹¤."
 			AbleBack 	= false
+
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / Result "& Replace(Result, "'","") & " / ErrMsg "& Replace(ErrMsg, "'","") &"','0','danal_card-err1')"
+			dbconn.Execute(Sql)
+
 			BackURL 	= "javascript:self.close();"
 %>
 <!--#include file="Error.asp"-->
@@ -166,8 +186,9 @@
             SUBCPID = ""
             AMOUNT = ""
         End If
+        Set pRs = Nothing
 
-		' Á¦ÁÖ/»ê°£ =========================================================================================
+		' ì œì£¼/ì‚°ê°„ =========================================================================================
         Set pCmd = Server.CreateObject("ADODB.Command")
         With pCmd
             .ActiveConnection = dbconn
@@ -184,8 +205,11 @@
         If Not (pRs.BOF Or pRs.EOF) Then
             AMOUNT = AMOUNT + (pRs("menu_price")*pRs("menu_qty"))
         End If
+        Set pRs = Nothing
 		' =========================================================================================
 
+        Set cl_eCoupon = Nothing
+        Set cl_eCouponCoop = Nothing
 		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','2','0','danal_card-000')"
 		dbconn.Execute(Sql)
     ElseIf gubun = "Charge" Or gubun = "Gift" Then
@@ -226,17 +250,20 @@
             SUBCPID = ""
             AMOUNT = ""
         End If
+        Set pRs = Nothing
 
 		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','3','0','danal_card-000')"
 		dbconn.Execute(Sql)
 
     End If
 %>
+<!DOCTYPE html>
 <html>
 <head>
-<title>´Ù³¯ ÈŞ´ëÆù °áÁ¦</title>
+<title>Danal Phone Payment</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<script src="/common/js/libs/jquery-1.12.4.min.js"></script>
 </head>
 <%
 	Dim TransR, Addition, Res, Res2
@@ -267,7 +294,7 @@
 	TransR.Add "ConfirmOption", nConfirmOption
 	
 	'/*
-	' * ConfirmOptionÀÌ 1ÀÌ¸é CPID, AMOUNT ÇÊ¼ö Àü´Ş
+	' * ConfirmOptionì´ 1ì´ë©´ CPID, AMOUNT í•„ìˆ˜ ì „ë‹¬
 	' */
 	IF nConfirmOption = "1" Then
 		TransR.Add "CPID", ID
@@ -296,6 +323,7 @@
 			BillErr = True
 		End IF
 	End IF
+    Set TransR = Nothing
 
 	IF isNull(Res2) Then
 		Set Res2 = CreateObject("Scripting.Dictionary")
@@ -306,9 +334,9 @@
 	IF Res.Item("Result") = "0" and Res2.Item("Result") = "0" Then
 	'/**************************************************************************
 	' *
-	' * °áÁ¦ ¿Ï·á¿¡ ´ëÇÑ ÀÛ¾÷ 
-	' * - AMOUNT, ORDERID µî °áÁ¦ °Å·¡³»¿ë¿¡ ´ëÇÑ °ËÁõÀ» ¹İµå½Ã ÇÏ½Ã±â ¹Ù¶ø´Ï´Ù.
-	' * - CAP, RemainAmt: °³ÀÎÁ¤º¸ Á¤Ã¥¿¡ ÀÇÇØ ÀÜ¿© ÇÑµµ ±İ¾×Àº ¹ÌÀü´Ş µË´Ï´Ù. (¡°000000¡±)
+	' * ê²°ì œ ì™„ë£Œì— ëŒ€í•œ ì‘ì—… 
+	' * - AMOUNT, ORDERID ë“± ê²°ì œ ê±°ë˜ë‚´ìš©ì— ëŒ€í•œ ê²€ì¦ì„ ë°˜ë“œì‹œ í•˜ì‹œê¸° ë°”ëë‹ˆë‹¤.
+	' * - CAP, RemainAmt: ê°œì¸ì •ë³´ ì •ì±…ì— ì˜í•´ ì”ì—¬ í•œë„ ê¸ˆì•¡ì€ ë¯¸ì „ë‹¬ ë©ë‹ˆë‹¤. (â€œ000000â€)
 	' *
 	' **************************************************************************/
         TID = Res.Item("TID")
@@ -349,11 +377,11 @@
                 Set aCmd = Nothing
 
 
-                '¿¬°áµÈ pay°¡ ÀÖ´ÂÁö È®ÀÎ'
+                'ì—°ê²°ëœ payê°€ ìˆëŠ”ì§€ í™•ì¸'
                 If Not (aRs.BOF Or aRs.EOF) Then
 
 				Else
-                    '¾øÀ¸¸é pay_idx »ı¼º'
+                    'ì—†ìœ¼ë©´ pay_idx ìƒì„±'
                     Set aCmd = Server.CreateObject("ADODB.Command")
                     With aCmd
                         .ActiveConnection = dbconn
@@ -410,27 +438,32 @@
 
                 Set aCmd = Nothing
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"','0','danal_card-003')"
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] Phone / IP " & Request.ServerVariables("LOCAL_ADDR") & " / deviceUid " & Session("deviceUid") & " / osTypeCd " & Session("osTypeCd") & "','0','danal_card-003')"
 				dbconn.Execute(Sql)
 
 				returnUrl = "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Phone"
 
-				response.write "<iframe id='err_iframe' src='about:blank' width='0' height='0' scrolling='no' frameborder='0' style='display:none'></iframe>"
-				response.write "<script type='text/javascript'>"
-				response.write "	try	{"
-				response.write "		if(window.opener) {"
-				response.write "			opener.location.href = '"& returnUrl &"'; "
-				response.write "			window.close();"
-				response.write "		} else {"
-				response.write "			location.href = '"& returnUrl &"'; "
-				response.write "		}"
-				response.write "	}"
-				response.write "	catch (e) {"
-				response.write "		document.getElementById('err_iframe').src = '"& returnUrl &"'; "
-				response.write "	}"
-				response.write "</script>"
+				response.write vbCrLf & "<iframe id='err_iframe' src='"& returnUrl &"' width='0' height='0' scrolling='no' frameborder='0' style='display:none'></iframe>"
+				response.write vbCrLf & "<script>"
+				response.write vbCrLf & "  $(document).ready(function() {"
+				response.write vbCrLf & "      try {"
+				response.write vbCrLf & "		if(window.opener) {"
+				response.write vbCrLf & "			window.opener.location.href = '"& returnUrl &"'; "
+				response.write vbCrLf & "			setTimeout(function(){"
+				response.write vbCrLf & "			    window.close();"
+				response.write vbCrLf & "			},1500);"
+				response.write vbCrLf & "		} else {"
+				response.write vbCrLf & "			location.href = '"& returnUrl &"'; "
+				response.write vbCrLf & "		}"
+				response.write vbCrLf & "	}"
+				response.write vbCrLf & "	catch (e) {"
+				response.write vbCrLf & "		document.getElementById('err_iframe').src = '"& returnUrl &"'; "
+				response.write vbCrLf & "	}"
+				response.write vbCrLf & "  });"
+				response.write vbCrLf & "</script>"
 
-'				Response.Redirect "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Phone"
+				'Response.Redirect "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Phone"
+				Response.Flush
 				Response.End
 
 			ElseIf gubun = "Charge" Or gubun = "Gift" Then
@@ -522,7 +555,7 @@
             Response.End
         End If
         
-    ' DB ´İ±â
+    ' DB ë‹«ê¸°
     DBClose()
 
 
@@ -540,8 +573,8 @@
 %>
 </form>
 <script type="text/javascript">
-	alert("ÁÖ¹®ÀÌ Á¤»óÀûÀ¸·Î ¿Ï·áµÇ¾ú½À´Ï´Ù.");
-	opener.location.href = "/order/orderComplete.asp?order_idx=<%=order_idx%>&pm=Phone";
+	alert("ì£¼ë¬¸ì´ ì •ìƒì ìœ¼ë¡œ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
+	opener.location.href = "/order/orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Phone";
 	window.close();
 /*
 	if(window.opener) {
@@ -559,7 +592,7 @@
 	Else
  		'/**************************************************************************
 		' *
-		' * °áÁ¦ ½ÇÆĞ¿¡ ´ëÇÑ ÀÛ¾÷
+		' * ê²°ì œ ì‹¤íŒ¨ì— ëŒ€í•œ ì‘ì—…
 		' *
 		' **************************************************************************/	
 		IF BillErr Then
@@ -573,8 +606,13 @@
 		IsUseCI 	= Request.Form("IsUseCI")
 		CIURL 		= Request.Form("CIURL")
 		BgColor 	= Request.Form("BgColor")
+
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / Result "& Replace(Result, "'","") & " / ErrMsg "& Replace(ErrMsg, "'","") &"','0','danal_card-err2')"
+	dbconn.Execute(Sql)
+
 %>
 <!--#include file="Error.asp"-->
 <%
 	End IF
+    Set Res2 = Nothing
 %>

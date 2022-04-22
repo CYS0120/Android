@@ -4,6 +4,7 @@
 <!--#include virtual="/pay/coupon_use.asp"-->
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include file="./inc/function.asp"-->
+<!--#include virtual="/includes/inc_encript.asp"-->
 <%
     Response.AddHeader "pragma","no-cache"
 
@@ -67,12 +68,12 @@
 
 
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& paycoin_order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(workmode,"'","") &"','0','paycoin-000')"
-	dbconn.Execute(Sql)
-
-
 	order_idx_get = GetReqStr("order_idx","")
 	order_num_get = GetReqStr("order_num","")
+
+
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& paycoin_order_idx &"','['+convert(varchar(19), getdate() , 120)+'] "& order_num_get & "/" & Session("UserId") & "/" & Session("UserIdx") &"','0','paycoin_ok-session-000')"
+	dbconn.Execute(Sql)
 
 	If order_idx_get <> Right(order_num_get, 7) And order_idx_get <> Right(order_num_get, 8) Then 
 		returnUrl = "/order/cart.asp"
@@ -105,7 +106,7 @@
 'response.write returnmsg
 'response.End 
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& paycoin_order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(workmode,"'","") &"','0','paycoin-001')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& paycoin_order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(workmode,"'","") &"','0','paycoin_ok-001')"
 	dbconn.Execute(Sql)
 
 	If workmode = "cancel" Then ' 취소 성공했을시
@@ -159,7 +160,7 @@
 		end if 
 
 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin-002')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& paycoin_order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin_ok-002')"
 		dbconn.Execute(Sql)
 
 		If gubun = "Order" Then
@@ -216,7 +217,7 @@
 				End If 
 			End If	
 
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin-003')"
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin_ok-003')"
 			dbconn.Execute(Sql)
 
 			Set pinCmd = Nothing
@@ -233,7 +234,7 @@
 				Response.End
 			End If 
 
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin-004')"
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin_ok-004')"
 			dbconn.Execute(Sql)
 
 			Set pCmd = Server.CreateObject("ADODB.Command")
@@ -249,7 +250,7 @@
 			End With
 			Set pCmd = Nothing
 
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin-005')"
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin_ok-005')"
 			dbconn.Execute(Sql)
 
 			If Not (pRs.BOF Or pRs.EOF) Then
@@ -288,7 +289,7 @@
 			End If
 			' =========================================================================================
 		ElseIf gubun = "Charge" Or gubun = "Gift" Then
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin-006')"
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin_ok-006')"
 			dbconn.Execute(Sql)
 
 			cardSeq = Request.Cookies("CARD_SEQ")
@@ -308,7 +309,7 @@
 			End With
 			Set pCmd = Nothing
 
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin-007')"
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(paycoin_order_num,"'","") &"/"& Replace(gubun,"'","") &"','0','paycoin_ok-007')"
 			dbconn.Execute(Sql)
 
 			If Not (pRs.BOF Or pRs.EOF) Then
@@ -336,7 +337,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	</head>
 <%
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"/"& Replace(returncode,"'","") &"','0','paycoin-008')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"',convert(varchar(19), getdate() , 120) + ' "& Replace(ORDER_NUM,"'","") &"/"& Replace(returncode,"'","") &"','0','paycoin_ok-008')"
 		dbconn.Execute(Sql)
 
 		If net_db_yn = "Y" Then 
@@ -412,7 +413,7 @@
 					dbconn.Execute(query)
 
 					If gubun = "Order" Then
-						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"/"& Replace(returncode,"'","") &"','0','paycoin-009')"
+						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"/"& Replace(returncode,"'","") &"','0','paycoin_ok-009')"
 						dbconn.Execute(Sql)
 
 						'***** pay insert
@@ -430,7 +431,7 @@
 						Set aCmd = Nothing
 
 
-						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"/"& Replace(returncode,"'","") &"','0','paycoin-010')"
+						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"/"& Replace(returncode,"'","") &"','0','paycoin_ok-010')"
 						dbconn.Execute(Sql)
 
 						'연결된 pay가 있는지 확인'
@@ -464,7 +465,7 @@
 						End If
 						Set aRs = Nothing
 
-						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"/"& Replace(returncode,"'","") &"','0','paycoin-011')"
+						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"/"& Replace(returncode,"'","") &"','0','paycoin_ok-011')"
 						dbconn.Execute(Sql)
 
 						Set aCmd = Server.CreateObject("ADODB.Command")
@@ -494,7 +495,7 @@
 
 						Set aCmd = Nothing
 
-						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"/"& Replace(returncode,"'","") &"','0','paycoin-012')"
+						Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(ORDER_NUM,"'","") &"/"& Replace(returncode,"'","") &"','0','paycoin_ok-012')"
 						dbconn.Execute(Sql)
 
 						returnUrl = "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Paycoin"
@@ -628,7 +629,7 @@
 		</form>
 		<script type="text/javascript">
 			alert("주문이 정상적으로 완료되었습니다.");
-			opener.location.href = "/order/orderComplete.asp?order_idx=<%=order_idx%>&pm=Paycoin";
+			opener.location.href = "/order/orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Paycoin";
 			window.close();
 		/*
 			if(window.opener) {

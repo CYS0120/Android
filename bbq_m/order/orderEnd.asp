@@ -3,6 +3,7 @@
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/order/class_order_db.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
+<!--#include virtual="/includes/inc_encript.asp"-->
 
 <%
     Response.AddHeader "Pragma", "no-cache"
@@ -650,12 +651,12 @@
 <script type="text/javascript">
 	//alert("주문이 정상적으로 완료되었습니다.");
 <%	If paytype = "Paycoin" Then %>
-		top.location.href = "orderComplete.asp?order_idx=<%=order_idx%>&pm=Paycoin";
+		top.location.href = "orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Paycoin";
 <%	Else %>
 		if (typeof(opener) != "undefined" && opener != "" && opener != null) {
-			opener.location.href = "orderComplete.asp?order_idx=<%=order_idx%>&pm=Card";
+			opener.location.href = "orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Card";
 		} else {
-			location.href = "orderComplete.asp?order_idx=<%=order_idx%>&pm=Card";
+			location.href = "orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Card";
 		}
 <%	End If %>
 	window.close();

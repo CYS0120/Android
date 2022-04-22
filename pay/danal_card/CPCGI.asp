@@ -1,6 +1,19 @@
 <%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
 <%
     Response.AddHeader "Pragma", "no-cache"
+	'í¬ë¡¬ 80ì´ìŠˆ ì„¸ì…˜ìœ ì‹¤ ë°©ì§€
+    Dim httpCookies, httpCookie, arrCookie, cookie_id, cookie_val
+    httpCookies = Split(Request.ServerVariables("HTTP_COOKIE"),";")
+    For Each httpCookie In httpCookies
+        arrCookie = Split(httpCookie,"=")
+        if ubound(arrCookie) > 0 then 'unpairí•œ ì¿ í‚¤ skip
+            cookie_id = Trim(arrCookie(0))
+            cookie_val = Trim(arrCookie(1))
+            If Left(trim(httpCookie),12) = "ASPSESSIONID" Then
+                Response.AddHeader "Set-Cookie", "" & cookie_id & "=" & cookie_val & ";SameSite=None; Secure; path=/; HttpOnly" ' í¬ë¡¬ 80ì´ìŠˆ
+            end if
+        end if 
+    next 
     Response.CacheControl = "no-cache"
 %>
 <!--#include virtual="/api/include/cv.asp"-->
@@ -9,9 +22,11 @@
 <!--#include virtual="/pay/coupon_use.asp"-->
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include file="./inc/function.asp"-->
+<!--#include virtual="/includes/inc_encript.asp"-->
 <%
     Session.CodePage = 949
     Response.CharSet = "EUC-KR"
+    Server.ScriptTimeout = 90 'second
 
 	Dim Write_LogFile
     Write_LogFile = Server.MapPath(".") + "\log\point_Log_"+Replace(FormatDateTime(Now,2),"-","")+"_asp.txt"
@@ -26,11 +41,11 @@
         Dim oTextStream 
         Set oTextStream = oFSO.OpenTextFile(Write_LogFile, fsoForAppend, True, 0)
         '-----------------------------------------------------------------------------
-        ' ³»¿ë ±â·Ï
+        ' ë‚´ìš© ê¸°ë¡
         '-----------------------------------------------------------------------------
         oTextStream.WriteLine  CStr(FormatDateTime(Now,0)) + " " + Replace(CStr(Log_String),Chr(0),"'")
         '-----------------------------------------------------------------------------
-        ' ¸®¼Ò½º ÇØÁ¦
+        ' ë¦¬ì†ŒìŠ¤ í•´ì œ
         '-----------------------------------------------------------------------------
         oTextStream.Close 
         Set oTextStream = Nothing 
@@ -65,7 +80,7 @@
         'i_order_idx = CLng(order_idx)
 
 
-        ' ÁÖ¹®³»¿¡ eÄíÆù ¹øÈ£·Î ¾÷Ã¼ Ã¼Å© ##################
+        ' ì£¼ë¬¸ë‚´ì— eì¿ í° ë²ˆí˜¸ë¡œ ì—…ì²´ ì²´í¬ ##################
 		Set pinCmd = Server.CreateObject("ADODB.Command")
 		with pinCmd
 			.ActiveConnection = dbconn
@@ -83,6 +98,8 @@
     
 		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 0-1','0','danal_card-000 "&coupon_pin&"')"
 		dbconn.Execute(Sql)    
+        Set pinCmd = Nothing
+        Set pinRs = Nothing
 
         If Len(coupon_pin) > 0 Then
             prefix_coupon_no = LEFT(trim(coupon_pin), 1)
@@ -130,20 +147,22 @@
                 Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 0-5','0','danal_card-000 "&cl_eCoupon.m_cd&"-"&Msg&"-"&CouponUseCheck&"')"
                 dbconn.Execute(Sql)              
             End If 
-        End If
-        Set pinCmd = Nothing
-        Set pinRs = Nothing
+        End If '//If Len(coupon_pin) > 0 Then
 
 		If CouponUseCheck = "Y" Then 
 			Result 		= "COUPON"
 			ErrMsg 		= Msg
 			AbleBack 	= false
+
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / Result "& Replace(Result, "'","") & " / ErrMsg "& Replace(ErrMsg, "'","") &"','0','danal_card-err1')"
+			dbconn.Execute(Sql)
+
 			BackURL 	= "javascript:self.close();"
 %>
-<!--#include file="Error.asp"-->
+            <!--#include file="Error.asp"-->
 <%
 			Response.End 
-		End If 
+		End If '//If CouponUseCheck = "Y" Then 
         ' ###############################################
 
 		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 1','0','danal_card-000')"
@@ -178,8 +197,9 @@
             SUBCPID = ""
             AMOUNT = ""
         End If
+        Set pRs = Nothing
 
-		' Á¦ÁÖ/»ê°£ =========================================================================================
+		' ì œì£¼/ì‚°ê°„ =========================================================================================
         Set pCmd = Server.CreateObject("ADODB.Command")
         With pCmd
             .ActiveConnection = dbconn
@@ -196,6 +216,7 @@
         If Not (pRs.BOF Or pRs.EOF) Then
             AMOUNT = AMOUNT + (pRs("menu_price")*pRs("menu_qty"))
         End If
+        Set pRs = Nothing
 		' =========================================================================================
 
 		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 2','"& cstr(AMOUNT) &"','danal_card-000')"
@@ -239,66 +260,71 @@
             SUBCPID = ""
             AMOUNT = ""
         End If
+        Set pRs = Nothing
 
 		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / 3','"& cstr(AMOUNT) &"','danal_card-000')"
 		dbconn.Execute(Sql)
 		
     End If
 
-
+    Set cl_eCoupon = Nothing
+    Set cl_eCouponCoop = Nothing
 %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<script src="/common/js/libs/jquery-1.12.4.min.js"></script>
 <link href="./css/style.css" type="text/css" rel="stylesheet"  media="all" />
-<title>*** ½Å¿ëÄ«µå °áÁ¦ ***</title>
+<title>*** credit card payment ***</title>
 </head>
 <body>
 <%
     Dim RET_STR, RET_MAP
-    Dim REQ_DATA, RES_DATA              ' º¯¼ö ¼±¾ğ 
+    Dim REQ_DATA, RES_DATA              ' ë³€ìˆ˜ ì„ ì–¸ 
 
-    '//************ º¹È£È­ *********************
+    '//************ ë³µí˜¸í™” *********************
     RET_STR = toDecrypt( Request.Form("RETURNPARAMS") )
     Set RET_MAP = str2data( RET_STR )
 
     RET_RETURNCODE = RET_MAP.Item("RETURNCODE")
     RET_RETURNMSG = Msg		'RET_MAP.Item("RETURNMSG")
 
-    '//*****  ½Å¿ëÄ«µå ÀÎÁõ°á°ú È®ÀÎ *****************
+    '//*****  ì‹ ìš©ì¹´ë“œ ì¸ì¦ê²°ê³¼ í™•ì¸ *****************
     IF RET_RETURNCODE <> "0000" Then
-        '// returnCode°¡ ¾ø°Å³ª ¶Ç´Â ±× °á°ú°¡ ¼º°øÀÌ ¾Æ´Ï¶ó¸é ½ÇÆĞ Ã³¸®
+        '// returnCodeê°€ ì—†ê±°ë‚˜ ë˜ëŠ” ê·¸ ê²°ê³¼ê°€ ì„±ê³µì´ ì•„ë‹ˆë¼ë©´ ì‹¤íŒ¨ ì²˜ë¦¬
         Set RES_DATA = CreateObject("Scripting.Dictionary")
         RES_DATA.Add "RETURNCODE", RET_RETURNCODE
         RES_DATA.Add "RETURNMSG", RET_RETURNMSG
     Else
-        '//***** ½Å¿ëÄ«µå ÀÎÁõ ¼º°ø ½Ã °áÁ¦ ¿Ï·á ¿äÃ» *****
+        '//***** ì‹ ìš©ì¹´ë“œ ì¸ì¦ ì„±ê³µ ì‹œ ê²°ì œ ì™„ë£Œ ìš”ì²­ *****
 
-        '*[ ÇÊ¼ö µ¥ÀÌÅÍ ]**************************************
+        '*[ í•„ìˆ˜ ë°ì´í„° ]**************************************
         Set REQ_DATA    = CreateObject("Scripting.Dictionary")
 
 
         '**************************************************
-        '* °áÁ¦ Á¤º¸
+        '* ê²°ì œ ì •ë³´
         '**************************************************/
         REQ_DATA.Add "TID", RET_MAP.Item("TID")
-        REQ_DATA.Add "AMOUNT", AMOUNT '// ÃÖÃÊ °áÁ¦¿äÃ»(AUTH)½Ã¿¡ º¸³Â´ø ±İ¾×°ú µ¿ÀÏÇÑ ±İ¾×À» Àü¼Û
+        REQ_DATA.Add "AMOUNT", AMOUNT '// ìµœì´ˆ ê²°ì œìš”ì²­(AUTH)ì‹œì— ë³´ëƒˆë˜ ê¸ˆì•¡ê³¼ ë™ì¼í•œ ê¸ˆì•¡ì„ ì „ì†¡
 
         '**************************************************
-        '* ±âº» Á¤º¸
+        '* ê¸°ë³¸ ì •ë³´
         '**************************************************/
         REQ_DATA.Add "TXTYPE", "BILL"
         REQ_DATA.Add "SERVICETYPE", "DANALCARD"
         Set RES_DATA = CallCredit(REQ_DATA, false)
+        Set REQ_DATA = Nothing
     End IF
+    Set RET_MAP = Nothing
 	
     IF RES_DATA.Item("RETURNCODE") = "0000" Then
 
         '***************************************************
-        '* °áÁ¦¿Ï·á¿¡ ´ëÇÑ ÀÛ¾÷
-        '*  - ORDERID, AMOUNT µî °áÁ¦ °Å·¡³»¿ë¿¡ ´ëÇÑ °ËÁõÀ» ¹İµå½Ã ÇÏ½Ã±â ¹Ù¶ø´Ï´Ù.
+        '* ê²°ì œì™„ë£Œì— ëŒ€í•œ ì‘ì—…
+        '*  - ORDERID, AMOUNT ë“± ê²°ì œ ê±°ë˜ë‚´ìš©ì— ëŒ€í•œ ê²€ì¦ì„ ë°˜ë“œì‹œ í•˜ì‹œê¸° ë°”ëë‹ˆë‹¤.
         '***************************************************
 
         TID = RES_DATA.Item("TID")
@@ -341,11 +367,11 @@
                 End With
                 Set aCmd = Nothing
 
-                '¿¬°áµÈ pay°¡ ÀÖ´ÂÁö È®ÀÎ'
+                'ì—°ê²°ëœ payê°€ ìˆëŠ”ì§€ í™•ì¸'
                 If Not (aRs.BOF Or aRs.EOF) Then
 
 				Else
-                    '¾øÀ¸¸é pay_idx »ı¼º'
+                    'ì—†ìœ¼ë©´ pay_idx ìƒì„±'
                     Set aCmd = Server.CreateObject("ADODB.Command")
                     With aCmd
                         .ActiveConnection = dbconn
@@ -375,7 +401,7 @@
 				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / "& Replace(ORDER_NUM,"'","") &"','0','danal_card-002')"
 				dbconn.Execute(Sql)
 
-                'pay_detail »ı¼º'
+                'pay_detail ìƒì„±'
                 Set aCmd = Server.CreateObject("ADODB.Command")
                 With aCmd
                     .ActiveConnection = dbconn
@@ -401,30 +427,36 @@
                 End With
                 Set aCmd = Nothing
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / "& Replace(ORDER_NUM,"'","") &"','0','danal_card-003')"
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_ACCEPT_ENCODING " & Request.ServerVariables("HTTP_ACCEPT_ENCODING") & " / LANGUAGE " & Request.ServerVariables("HTTP_ACCEPT_LANGUAGE") & " / SERVER_PROTOCOL " & Request.ServerVariables("SERVER_PROTOCOL") & " / CONNECTION " & Request.ServerVariables("HTTP_CONNECTION") & " / INTERFACE " & Request.ServerVariables("GATEWAY_INTERFACE") & " / HTTP_ACCEPT " & Request.ServerVariables("HTTP_ACCEPT") & " / HTTP_USER_AGENT " & Request.ServerVariables("HTTP_USER_AGENT") & " / deviceUid " & Session("deviceUid") & " / osTypeCd " & Session("osTypeCd") &"','0','danal_card-003')"
 				dbconn.Execute(Sql)
 
 				returnUrl = "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Card"
 
-				response.write "<iframe id='err_iframe' src='about:blank' width='0' height='0' scrolling='no' frameborder='0' style='display:none'></iframe>"
-				response.write "<script type='text/javascript'>"
-				response.write "	try	{"
-				response.write "		if(window.opener) {"
-				response.write "			opener.location.href = '"& returnUrl &"'; "
-				response.write "			window.close();"
-				response.write "		} else {"
-				response.write "			location.href = '"& returnUrl &"'; "
-				response.write "		}"
-				response.write "	}"
-				response.write "	catch (e) {"
-				response.write "		document.getElementById('err_iframe').src = '"& returnUrl &"'; "
-				response.write "	}"
-				response.write "</script>"
-				
+				response.write vbCrLf & "<iframe id='err_iframe' src='"& returnUrl &"' width='0' height='0' scrolling='no' frameborder='0' style='display:none'></iframe>"
+				response.write vbCrLf & "<script>"
+				response.write vbCrLf & "  $(document).ready(function() {"
+				response.write vbCrLf & "      try {"
+				response.write vbCrLf & "		if(window.opener) {"
+				response.write vbCrLf & "			window.opener.location.href = '"& returnUrl &"'; "
+				response.write vbCrLf & "			setTimeout(function(){"
+				response.write vbCrLf & "			    window.close();"
+				response.write vbCrLf & "			},1500);"
+				response.write vbCrLf & "		} else {"
+				response.write vbCrLf & "			location.href = '"& returnUrl &"'; "
+				response.write vbCrLf & "		}"
+				response.write vbCrLf & "	}"
+				response.write vbCrLf & "	catch (e) {"
+				response.write vbCrLf & "		document.getElementById('err_iframe').src = '"& returnUrl &"'; "
+				response.write vbCrLf & "	}"
+				response.write vbCrLf & "  });"
+				response.write vbCrLf & "</script>"
+
+				Response.Flush
                 Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / "& Replace(returnUrl,"'","") &"','0','danal_card-004')"
 				dbconn.Execute(Sql)
 
-'				Response.Redirect "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Card"
+				'Response.Redirect "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Card"
+
 				Response.End
 
             ElseIf gubun = "Charge" Or gubun = "Gift" Then
@@ -512,53 +544,70 @@
             End If
         Else
 %>
-<script language="javascript">
-    document.location.href='BillCancel.asp?ORDER_NUM=<%=ORDER_NUM%>';
-	opener.parent.cancelMembership();
-</script>
+            <script language="javascript">
+                document.location.href='BillCancel.asp?ORDER_NUM=<%=ORDER_NUM%>';
+                opener.parent.cancelMembership();
+            </script>
 <%
-        End If
+        End If '// If ORDER_NUM = RES_DATA.Item("ORDERID") And CStr(AMOUNT) = RES_DATA.Item("AMOUNT") Then
 		
+        Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & "','0','danal_card-007')"
+        dbconn.Execute(Sql)
 %>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!--form name="form" ACTION="<%=returnUrl%>" METHOD="POST" >
-    <input TYPE="HIDDEN" NAME="RETURNCODE"      VALUE="<%= RES_DATA.Item("RETURNCODE") %>">
-    <input TYPE="HIDDEN" NAME="RETURNMSG"   VALUE="<%= RES_DATA.Item("RETURNMSG") %>">
-    <input TYPE="HIDDEN" NAME="TID"     VALUE="<%= RES_DATA.Item("TID") %>">
-    <input TYPE="HIDDEN" NAME="order_idx"   VALUE="<%=order_idx%>">
-    <input TYPE="HIDDEN" NAME="cardSeq"   VALUE="<%=cardSeq%>">
-    <input TYPE="HIDDEN" NAME="payType"   VALUE="DANALCARD">
-	<input type="hidden" name="pm" value="Card" />
-</form-->
-<script type="text/javascript">
-	//alert("ÁÖ¹®ÀÌ Á¤»óÀûÀ¸·Î ¿Ï·áµÇ¾ú½À´Ï´Ù.");
-	opener.location.href = "/order/orderComplete.asp?order_idx=<%=order_idx%>&pm=Card";
-	window.close();
-/*
-	if(window.opener) {
-        window.opener.name = "myOpener";
-        document.form.target = "myOpener";
-        document.form.submit();
-        self.close();
-    } else {
-        document.form.submit();
-    }
-*/
-</script>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <!--form name="form" ACTION="<%=returnUrl%>" METHOD="POST" >
+            <input TYPE="HIDDEN" NAME="RETURNCODE"      VALUE="<%= RES_DATA.Item("RETURNCODE") %>">
+            <input TYPE="HIDDEN" NAME="RETURNMSG"   VALUE="<%= RES_DATA.Item("RETURNMSG") %>">
+            <input TYPE="HIDDEN" NAME="TID"     VALUE="<%= RES_DATA.Item("TID") %>">
+            <input TYPE="HIDDEN" NAME="order_idx"   VALUE="<%=order_idx%>">
+            <input TYPE="HIDDEN" NAME="cardSeq"   VALUE="<%=cardSeq%>">
+            <input TYPE="HIDDEN" NAME="payType"   VALUE="DANALCARD">
+            <input type="hidden" name="pm" value="Card" />
+        </form-->
+        <script type="text/javascript">
+            //alert("ì£¼ë¬¸ì´ ì •ìƒì ìœ¼ë¡œ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
+            if(window.opener) {
+                setTimeout(function(){
+                    window.opener.location.href = "/order/orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Card";
+                    setTimeout(function(){
+                        window.close();
+                    },500);
+                },0);
+                
+            } else {
+                location.href = "/order/orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Card";
+            }
+
+        /*
+            if(window.opener) {
+                window.opener.name = "myOpener";
+                document.form.target = "myOpener";
+                document.form.submit();
+                self.close();
+            } else {
+                document.form.submit();
+            }
+        */
+        </script>
 <%
     Else
         '***************************************************
-        '* °áÁ¦ ½ÇÆĞ ½Ã¿¡ ´ëÇÑ ÀÛ¾÷
+        '* ê²°ì œ ì‹¤íŒ¨ ì‹œì— ëŒ€í•œ ì‘ì—…
         '***************************************************
         RETURNCODE  = RES_DATA.Item("RETURNCODE")
         RETURNMSG   = RES_DATA.Item("RETURNMSG")
+
+        Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / RETURNCODE "& Replace(RETURNCODE, "'","") & " / RETURNMSG "& Replace(RETURNMSG, "'","") &"','0','danal_card-err2')"
+        dbconn.Execute(Sql)
+
         CANCELURL   = "Javascript:self.close()"
 %>
         <!--#include file="./Error.asp"-->
 <%  
-    End if
+    End if '//IF RES_DATA.Item("RETURNCODE") = "0000" Then
 
+    Set RES_DATA = Nothing
     DBClose()
 %>
 </body>

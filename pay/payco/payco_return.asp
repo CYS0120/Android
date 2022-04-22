@@ -11,6 +11,7 @@
 <!--#include virtual="/api/barcode/barcode.asp"-->
 <!--#include virtual="/pay/coupon_use.asp"-->
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
+<!--#include virtual="/includes/inc_encript.asp"-->
 <%
 	'-----------------------------------------------------------------------------
 	' PAYCO 주문완료시 호출되는 가맹점 SERVICE API 페이지 샘플 ( ASP )
@@ -701,11 +702,11 @@
 					alert("주문이 정상적으로 완료되었습니다.");
 					<%
 						if WebMode = "MOBILE" Or Request.ServerVariables("HTTP_HOST") = "m.bbq.co.kr" Or Request.ServerVariables("HTTP_HOST") = "mtest.bbq.co.kr" Or Request.ServerVariables("HTTP_HOST") = "bbq.fuzewire.com:8010" then	%>
-							location.href = "/order/orderComplete.asp?order_idx=<%=order_idx%>&pm=Payco<%'=AppWebPath+"/complete.asp"%>";
+							location.href = "/order/orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Payco<%'=AppWebPath+"/complete.asp"%>";
 							// opener.location.href = "/order/orderComplete.asp?order_idx=<%=order_idx%>&pm=Payco<%'=AppWebPath+"/complete.asp"%>";
 							// window.close();
 					<%  else %>
-							opener.location.href = "/order/orderComplete.asp?order_idx=<%=order_idx%>&pm=Payco<%'=AppWebPath+"/complete.asp"%>";
+							opener.location.href = "/order/orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Payco<%'=AppWebPath+"/complete.asp"%>";
 							window.close();
 							// var successPoller = setInterval(function() {
 							// 		<% '결과를 complete.asp 페이지에 전송.  %>
