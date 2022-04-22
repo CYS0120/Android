@@ -126,6 +126,9 @@ function setDate(SD,ED){
 	page = InjRequest("page")
 	If page = "" Then page = 1
 
+	num_start	= (page - 1) * num_per_page + 1
+	num_end		= page * num_per_page
+
     SDATE = Replace(SDATE,"-","")
     EDATE = Replace(EDATE,"-","")
 
@@ -148,11 +151,11 @@ function setDate(SD,ED){
 	End If
 
 	If Not FncIsBlank(SW) Then 
-		If SM = "ORDERID" Then SqlWhere = SqlWhere & " AND A.ORDER_ID='"& SW &"' "
-		If SM = "NAME" Then SqlWhere = SqlWhere & " AND A.CUST_NAME LIKE '%"& SW &"%' "
-		If SM = "BRANCH_NAME" Then SqlWhere = SqlWhere & " AND B.BRANCH_NAME LIKE '"& SW &"%' "
-		If SM = "CUST_ID" Then SqlWhere = SqlWhere & " AND A.CUST_ID LIKE '"& SW &"%' "
-		If SM = "PHONE" Then SqlWhere = SqlWhere & " AND REPLACE(REPLACE(PHONE_REGION+PHONE,'-',''),' ', '') LIKE '%" & Replace(SW,"-","") &"%' "
+		If SM = "orderid" Then SqlWhere = SqlWhere & " AND A.ORDER_ID='"& SW &"' " End If
+		If SM = "name" Then SqlWhere = SqlWhere & " AND A.CUST_NAME LIKE '%"& SW &"%' " End If
+		If SM = "branch_name" Then SqlWhere = SqlWhere & " AND B.BRANCH_NAME LIKE '"& SW &"%' " End If
+		If SM = "cust_id" Then SqlWhere = SqlWhere & " AND A.CUST_ID LIKE '"& SW &"%' " End If
+		If SM = "phone" Then SqlWhere = SqlWhere & " AND REPLACE(REPLACE(PHONE_REGION+PHONE,'-',''),' ', '') LIKE '%" & Replace(SW,"-","") &"%' " End If
 	End If
 	
 	SqlOrder	= "ORDER BY ORDER_DATE DESC, ORDER_TIME DESC"
@@ -230,17 +233,19 @@ function setDate(SD,ED){
                                 </tr>
 <%
 	If total_num > 0 Then 
-		Sql = "SELECT Top "&num_per_page&" A.*, BBQ.DBO.FN_ORDER_AMOUNT(A.ORDER_ID) AS PAID_PRICE, (A.LIST_PRICE - BBQ.DBO.FN_ORDER_AMOUNT(A.ORDER_ID)) LAST_PRICE, B.BRANCH_NAME, B.BRANCH_PHONE, C.STATE, "
+		Sql = "SELECT * "
+		Sql = Sql & "FROM ( "
+		Sql = Sql & "	SELECT A.*, BBQ.DBO.FN_ORDER_AMOUNT(A.ORDER_ID) AS PAID_PRICE, (A.LIST_PRICE - BBQ.DBO.FN_ORDER_AMOUNT(A.ORDER_ID)) LAST_PRICE, B.BRANCH_NAME, B.BRANCH_PHONE, C.STATE, "
 '		Sql = Sql & " CASE WHEN ( SELECT COUNT(*) CNT FROM BBQ.DBO.TB_WEB_ORDER_SEND_MSG_LOG WITH(NOLOCK) WHERE ORDER_ID = A.ORDER_ID AND ORDER_STATE =  "
 '		Sql = Sql & "		CASE WHEN C.STATE IN ('B', 'C') THEN 'B'   "
 '		Sql = Sql & "		ELSE C.STATE END AND SEND_RESULT = '0000') > 0 THEN 'Y' ELSE 'N' END AS SEND_MSG, "
-		Sql = Sql & " ( SELECT TOP 1 TNO FROM BBQ.DBO.TB_WEB_KCP_LOG WITH(NOLOCK) WHERE ORDR_ID=A.ORDER_ID ) TNO,  "
-		Sql = Sql & " CASE WHEN C.STATE IN ('N','P') THEN DATEDIFF(mi, A.ORDER_DATE + ' ' + dbo.UF_STRING2TIME(ORDER_TIME), GETDATE())  "
-		Sql = Sql & " ELSE 0 END AS TM_STATE "
+		Sql = Sql & " 		( SELECT TOP 1 TNO FROM BBQ.DBO.TB_WEB_KCP_LOG WITH(NOLOCK) WHERE ORDR_ID=A.ORDER_ID ) TNO,  "
+		Sql = Sql & " 		CASE WHEN C.STATE IN ('N','P') THEN DATEDIFF(mi, A.ORDER_DATE + ' ' + dbo.UF_STRING2TIME(ORDER_TIME), GETDATE())  "
+		Sql = Sql & " 		ELSE 0 END AS TM_STATE, "
+		Sql = Sql & " 		ROW_NUMBER() OVER(ORDER BY ORDER_DATE DESC, ORDER_TIME DESC) AS RN "
 		Sql = Sql & SqlFrom & SqlWhere
-		Sql = Sql & " And A.ORDER_ID Not In "
-		Sql = Sql & "(SELECT TOP " & ((page - 1) * num_per_page) & " A.ORDER_ID "& SqlFrom & SqlWhere
-		Sql = Sql & SqlOrder & ")"
+		Sql = Sql & ") A "
+		Sql = Sql & "WHERE RN BETWEEN " & num_start & " AND " & num_end & " "
 		Sql = Sql & SqlOrder
 		Set Rlist = conn.Execute(Sql)
 		If Not Rlist.Eof Then 
