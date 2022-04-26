@@ -36,19 +36,68 @@
 		<!--// Aside -->
 		<!-- Content -->
 		<article class="h-content">
-            <section class="mypage_area h-inbox1000">
+<%
+		Dim mypage_area_class, mypage_top_class, mypage_name_class, mypage_info_class
+		If pUserInfo.mMemberGradeCode = "GOLD" Then
+			mypage_area_class = "mypage_area_gold"
+			mypage_grade_class = "grade_gold"
+			mypage_top_class = "mypage_top_olympic"
+			mypage_name_class = "black"
+			mypage_name_2_class = "black"
+			ddack_display = "display:none;"
+			mypage_info_color = "#000"
+			mypage_info_class = "mypage_info_olympic"
+		ElseIf pUserInfo.mMemberGradeCode = "SILVER" Then
+			mypage_area_class = "mypage_area_silver"
+			mypage_grade_class = "grade_silver"
+			mypage_top_class = "mypage_top_olympic"
+			mypage_name_class = "black"
+			mypage_name_2_class = "black"
+			ddack_display = "display:none;"
+			mypage_info_color = "#000"
+			mypage_info_class = "mypage_info_olympic"
+		ElseIf pUserInfo.mMemberGradeCode = "BRONZE" Then
+			mypage_area_class = "mypage_area_bronze"
+			mypage_grade_class = "grade_bronze"
+			mypage_top_class = ""
+			mypage_name_class = "black"
+			mypage_name_2_class = "bronze"
+			ddack_display = "display:none;"
+			mypage_info_color = "#000"
+			mypage_info_class = ""
+		ElseIf pUserInfo.mMemberGradeCode = "OLYMPIC" Then
+			mypage_area_class = "mypage_area_olympic"
+			mypage_grade_class = "grade_cheer"
+			mypage_top_class = "mypage_top_olympic"
+			mypage_name_class = "black"
+			mypage_name_2_class = "black"
+			ddack_display = "display:none;"
+			mypage_info_color = "#000"
+			mypage_info_class = "mypage_info_olympic"
+		Else
+			mypage_area_class = "mypage_area"
+			mypage_grade_class = "grade_welcome"
+			mypage_top_class = ""
+			mypage_name_class = ""
+			mypage_name_2_class = ""
+			ddack_display = "display:block;"
+			mypage_info_color = "#fff"
+			mypage_info_class = ""
+		End If
+%>
+            <section class="<%=mypage_area_class%> h-inbox1000">
             	<ul class="mypage_top">
-            		<li>welcome</li>
-            		<li><button type="button" onclick="location.href='/mypage/memEdit.asp'" class="btn btn_mypage"><span class="ico-only">MY</span></button></li>
+            		<li class="<%=mypage_grade_class%>">welcome</li>
+            		<li><button type="button" onclick="location.href='/mypage/memEdit.asp'" class="btn btn_mypage"><img src="/images/common_new/btn_mypage.png" class="<%=mypage_top_class%>"></button></li>
             	</ul>
 
             	<ul class="mypage_name">
-            		<li><span class="name"><%=Session("userName")%></span>님</li>
-            		<li>세상에서 가장 건강하고 맛있는  치킨 bbq 입니다.</li>
+            		<li class="<%=mypage_name_class%>"><span class="name"><%=Session("userName")%></span>님</li>
+            		<li class="<%=mypage_name_2_class%>">세상에서 가장 건강하고 맛있는 치킨 bbq 입니다.</li>
             	</ul>
 
             	<div class="mypage_info">
-            		<a href="./membership.asp"><span class="ico-only ico-info01" style="color:#fff;"><em class="h-ddack">딹</em>멤버십 안내</span></a>
+            		<a href="./membership.asp"><span class="ico-only ico-info01" style="color:<%=mypage_info_color%>;"><img class="<%=mypage_info_class%>" src="/images/common_new/icon_info01.png"><em class="h-ddack">딹</em>멤버십 안내</span></a>
             	</div>
 				<%
 
