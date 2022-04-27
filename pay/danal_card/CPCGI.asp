@@ -569,14 +569,14 @@
             //alert("주문이 정상적으로 완료되었습니다.");
             if(window.opener) {
                 setTimeout(function(){
-                    window.opener.location.href = "/order/orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Card";
+                    window.opener.location.href = "/order/orderComplete.asp?order_idx=<%=Server.URLEncode(seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV))%>&pm=Card";
                     setTimeout(function(){
                         window.close();
                     },500);
                 },0);
                 
             } else {
-                location.href = "/order/orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Card";
+                location.href = "/order/orderComplete.asp?order_idx=<%=Server.URLEncode(seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV))%>&pm=Card";
             }
 
         /*

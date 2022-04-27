@@ -629,7 +629,7 @@
 		</form>
 		<script type="text/javascript">
 			alert("주문이 정상적으로 완료되었습니다.");
-			opener.location.href = "/order/orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Paycoin";
+			opener.location.href = "/order/orderComplete.asp?order_idx=<%=Server.URLEncode(seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV))%>&pm=Paycoin";
 			window.close();
 		/*
 			if(window.opener) {

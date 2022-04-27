@@ -1000,7 +1000,7 @@
 					End If 
 				End If
 
-				Response.redirect "/order/orderComplete.asp?order_idx=" & seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV) & "&pm=Sgpay2"
+				Response.redirect "/order/orderComplete.asp?order_idx=" & Server.URLEncode(seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)) & "&pm=Sgpay2"
 
 				Response.End
 			Else

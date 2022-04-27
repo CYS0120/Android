@@ -19,7 +19,7 @@
 
 	If IsEmpty(order_idx) Or IsNull(order_idx) Or Trim(order_idx) = "" Or Not IsNumeric(order_idx) Then order_idx = ""
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] start','0','end-START')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] start / IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & "','0','end-START')"
 	dbconn.Execute(Sql)
 
 	If order_idx = "" Then
@@ -311,7 +311,7 @@
 
 			Do Until pinRs.EOF
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"','"& coupon_amt &"','end-11')"
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] "& Replace(payco_log,"'","") &"','"& coupon_amt &"','end-11')"
 				dbconn.Execute(Sql)
 
 				prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
@@ -651,12 +651,12 @@
 <script type="text/javascript">
 	//alert("주문이 정상적으로 완료되었습니다.");
 <%	If paytype = "Paycoin" Then %>
-		top.location.href = "orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Paycoin";
+		top.location.href = "orderComplete.asp?order_idx=<%=Server.URLEncode(seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV))%>&pm=Paycoin";
 <%	Else %>
 		if (typeof(opener) != "undefined" && opener != "" && opener != null) {
-			opener.location.href = "orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Card";
+			opener.location.href = "orderComplete.asp?order_idx=<%=Server.URLEncode(seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV))%>&pm=Card";
 		} else {
-			location.href = "orderComplete.asp?order_idx=<%=seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV)%>&pm=Card";
+			location.href = "orderComplete.asp?order_idx=<%=Server.URLEncode(seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV))%>&pm=Card";
 		}
 <%	End If %>
 	window.close();

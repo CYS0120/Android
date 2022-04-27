@@ -445,4 +445,34 @@ function Sleep(seconds)
     oShell.Run cmd, 0, 1
     set oShell = Nothing 
 End function
+
+Function URLDecodeComm(Expression) 
+    Dim strSource, strTemp, strResult, strchr 
+    Dim lngPos, AddNum, IFKor 
+
+    strSource = Replace(Expression, "+", " ") 
+    
+    For lngPos = 1 To Len(strSource) 
+        AddNum = 2 
+        strTemp = Mid(strSource, lngPos, 1) 
+
+        IF strTemp = "%" Then 
+            IF lngPos + AddNum < Len(strSource) + 1 Then 
+                strchr = CInt("&H" & Mid(strSource, lngPos + 1, AddNum)) 
+                IF strchr > 130 Then 
+                    AddNum = 5 
+                    IFKor = Mid(strSource, lngPos + 1, AddNum) 
+                    IFKor = Replace(IFKor, "%", "") 
+                    strchr = CInt("&H" & IFKor ) 
+                End IF
+                    strResult = strResult & Chr(strchr) 
+                    lngPos = lngPos + AddNum 
+            End IF 
+        Else 
+            strResult = strResult & strTemp 
+        End If 
+    Next 
+
+    URLDecodeComm = strResult 
+End Function 
 %>
