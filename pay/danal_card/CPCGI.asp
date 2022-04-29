@@ -22,7 +22,7 @@
 <!--#include virtual="/pay/coupon_use.asp"-->
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include file="./inc/function.asp"-->
-<!--#include virtual="/includes/inc_encript.asp"-->
+<!--#include virtual="/api/include/inc_encrypt.asp"-->
 <%
     Session.CodePage = 949
     Response.CharSet = "EUC-KR"
@@ -553,6 +553,9 @@
 		
         Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & "','0','danal_card-007')"
         dbconn.Execute(Sql)
+
+        '암호화 order_idx (2022.04.28)
+	    eorder_idx = AESEncrypt(cstr(order_idx))
 %>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -569,14 +572,14 @@
             //alert("주문이 정상적으로 완료되었습니다.");
             if(window.opener) {
                 setTimeout(function(){
-                    window.opener.location.href = "/order/orderComplete.asp?order_idx=<%=Server.URLEncode(seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV))%>&pm=Card";
+                    window.opener.location.href = "/order/orderComplete.asp?order_idx=<%=eorder_idx%>&pm=Card";
                     setTimeout(function(){
                         window.close();
                     },500);
                 },0);
                 
             } else {
-                location.href = "/order/orderComplete.asp?order_idx=<%=Server.URLEncode(seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV))%>&pm=Card";
+                location.href = "/order/orderComplete.asp?order_idx=<%=eorder_idx%>&pm=Card";
             }
 
         /*

@@ -3,7 +3,7 @@
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/order/class_order_db.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
-<!--#include virtual="/includes/inc_encript.asp"-->
+<!--#include virtual="/api/include/inc_encrypt.asp"-->
 <%
 	Dim aCmd, aRs
 
@@ -968,9 +968,12 @@
 			"	VALUES('"& order_num &"', 'P', 'P', '"& DEST_PHONE &"', '"& CD &"', '"& PARAM &"', '"& RET &"', GETDATE())	"
 		dbconn.Execute(Sql)
 	End If 
+	
+	'암호화 order_idx (2022.04.28)
+	eorder_idx = AESEncrypt(cstr(order_idx))
 %>
 <script type="text/javascript">
 	//alert("주문이 정상적으로 완료되었습니다.");
-	opener.location.href = "/order/orderComplete.asp?order_idx=<%=Server.URLEncode(seedEncrypt(cstr(order_idx), g_SEEDKEY, g_SEEDIV))%>&pm=Phone";
+	opener.location.href = "/order/orderComplete.asp?order_idx=<%=eorder_idx%>&pm=Phone";
 	window.close();
 </script>
