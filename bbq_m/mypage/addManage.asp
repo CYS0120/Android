@@ -360,7 +360,7 @@
 		<!-- LP Wrap -->
 		<div class="lp-wrap inbox1000">
 
-			<form id="form_addr" name="form_addr" method="post" onsubmit="return validAddress(); return false;">
+			<form id="form_addr" name="form_addr" method="post" onsubmit="if($('#form_addr input[name=h_code]').val()==''){return selectCoordHCode('Y', $('#form_addr input[name=addr_idx]').val(), $('#form_addr input[name=address_road]').val(), $('#form_addr input[name=h_code]'))}else{return validAddress();}; return false;">
 			<input type="hidden" name="addr_idx" value="">
 			<input type="hidden" name="mode" value="I">
 			<input type="hidden" name="addr_type" value="">
@@ -373,7 +373,7 @@
 			<input type="hidden" name="b_name" value="">
 			<input type="hidden" name="b_code" value="">
 			<input type="hidden" name="mobile" value="">
-
+			<input type="hidden" name="h_code" value=""> <!-- 행정동코드 -->
 			<!-- LP Header -->
 			<div class="lp-header">
 				<h2>배달지 입력</h2>
