@@ -540,7 +540,7 @@
 				geoClear2();
 			}, function(error){
 				const { code } = error;
-				alert('위치(GPS)를 활성화 하세요.');
+				//alert('위치(GPS)를 활성화 하세요.');
 				geoClear2();
 				$( document ).ready(function() {
 					var coord = new kakao.maps.LatLng(d_lat, d_lng);
