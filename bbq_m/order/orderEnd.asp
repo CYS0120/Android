@@ -3,6 +3,7 @@
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/order/class_order_db.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
+<!--#include virtual="/api/include/inc_encrypt.asp"-->
 
 <%
     Response.AddHeader "Pragma", "no-cache"
@@ -18,7 +19,7 @@
 
 	If IsEmpty(order_idx) Or IsNull(order_idx) Or Trim(order_idx) = "" Or Not IsNumeric(order_idx) Then order_idx = ""
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] start','0','end-START')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] start / ORDER_IDX " & order_idx & " / IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & "','0','end-START')"
 	dbconn.Execute(Sql)
 
 	If order_idx = "" Then
@@ -310,7 +311,7 @@
 
 			Do Until pinRs.EOF
 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"','"& coupon_amt &"','end-11')"
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] "& Replace(payco_log,"'","") &"','"& coupon_amt &"','end-11')"
 				dbconn.Execute(Sql)
 
 				prefix_coupon_no = LEFT(pinRs("coupon_pin"), 1)
@@ -649,13 +650,17 @@
 <body>
 <script type="text/javascript">
 	//alert("주문이 정상적으로 완료되었습니다.");
-<%	If paytype = "Paycoin" Then %>
-		top.location.href = "orderComplete.asp?order_idx=<%=order_idx%>&pm=Paycoin";
+<%	
+	'암호화 order_idx (2022.04.28)
+	eorder_idx = AESEncrypt(cstr(order_idx))
+
+	If paytype = "Paycoin" Then %>
+		top.location.href = "orderComplete.asp?order_idx=<%=eorder_idx%>&pm=Paycoin";
 <%	Else %>
 		if (typeof(opener) != "undefined" && opener != "" && opener != null) {
-			opener.location.href = "orderComplete.asp?order_idx=<%=order_idx%>&pm=Card";
+			opener.location.href = "orderComplete.asp?order_idx=<%=eorder_idx%>&pm=Card";
 		} else {
-			location.href = "orderComplete.asp?order_idx=<%=order_idx%>&pm=Card";
+			location.href = "orderComplete.asp?order_idx=<%=eorder_idx%>&pm=Card";
 		}
 <%	End If %>
 	window.close();

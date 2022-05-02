@@ -3,6 +3,7 @@
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/order/class_order_db.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
+<!--#include virtual="/api/include/inc_encrypt.asp"-->
 <%
 	Dim aCmd, aRs
 
@@ -25,7 +26,7 @@
 		Response.End
 	End If
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','start','0','Coupon_Return-000')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] start','0','Coupon_Return-000')"
 	dbconn.Execute(Sql)
 
 	dim pg_RollBack : pg_RollBack = 0
@@ -360,7 +361,7 @@
 	'End If  ' If jsonGiftcard <> "" Then 
 	'' 2021-07 더페이 상품권 복수처리 끝 
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& order_channel &"','0','Coupon_Return-000')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] "& order_channel &"','0','Coupon_Return-000')"
 	dbconn.Execute(Sql)
 	
 	'지류상품권 사용 처리 inc_giftcard_use.asp (2021. 10 더페이)
@@ -429,7 +430,7 @@
 		payMethodCode = "99"
 	End Select
 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& member_type & "/" & order_channel &"','0','Coupon_Return-001')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] "& member_type & "/" & order_channel &"','0','Coupon_Return-001')"
 	dbconn.Execute(Sql)
 
     ' 주문내에 e쿠폰 사용여부 체크 ##################
@@ -448,7 +449,8 @@
 	Set orderCmd = Nothing
 
 	If Not (orderRs.BOF Or orderRs.EOF) Then
-		prefix_coupon_no = LEFT(orderRs("coupon_pin"), 1)
+		sCouponPin = orderRs("coupon_pin")
+		prefix_coupon_no = LEFT(sCouponPin, 1)
 		If prefix_coupon_no = "6" or prefix_coupon_no = "8" Then		'COOP coupon prefix 
 			eCouponType = "Coop"
 			cl_eCouponCoop.Coop_Check_Order_Coupon order_idx, dbconn
@@ -469,7 +471,10 @@
 			end if
 		End If
 		
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] "& sCouponPin & "/" & CouponUseCheck &"','0','Coupon_Return-002')"
+		dbconn.Execute(Sql)
 	End If
+	Set orderRs = nothing 
 
 	'response.write cl_eCouponCoop.m_cd &"-"& CouponUseCheck
 	'response.end
@@ -539,6 +544,7 @@
 
 			End If
 		End If 
+		Set Pinfo = Nothing
 	End If 
 
 	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"','"& coupon_amt &"','Coupon_Return-6')"
@@ -670,6 +676,7 @@
 			pinRs.MoveNext
 		Loop
 	End If	
+	Set pinRs = Nothing 
 
 	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Replace(payco_log,"'","") &"','"& coupon_amt &"','Coupon_Return-14')"
 	dbconn.Execute(Sql)
@@ -961,9 +968,12 @@
 			"	VALUES('"& order_num &"', 'P', 'P', '"& DEST_PHONE &"', '"& CD &"', '"& PARAM &"', '"& RET &"', GETDATE())	"
 		dbconn.Execute(Sql)
 	End If 
+	
+	'암호화 order_idx (2022.04.28)
+	eorder_idx = AESEncrypt(cstr(order_idx))
 %>
 <script type="text/javascript">
 	//alert("주문이 정상적으로 완료되었습니다.");
-	opener.location.href = "/order/orderComplete.asp?order_idx=<%=order_idx%>&pm=Phone";
+	opener.location.href = "/order/orderComplete.asp?order_idx=<%=eorder_idx%>&pm=Phone";
 	window.close();
 </script>
