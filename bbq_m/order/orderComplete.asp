@@ -20,7 +20,10 @@
 	Dim eCouponType : eCouponType = ""
 
 	'암호화 order_idx (2022.04.28)
-	if len(order_idx) <= 10 and eorder_idx = "" then '암호화되지 않은 order_idx
+	if paytype = "Sgpay2" then 
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] ORDER_IDX " & order_idx & " / eORDER_IDX " & eorder_idx & "/ IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / HTTP_REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','orderComplete-orderidx_0')"
+		dbconn.Execute(Sql)
+	elseif len(order_idx) <= 10 and eorder_idx = ""  then '암호화되지 않은 order_idx
 		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] ORDER_IDX " & order_idx & " / eORDER_IDX " & eorder_idx & "/ IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / HTTP_REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','orderComplete-orderidx_1')"
 		dbconn.Execute(Sql)
 %>
@@ -37,7 +40,7 @@
 
 			eorder_idx = order_idx
 		end if 
-
+		
 		'암호화된 경우 복호화
 		order_idx = AESDecrypt(cstr(eorder_idx))
 		if order_idx = "" Then 

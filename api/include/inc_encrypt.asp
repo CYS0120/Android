@@ -17,8 +17,8 @@
 private aesPassword
 aesPassword = "bbq_encrypt"
 
-Private m_lOnBits(30)
-Private m_l2Power(30)
+Private mm_lOnBits(30)
+Private mm_l2Power(30)
 Private m_bytOnBits(7)
 Private m_byt2Power(7)
 
@@ -63,69 +63,69 @@ m_byt2Power(5) = 32
 m_byt2Power(6) = 64
 m_byt2Power(7) = 128
     
-m_lOnBits(0) = 1
-m_lOnBits(1) = 3
-m_lOnBits(2) = 7
-m_lOnBits(3) = 15
-m_lOnBits(4) = 31
-m_lOnBits(5) = 63
-m_lOnBits(6) = 127
-m_lOnBits(7) = 255
-m_lOnBits(8) = 511
-m_lOnBits(9) = 1023
-m_lOnBits(10) = 2047
-m_lOnBits(11) = 4095
-m_lOnBits(12) = 8191
-m_lOnBits(13) = 16383
-m_lOnBits(14) = 32767
-m_lOnBits(15) = 65535
-m_lOnBits(16) = 131071
-m_lOnBits(17) = 262143
-m_lOnBits(18) = 524287
-m_lOnBits(19) = 1048575
-m_lOnBits(20) = 2097151
-m_lOnBits(21) = 4194303
-m_lOnBits(22) = 8388607
-m_lOnBits(23) = 16777215
-m_lOnBits(24) = 33554431
-m_lOnBits(25) = 67108863
-m_lOnBits(26) = 134217727
-m_lOnBits(27) = 268435455
-m_lOnBits(28) = 536870911
-m_lOnBits(29) = 1073741823
-m_lOnBits(30) = 2147483647
+mm_lOnBits(0) = 1
+mm_lOnBits(1) = 3
+mm_lOnBits(2) = 7
+mm_lOnBits(3) = 15
+mm_lOnBits(4) = 31
+mm_lOnBits(5) = 63
+mm_lOnBits(6) = 127
+mm_lOnBits(7) = 255
+mm_lOnBits(8) = 511
+mm_lOnBits(9) = 1023
+mm_lOnBits(10) = 2047
+mm_lOnBits(11) = 4095
+mm_lOnBits(12) = 8191
+mm_lOnBits(13) = 16383
+mm_lOnBits(14) = 32767
+mm_lOnBits(15) = 65535
+mm_lOnBits(16) = 131071
+mm_lOnBits(17) = 262143
+mm_lOnBits(18) = 524287
+mm_lOnBits(19) = 1048575
+mm_lOnBits(20) = 2097151
+mm_lOnBits(21) = 4194303
+mm_lOnBits(22) = 8388607
+mm_lOnBits(23) = 16777215
+mm_lOnBits(24) = 33554431
+mm_lOnBits(25) = 67108863
+mm_lOnBits(26) = 134217727
+mm_lOnBits(27) = 268435455
+mm_lOnBits(28) = 536870911
+mm_lOnBits(29) = 1073741823
+mm_lOnBits(30) = 2147483647
     
-m_l2Power(0) = 1
-m_l2Power(1) = 2
-m_l2Power(2) = 4
-m_l2Power(3) = 8
-m_l2Power(4) = 16
-m_l2Power(5) = 32
-m_l2Power(6) = 64
-m_l2Power(7) = 128
-m_l2Power(8) = 256
-m_l2Power(9) = 512
-m_l2Power(10) = 1024
-m_l2Power(11) = 2048
-m_l2Power(12) = 4096
-m_l2Power(13) = 8192
-m_l2Power(14) = 16384
-m_l2Power(15) = 32768
-m_l2Power(16) = 65536
-m_l2Power(17) = 131072
-m_l2Power(18) = 262144
-m_l2Power(19) = 524288
-m_l2Power(20) = 1048576
-m_l2Power(21) = 2097152
-m_l2Power(22) = 4194304
-m_l2Power(23) = 8388608
-m_l2Power(24) = 16777216
-m_l2Power(25) = 33554432
-m_l2Power(26) = 67108864
-m_l2Power(27) = 134217728
-m_l2Power(28) = 268435456
-m_l2Power(29) = 536870912
-m_l2Power(30) = 1073741824
+mm_l2Power(0) = 1
+mm_l2Power(1) = 2
+mm_l2Power(2) = 4
+mm_l2Power(3) = 8
+mm_l2Power(4) = 16
+mm_l2Power(5) = 32
+mm_l2Power(6) = 64
+mm_l2Power(7) = 128
+mm_l2Power(8) = 256
+mm_l2Power(9) = 512
+mm_l2Power(10) = 1024
+mm_l2Power(11) = 2048
+mm_l2Power(12) = 4096
+mm_l2Power(13) = 8192
+mm_l2Power(14) = 16384
+mm_l2Power(15) = 32768
+mm_l2Power(16) = 65536
+mm_l2Power(17) = 131072
+mm_l2Power(18) = 262144
+mm_l2Power(19) = 524288
+mm_l2Power(20) = 1048576
+mm_l2Power(21) = 2097152
+mm_l2Power(22) = 4194304
+mm_l2Power(23) = 8388608
+mm_l2Power(24) = 16777216
+mm_l2Power(25) = 33554432
+mm_l2Power(26) = 67108864
+mm_l2Power(27) = 134217728
+mm_l2Power(28) = 268435456
+mm_l2Power(29) = 536870912
+mm_l2Power(30) = 1073741824
 
 Private Function LShift(lValue, iShiftBits)
     If iShiftBits = 0 Then
@@ -142,10 +142,10 @@ Private Function LShift(lValue, iShiftBits)
         Err.Raise 6
     End If
     
-    If (lValue And m_l2Power(31 - iShiftBits)) Then
-        LShift = ((lValue And m_lOnBits(31 - (iShiftBits + 1))) * m_l2Power(iShiftBits)) Or &H80000000
+    If (lValue And mm_l2Power(31 - iShiftBits)) Then
+        LShift = ((lValue And mm_lOnBits(31 - (iShiftBits + 1))) * mm_l2Power(iShiftBits)) Or &H80000000
     Else
-        LShift = ((lValue And m_lOnBits(31 - iShiftBits)) * m_l2Power(iShiftBits))
+        LShift = ((lValue And mm_lOnBits(31 - iShiftBits)) * mm_l2Power(iShiftBits))
     End If
 End Function
 
@@ -164,10 +164,10 @@ Private Function RShift(lValue, iShiftBits)
         Err.Raise 6
     End If
     
-    RShift = (lValue And &H7FFFFFFE) \ m_l2Power(iShiftBits)
+    RShift = (lValue And &H7FFFFFFE) \ mm_l2Power(iShiftBits)
     
     If (lValue And &H80000000) Then
-        RShift = (RShift Or (&H40000000 \ m_l2Power(iShiftBits - 1)))
+        RShift = (RShift Or (&H40000000 \ mm_l2Power(iShiftBits - 1)))
     End If
 End Function
 
@@ -236,17 +236,17 @@ Private Function PackFrom(b(), k)
 End Function
 
 Private Sub Unpack(a, b())
-    b(0) = a And m_lOnBits(7)
-    b(1) = RShift(a, 8) And m_lOnBits(7)
-    b(2) = RShift(a, 16) And m_lOnBits(7)
-    b(3) = RShift(a, 24) And m_lOnBits(7)
+    b(0) = a And mm_lOnBits(7)
+    b(1) = RShift(a, 8) And mm_lOnBits(7)
+    b(2) = RShift(a, 16) And mm_lOnBits(7)
+    b(3) = RShift(a, 24) And mm_lOnBits(7)
 End Sub
 
 Private Sub UnpackFrom(a, b(), k)
-    b(0 + k) = a And m_lOnBits(7)
-    b(1 + k) = RShift(a, 8) And m_lOnBits(7)
-    b(2 + k) = RShift(a, 16) And m_lOnBits(7)
-    b(3 + k) = RShift(a, 24) And m_lOnBits(7)
+    b(0 + k) = a And mm_lOnBits(7)
+    b(1 + k) = RShift(a, 8) And mm_lOnBits(7)
+    b(2 + k) = RShift(a, 16) And mm_lOnBits(7)
+    b(3 + k) = RShift(a, 24) And mm_lOnBits(7)
 End Sub
 
 Private Function xtime(a)
@@ -510,10 +510,10 @@ Public Sub encrypt(buff())
     For i = 1 To m_Nr - 1
         For j = 0 To m_Nb - 1
             m = j * 3
-            y(j) = m_fkey(k) Xor m_ftable(x(j) And m_lOnBits(7)) Xor _
-                RotateLeft(m_ftable(RShift(x(m_fi(m)), 8) And m_lOnBits(7)), 8) Xor _
-                RotateLeft(m_ftable(RShift(x(m_fi(m + 1)), 16) And m_lOnBits(7)), 16) Xor _
-                RotateLeft(m_ftable(RShift(x(m_fi(m + 2)), 24) And m_lOnBits(7)), 24)
+            y(j) = m_fkey(k) Xor m_ftable(x(j) And mm_lOnBits(7)) Xor _
+                RotateLeft(m_ftable(RShift(x(m_fi(m)), 8) And mm_lOnBits(7)), 8) Xor _
+                RotateLeft(m_ftable(RShift(x(m_fi(m + 1)), 16) And mm_lOnBits(7)), 16) Xor _
+                RotateLeft(m_ftable(RShift(x(m_fi(m + 2)), 24) And mm_lOnBits(7)), 24)
             k = k + 1
         Next
         t = x
@@ -523,10 +523,10 @@ Public Sub encrypt(buff())
     
     For j = 0 To m_Nb - 1
         m = j * 3
-        y(j) = m_fkey(k) Xor m_fbsub(x(j) And m_lOnBits(7)) Xor _
-            RotateLeft(m_fbsub(RShift(x(m_fi(m)), 8) And m_lOnBits(7)), 8) Xor _
-            RotateLeft(m_fbsub(RShift(x(m_fi(m + 1)), 16) And m_lOnBits(7)), 16) Xor _
-            RotateLeft(m_fbsub(RShift(x(m_fi(m + 2)), 24) And m_lOnBits(7)), 24)
+        y(j) = m_fkey(k) Xor m_fbsub(x(j) And mm_lOnBits(7)) Xor _
+            RotateLeft(m_fbsub(RShift(x(m_fi(m)), 8) And mm_lOnBits(7)), 8) Xor _
+            RotateLeft(m_fbsub(RShift(x(m_fi(m + 1)), 16) And mm_lOnBits(7)), 16) Xor _
+            RotateLeft(m_fbsub(RShift(x(m_fi(m + 2)), 24) And mm_lOnBits(7)), 24)
         k = k + 1
     Next
     
@@ -562,10 +562,10 @@ Public Sub decrypt(buff())
     For i = 1 To m_Nr - 1
         For j = 0 To m_Nb - 1
             m = j * 3
-            y(j) = m_rkey(k) Xor m_rtable(x(j) And m_lOnBits(7)) Xor _
-                RotateLeft(m_rtable(RShift(x(m_ri(m)), 8) And m_lOnBits(7)), 8) Xor _
-                RotateLeft(m_rtable(RShift(x(m_ri(m + 1)), 16) And m_lOnBits(7)), 16) Xor _
-                RotateLeft(m_rtable(RShift(x(m_ri(m + 2)), 24) And m_lOnBits(7)), 24)
+            y(j) = m_rkey(k) Xor m_rtable(x(j) And mm_lOnBits(7)) Xor _
+                RotateLeft(m_rtable(RShift(x(m_ri(m)), 8) And mm_lOnBits(7)), 8) Xor _
+                RotateLeft(m_rtable(RShift(x(m_ri(m + 1)), 16) And mm_lOnBits(7)), 16) Xor _
+                RotateLeft(m_rtable(RShift(x(m_ri(m + 2)), 24) And mm_lOnBits(7)), 24)
             k = k + 1
         Next
         t = x
@@ -576,10 +576,10 @@ Public Sub decrypt(buff())
     For j = 0 To m_Nb - 1
         m = j * 3
         
-        y(j) = m_rkey(k) Xor m_rbsub(x(j) And m_lOnBits(7)) Xor _
-            RotateLeft(m_rbsub(RShift(x(m_ri(m)), 8) And m_lOnBits(7)), 8) Xor _
-            RotateLeft(m_rbsub(RShift(x(m_ri(m + 1)), 16) And m_lOnBits(7)), 16) Xor _
-            RotateLeft(m_rbsub(RShift(x(m_ri(m + 2)), 24) And m_lOnBits(7)), 24)
+        y(j) = m_rkey(k) Xor m_rbsub(x(j) And mm_lOnBits(7)) Xor _
+            RotateLeft(m_rbsub(RShift(x(m_ri(m)), 8) And mm_lOnBits(7)), 8) Xor _
+            RotateLeft(m_rbsub(RShift(x(m_ri(m + 1)), 16) And mm_lOnBits(7)), 16) Xor _
+            RotateLeft(m_rbsub(RShift(x(m_ri(m + 2)), 24) And mm_lOnBits(7)), 24)
         k = k + 1
     Next
     

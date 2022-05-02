@@ -2,7 +2,6 @@
 <!--#include virtual="/pay/coupon_use.asp"-->
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/order/class_order_db.asp"-->
-<!--#include virtual="/api/include/inc_encrypt.asp"-->
 <%
 	'-------------------------------------------------------------
 	' 1. 결과 파라미터 수신
@@ -1001,10 +1000,7 @@
 					End If 
 				End If
 
-				'암호화 order_idx (2022.04.28)
-				eorder_idx = AESEncrypt(cstr(order_idx))
-
-				Response.redirect "/order/orderComplete.asp?order_idx=" & eorder_idx & "&pm=Sgpay2"
+				Response.redirect "/order/orderComplete.asp?order_idx=" & order_idx & "&pm=Sgpay2"
 
 				Response.End
 			Else
