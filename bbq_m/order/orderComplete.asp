@@ -3,6 +3,7 @@
 <!--#include virtual="/pay/coupon_use_coop.asp"-->
 <!--#include virtual="/api/order/class_order_db.asp"-->
 <!--#include virtual="/api/include/aspJSON1.18.asp"-->
+<!--#include virtual="/api/include/inc_encrypt.asp"-->
 
 <%
 	Dim criteo_str : criteo_str = ""
@@ -14,8 +15,40 @@
 	Dim aCmd, aRs
 
 	Dim order_idx : order_idx = Request("order_idx")
+	Dim eorder_idx : C_STR(eorder_idx = Request("eorder_idx"))
 	Dim paytype : paytype = Request("pm")
 	Dim eCouponType : eCouponType = ""
+
+	'암호화 order_idx (2022.04.28)
+	if paytype = "Sgpay2" then 
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] ORDER_IDX " & order_idx & " / eORDER_IDX " & eorder_idx & "/ IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / HTTP_REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','orderComplete-orderidx_0')"
+		dbconn.Execute(Sql)
+	elseif len(order_idx) <= 10 and eorder_idx = ""  then '암호화되지 않은 order_idx
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] ORDER_IDX " & order_idx & " / eORDER_IDX " & eorder_idx & "/ IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / HTTP_REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','orderComplete-orderidx_1')"
+		dbconn.Execute(Sql)
+%>
+	<script type="text/javascript">
+		alert("잘못된 접근입니다(1).");
+		location.href = "/";
+	</script>
+<%
+		Response.End
+	else 
+		if eorder_idx = "" then 'eorder_idx가 없는 경우는 order_idx가 암호화된 주문번호
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] ORDER_IDX " & order_idx & " / eORDER_IDX " & eorder_idx & " / IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / HTTP_REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','orderComplete-orderidx_2')"
+			dbconn.Execute(Sql)
+
+			eorder_idx = order_idx
+		end if 
+		
+		'암호화된 경우 복호화
+		order_idx = AESDecrypt(cstr(eorder_idx))
+		if order_idx = "" Then 
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] ORDER_IDX " & order_idx & " / eORDER_IDX " & eorder_idx & " / IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / HTTP_REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','orderComplete-orderidx_3')"
+			dbconn.Execute(Sql)
+		end if 
+	end if 
+	'// 암호화 order_idx (2022.04.28)
 
 	If IsEmpty(order_idx) Or IsNull(order_idx) Or Trim(order_idx) = "" Or Not IsNumeric(order_idx) Then order_idx = ""
 

@@ -377,9 +377,9 @@
 							geoClear();
 							textSearch();
 						}, function(error) {
-							if(error == GeolocationPositionError.PERMISSION_DENIED){
-								alert('위치(GPS)를 활성화하세요.');
-							}
+							//if(error == GeolocationPositionError.PERMISSION_DENIED){
+								//alert('위치(GPS)를 활성화하세요.');
+							//}
 							geoClear();
 							$('#lat').val(uluru.lat);
 							$('#lng').val(uluru.lng);
