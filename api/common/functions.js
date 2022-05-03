@@ -944,7 +944,7 @@ function checkDeliveryShop_new(addrdata, page_type) {
 	console.log(JSON.stringify(addrdata))
     $.ajax({
         method: "post",
-        url: "/api/ajax/ajax_getshop.asp",
+        url: "/api/ajax/ajax_getshopNew.asp",
         data: {data: JSON.stringify(addrdata)},
         dataType: "json",
         success: function(res) {
@@ -952,7 +952,7 @@ function checkDeliveryShop_new(addrdata, page_type) {
 
             if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
             }else{
-                if (res.STORE_AREA == "0") {
+                if (res.STORE_AREA == "0") { // 공백지
                     alert("상권 매장이 현재 영업을 하지 않아 근처 매장으로 주문 이관합니다.");
                 }
 
