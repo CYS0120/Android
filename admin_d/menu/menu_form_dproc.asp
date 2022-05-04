@@ -13,10 +13,10 @@
 %>
 <!-- #include virtual="/inc/admin_check.asp" -->
 <%
-	Sql = "Delete From bt_menu_file where menu_idx = "& MIDX
-	conn.Execute(Sql)
+	' Sql = "UPDATE bt_menu_file set del_yn = 'Y' where menu_idx = "& MIDX
+	' conn.Execute(Sql)
 
-	Sql = "Delete From bt_menu Where menu_idx = " & MIDX
+	Sql = "UPDATE bt_menu set use_yn = 'H' Where menu_idx = " & MIDX
 	conn.Execute(Sql)
 
 	Response.Write "Y^삭제 되었습니다"
