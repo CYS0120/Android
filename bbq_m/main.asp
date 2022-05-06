@@ -123,7 +123,6 @@
 				
 				<!-- mainContent -->
 				<div class="h-main_con">
-<%			If false then%>
 					<!-- 실시간 인기 -->
 					<ul class="h-main_con_popular">
 						<li><span>실시간 인기</span></li>
@@ -169,7 +168,6 @@
 						</li>
 					</ul>
 					<!-- // 실시간 인기 -->
-<%			End If%>
 
 					<%
 						sql = ""
