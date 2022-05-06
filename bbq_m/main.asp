@@ -123,6 +123,7 @@
 				
 				<!-- mainContent -->
 				<div class="h-main_con">
+<%			If false then%>
 					<!-- 실시간 인기 -->
 					<ul class="h-main_con_popular">
 						<li><span>실시간 인기</span></li>
@@ -168,6 +169,8 @@
 						</li>
 					</ul>
 					<!-- // 실시간 인기 -->
+<%			End If%>
+
 					<%
 						sql = ""
 						sql = "SELECT LINK_URL FROM BT_MAIN_IMG_M WITH (NOLOCK) WHERE BRAND_CODE='01' AND MAIN_KIND='MV'"
