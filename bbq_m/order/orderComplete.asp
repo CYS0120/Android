@@ -15,7 +15,7 @@
 	Dim aCmd, aRs
 
 	Dim order_idx : order_idx = Request("order_idx")
-	Dim eorder_idx : C_STR(eorder_idx = Request("eorder_idx"))
+	Dim eorder_idx : eorder_idx = Request("eorder_idx")
 	Dim paytype : paytype = Request("pm")
 	Dim eCouponType : eCouponType = ""
 
@@ -35,9 +35,6 @@
 		Response.End
 	else 
 		if eorder_idx = "" then 'eorder_idx가 없는 경우는 order_idx가 암호화된 주문번호
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] ORDER_IDX " & order_idx & " / eORDER_IDX " & eorder_idx & " / IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / HTTP_REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','orderComplete-orderidx_2')"
-			dbconn.Execute(Sql)
-
 			eorder_idx = order_idx
 		end if 
 		

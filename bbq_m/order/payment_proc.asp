@@ -616,7 +616,11 @@
 
     Dim dd : dd = FormatDateTime(Now, 2)
     Dim dt : dt = FormatDateTime(Now, 4)
-	
+
+	'payco 쿠폰 누락 확인을 위한 로그 
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / cart_value " & cart_value & " / cart_value 길이 " & iLen & "','0','payment-payco_coupon-1')"
+	dbconn.Execute(Sql)
+		
     For i = 0 To iLen - 1
 		'금액권 전환된 e쿠폰은 bt_order_detail에 저장할 때 mene_option_idx를 -1로 저장
 		dim sEcChk : sEcChk = cJson.get(i).value.qty 
@@ -658,6 +662,10 @@
 			
 			'Response.write i & ":" & errCode & "-" & errMsg & "-" & order_detail_idx & "<br>"
 			If errCode = 1 Then
+				'payco 쿠폰 누락 확인을 위한 로그 
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / errCode " & cstr(errCode) & " / cart_value 순번 " & cstr(i) & "','0','payment-payco_coupon-2')"
+				dbconn.Execute(Sql)
+				
 				Response.Write "{""result"":1, ""result_msg"":""주문상세내역이 저장되지 않았습니다."", ""order_idx"":"& order_idx &",""order_num"":""" & order_num & """}"
 				Response.End
 			End If
@@ -1232,10 +1240,15 @@
 gift_prod = GetReqStr("gift_prod","")
 giftproductcode = GetReqStr("giftproductcode","")
 giftproductclasscode = GetReqStr("giftproductclasscode","")
-If gift_prod <> "" Then
+If gift_prod <> "" and giftproductcode <> "" Then
     'reg_ip = Request.ServerVariables("REMOTE_ADDR")
     'order_idx = GetReqStr("order_idx","")
     'Response.Write order_idx
+
+    '값 확인을 위한 로그 
+    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / gift_prod " & cstr(gift_prod) & " / giftproductcode " & cstr(giftproductcode) & "','0','payment_proc-check-giftproductcode')"
+    dbconn.Execute(Sql)
+
     Set aCmd = Server.CreateObject("ADODB.Command")
         With aCmd
             .ActiveConnection = dbconn
