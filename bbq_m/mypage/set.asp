@@ -202,7 +202,7 @@
 			url: "/api/ajax/ajax_auto_login.asp",
 			data: "auto_chk="+ auto_chk,
 			method: "post",
-		});
+		})
 		.done(function( row ) {
 			console.log(row)
 //			alert( "Data Saved: " + msg2 );
