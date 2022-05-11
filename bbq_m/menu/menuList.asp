@@ -214,10 +214,10 @@
 							cate_idx_str = cate_idx_str & split_str & aRs("category_idx")
 							cate_name_str = cate_name_str & split_str & aRs("category_name")
 						else
-							if category_idx <> "115" then
+							' if category_idx <> "115" then
 								cate_idx_str = cate_idx_str & split_str & aRs("category_idx")
 								cate_name_str = cate_name_str & split_str & aRs("category_name")
-							end if 
+							' end if 
 						end if 
 					end if 
 
