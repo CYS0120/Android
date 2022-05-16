@@ -43,10 +43,11 @@
 										</tr>
 										</thead>
 										<tbody>
+									<% If Date() >= "2022-05-17" Then row_num = 57 Else row_num = 51 End If%>	
 										<tr>
 											<td class="th_bg">황금올리브치킨™</td>
-											<td rowspan=65>국내산</td>
-											<td rowspan=65>닭고기</td>
+											<td rowspan=<%=row_num%>>국내산</td>
+											<td rowspan=<%=row_num%>>닭고기</td>
 										</tr>
 										<tr>
 											<td class="th_bg">크런치 버터치킨</td>
@@ -54,6 +55,26 @@
 										<tr>
 											<td class="th_bg">황금올리브치킨™콤보</td>
 										</tr>
+									<% If Date() >= "2022-05-17" Then %>	
+										<tr>
+											<td class="th_bg">황금올리브치킨™콤보 핫크리스피</td>
+										</tr>
+										<tr>
+											<td class="th_bg">황금올리브치킨™콤보 블랙페퍼</td>
+										</tr>
+										<tr>
+											<td class="th_bg">황금올리브치킨™콤보 레드착착</td>
+										</tr>
+										<tr>
+											<td class="th_bg">황금올리브치킨™콤보 크런치 버터</td>
+										</tr>
+										<tr>
+											<td class="th_bg">황금올리브치킨™콤보 양념</td>
+										</tr>
+										<tr>
+											<td class="th_bg">황금올리브치킨™콤보 반반</td>
+										</tr>
+									<% End If %>	
 										<tr>
 											<td class="th_bg">황금올리브치킨™속안심</td>
 										</tr>
@@ -77,9 +98,6 @@
 										</tr>
 										<tr>
 											<td class="th_bg">핫황금올리브치킨™크리스피</td>
-										</tr>
-										<tr>
-											<td class="th_bg">순살크래커</td>
 										</tr>
 										<tr>
 											<td class="th_bg">파더's 치킨두마리</td>
@@ -107,18 +125,6 @@
 										</tr>
 										<tr>
 											<td class="th_bg">소이갈릭스(윙)</td>
-										</tr>
-										<tr>
-											<td class="th_bg">황금올리브치킨™플래터</td>
-										</tr>
-										<tr>
-											<td class="th_bg">황금올리브치킨™양념 플래터</td>
-										</tr>
-										<tr>
-											<td class="th_bg">순살크래커 플래터</td>
-										</tr>
-										<tr>
-											<td class="th_bg">스파이시퐁듀치킨</td>
 										</tr>
 										<tr>
 											<td class="th_bg">자메이카 통다리구이</td>
@@ -169,13 +175,7 @@
 											<td class="th_bg">황금올리브치킨™<br>순살 반마리</td>
 										</tr>
 										<tr>
-											<td class="th_bg">황금올리브치킨™<br>속안심 반마리</td>
-										</tr>
-										<tr>
 											<td class="th_bg">황금올리브치킨™<br>닭다리 반마리</td>
-										</tr>
-										<tr>
-											<td class="th_bg">황금올리브치킨™<br>핫윙 반마리</td>
 										</tr>
 										<tr>
 											<td class="th_bg">오리지날 양념치킨 반마리</td>
@@ -199,34 +199,16 @@
 											<td class="th_bg">스모크치킨 반마리</td>
 										</tr>
 										<tr>
-											<td class="th_bg">극한왕갈비치킨 반마리</td>
-										</tr>
-										<tr>
 											<td class="th_bg">황올한 깐풍치킨 반마리</td>
 										</tr>
 										<tr>
 											<td class="th_bg">황올한 깐풍순살 반마리</td>
 										</tr>
 										<tr>
-											<td class="th_bg">순살크래커 반마리</td>
-										</tr>
-										<tr>
-											<td class="th_bg">소이갈릭스 반마리</td>
-										</tr>
-										<tr>
 											<td class="th_bg">크런치 버터치킨 반마리</td>
 										</tr>
 										<tr>
-											<td class="th_bg">오븐치킨 로제스파게티</td>
-										</tr>
-										<tr>
 											<td class="th_bg">핫치킨피자</td>
-										</tr>
-										<tr>
-											<td class="th_bg">명품 닭개장</td>
-										</tr>
-										<tr>
-											<td class="th_bg">명품 닭곰탕</td>
 										</tr>
 										<tr>
 											<td class="th_bg">BBQ 닭껍데기</td>
@@ -238,9 +220,6 @@
 											<td class="th_bg">황올한 닭발튀김</td>
 										</tr>
 										<tr>
-											<td class="th_bg">부드러운 맛가슴살 샐러드</td>
-										</tr>
-										<tr>
 											<td class="th_bg" rowspan=2>로제치킨</td>
 											<td>국내산</td>
 											<td>닭고기</td>
@@ -248,20 +227,6 @@
 										<tr>
 											<td>외국산</td>
 											<td>베이컨슬라이스(돼지고기)</td>
-										</tr>
-										<tr>
-											<td class="th_bg">양념치킨 갈릭라이스</td>
-											<td rowspan=4>국내산</td>
-											<td rowspan=4>닭고기, 쌀</td>
-										</tr>
-										<tr>
-											<td class="th_bg">바베큐 갈릭라이스(통다리)</td>
-										</tr>
-										<tr>
-											<td class="th_bg">마라핫 치킨라이스</td>
-										</tr>
-										<tr>
-											<td class="th_bg">순살양념 갈릭라이스</td>
 										</tr>
 										<tr>
 											<td class="th_bg">황올 크런치 너겟(크래커)</td>
@@ -277,12 +242,7 @@
 											<td class="th_bg">BBQ 치킨버거 스파이시</td>
 										</tr>
 										<tr>
-											<td class="th_bg">빠네까르보나라 스파게티</td>
-											<td>외국산</td>
-											<td>베이컨슬라이스(돼지고기)</td>
-										</tr>
-										<tr>
-											<td class="th_bg">페퍼로니 시카고피자</td>
+											<td class="th_bg">페퍼로니 시카고피자(라지/레귤러)</td>
 											<td>국내산</td>
 											<td>페퍼로니(돼지고기)</td>
 										</tr>
@@ -325,11 +285,8 @@
 										</tr>
 										<tr>
 											<td class="th_bg">오다리</td>
-											<td rowspan=2>중국산</td>
-											<td rowspan=2>오징어</td>
-										</tr>
-										<tr>
-											<td class="th_bg">뎀뿌라 오징어튀김</td>
+											<td>중국산</td>
+											<td>오징어</td>
 										</tr>
 										<tr>
 											<td class="th_bg">BBQ 소떡</td>
@@ -348,14 +305,6 @@
 											<td class="th_bg">밥(CJ따밥)</td>
 											<td>미국산</td>
                                             <td>쌀</td>
-										</tr>
-										<tr>
-											<td class="th_bg">해산물토마토 스파게티</td>
-											<td rowspan=2>국내산</td>
-											<td rowspan=2>오징어</td>
-										</tr>
-										<tr>
-											<td class="th_bg">해물짬뽕수제비</td>
 										</tr>
 										</tbody>
 									</table>
