@@ -760,7 +760,7 @@ function coupon_apply() {
 		
 		$("#order_product").html('');
 		$("#total_amt").val($("#og-total_amt").val()); // 총 상품금액
-		$("#gift_prod").val('0');
+		$("#gift_prod").val('');
         $("#prod_list").css('display','none');
 		$("#coupon_amt_prod").val('');
 	}
