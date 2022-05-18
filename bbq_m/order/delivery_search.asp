@@ -329,7 +329,7 @@
 		if($("#addr_data").val() != "" && $("#branch_data").val() == "") {
 			$.ajax({
 				method: "post",
-				url: "/api/ajax/ajax_getShop.asp",
+				url: "/api/ajax/ajax_getShopNew.asp",
 				data:{dta:$("#addr_data").val()},
 				dataType: "json",
 				success: function(res) {

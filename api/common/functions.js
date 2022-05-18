@@ -952,10 +952,6 @@ function checkDeliveryShop_new(addrdata, page_type) {
 
             if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
             }else{
-                if (res.STORE_AREA == "0") { // 공백지
-                    alert("상권 매장이 현재 영업을 하지 않아 근처 매장으로 주문 이관합니다.");
-                }
-
                 if (res.result != "0000") {
                     alert(res.message);
                     return false;

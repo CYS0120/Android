@@ -60,8 +60,8 @@
                 result = result & ",""b_code"":""" & aRs("b_code") & """"
                 result = result & ",""mobile"":""" & aRs("mobile") & """"
                 result = result & ",""is_main"":""" & aRs("is_main") & """"
-                result = result & ",""lat"":""0"""
-                result = result & ",""lng"":""0"""
+                result = result & ",""lat"":""" & aRs("lat") & """" '위경도 추가 (2022. 5. 12)
+                result = result & ",""lng"":""" & aRs("lng") & """" '위경도 추가 (2022. 5. 12)
                 result = result & ",""h_code"":""" & aRs("h_code") & """" '행정동 코드 추가 (2022. 3. 22)
 
                 result = result & "}"

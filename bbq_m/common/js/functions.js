@@ -43,6 +43,8 @@ function setAddress(addr_idx) {
                 $("#form_addr [name=b_name]").val(res[0].bname);
                 $("#form_addr [name=b_code]").val(res[0].b_code);
                 $("#form_addr [name=mobile]").val(res[0].mobile);
+                $("#form_addr [name=lng]").val(res[0].lng);
+                $("#form_addr [name=lat]").val(res[0].lat);
 
                 $("#form_addr [name=addr_name]").val(res[0].addr_name);
                 if(res[0].mobile != "") {
