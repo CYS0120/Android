@@ -30,6 +30,10 @@
 	If FncIsBlank(EXPDATE) Then EXPDATE = 0
 	If FncIsBlank(DC_YN) Then DC_YN = "01"
 	If FncIsBlank(DUP_YN) Then DUP_YN = "Y"
+	If CD_PARTNER = "20020" Then 
+		CPNTYPE = "MN"
+		DC_YN = "04"
+	End If
 
 	If AUTO_CREATE = "N" Then 
 		If FncIsBlank(USESDATE) Or FncIsBlank(USEEDATE) Then 

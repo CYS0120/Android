@@ -112,6 +112,7 @@ function CheckInput(){
 									<ul>
 										<li><label><input type="radio" name="boardlist" onClick="document.location.href='coupon_pin.asp'">멤버십 쿠폰</label></li>
 										<li><label><input type="radio" name="boardlist" onClick="document.location.href='coupon_prm.asp'" checked>프로모션 쿠폰</label></li>
+										<li><label><input type="radio" name="boardlist" onClick="document.location.href='coupon_money.asp'">금액권</label></li>
 										<li><label><input type="radio" name="boardlist" onClick="document.location.href='coupon_ebay_pin.asp'">이베이 쿠폰</label></li>
 										<li><label><input type="radio" name="boardlist" onClick="document.location.href='coupon_partner.asp'">거래처 쿠폰</label></li>
 										<li><label><input type="radio" name="boardlist" onClick="document.location.href='coupon_search.asp'">쿠폰조회</label></li>
@@ -130,7 +131,7 @@ function CheckInput(){
 	page = InjRequest("page")
 	If page = "" Then page = 1
 
-	Sql = "UP_ADMIN_COUPON_PRM " & page & " , " & LNUM
+	Sql = "UP_ADMIN_COUPON_PRM_test 'PR', " & page & " , " & LNUM
 	' Sql = "SELECT COUNT(*) CNT FROM (	SELECT T1.CPNID, T1.CD_PARTNER FROM "& BBQHOME_DB &".DBO.T_CPN T1 WITH(NOLOCK) WHERE T1.CPNTYPE = 'PR' ) T1 INNER JOIN "& BBQHOME_DB &".DBO.T_CPN_PARTNER T3 WITH(NOLOCK) ON T3.CD_PARTNER = T1.CD_PARTNER "
 	Set Rlist = conn.Execute(Sql)
 	if not Rlist.EOF then

@@ -72,6 +72,19 @@ function chkWord(obj, maxByte) {
         chkWord(obj, maxByte)
     }
 }
+
+function ChangeDcYn(obj) {
+	if (obj.value == "20020"){
+		document.getElementById("DC_YN").value = "04";
+		$("#DC_YN").attr("disabled",true);
+		// $("#DC_YN").attr("selected",true);
+		// docuemnt.getElementById("DC_YN").disabled = true;
+	} else {
+		$("#DC_YN").removeAttr("disabled");
+		// $("#DC_YN").removeAttr("selected");
+		// docuemnt.getElementById("DC_YN").disabled = false;
+	}
+}
 </script>
 
 <div class="popup_title">
@@ -131,7 +144,7 @@ function chkWord(obj, maxByte) {
 	<tr>
 		<th>업체명</th>
 		<td>
-			<select name="CD_PARTNER" id="CD_PARTNER"  style="width:40%">
+			<select name="CD_PARTNER" id="CD_PARTNER"  style="width:40%" onChange="ChangeDcYn(this)">
 <%
 	Sql = "SELECT CD_PARTNER, NM_PARTNER FROM "& BBQHOME_DB &".DBO.T_CPN_PARTNER WITH(NOLOCK) WHERE YN_STATUS = 'Y' ORDER BY CD_PARTNER "
 	Set Clist = conn.Execute(Sql)
@@ -152,6 +165,7 @@ function chkWord(obj, maxByte) {
 				<option value="01" <% If DC_YN = "01" Or DC_YN = "" Then Response.write "SELECTED" %>>상품교환</option>
 				<option value="02" <% If DC_YN = "02" Then Response.write "SELECTED" %>>상품교환(할인판매)</option>
 				<option value="03" <% If DC_YN = "03" Then Response.write "SELECTED" %>>금액할인</option>
+				<option value="04" <% If DC_YN = "04" Then Response.write "SELECTED" %>>금액권</option>
 			</select>
 		</td>
 	</tr>
