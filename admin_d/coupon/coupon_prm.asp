@@ -131,7 +131,7 @@ function CheckInput(){
 	page = InjRequest("page")
 	If page = "" Then page = 1
 
-	Sql = "UP_ADMIN_COUPON_PRM_test 'PR', " & page & " , " & LNUM
+	Sql = "UP_ADMIN_COUPON_PRM 'PR', " & page & " , " & LNUM
 	' Sql = "SELECT COUNT(*) CNT FROM (	SELECT T1.CPNID, T1.CD_PARTNER FROM "& BBQHOME_DB &".DBO.T_CPN T1 WITH(NOLOCK) WHERE T1.CPNTYPE = 'PR' ) T1 INNER JOIN "& BBQHOME_DB &".DBO.T_CPN_PARTNER T3 WITH(NOLOCK) ON T3.CD_PARTNER = T1.CD_PARTNER "
 	Set Rlist = conn.Execute(Sql)
 	if not Rlist.EOF then
