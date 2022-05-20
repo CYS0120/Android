@@ -26,7 +26,7 @@
 		.CommandText = "bp_cart_recom"
 
 		.Parameters.Append .CreateParameter("@menu_list", adVarChar, adParamInput, 255, menu_key)
-		.Parameters.Append .CreateParameter("@top_number", adVarChar, adParamInput, 255, 10)
+		.Parameters.Append .CreateParameter("@top_number", adVarChar, adParamInput, 255, 20)
 
 		Set aRs = .Execute
 	End With
