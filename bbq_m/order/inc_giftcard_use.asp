@@ -63,14 +63,14 @@
 		
 			' 상품권 조회
 			Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
-			httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
+			httpRequest.Open "POST", "https://api-2.bbq.co.kr/api/VoucherInfo/", False
 			httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
 			httpRequest.SetRequestHeader "Content-Type", "application/json"
 			httpRequest.Send jsonGiftcard 
 			'// 상품권 조회
 					
 			Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) " _
-				& " VALUES ( '" & Request.ServerVariables("PATH_INFO") & "', '"& order_num &"','"& arrGiftcard(i) &"','http://api-2.bbq.co.kr/api/VoucherInfo/','"& jsonGiftcard &"','"& httpRequest.responseText &"','"& "" &"','"& "" &"', GETDATE() ) "
+				& " VALUES ( '" & Request.ServerVariables("PATH_INFO") & "', '"& order_num &"','"& arrGiftcard(i) &"','https://api-2.bbq.co.kr/api/VoucherInfo/','"& jsonGiftcard &"','"& httpRequest.responseText &"','"& "" &"','"& "" &"', GETDATE() ) "
 			dbconn.Execute(Sql)
 
 			'조회 상품권 text -> json
@@ -101,14 +101,14 @@
 
 					' 상품권 사용
 					Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
-					httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherUse/", False
+					httpRequest.Open "POST", "https://api-2.bbq.co.kr/api/VoucherUse/", False
 					httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
 					httpRequest.SetRequestHeader "Content-Type", "application/json"
 					httpRequest.Send jsonGiftcard 
 					'// 상품권 사용
 					
 					Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) " _
-						& " VALUES ( '" & Request.ServerVariables("PATH_INFO") & "', '"& order_num &"','"& arrGiftcard(i) &"','http://api-2.bbq.co.kr/api/VoucherUse/','"& jsonGiftcard &"','"& httpRequest.responseText &"','"& "" &"','"& "" &"', GETDATE() ) "
+						& " VALUES ( '" & Request.ServerVariables("PATH_INFO") & "', '"& order_num &"','"& arrGiftcard(i) &"','https://api-2.bbq.co.kr/api/VoucherUse/','"& jsonGiftcard &"','"& httpRequest.responseText &"','"& "" &"','"& "" &"', GETDATE() ) "
 					dbconn.Execute(Sql)
 					
 					'사용 상품권 text -> json

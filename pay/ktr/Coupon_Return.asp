@@ -225,7 +225,7 @@
 
 	'' 상품권 조회
 	'Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-	'httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
+	'httpRequest.Open "POST", "https://api-2.bbq.co.kr/api/VoucherInfo/", False
 	'httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
 	'httpRequest.SetRequestHeader "Content-Type", "application/json"
     'httpRequest.Send jsonGiftcard 
@@ -245,7 +245,7 @@
 	''Response.Write "MA_RTN_MSG /// " & MA_RTN_MSG & "<BR>"
 	'		 				 
 	'Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, 'regdate) "_
-	'	& " VALUES ( '\pay\ktr\Coupon_Return.asp', '"& order_num &"','"& giftcard_serial &"','http://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','"& MA_RTN_CD &"','"& MA_RTN_MSG &"', GETDATE() ) "
+	'	& " VALUES ( '\pay\ktr\Coupon_Return.asp', '"& order_num &"','"& giftcard_serial &"','https://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','"& MA_RTN_CD &"','"& MA_RTN_MSG &"', GETDATE() ) "
 	'dbconn.Execute(Sql)
 
 	'If MA_RTN_CD = "0000" Then 				 
@@ -279,7 +279,7 @@
 
 	'		' 상품권 사용
 	'		Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP")
-	'		httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherUse/", False
+	'		httpRequest.Open "POST", "https://api-2.bbq.co.kr/api/VoucherUse/", False
 	'		httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
 	'		httpRequest.SetRequestHeader "Content-Type", "application/json"
 	'		httpRequest.Send jsonGiftcard 
@@ -299,7 +299,7 @@
 	'		'Response.Write "Use MA_RTN_MSG /// " & MA_RTN_MSG & "<BR>"			
 	'		  
 	'		Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) "_
-	'		    & " VALUES ( '\pay\ktr\Coupon_Return.asp', '"& order_num &"','"& giftcard_serial &"','http://api-2.bbq.co.kr/api/VoucherUse/', '"& jsonGiftcard &"','"& gpostResponse &"','"& MA_RTN_CD &"','"& MA_RTN_MSG &"', GETDATE() ) "
+	'		    & " VALUES ( '\pay\ktr\Coupon_Return.asp', '"& order_num &"','"& giftcard_serial &"','https://api-2.bbq.co.kr/api/VoucherUse/', '"& jsonGiftcard &"','"& gpostResponse &"','"& MA_RTN_CD &"','"& MA_RTN_MSG &"', GETDATE() ) "
 	'		dbconn.Execute(Sql)
 	'		  
 	'		If MA_RTN_CD = "0000" THEN 				 

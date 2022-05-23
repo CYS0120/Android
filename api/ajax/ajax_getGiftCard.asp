@@ -92,7 +92,7 @@
      
 		Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
 
-		httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
+		httpRequest.Open "POST", "https://api-2.bbq.co.kr/api/VoucherInfo/", False
 		httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
 		httpRequest.SetRequestHeader "Content-Type", "application/json"
         httpRequest.Send jsonGiftcard 
@@ -122,7 +122,7 @@
 		Set this = oJSON.data("list")
      
 		Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) "_
-			& " VALUES ( '\api\ajax\ajax_getGiftCard.asp', '"& "" &"','"& giftPIN &"','http://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','','', GETDATE() ) "
+			& " VALUES ( '\api\ajax\ajax_getGiftCard.asp', '"& "" &"','"& giftPIN &"','https://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','','', GETDATE() ) "
 		dbconn.Execute(Sql)
 
         If this.Exists("Voucher_INFO") Then 'item 여부 확인 

@@ -563,7 +563,7 @@
 
 		' 상품권 조회
 		Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
-		httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherInfo/", False
+		httpRequest.Open "POST", "https://api-2.bbq.co.kr/api/VoucherInfo/", False
 		httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"  
 		httpRequest.SetRequestHeader "Content-Type", "application/json"
 		httpRequest.Send jsonGiftcard 
@@ -581,7 +581,7 @@
 		'조회 상품권 text -> json				  
 				 				 
 		Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) "_
-			& " VALUES ( '\bbq_m\order\payment_proc.asp', '"& order_num &"','"& giftcard_serial &"','http://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','"& MA_RTN_CD &"','"& MA_RTN_MSG &"', GETDATE() ) "
+			& " VALUES ( '\bbq_m\order\payment_proc.asp', '"& order_num &"','"& giftcard_serial &"','https://api-2.bbq.co.kr/api/VoucherInfo/', '"& jsonGiftcard &"','"& postResponse &"','"& MA_RTN_CD &"','"& MA_RTN_MSG &"', GETDATE() ) "
 		dbconn.Execute(Sql)
 
 		If MA_RTN_CD = "0000" Then 	

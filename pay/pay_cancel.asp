@@ -235,7 +235,7 @@
             Set httpRequest = Nothing ' 초기화
 			' 상품권 취소처리 API 
 			Set httpRequest = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")  '(2022.2.25 변경) CreateObject("MSXML2.ServerXMLHTTP")
-			httpRequest.Open "POST", "http://api-2.bbq.co.kr/api/VoucherCancel/", False
+			httpRequest.Open "POST", "https://api-2.bbq.co.kr/api/VoucherCancel/", False
 			httpRequest.SetRequestHeader "Authorization", "BF84B3C90590"
 			httpRequest.SetRequestHeader "Content-Type", "application/json"
 			httpRequest.Send jsonGiftcard  
@@ -254,7 +254,7 @@
 			'사용 상품권 text -> json 
 	 
 			Sql = " INSERT INTO bt_giftcard_log(source_id, order_num, giftcard_no, api_nm, in_param, out_param, MA_RTN_CD, MA_RTN_MSG, regdate) "_
-				& " VALUES ( '\pay\pay_cancel.asp', '"& ORDER_ID &"','"& giftcard_serial &"','http://api-2.bbq.co.kr/api/VoucherCancel/','"& jsonGiftcard &"','"& gpostResponse &"','"& RTN_CD &"','"& RTN_MSG &"', GETDATE() ) "
+				& " VALUES ( '\pay\pay_cancel.asp', '"& ORDER_ID &"','"& giftcard_serial &"','https://api-2.bbq.co.kr/api/VoucherCancel/','"& jsonGiftcard &"','"& gpostResponse &"','"& RTN_CD &"','"& RTN_MSG &"', GETDATE() ) "
 			dbconn.Execute(Sql)
 				  
 		'Response.Write "^" & RTN_CD & " --- " & cancelSN & " ::: " & gpostResponse
