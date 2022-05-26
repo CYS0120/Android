@@ -128,7 +128,7 @@ Const JUSO_API_KEY_XY = "U01TX0FVVEgyMDIwMTAwNjExNDc1MDExMDI1OTk="
 	Const SITE_DOMAINURL_UNINE		= "http://ukuya-family.co.kr/" '"http://www.ukuya.co.kr"		'우쿠야
 	Const SITE_DOMAINURL_ALLTOKK	= "http://www.alltokk.co.kr"		'올떡
 	Const SITE_DOMAINURL_BELIEF		= "https://www.soshin.co.kr"		'소신275°C
-	Const SITE_DOMAINURL_WATAMI		= "http://www.watamikorea.com"		'와타미
+	Const SITE_DOMAINURL_WATAMI		= "http://www.watami.co.kr/"		'와타미
 	Const SITE_DOMAINURL_CHICKEN_UNI	= "http://www.ckuniversity.com"		'치킨대학
 	Const SITE_DOMAINURL_START		= "https://www.bbqchangup.co.kr:446"		'창업센터
 	Const SITE_DOMAINURL_GLOBAL		= "http://www.bbqglobal.com"		'제너시스글로벌
@@ -142,7 +142,7 @@ Const JUSO_API_KEY_XY = "U01TX0FVVEgyMDIwMTAwNjExNDc1MDExMDI1OTk="
 	Const MSITE_DOMAINURL_UNINE		= "http://ukuya-family.co.kr/" '"http://m.ukuya.co.kr"		'우쿠야
 	Const MSITE_DOMAINURL_ALLTOKK	= "http://m.alltokk.co.kr"		'올떡
 	Const MSITE_DOMAINURL_BELIEF	= "http://m.soshin.co.kr"		'소신275°C
-	Const MSITE_DOMAINURL_WATAMI	= "http://www.watamikorea.com/m/"		'와타미
+	Const MSITE_DOMAINURL_WATAMI	= "http://www.watami.co.kr/"		'와타미
 	Const MSITE_DOMAINURL_CHICKEN_UNI	= "http://m.ckuniversity.com"		'치킨대학
 	Const MSITE_DOMAINURL_START		= "https://m.bbqchangup.co.kr:446"		'창업센터
 	Const MSITE_DOMAINURL_GLOBAL	= "https://www.bbqglobal.com"		'제너시스글로벌	모바일페이지 없음
