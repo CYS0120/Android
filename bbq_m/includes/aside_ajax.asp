@@ -87,7 +87,7 @@ end if
 						Set pMemberPoint = PointGetPointBalance("SAVE", "0") 
 					%>
 					<dl>
-						<dt>적립금 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</dt> 
+						<dt>포인트 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</dt> 
 						<dd style="text-align:right;"><a href="/mypage/mileage.asp"><strong><%=FormatNumber(pMemberPoint.mSavePoint,0)%></strong> P</a></dd>
 					</dl>
 
@@ -231,7 +231,7 @@ end if
 				<% If CheckLogin() Then %>
 					<li class="node1 ss_pc_move_N"><a href="/mypage/mypage.asp" class="depth1"><img src="/images/common/icon_menu1.png"> 마이페이지</a></li>
 					<!--<li class="node1 ss_pc_move_N" style="display:none"><a href="/mypage/couponKeep.asp" class="depth1"><img src="/images/common/icon_menu2.png"> 쿠폰등록/보관</a></li>-->
-					<li class="node1 ss_pc_move_N" style="display:none"><a href="/mypage/couponList.asp" class="depth1"><img src="/images/common/icon_menu2.png">모바일상품권/상품권</a></li>
+					<li class="node1 ss_pc_move_N" style="display:none"><a href="/mypage/couponList.asp" class="depth1"><img src="/images/common/icon_menu2.png">쿠폰/상품권</a></li>
 				<% else %>
 					<li class="node1 ss_pc_move_N"><a href="/mypage/orderListNonMem.asp" class="depth1"><img src="/images/common/icon_menu1.png"> 비회원 주문조회</a></li>
 					<li class="node1 ss_pc_move_N" style="display:none"><a href="#" onclick="openLogin('mobile');return false;" class="depth1"><img src="/images/common/icon_menu2.png"> 쿠폰등록/보관</a></li>
