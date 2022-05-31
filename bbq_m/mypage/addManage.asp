@@ -233,6 +233,10 @@
 		}});
 		
 	}
+
+	function addr_img_control(addr_idx){
+		location.reload();
+	}
 </script>
 </head>
 
@@ -360,7 +364,7 @@
 		<!-- LP Wrap -->
 		<div class="lp-wrap inbox1000">
 
-			<form id="form_addr" name="form_addr" method="post" onsubmit="return validAddress(); return false;">
+			<form id="form_addr" name="form_addr" method="post" onsubmit="selectCoordHCode('Y', $('#form_addr input[name=addr_idx]').val(), $('#form_addr input[name=address_main]').val(), $('#form_addr input[name=h_code]'));">
 			<input type="hidden" name="addr_idx" value="">
 			<input type="hidden" name="mode" value="I">
 			<input type="hidden" name="addr_type" value="">
@@ -373,6 +377,7 @@
 			<input type="hidden" name="b_name" value="">
 			<input type="hidden" name="b_code" value="">
 			<input type="hidden" name="mobile" value="">
+			<input type="hidden" name="h_code" value=""> <!-- 행정동코드 -->
 
 			<!-- LP Header -->
 			<div class="lp-header">

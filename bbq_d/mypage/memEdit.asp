@@ -328,19 +328,15 @@ function validInfo() {
 							<h4 class="mar-t60">주소지 관리</h4>
 							<div class="boardList-wrap">
 								<table border="1" cellspacing="0" class="tbl-list" id="address_list">
-									<caption>상품문의</caption>
+									<caption>주소지 관리</caption>
 									<colgroup>
 										<col style="width:120px;">
-										<col style="width:120px;">
-										<col style="width:180px;">
-										<col>
+										<col style="width:auto;">
 										<col style="width:180px;">
 									</colgroup>
 									<thead>
 										<tr>
 											<th></th>
-											<!--th>수령인</th>
-											<th>전화번호</th-->
 											<th>주소</th>
 											<th>관리</th>
 										</tr>
@@ -349,7 +345,6 @@ function validInfo() {
 <%
 	Dim aCmd : Set aCmd = Server.CreateObject("ADODB.Command")
 	Dim aRs : Set aRs = Server.CreateObject("ADODB.RecordSet")
-	Dim TotalCount
 
 	With aCmd
 		.ActiveConnection = dbconn
@@ -357,12 +352,9 @@ function validInfo() {
 		.CommandType = adCmdStoredProc
 		.CommandText = "bp_member_addr_select"
 
-		.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 50, Session("userIdNo"))
-		.Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
+		.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 100, Session("userIdNo"))
 
 		Set aRs = .Execute
-
-		TotalCount = .Parameters("@totalCount").Value
 	End With
 	Set aCmd = Nothing
 %>
