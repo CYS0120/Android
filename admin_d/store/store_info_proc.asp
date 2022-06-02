@@ -51,6 +51,7 @@
 	img_path	= "/upload_files/store"
 	owner_greeting	= InjRequest("owner_greeting")
 	delivery_fee	= InjRequest("delivery_fee")
+	pickup_discount = InjRequest("pickup_discount")
 	way_to_go	= InjRequest("way_to_go")
 
 	owner_img	= InjRequest("owner_img")
@@ -71,6 +72,7 @@
 	if len(trim(wgs84_x)) > 0 and len(trim(wgs84_y)) > 0 then
 		Sql = Sql & ", wgs84_x='"& wgs84_x &"', wgs84_y='"& wgs84_y &"' "
 	end if
+	Sql = Sql & ", pickup_discount='"& pickup_discount &"' " '포장할인 추가(2022. 6. 7)
 	Sql = Sql & " , mod_user_idx='"& SITE_ADM_CD &"', mod_date=GetDate(), mod_ip='"& REG_IP &"' "
 	Sql = Sql & " Where branch_id = '" & branch_id & "'"
 	conn.Execute(Sql)

@@ -75,6 +75,7 @@
 	cooking_time	= Rinfo("cooking_time")
 	callcenter_message	= Rinfo("callcenter_message")
 	delivery_fee	= Rinfo("delivery_fee")
+	pickup_discount	= Rinfo("pickup_discount") '포장할인 추가(2022. 6. 7)
 	way_to_go	= Rinfo("way_to_go")
 	add_price_yn	= Rinfo("add_price_yn") '제주/도서산간대상여부 2020-08-25 추가
 	beer_yn	= Rinfo("beer_yn") '주류
@@ -667,6 +668,14 @@ function onChange_dong(sido_id, sigungu_id, dong_id)
 									<input type="number" step="100" name="delivery_fee" value="<%=delivery_fee%>" onkeyup="onlyNum(this);">원 
 									<span>(숫자만 입력)</span>
 									<input type="button" value="추가 배달비" class="btn_white125" style="margin-left:10px;" onClick="AddDelFee()"></input>
+								</td>
+							</tr>
+							<!-- 포장할인 추가(2022. 6. 7) -->
+							<tr>
+								<th>포장 할인</th>
+								<td>
+									<input type="number" step="100" name="pickup_discount" value="<%=pickup_discount%>" onkeyup="onlyNum(this);">원 
+									<span>(숫자만 입력)</span>
 								</td>
 							</tr>
 							<tr>
