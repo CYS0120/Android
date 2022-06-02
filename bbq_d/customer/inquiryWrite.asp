@@ -151,11 +151,16 @@ var ClickCheck = 0;
                                     <th>분류</th>
                                     <td>
                                         <select name="q_type" class="w-250">
-                                            <option value="가맹문의">가맹문의</option>
-                                            <option value="매장문의">매장문의</option>
-                                            <option value="메뉴문의">메뉴문의</option>
-                                            <option value="불친절매장신고">불친절매장신고</option>
-                                            <option value="기타문의">기타문의</option>
+                                            <option value="주문 거부">주문 거부</option>
+                                            <option value="E쿠폰/상품권 주문 거부">E쿠폰/상품권 주문 거부</option>
+                                            <option value="제품 품질 불만">제품 품질 불만</option>
+                                            <option value="이물질">이물질</option>
+                                            <option value="품목 미제공(치킨무 등)">품목 미제공(치킨무 등)</option>
+                                            <option value="자사앱/온라인 주문 불편">자사앱/온라인 주문 불편</option>
+                                            <option value="매장/고객센터 응대 불만">매장/고객센터 응대 불만</option>
+                                            <option value="현금영수증 미발급">현금영수증 미발급</option>
+                                            <option value="기타 불만">기타 불만</option>
+                                            <option value="문의사항(메뉴, 매장, 가맹, 기타)">문의사항(메뉴, 매장, 가맹, 기타)</option>
                                         </select>
                                     </td>
                                 </tr>

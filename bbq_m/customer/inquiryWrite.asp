@@ -150,12 +150,16 @@ var ClickCheck = 0;
 					</li>
 					<li>
 						<select name="q_type" id="" class="w-100p">
-							<option value="가맹문의">가맹문의</option>
-							<option value="매장문의">매장문의</option>
-							<option value="메뉴문의">메뉴문의</option>
-							<option value="불친절매장신고">불친절매장신고</option>
-							<option value="쿠폰재발행">쿠폰재발행</option>
-							<option value="기타문의">기타문의</option>
+							<option value="주문 거부">주문 거부</option>
+							<option value="E쿠폰/상품권 주문 거부">E쿠폰/상품권 주문 거부</option>
+							<option value="제품 품질 불만">제품 품질 불만</option>
+							<option value="이물질">이물질</option>
+							<option value="품목 미제공(치킨무 등)">품목 미제공(치킨무 등)</option>
+							<option value="자사앱/온라인 주문 불편">자사앱/온라인 주문 불편</option>
+							<option value="매장/고객센터 응대 불만">매장/고객센터 응대 불만</option>
+							<option value="현금영수증 미발급">현금영수증 미발급</option>
+							<option value="기타 불만">기타 불만</option>
+							<option value="문의사항(메뉴, 매장, 가맹, 기타)">문의사항(메뉴, 매장, 가맹, 기타)</option>
 						</select>
 					</li>
 					<li><label data-txt="작성자" class="before-txt"><input type="text" name="member_name" value="<%=Session("userName")%>" readonly class="w-100p"></label></li>

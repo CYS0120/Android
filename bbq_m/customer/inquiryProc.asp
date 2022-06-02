@@ -36,7 +36,7 @@
         .Parameters.Append .CreateParameter("@brand_code", adVarChar, adParamInput, 10, "01")
         .Parameters.Append .CreateParameter("@branch_id", adVarChar, adParamInput, 20, branch_id)
         .Parameters.Append .CreateParameter("@branch_name", adVarChar, adParamInput, 100, branch_name)
-        .Parameters.Append .CreateParameter("@q_type", adVarChar, adParamInput, 20, q_type)
+        .Parameters.Append .CreateParameter("@q_type", adVarChar, adParamInput, 100, q_type)
         .Parameters.Append .CreateParameter("@q_status", adVarChar, adParamInput, 20, "답변대기")
         .Parameters.Append .CreateParameter("@title", adVarChar, adParamInput, 100, title)
         .Parameters.Append .CreateParameter("@body", adLongVarWChar, adParamInput, 2147483647, body)
