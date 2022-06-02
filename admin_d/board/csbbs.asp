@@ -137,6 +137,16 @@ function ExcelDown(IS_IMG){
 										<option value="메뉴문의"<%If QTP="메뉴문의" Then%> selected<%End If%>>메뉴문의</option>
 										<option value="불친절매장신고"<%If QTP="불친절매장신고" Then%> selected<%End If%>>불친절매장신고</option>
 										<option value="기타문의"<%If QTP="기타문의" Then%> selected<%End If%>>기타문의</option>
+										<option value="주문 거부"<%If QTP="주문 거부" Then%> selected<%End If%>>주문 거부</option>
+										<option value="E쿠폰/상품권 주문 거부"<%If QTP="E쿠폰/상품권 주문 거부" Then%> selected<%End If%>>E쿠폰/상품권 주문 거부</option>
+										<option value="제품 품질 불만"<%If QTP="제품 품질 불만" Then%> selected<%End If%>>제품 품질 불만</option>
+										<option value="이물질"<%If QTP="이물질" Then%> selected<%End If%>>이물질</option>
+										<option value="품목 미제공(치킨무 등)"<%If QTP="품목 미제공(치킨무 등)" Then%> selected<%End If%>>품목 미제공(치킨무 등)</option>
+										<option value="자사앱/온라인 주문 불편"<%If QTP="자사앱/온라인 주문 불편" Then%> selected<%End If%>>자사앱/온라인 주문 불편</option>
+										<option value="매장/고객센터 응대 불만"<%If QTP="매장/고객센터 응대 불만" Then%> selected<%End If%>>매장/고객센터 응대 불만</option>
+										<option value="현금영수증 미발급"<%If QTP="현금영수증 미발급" Then%> selected<%End If%>>현금영수증 미발급</option>
+										<option value="기타 불만"<%If QTP="기타 불만" Then%> selected<%End If%>>기타 불만</option>
+										<option value="문의사항(메뉴, 매장, 가맹, 기타)"<%If QTP="문의사항(메뉴, 매장, 가맹, 기타)" Then%> selected<%End If%>>문의사항(메뉴, 매장, 가맹, 기타)</option>
 									</select>
 								</li>
 								<li>
