@@ -44,7 +44,7 @@
 	Dim branch_data : branch_data = GetReqStr("branch_data","")
 	Dim spent_time : spent_time = GetReqStr("spent_time","")
 	Dim is_SGPay_Event : is_SGPay_Event = "N"
-
+																			
 	Dim bCmd, bMenuRs
 
 	if order_type = "P" then 
@@ -108,7 +108,7 @@
 
 	If instr(cart_value, "pin") = 0 Then
 		'pin 번호 확인을 위한 로그 
-		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] cart_value : "& cart_value &"','0','payment-pin-1')"
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& Session("userIdx") &"','['+convert(varchar(19), getdate() , 120)+'] cart_value : "& cart_value &"','0','payment-pin-1')"
 		dbconn.Execute(Sql)
 	End If 
 
@@ -142,7 +142,7 @@
 		end if 
 		if aJson.hasOwnProperty("h_code") then 
 			vHcode = C_STR(aJson.h_code)  '동별 배달비 가져오기 위한 행정동코드 (2022. 3. 22)
-		end if 
+		end if
 		Set aJson = Nothing
 	ElseIf order_type = "P" Then
 		aJson = ""
@@ -274,7 +274,7 @@
 	For i = 0 To iLen - 1
 		if Not cJson.get(i).hasOwnProperty("value") then 
 			'pin 번호 확인을 위한 로그 
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] cart_value : "& cart_value & " / i : "& i &" / iLen : " & iLen & "','0','payment-pin-2')"
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& Session("userIdx") &"','['+convert(varchar(19), getdate() , 120)+'] cart_value : "& cart_value & " / i : "& i &" / iLen : " & iLen & "','0','payment-pin-2')"
 			dbconn.Execute(Sql)
 		end if 
 		CouponPin = cJson.get(i).value.pin
@@ -1111,7 +1111,7 @@ function calcTotalAmount() {
 	var delivery = removeCommas($.trim($("#delivery_fee").val()));
 	var add_total_price = removeCommas($.trim($("#add_total_price").val()));
 	var ecoupon_amt = eval($.trim($("#ecoupon_amt").val()));
-
+											  
 	order_amt = isNaN(order_amt)? 0: Number(order_amt);
 	delivery = isNaN(delivery)? 0: Number(delivery);
 	add_total_price = isNaN(add_total_price)? 0: Number(add_total_price);
@@ -1479,6 +1479,7 @@ function calcTotalAmount() {
 		    document.cookie = encodeURIComponent("giftcard_serial") + '=' + encodeURIComponent($('#giftcard_id').val());
 		    document.cookie = encodeURIComponent("brand_code") + '=' + encodeURIComponent(br_code);
 		}
+		var popup_info = "결제를 위해 브라우저의 팝업 차단을 허용해주세요.";
 		//상품권 사용처리
 		switch (pay_method) {
 			// 카드 결제 후 처리
@@ -1486,6 +1487,11 @@ function calcTotalAmount() {
 				<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 				<% else %>
 					win_pay = window.open("","pgp",pgPopupOption);
+					if (win_pay == null || win_pay == undefined) {
+						alert(popup_info);
+						return false;
+					}
+
 					$("#o_form").attr("target", "pgp");
 				<% end if %>
 
@@ -1503,6 +1509,10 @@ function calcTotalAmount() {
 					} else {
 						win_pay = window.open("","pgp",pgPhonePopupOption);
 					}
+					if (win_pay == null || win_pay == undefined) {
+						alert(popup_info);
+						return false;
+					}
 					$("#o_form").attr("target", "pgp");
 				<% end if %>
 
@@ -1519,6 +1529,10 @@ function calcTotalAmount() {
 					<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 					<% else %>
 						win_pay = window.open('', 'popupPayco', 'top=100, left=300, width=727px, height=512px, resizble=no, scrollbars=yes');
+						if (win_pay == null || win_pay == undefined) {
+							alert(popup_info);
+							return false;
+						}
 						$("#o_form").attr("target", "popupPayco");
 					<% end if %>
 
@@ -1535,6 +1549,10 @@ function calcTotalAmount() {
 					<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 					<% else %>
 						win_pay = window.open('', 'popupPaycoin', 'top=100, left=400, width=600px, height=600px, resizble=no, scrollbars=yes');
+						if (win_pay == null || win_pay == undefined) {
+							alert(popup_info);
+							return false;
+						}
 						$("#o_form").attr("target", "popupPaycoin");
 					<% end if %>
 
@@ -1548,6 +1566,10 @@ function calcTotalAmount() {
 				<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 				<% else %>
 					win_pay = window.open("","popupSgpay",pgPopupOption);
+					if (win_pay == null || win_pay == undefined) {
+						alert(popup_info);
+						return false;
+					}
 					$("#o_form").attr("target", "popupSgpay");
 				<% end if %>
 				$("#o_form").attr("action", "/pay/sgpay/sgpay.asp");
@@ -1560,6 +1582,10 @@ function calcTotalAmount() {
 				<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
 				<% else %>
 					win_pay = window.open("","popupSgpay",pgPopupOption);
+					if (win_pay == null || win_pay == undefined) {
+						alert(popup_info);
+						return false;
+					}
 					$("#o_form").attr("target", "popupSgpay");
 				<% end if %>
 				*/
@@ -1777,7 +1803,7 @@ function calcTotalAmount() {
 
 			<input type="hidden" name="b_code" value="<%=vBcode%>"><!-- 법정동 코드 2022. 3. 22) -->
 			<input type="hidden" name="h_code" value="<%=vHcode%>"><!-- 행정동 코드 2022. 3. 22) -->
-
+																	 
 			<!-- 장바구니 리스트 -->
 			<div class="section-wrap">
 				<section class="section section_orderDetail" id="payment_list">
