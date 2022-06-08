@@ -104,6 +104,7 @@ jQuery(document).ready(function(e) {
 	Set aRs = Nothing
 %>
 						<li <%If cstr(category_idx) = cstr("99999") Then Response.Write "class='on'"%>><a href="/menu/menuList.asp?cidx=99999&cname=<%=server.UrlEncode("사이드메뉴")%>">사이드메뉴</a></li>
+						<li <%If cstr(category_idx) = cstr("58") Then Response.Write "class='on'"%>><a href="/menu/menuList.asp?cidx=58&cname=<%=server.UrlEncode("음료/주류")%>">음료/주류</a></li>
 					</ul>
 					<!-- //메뉴 탭 -->
 
@@ -135,6 +136,21 @@ jQuery(document).ready(function(e) {
 								.NamedParameters = True
 								.CommandType = adCmdStoredProc
 								.CommandText = "bp_sidemenu_select"
+
+								Set aRs = .Execute
+							End With
+
+							Set aCmd = Nothing
+
+						elseif category_idx = "58" then 
+
+							Set aCmd = Server.CreateObject("ADODB.Command")
+
+							With aCmd
+								.ActiveConnection = dbconn
+								.NamedParameters = True
+								.CommandType = adCmdStoredProc
+								.CommandText = "bp_sidemenu_drink_select"
 
 								Set aRs = .Execute
 							End With
