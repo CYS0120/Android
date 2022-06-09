@@ -116,3 +116,24 @@ extension Array where Element: Equatable {
         }
     }
 }
+
+
+extension String {
+    func utf8Decode()-> String {
+        let data = self.data(using: .utf8)
+        let message = String(data: data!, encoding: .nonLossyASCII) ?? ""
+        return message
+    }
+    
+    func utf8Encode()-> String {
+        let messageData = self.data(using: .nonLossyASCII)
+        let text = String(data: messageData!, encoding: .utf8) ?? ""
+        return text
+    }
+    
+    func URLEncodedString() -> String? {
+            let customAllowedSet =  NSCharacterSet.urlQueryAllowed
+            let escapedString = self.addingPercentEncoding(withAllowedCharacters: customAllowedSet)
+            return escapedString
+        }
+}

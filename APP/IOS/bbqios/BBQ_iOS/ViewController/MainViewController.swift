@@ -64,11 +64,7 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
     public var strBarCode : String?
     public var isSetBarCode : Bool = false
     
-//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)   {
-//        print("init nibName style")
-//        self.year = UserDefaults.standard.value(forKey: "year") as! Int
-//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//    }
+
 
     required init?(coder aDecoder: NSCoder) {
         print("init coder style")
@@ -129,10 +125,17 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         
 //        self.createUserPassword()
     }
-
-//    enum VersionError: Error {
-//        case invalidResponse, invalidBundleInfo
-//    }
+    
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        
+        if #available(iOS 13.0, *) {
+            return .darkContent
+        }
+        
+        return .lightContent
+    }
+      
     
     
     @IBAction func onPressedWebViewHomeButton(_ sender: Any) {
@@ -444,9 +447,7 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         }
         
         self.loadUrl()
-
         self.bringToFromWebViewNavigationItems(topWebView: wkWebView)
-
 
     }
 
@@ -475,10 +476,7 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         이동하는 url 정보 : https://m.bbq.co.kr/main.asp?deviceId="+deviceId+"&token="+token+"&osTypeCd=ANDROID&pushtype="+pushType+"&version="+appVersion
      */
     func loadUrl() {
-//        // push token test...
-//        Utils().setPushToken(token: "testtoken")
-        let DELAY_SECONDS = 1.0
-        DispatchQueue.main.asyncAfter(deadline: .now() + DELAY_SECONDS) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             let deviceId = Utils().getUUID()
             let token    = Utils().getPushToken()
             let version  = Utils().getAppVersion()
@@ -487,7 +485,33 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
             print("self.url_type :: \(self.url_type)")
             if self.url_type == "MAIN" {
                 if let url = URL(string: MAIN_URL+"/main.asp?osTypeCd=IOS&deviceId=" + deviceId + "&token=" + token + "&version=" + version) {
-                    let request = URLRequest(url: url)
+                    
+                    // refresh token 추가
+                    var request = URLRequest(url: url)
+                    request.httpMethod = "POST"
+                    
+                    // refresh_token
+                    if let refresh_token = UserDefaults.standard.string(forKey: "refresh_token") {
+//                        request.setValue(refresh_token, forHTTPHeaderField: "REFRESH_TOKEN")
+//                        let parameters: [String: Any] = [
+//                            "REFRESH_TOKEN": "QUFBQW1uVnJId1NvRDdzWGhHUVFuWmFHSnZWZG43YjRUei11Y2hjZTdaMmwyYmxlX0NVbDcySzJHX2dtMTRNOWFGYnFSMElORWhVWFRjZUN3UXJlY3NjWVlkTFBJaGYtTC1Gd0tOZVNBaXhoS3BBZGNUcWM5R0RqTGdRRWdrZ1l2N3pncEh4Sy1XWUVDZmFhQWZmUnd3U2ZaUVhGNGtKWmFwbkZjQTlseGFZTEFnQ285T2lyT0xyNEtlN0JTRHVDcEpFMTBXcDBUeXQtbXpaOC1pZ1VnbWlhX3VvLlJB"
+//                        ]
+                        
+                        let parameters: [String: Any] = ["REFRESH_TOKEN": refresh_token]
+//
+                        // add headers for the request
+                        request.addValue("application/json", forHTTPHeaderField: "Content-Type") // change as per server requirements
+                        request.addValue("application/json", forHTTPHeaderField: "Accept")
+                          
+                        do {
+                            // convert parameters to Data and assign dictionary to httpBody of request
+                            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+                        } catch let error {
+                            print(error.localizedDescription)
+                            return
+                        }
+                    }
+
                     self.wkWebView.load(request)
                 }
             } else {
@@ -610,7 +634,6 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
         }
         self.btnBack.isHidden = true
         print("webViewDidClose :: \(String(describing: webView.url))")
-
     }
 
     func webView(_ webView: WKWebView,
@@ -876,21 +899,12 @@ extension MainViewController: WKUIDelegate, WKNavigationDelegate {
 
     }
     
-    func deleteCookie() {
-        // 웹뷰 디스크캐시 삭제
-//        let websiteDataTypes = NSSet(array: [WKWebsiteDataTypeCookies])
-//        let date_data = NSDate(timeIntervalSince1970: 0)
-//
-//        WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set, modifiedSince: date_data as Date, completionHandler: {})
-        print("deleteCookie :: \(String(describing: wkWebView.url))");
-    }
 
     /*
      Implementation for QLPreviewControllerDataSource
      */
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         print("previewController :: \(String(describing: wkWebView.url))");
-
         return documentUrl as QLPreviewItem
     }
 
@@ -1193,6 +1207,26 @@ extension MainViewController: WKScriptMessageHandler {
                         }
                         else if message == "echoData" {
                           print("call echoData")
+                        }
+                        else if message == "afterLogin" {
+                        
+                            //
+                            // 1. refreshToken 획득 m.bbq.co.kr
+                            //
+                            wkWebView.getCookie(filter: COOKIE_URL, name: REFRESH_TOKEN) { cookies in
+                                if let datas = cookies, datas.count>0 {
+                                    let cookie = datas[0]
+                                    
+                                    //
+                                    // 2. userDefault에 저장
+                                    //
+                                    UserDefaults.standard.set(cookie.value, forKey:"refresh_token")
+                                }
+                            }
+                        }
+                        else if message == "afterLogout" {
+                            // refresh_token 초기화
+                            UserDefaults.standard.set(nil, forKey:"refresh_token")
                         }
                     }
                 }
