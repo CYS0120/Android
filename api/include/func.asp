@@ -240,6 +240,8 @@ Function ParseAddress(rs)
     If paddr <> "" Then paddr = paddr & ","
     paddr = paddr & """b_code"":""" & rs("b_code") & """"
     If paddr <> "" Then paddr = paddr & ","
+    paddr = paddr & """h_code"":""" & rs("h_code") & """"
+    If paddr <> "" Then paddr = paddr & ","
     paddr = paddr & """b_name"":""" & rs("bname") & """"
     If paddr <> "" Then paddr = paddr & ","
     paddr = paddr & """mobile"":""" & rs("mobile") & """"
@@ -445,4 +447,18 @@ function Sleep(seconds)
     oShell.Run cmd, 0, 1
     set oShell = Nothing 
 End function
+
+Function BytesToStr(bytes)
+    Dim Stream
+    Set Stream = Server.CreateObject("Adodb.Stream")
+        Stream.Type = 1 'adTypeBinary
+        Stream.Open
+        Stream.Write bytes
+        Stream.Position = 0
+        Stream.Type = 2 'adTypeText
+        Stream.Charset = "iso-8859-1"
+        BytesToStr = Stream.ReadText
+        Stream.Close
+    Set Stream = Nothing
+End Function
 %>

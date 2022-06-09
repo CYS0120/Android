@@ -230,7 +230,7 @@
 					end if 
 
                     '자동로그인 확인을 위한 로그
-                    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& pRs("member_idx") &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / SESSION " & Session("UserId") & " / BBQ_APP " & Request.Cookies("bbq_app_type") & " / AutoLogin " & C_STR(auto_login_yn) & " / RtnURL " & rtnUrl & " / " & Request.ServerVariables("HTTP_USER_AGENT") & " / " & Request.Cookies("refresh_token") & "','0','loginCallback-auto_login_yn')"
+                    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& pRs("member_idx") &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / SESSION " & Session("UserId") & " / SessionUserIdNo " & Session("userIdNo") & " / BBQ_APP " & Request.Cookies("bbq_app_type") & " / AutoLogin " & C_STR(auto_login_yn) & " / RtnURL " & rtnUrl & " / " & Request.ServerVariables("HTTP_USER_AGENT") & " / " & Request.Cookies("refresh_token") & "','0','loginCallback-auto_login_yn')"
                     dbconn.Execute(Sql)
                     
                     loginSuccess = True
@@ -371,6 +371,12 @@
 		<%If Not loginSuccess Then%>
 			alert("<%=loginMessage%>");
 		<%End If%>
+            <% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 or Request.Cookies("bbq_app_type") = "bbqiOS" Then %>
+				if ( window.webkit && window.webkit.messageHandlers ) {
+					window.webkit.messageHandlers.bbqHandler.postMessage("afterLogin");
+				}
+            <%End if%>
+            
 			if(window.opener) {
 				opener.location.href = "<%=returnUrl%>";
 				window.close();

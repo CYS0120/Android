@@ -218,16 +218,28 @@
 				method: "post",
 				url: "/api/ajax/ajax_withdraw.asp",
 				data: $("#secssionFrm").serialize(),
-				dataType: "json",
-				succes: function(res) {
-					lpClose(".lp_memSecssion");
-					if(res.result == 0) {
-						showAlertMsg({msg:res.message, ok: function(){
-							window.location.href = "/";
-						}});
-					} else {
-						showAlertMsg({msg:res.message});
-					}
+				dataType: "json"
+			})
+			.done(function(res) {
+				lpClose(".lp_memSecssion");
+				if(res.result == 0) {
+					showAlertMsg({msg:res.message, ok: function(){
+						<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 or Request.Cookies("bbq_app_type") = "bbqiOS" Then %>
+							// IOS 정보 삭제 
+							if ( window.webkit && window.webkit.messageHandlers ) {
+								window.webkit.messageHandlers.bbqHandler.postMessage("afterLogout");
+							}
+						<%End if%>
+						
+						window.location.href = "/";
+					}});
+				} else {
+					showAlertMsg({msg:res.message});
+				}
+			})
+			.fail(function(request,status,error) {
+				if(request) {
+					showAlertMsg({msg:request.status + ' ' + request.responseText + ' | ' + error});
 				}
 			});
 		}});

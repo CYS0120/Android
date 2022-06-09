@@ -1,10 +1,10 @@
 ﻿<!--#include virtual="/api/include/utf8.asp"-->
-<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS" )> 0 then
-  Response.Cookies("bbq_app_type") = "bbqiOS"
-  Response.Cookies("bbq_app_type").Expires = DateAdd("yyyy", 1, now())
-  elseif instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then
-  Response.Cookies("bbq_app_type") = "bbqAOS"
-  Response.Cookies("bbq_app_type").Expires = DateAdd("yyyy", 1, now())
+<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS" ) > 0 or Request("osTypeCd") = "IOS" then
+	Response.Cookies("bbq_app_type") = "bbqiOS"
+	Response.Cookies("bbq_app_type").Expires = DateAdd("yyyy", 1, now())
+  elseif instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 or Request("osTypeCd") = "ANDROID" Then
+	Response.Cookies("bbq_app_type") = "bbqAOS"
+	Response.Cookies("bbq_app_type").Expires = DateAdd("yyyy", 1, now())
   end if
 %>
 

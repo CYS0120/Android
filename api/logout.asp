@@ -119,6 +119,13 @@
 		<iframe src="<%=multi_domail_login_url%>" style="display:none"></iframe>
 
 		<script type="text/javascript">
+            <% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 or Request.Cookies("bbq_app_type") = "bbqiOS" Then %>
+				// IOS 정보 삭제 
+				if ( window.webkit && window.webkit.messageHandlers ) {
+					window.webkit.messageHandlers.bbqHandler.postMessage("afterLogout");
+				}
+            <%End if%>
+
 			sessionStorage.removeItem("ss_user_phone");
 			showAlertMsg({msg:"로그아웃 되었습니다.", ok: function(){
 				location.href = "/";
