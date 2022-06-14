@@ -90,6 +90,7 @@
 		        result = result & """cooking_time"":""" & rs("cooking_time") & """ ,"
 		        result = result & """chain_id"":""" & rs("chain_id") & """ ,"
 		        result = result & """delivery_fee"":" & rs("delivery_fee")
+		        result = result & ",""pickup_discount"":""" & rs("pickup_discount") & """" '포장할인 추가(2022. 6. 7)
                 result = result & "}"
                 rs.MoveNext
                 i = i + 1

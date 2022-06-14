@@ -104,7 +104,7 @@
 	<!--// Aside -->
 	<!-- Content -->
 	<article class="content inbox1000">
-        <div class="topFixBanner ty2">
+        <div class="topFixBanner">
 		<form id="cart_form" name="cart_form" method="post" action="payment.asp">
 			<input type="hidden" name="order_type" id="order_type" value="<%=order_type%>">
 			<input type="hidden" name="branch_id" id="branch_id" value="<%=branch_id%>">
@@ -162,6 +162,10 @@
 		<input type="hidden" id="CART_IN_PRODIDX">
 
 		<%If CheckLogin() Then%>
+
+			<h3 class="subTitle">
+				최근 주문매장
+			</h3>
 
 			<div class="find_shop_wrap" id="order_branch_list"></div>
 

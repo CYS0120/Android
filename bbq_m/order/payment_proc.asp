@@ -13,6 +13,10 @@
 	Dim order_status
 
 	Dim vBcode, vHcode '동별 배달비 가져오기 위한 법정동코드, 행정동코드 (2022. 3. 22)
+	
+	'포장할인 추가(2022. 6. 7)
+	dim pickup_discount : pickup_discount = 0 
+	dim branch_pickup_discount : branch_pickup_discount = 0 
 
 	Calc_Discount_amt = 0	'마지막 할인금액 검증을 위해서
 
@@ -74,6 +78,14 @@
 	total_amount = CDbl(total_amount) + CDbl(ecoupon_amt)	'E 쿠폰금액을 총금액으로 더함
 	discount_amt = CDbl(discount_amt) + CDbl(ecoupon_amt)	'E 쿠폰금액을 할인금액으로 더함
 	Calc_Discount_amt = Calc_Discount_amt + CDbl(ecoupon_amt) + CDbl(giftcard_amt) + CDbl(paycoin_event_amt) + CDbl(sgpay_event_amt)
+	
+	'포장할인 추가(2022. 6. 7)
+	If order_type = "P" Then 
+		pickup_discount = CDbl(Replace(GetReqStr("pickup_discount","0"),",",""))
+	End If 
+	discount_amt    = discount_amt + pickup_discount
+	Calc_Discount_amt = Calc_Discount_amt + pickup_discount
+
 
     ' 20201211 예약일자, 예약시간 추가
 	reserv_date = GetReqStr("nowDate","") ' 예약일자
@@ -165,6 +177,7 @@
 	If Not (aRs.BOF Or aRs.EOF) Then
 		vDeliveryFee = aRs("delivery_fee")
 		BREAK_TIME = aRs("BREAK_TIME")	
+		branch_pickup_discount = aRs("pickup_discount")
 
 		'동별 배달비 조회 (2022. 3. 22)
 		dim fRs, iDongFee
@@ -821,8 +834,6 @@
 		Session("SAMSUNG_EVENT") = ""
 	End If
 
-
-
 	If paycoin_event_amt > 0 Then
 		Set pCmd = Server.CreateObject("ADODB.Command")
 		With pCmd
@@ -946,7 +957,7 @@
 			.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 50, mmidno)
 			.Parameters.Append .CreateParameter("@member_type", adVarChar, adParamInput, 10, mmtype)
 			.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput,,PAYAMOUNT)
-'                    .Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput,,reqC.mTotalOrderAmount)
+			'.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput,,reqC.mTotalOrderAmount)
 			.Parameters.Append .CreateParameter("@pay_status", adVarChar, adParamInput, 10, "REQUEST")
 
 			.Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
@@ -1012,6 +1023,80 @@
 		Set pCmd = Nothing
 	End If
 
+	'포장할인 추가(2022. 6. 7)
+	If order_type = "P" and (pickup_discount > 0 or branch_pickup_discount > 0) Then
+		if branch_pickup_discount <> pickup_discount then 
+			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / pickup_discount " & pickup_discount & " / branch_pickup_discount " & branch_pickup_discount & " / mmidno " & mmidno & "','0','payment-pickup-err')"
+			dbconn.Execute(Sql)
+			Response.Write "{""result"":1, ""result_msg"":""포장할인 금액이 올바르지 않습니다.""}"
+			Response.End
+		else
+			Set aCmd = Server.CreateObject("ADODB.Command")
+			With aCmd
+				.ActiveConnection = dbconn
+				.NamedParameters = True
+				.CommandType = adCmdStoredProc
+				.CommandText = "bp_order_payment_select"
+
+				.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput, , order_idx)
+
+				Set aRs = .Execute
+			End With
+			Set aCmd = Nothing
+
+			'연결된 pay가 있는지 확인'
+			If Not (aRs.BOF Or aRs.EOF) Then
+
+			Else
+				'없으면 pay_idx 생성'
+				Set aCmd = Server.CreateObject("ADODB.Command")
+				With aCmd
+					.ActiveConnection = dbconn
+					.NamedParameters = True
+					.CommandType = adCmdStoredProc
+					.CommandText = "bp_payment_insert"
+
+					.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput,,order_idx)
+					.Parameters.Append .CreateParameter("@member_idx", adInteger, adParamInput, , mmid)
+					.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 50, mmidno)
+					.Parameters.Append .CreateParameter("@member_type", adVarChar, adParamInput, 10, mmtype)
+					.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput,, pay_amt)
+					.Parameters.Append .CreateParameter("@pay_status", adVarChar, adParamInput, 10, "P")
+
+					.Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
+					.Parameters.Append .CreateParameter("@ERRMSG", adVarChar, adParamOutput, 500)
+
+					.Execute
+
+					errCode = .Parameters("@ERRCODE").Value
+					errMsg = .Parameters("@ERRMSG").Value
+				End With
+				Set aCmd = Nothing
+			End If
+			Set aRs = Nothing
+
+			Set pCmd = Server.CreateObject("ADODB.Command")
+			With pCmd
+				.ActiveConnection = dbconn
+				.NamedParameters = True
+				.CommandType = adCmdStoredProc
+				.CommandText = "bp_payment_detail_insert"
+
+				.Parameters.Append .CreateParameter("@order_idx", adInteger, adParamInput,,order_idx)
+				.Parameters.Append .CreateParameter("@pay_method", adVarChar, adParamInput, 20, "PICKUP_DC")
+				.Parameters.Append .CreateParameter("@pay_transaction_id", adVarChar, adParamInput, 50, "")
+				.Parameters.Append .CreateParameter("@pay_cp_id", adVarChar, adParamInput, 50, "")  
+				.Parameters.Append .CreateParameter("@pay_subcp", adVarChar, adParamInput, 50, "")
+				.Parameters.Append .CreateParameter("@pay_amt", adCurrency, adParamInput, , pickup_discount)
+				.Parameters.Append .CreateParameter("@pay_approve_num", adVarChar, adParamInput, 50, "")
+				.Parameters.Append .CreateParameter("@pay_result_code", adVarChar, adParamInput, 10, 0)
+				.Parameters.Append .CreateParameter("@pay_err_msg", adVarChar, adParamInput, 1000, "")
+				.Parameters.Append .CreateParameter("@pay_result", adLongVarWChar, adParamInput, 2147483647, "")
+				.Execute
+			End With
+			Set pCmd = Nothing
+		end if 
+	End If 
 
 	'주문 금액 체크
 	Set pCmd = Server.CreateObject("ADODB.Command")
@@ -1240,7 +1325,7 @@
 gift_prod = GetReqStr("gift_prod","")
 giftproductcode = GetReqStr("giftproductcode","")
 giftproductclasscode = GetReqStr("giftproductclasscode","")
-If gift_prod <> "" and giftproductcode <> "" Then
+If gift_prod <> "" Then
     'reg_ip = Request.ServerVariables("REMOTE_ADDR")
     'order_idx = GetReqStr("order_idx","")
     'Response.Write order_idx

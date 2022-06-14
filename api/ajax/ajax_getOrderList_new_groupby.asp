@@ -80,6 +80,8 @@
                 orderList = orderList & """delivery_address"":""" & aRs("delivery_address") & ""","
                 orderList = orderList & """delivery_address_detail"":""" & aRs("delivery_address_detail") & ""","
                 orderList = orderList & """delivery_time"":""" & aRs("delivery_time") & """"
+                orderList = orderList & ",""branch_type"":""" & aRs("branch_type") & """"         'branch_type 추가(2022. 6. 7)
+                orderList = orderList & ",""pickup_discount"":""" & aRs("pickup_discount") & """" '포장할인 추가(2022. 6. 7)
                 orderList = orderList & "}"
 
                 aRs.MoveNext

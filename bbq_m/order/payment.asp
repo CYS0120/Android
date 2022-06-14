@@ -44,7 +44,8 @@
 	Dim branch_data : branch_data = GetReqStr("branch_data","")
 	Dim spent_time : spent_time = GetReqStr("spent_time","")
 	Dim is_SGPay_Event : is_SGPay_Event = "N"
-																			
+	dim pickup_discount : pickup_discount = 0 '포장할인 추가(2022. 6. 7) 
+
 	Dim bCmd, bMenuRs
 
 	if order_type = "P" then 
@@ -205,6 +206,11 @@
 		BREAK_TIME = aRs("BREAK_TIME")
 		vAdd_price_yn = aRs("add_price_yn")
 		beer_yn = fNullCheck(aRs("beer_yn"), "N", "")
+
+		'포장할인 추가(2022. 6. 7)
+		If order_type = "P" Then
+			pickup_discount = C_INT(aRs("pickup_discount"))
+		End if 
 
 		'동별 배달비 조회 (2022. 3. 22)
 		dim fRs, iDongFee
@@ -1111,7 +1117,8 @@ function calcTotalAmount() {
 	var delivery = removeCommas($.trim($("#delivery_fee").val()));
 	var add_total_price = removeCommas($.trim($("#add_total_price").val()));
 	var ecoupon_amt = eval($.trim($("#ecoupon_amt").val()));
-											  
+	var pickup_discount = eval($.trim($("#pickup_discount").val())); 
+
 	order_amt = isNaN(order_amt)? 0: Number(order_amt);
 	delivery = isNaN(delivery)? 0: Number(delivery);
 	add_total_price = isNaN(add_total_price)? 0: Number(add_total_price);
@@ -1121,8 +1128,8 @@ function calcTotalAmount() {
 	var discount = getPaycoinPoint();
 <%End If%>
 	var pay_amt = 0;
-
-	pay_amt = order_amt + delivery + add_total_price - discount;
+	
+	pay_amt = order_amt + delivery + add_total_price - discount - pickup_discount;
 
 	$("#dc_amt").val(discount);
 	$("#pay_amt").val(pay_amt);
@@ -1136,7 +1143,7 @@ function calcTotalAmount() {
     }else{
 	    $("#calc_dc_amt").text(addCommas(discount)+"원");
     }
-	$("#calc_pay_amt").html(addCommas(pay_amt)+"<span>원</span>");
+	$("#calc_pay_amt").html(addCommas(pay_amt)+"<span>원</span>"); //최종 결제금액
 
 	if(pay_amt == 0) {
 		$("#payment_card").prop("disabled", true);
@@ -1803,7 +1810,8 @@ function calcTotalAmount() {
 
 			<input type="hidden" name="b_code" value="<%=vBcode%>"><!-- 법정동 코드 2022. 3. 22) -->
 			<input type="hidden" name="h_code" value="<%=vHcode%>"><!-- 행정동 코드 2022. 3. 22) -->
-																	 
+			<input type="hidden" name="pickup_discount" id="pickup_discount" value="<%=pickup_discount%>"> <!-- 포장할인 추가(2022. 6. 7) -->
+
 			<!-- 장바구니 리스트 -->
 			<div class="section-wrap">
 				<section class="section section_orderDetail" id="payment_list">
@@ -2704,7 +2712,11 @@ function calcTotalAmount() {
 							<dt class="td">할인금액</dt>
 							<dd class="td" id="calc_dc_amt">0원</dd>
 						</dl>
-
+						<!-- 포장할인 추가(2022. 6. 7) -->
+						<dl class="tr" style="display:<%if pickup_discount > 0 then%><%else%>none<%end if%>">
+							<dt class="td">포장할인</dt>
+							<dd class="td"><%=FormatNumber(pickup_discount*-1,0)%>원</dd>
+						</dl>
 					</div>
 					<div class="bot div-table">
 						<dl class="tr">

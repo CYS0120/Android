@@ -150,12 +150,16 @@
 
 
 								slideHtml1 += "<ul class='find_shop'>";
-								slideHtml1 += "	<li><a href=\"javascript: selectStore('"+ json[i].branch_id +"')\" class='btn btn_middle btn-lightGray'>선택</a></li>";
 								slideHtml1 += "	<li class='find_shop_1'>";
 								slideHtml1 += "		<a href='/shop/shopView.asp?branch_id="+ json[i].branch_id +"' class='find_shop_name'>"+ json[i].branch_name +"</a> ";
 
 								if (json[i].branch_type == "올리브카페")
 									slideHtml1 += "		<a href='javascript: void(0)' class='btn btn-red btn_small4'>올리브카페</a>";
+								
+								//포장할인 추가(2022. 6. 7)
+								if (json[i].pickup_discount != "" && json[i].pickup_discount != "0"){
+									slideHtml1 += "		<a href='javascript: viewPickupDiscount("+ json[i].branch_id +")' class='btn btn-yellow btn_small5'><span id='pd_txt_"+ json[i].branch_id +"' style='min-width:60px;'>포장할인</span><span id='pd_amt_"+ json[i].branch_id +"' style='min-width: 60px; display:none'>"+ addCommas(json[i].pickup_discount) +"</span></a>";
+								}
 
 								slideHtml1 += "	</li>";
 
@@ -174,6 +178,7 @@
 								slideHtml1 += "		</div>";
 								slideHtml1 += "		<input type='hidden' id='br_"+ json[i].branch_id +"' value='"+ JSON.stringify(json[i]) +"'>";
 								slideHtml1 += "	</li>";
+								slideHtml1 += "	<li><a href=\"javascript: selectStore('"+ json[i].branch_id +"')\" style=\"border-radius: 50px; margin-bottom:10px\" class='btn btn_middle btn-lightGray'>선택</a></li>";
 								slideHtml1 += "</ul>";
 
 								z++;
@@ -282,7 +287,7 @@
 					var uluru = {lat: 37.491872, lng: 127.115922};
 
 					var options = {
-						enableHighAccuracy: true, 
+						enableHighAccuracy: true, //Android에서는 true이어야 정상 동작
 						timeout: 1500,
 						maximumAge: 0
 					}
@@ -376,11 +381,11 @@
 			<!-- 지도 출력 -->
 			<div id="map" style="display:none"></div>
 			<!-- //지도 출력 -->
-
+			<!-- 
 			<h3 class="subTitle mar-t50">
 				최근 주문매장
 			</h3>
-
+			-->
 			<div class="find_shop_wrap" id="order_branch_list"></div>
 
 

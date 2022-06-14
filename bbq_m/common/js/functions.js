@@ -1661,6 +1661,11 @@ function setDeliveryShopInfo(data) {
 						if (v.branch_type == "올리브카페")
 							ht += "		<a href='javascript: void(0)' class='btn btn-red btn_small4'>올리브카페</a>";
 
+						//포장할인 추가(2022. 6. 7)
+						if (v.pickup_discount != ""){
+							ht += "		<a href='javascript: viewPickupDiscount("+ v.branch_id +")' class='btn btn-yellow btn_small5'><span id='pd_txt_"+ v.branch_id +"' style='min-width:60px;'>포장할인</span><span id='pd_amt_"+ v.branch_id +"' style='min-width: 60px;display:none'>"+ addCommas(v.pickup_discount) +"</span></a>";
+						}
+
 						ht += "	</li>";
 
 						ht += "	<li class='find_shop_2'>";
@@ -1677,7 +1682,7 @@ function setDeliveryShopInfo(data) {
 						ht += "			<div id='map_"+ z +"' style='width:100%;height:350px;'></div>";
 						ht += "		</div>";
 						ht += "	</li>";
-                        ht += "	<li><a href=\"javascript: addr_img_control('"+ v.addr_idx +"', '"+ v.branch_id +"')\" class='btn btn_middle btn-lightGray' style='border-radius: 50px;'>선택</a></li>";
+                        ht += "	<li><a href=\"javascript: addr_img_control('"+ v.addr_idx +"', '"+ v.branch_id +"')\" class='btn btn_middle btn-lightGray' style='border-radius: 50px; margin-bottom:10px;'>선택</a></li>";
                         ht += "</ul>";
 
 						z++;
@@ -2027,4 +2032,19 @@ function paycoCoupon_Check_Json_url() {
 			});
 		}
 	});
+}
+
+function viewPickupDiscount(branch_id){
+	if($('#pd_txt_'+branch_id) != undefined){
+		if($('#pd_txt_'+branch_id).css("display") == "none"){
+			$('#pd_txt_'+branch_id).css("display", "inline-block");
+			$('#pd_amt_'+branch_id).css("display", "none");
+		}else{
+			//포장할인 금액 있으면 금액 노출
+			if($('#pd_amt_'+branch_id).html() != ""){
+				$('#pd_txt_'+branch_id).css("display", "none");
+				$('#pd_amt_'+branch_id).css("display", "inline-block");
+			}
+		}
+	}
 }
