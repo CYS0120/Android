@@ -18,7 +18,7 @@
 <%
 	brand_code	= InjRequest("brand_code")
 	menu_type	= InjRequest("menu_type")
-	menu_name	= InjRequest("menu_name")
+	menu_name	= replace(InjRequest("menu_name"), "'", "")
 	menu_name_e	= InjRequest("menu_name_e")
 	menu_price	= InjRequest("menu_price")
 	menu_desc	= InjRequest("menu_desc")
