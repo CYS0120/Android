@@ -1,9 +1,72 @@
 <html lang="ko">
 <head>
 	<link rel="stylesheet" href="/common/css/menu_base.css?v=" type="text/css">
+	<script src="/common/js/libs/jquery-1.12.4.min.js"></script>
+	<script src="/common/js/libs/jquery-ui-1.12.1.js"></script>
+	<script src="/common/js/libs/jquery.colorbox.js"></script>
+	<style>
+		.lp_container a.btn_lp_close2 {display: none;}
+		body.wh_sub_body {background: none;}
+	</style>
 </head>
 
+<!--#include virtual="/api/include/db_open.asp"-->
 <body class="wh_sub_body">
+<script>
+var tab_free3_b2_wrap;
+	$(function(){
+		// ¿ø»êÁö
+		if ($(".tab_free3_b2_wrap").length > 0) {
+			tab_free3_b2_wrap = $(".tab_free3_b2_wrap > div").bxSlider({
+				speed: 1000,
+				pause: 5000,
+				controls: false,
+				pager: true,
+				onSliderLoad: function (idx) {
+				}
+			});
+		};
+		$(".tab_free_b > li").each(function(index) {
+			$(this).click(function (e) {
+				e.preventDefault();
+				$(".tab_free_b > li").removeClass("active");
+				$(this).addClass("active");
+				$(".all_tab > div").hide();
+				$(".all_tab > div:eq(" + index + ")").show();
+				$.colorbox.resize();
+			});
+		});
+		$(".all_tab1 .tab_free3_b > li").each(function(index) {
+			$(this).click(function (e) {
+				e.preventDefault();
+				$(this).parent().find("li").removeClass("active");
+				$(this).addClass("active");
+				$(this).parent().parent().find(".allergy_pop_wrap div").hide();
+				$(this).parent().parent().find(".allergy_pop_wrap div:eq("+index+")").show();
+				$.colorbox.resize();
+			});
+		});
+		$(".all_tab2 .tab_free3_b > li").each(function(index) {
+			$(this).click(function (e) {
+				e.preventDefault();
+				$(this).parent().find("li").removeClass("active");
+				$(this).addClass("active");
+				$(this).parent().parent().find(".allergy_pop_wrap div").hide();
+				$(this).parent().parent().find(".allergy_pop_wrap div:eq("+index+")").show();
+				$.colorbox.resize();
+			});
+		});
+		$(".all_tab1").on("click", ".tab_free3_b_mob li", function(e) {
+			e.preventDefault();
+			$(".all_tab1").find(".tab_free3_b li").removeClass("active");
+			$(".all_tab1").find(".tab_free3_b2_list div ul li").removeClass("active");
+			$(".all_tab1").find(".tab_free3_b"+($(this).data("idx")+1)).addClass("active");
+			$(".all_tab1").find(".allergy_pop_wrap div").hide();
+			$(".all_tab1").find(".allergy_pop_wrap div:eq("+$(this).data("idx")+")").show();
+			$.colorbox.resize();
+		});
+	});
+</script>
 <!-- LP_pw -->
 <div id="LP_pw" class="lp_wrap lp_pw w big lp_allergy" data-width="900">
 
@@ -15,10 +78,18 @@
 
 			<!-- lp_pw_wrap -->
 			<div class="lp_pw_wrap">
-				<h2 class="h2_tit2">BBQ ì›ì‚°ì§€ í‘œì‹œíŒ</h2>
+				<h2 class="h2_tit2">BBQ ¿ø»êÁö Ç¥½ÃÆÇ</h2>
 
 				<!-- lp_thumb_body -->
 				<div class="lp_thumb_body">
+
+					<!-- tab_free_b -->
+					<ul class="tab_free_b" id="topTab">
+						<li class="active" data-tab="0"><a href="https://m.bbq.co.kr/menu/menu_base.asp#n">¿ø»êÁö Á¤º¸</a></li>
+						<li><a href="https://m.bbq.co.kr/menu/menu_base.asp#n" data-tab="1">¿µ¾ç¼ººÐ Á¤º¸</a></li>
+						<li><a href="https://m.bbq.co.kr/menu/menu_base.asp#n" data-tab="2">¾Ë·¹¸£±â À¯¹ß¹°Áú</a></li>
+					</ul>
+					<!-- // tab_free_b -->
 
 					<!-- all_tab -->
 					<div class="all_tab" style="margin-top:20px">
@@ -37,274 +108,271 @@
 										</colgroup>
 										<thead>
 										<tr>
-											<th scope="col">ë©”ë‰´ëª…</th>
-											<th scope="col">ì›ì‚°ì§€</th>
-											<th scope="col">í‘œì‹œí’ˆëª©</th>
+											<th scope="col">¸Þ´º¸í</th>
+											<th scope="col">¿ø»êÁö</th>
+											<th scope="col">Ç¥½ÃÇ°¸ñ</th>
 										</tr>
 										</thead>
 										<tbody>
-									<% If Date() >= "2022-05-17" Then row_num = 57 Else row_num = 51 End If%>	
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢</td>
-											<td rowspan=<%=row_num%>>êµ­ë‚´ì‚°</td>
-											<td rowspan=<%=row_num%>>ë‹­ê³ ê¸°</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â</td>
+											<td rowspan=57>±¹³»»ê</td>
+											<td rowspan=57>´ß°í±â</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í¬ëŸ°ì¹˜ ë²„í„°ì¹˜í‚¨</td>
+											<td class="th_bg">Å©·±Ä¡ ¹öÅÍÄ¡Å²</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ì½¤ë³´</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢âÄÞº¸</td>
 										</tr>
-									<% If Date() >= "2022-05-17" Then %>	
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ì½¤ë³´ í•«í¬ë¦¬ìŠ¤í”¼</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢âÄÞº¸ ÇÖÅ©¸®½ºÇÇ</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ì½¤ë³´ ë¸”ëž™íŽ˜í¼</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢âÄÞº¸ ºí·¢ÆäÆÛ</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ì½¤ë³´ ë ˆë“œì°©ì°©</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢âÄÞº¸ ·¹µåÂøÂø</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ì½¤ë³´ í¬ëŸ°ì¹˜ ë²„í„°</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢âÄÞº¸ Å©·±Ä¡ ¹öÅÍ</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ì½¤ë³´ ì–‘ë…</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢âÄÞº¸ ¾ç³ä</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ì½¤ë³´ ë°˜ë°˜</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢âÄÞº¸ ¹Ý¹Ý</td>
 										</tr>
-									<% End If %>	
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ì†ì•ˆì‹¬</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â¼Ó¾È½É</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢í•«ìœ™</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢âÇÖÀ®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ìˆœì‚´</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â¼ø»ì</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ë‹­ë‹¤ë¦¬</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â´ß´Ù¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ë°˜ë°˜</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â¹Ý¹Ý</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í•«í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ë ˆë“œì°©ì°©</td>
+											<td class="th_bg">ÇÖÈ²±Ý¿Ã¸®ºêÄ¡Å²¢â·¹µåÂøÂø</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í•«í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ë¸”ëž™íŽ˜í¼</td>
+											<td class="th_bg">ÇÖÈ²±Ý¿Ã¸®ºêÄ¡Å²¢âºí·¢ÆäÆÛ</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í•«í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢í¬ë¦¬ìŠ¤í”¼</td>
+											<td class="th_bg">ÇÖÈ²±Ý¿Ã¸®ºêÄ¡Å²¢âÅ©¸®½ºÇÇ</td>
 										</tr>
 										<tr>
-											<td class="th_bg">íŒŒë”'s ì¹˜í‚¨ë‘ë§ˆë¦¬</td>
+											<td class="th_bg">ÆÄ´õ's Ä¡Å²µÎ¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ëˆˆë§žì€ë‹­(ìœ™&ë´‰)</td>
+											<td class="th_bg">´«¸ÂÀº´ß(À®&ºÀ)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ê·¹í•œì™•ê°ˆë¹„ì¹˜í‚¨</td>
+											<td class="th_bg">±ØÇÑ¿Õ°¥ºñÄ¡Å²</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ì˜¬í•œ ê¹í’ì¹˜í‚¨</td>
+											<td class="th_bg">È²¿ÃÇÑ ±ñÇ³Ä¡Å²</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ì˜¬í•œ ê¹í’ìˆœì‚´</td>
+											<td class="th_bg">È²¿ÃÇÑ ±ñÇ³¼ø»ì</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì˜¤ë¦¬ì§€ë‚  ì–‘ë…ì¹˜í‚¨</td>
+											<td class="th_bg">¿À¸®Áö³¯ ¾ç³äÄ¡Å²</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ìˆœì‚´ì–‘ë…</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â¼ø»ì¾ç³ä</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì†Œì´ê°ˆë¦­ìŠ¤</td>
+											<td class="th_bg">¼ÒÀÌ°¥¸¯½º</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì†Œì´ê°ˆë¦­ìŠ¤(ìœ™)</td>
+											<td class="th_bg">¼ÒÀÌ°¥¸¯½º(À®)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ìžë©”ì´ì¹´ í†µë‹¤ë¦¬êµ¬ì´</td>
+											<td class="th_bg">ÀÚ¸ÞÀÌÄ« Åë´Ù¸®±¸ÀÌ</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ìŠ¤ëª¨í¬ì¹˜í‚¨</td>
+											<td class="th_bg">½º¸ðÅ©Ä¡Å²</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ë§¤ë‹¬êµ¬</td>
+											<td class="th_bg">¸Å´Þ±¸</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ìˆœì‚´ë°˜ë°˜</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â¼ø»ì¹Ý¹Ý</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ë‹­ë‹¤ë¦¬ë°˜ë°˜</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â´ß´Ù¸®¹Ý¹Ý</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í•«í™©ê¸ˆì˜¬ë¦¬ë¸Œâ„¢ë°˜ë°˜<br>(ë ˆë“œì°©ì°©+ë¸”ëž™íŽ˜í¼)</td>
+											<td class="th_bg">ÇÖÈ²±Ý¿Ã¸®ºê¢â¹Ý¹Ý<br>(·¹µåÂøÂø+ºí·¢ÆäÆÛ)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í•«í™©ê¸ˆì˜¬ë¦¬ë¸Œâ„¢ë°˜ë°˜<br>(ë ˆë“œì°©ì°©+í¬ë¦¬ìŠ¤í”¼)</td>
+											<td class="th_bg">ÇÖÈ²±Ý¿Ã¸®ºê¢â¹Ý¹Ý<br>(·¹µåÂøÂø+Å©¸®½ºÇÇ)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í•«í™©ê¸ˆì˜¬ë¦¬ë¸Œâ„¢ë°˜ë°˜<br>(ë¸”ëž™íŽ˜í¼+í¬ë¦¬ìŠ¤í”¼)</td>
+											<td class="th_bg">ÇÖÈ²±Ý¿Ã¸®ºê¢â¹Ý¹Ý<br>(ºí·¢ÆäÆÛ+Å©¸®½ºÇÇ)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì˜¤ë¦¬ì§€ë„ ë°˜ë°˜<br>(í™©ê¸ˆì˜¬ë¦¬ë¸Œâ„¢+í¬ë¦¬ìŠ¤í”¼)</td>
+											<td class="th_bg">¿À¸®Áö³Î ¹Ý¹Ý<br>(È²±Ý¿Ã¸®ºê¢â+Å©¸®½ºÇÇ)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì˜¤ë¦¬ì§€ë„ ë°˜ë°˜<br>(í™©ê¸ˆì˜¬ë¦¬ë¸Œâ„¢+ë ˆë“œì°©ì°©)</td>
+											<td class="th_bg">¿À¸®Áö³Î ¹Ý¹Ý<br>(È²±Ý¿Ã¸®ºê¢â+·¹µåÂøÂø)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì˜¤ë¦¬ì§€ë„ ë°˜ë°˜<br>(í™©ê¸ˆì˜¬ë¦¬ë¸Œâ„¢+ë¸”ëž™íŽ˜í¼)</td>
+											<td class="th_bg">¿À¸®Áö³Î ¹Ý¹Ý<br>(È²±Ý¿Ã¸®ºê¢â+ºí·¢ÆäÆÛ)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">íŒŒë”'sì¹˜í‚¨(ì™€ì‚¬ë¹„)</td>
+											<td class="th_bg">ÆÄ´õ'sÄ¡Å²(¿Í»çºñ)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">íŒŒë”'sì¹˜í‚¨(ë¡œìŠ¤íŠ¸ ê°ˆë¦­)</td>
+											<td class="th_bg">ÆÄ´õ'sÄ¡Å²(·Î½ºÆ® °¥¸¯)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ëˆˆë§žì€ë‹­(ìœ™&ë´‰) ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">´«¸ÂÀº´ß(À®&ºÀ) ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢<br>ìˆœì‚´ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â<br>¼ø»ì ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢<br>ë‹­ë‹¤ë¦¬ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â<br>´ß´Ù¸® ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì˜¤ë¦¬ì§€ë‚  ì–‘ë…ì¹˜í‚¨ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">¿À¸®Áö³¯ ¾ç³äÄ¡Å² ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢<br>ìˆœì‚´ì–‘ë… ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">È²±Ý¿Ã¸®ºêÄ¡Å²¢â<br>¼ø»ì¾ç³ä ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í•«í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢<br>ë¸”ëž™íŽ˜í¼ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">ÇÖÈ²±Ý¿Ã¸®ºêÄ¡Å²¢â<br>ºí·¢ÆäÆÛ ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í•«í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢<br>í¬ë¦¬ìŠ¤í”¼ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">ÇÖÈ²±Ý¿Ã¸®ºêÄ¡Å²¢â<br>Å©¸®½ºÇÇ ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í•«í™©ê¸ˆì˜¬ë¦¬ë¸Œì¹˜í‚¨â„¢<br>ë ˆë“œì°©ì°© ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">ÇÖÈ²±Ý¿Ã¸®ºêÄ¡Å²¢â<br>·¹µåÂøÂø ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ìžë©”ì´ì¹´ í†µë‹¤ë¦¬êµ¬ì´ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">ÀÚ¸ÞÀÌÄ« Åë´Ù¸®±¸ÀÌ ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ìŠ¤ëª¨í¬ì¹˜í‚¨ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">½º¸ðÅ©Ä¡Å² ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ì˜¬í•œ ê¹í’ì¹˜í‚¨ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">È²¿ÃÇÑ ±ñÇ³Ä¡Å² ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ì˜¬í•œ ê¹í’ìˆœì‚´ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">È²¿ÃÇÑ ±ñÇ³¼ø»ì ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í¬ëŸ°ì¹˜ ë²„í„°ì¹˜í‚¨ ë°˜ë§ˆë¦¬</td>
+											<td class="th_bg">Å©·±Ä¡ ¹öÅÍÄ¡Å² ¹Ý¸¶¸®</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í•«ì¹˜í‚¨í”¼ìž</td>
+											<td class="th_bg">ÇÖÄ¡Å²ÇÇÀÚ</td>
 										</tr>
 										<tr>
-											<td class="th_bg">BBQ ë‹­ê»ë°ê¸°</td>
+											<td class="th_bg">BBQ ´ß²®µ¥±â</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì¹˜ì¦ë§ ì¹©ìŠ¤</td>
+											<td class="th_bg">Ä¡Áñ¸µ Ä¨½º</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ì˜¬í•œ ë‹­ë°œíŠ€ê¹€</td>
+											<td class="th_bg">È²¿ÃÇÑ ´ß¹ßÆ¢±è</td>
 										</tr>
 										<tr>
-											<td class="th_bg" rowspan=2>ë¡œì œì¹˜í‚¨</td>
-											<td>êµ­ë‚´ì‚°</td>
-											<td>ë‹­ê³ ê¸°</td>
+											<td class="th_bg" rowspan=2>·ÎÁ¦Ä¡Å²</td>
+											<td>±¹³»»ê</td>
+											<td>´ß°í±â</td>
 										</tr>
 										<tr>
-											<td>ì™¸êµ­ì‚°</td>
-											<td>ë² ì´ì»¨ìŠ¬ë¼ì´ìŠ¤(ë¼ì§€ê³ ê¸°)</td>
+											<td>¿Ü±¹»ê</td>
+											<td>º£ÀÌÄÁ½½¶óÀÌ½º(µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">í™©ì˜¬ í¬ëŸ°ì¹˜ ë„ˆê²Ÿ(í¬ëž˜ì»¤)</td>
-											<td>ë¸Œë¼ì§ˆì‚°</td>
-											<td>ë‹­ê³ ê¸°</td>
+											<td class="th_bg">È²¿Ã Å©·±Ä¡ ³Ê°Ù(Å©·¡Ä¿)</td>
+											<td>ºê¶óÁú»ê</td>
+											<td>´ß°í±â</td>
 										</tr>
 										<tr>
-											<td class="th_bg">BBQ ì¹˜í‚¨ë²„ê±° ë§ˆì¼ë“œ</td>
-											<td rowspan=2>êµ­ë‚´ì‚°(ë‹­ê³ ê¸°)</td>
-											<td rowspan=2>ì¶©ì§„ì‹íŒ¨í‹°(ì¹˜í‚¨íŒ¨í‹°)</td>
+											<td class="th_bg">BBQ Ä¡Å²¹ö°Å ¸¶ÀÏµå</td>
+											<td rowspan=2>±¹³»»ê(´ß°í±â)</td>
+											<td rowspan=2>ÃæÁø½ÄÆÐÆ¼(Ä¡Å²ÆÐÆ¼)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">BBQ ì¹˜í‚¨ë²„ê±° ìŠ¤íŒŒì´ì‹œ</td>
+											<td class="th_bg">BBQ Ä¡Å²¹ö°Å ½ºÆÄÀÌ½Ã</td>
 										</tr>
 										<tr>
-											<td class="th_bg">íŽ˜í¼ë¡œë‹ˆ ì‹œì¹´ê³ í”¼ìž(ë¼ì§€/ë ˆê·¤ëŸ¬)</td>
-											<td>êµ­ë‚´ì‚°</td>
-											<td>íŽ˜í¼ë¡œë‹ˆ(ë¼ì§€ê³ ê¸°)</td>
+											<td class="th_bg">ÆäÆÛ·Î´Ï ½ÃÄ«°íÇÇÀÚ(¶óÁö/·¹±Ö·¯)</td>
+											<td>±¹³»»ê</td>
+											<td>ÆäÆÛ·Î´Ï(µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td class="th_bg" rowspan=4>ì½¤ë¹„ë„¤ì´ì…˜í”¼ìž</td>
-											<td>í˜¸ì£¼ì‚°(ì‡ ê³ ê¸°)</td>
-											<td rowspan=2>íŽ˜í¼ë¡œë‹ˆí”ŒëŸ¬ìŠ¤<br>(ì‡ ê³ ê¸°, ë¼ì§€ê³ ê¸°)</td>
+											<td class="th_bg" rowspan=4>ÄÞºñ³×ÀÌ¼ÇÇÇÀÚ</td>
+											<td>È£ÁÖ»ê(¼è°í±â)</td>
+											<td rowspan=2>ÆäÆÛ·Î´ÏÇÃ·¯½º<br>(¼è°í±â, µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td>êµ­ë‚´ì‚°(ë¼ì§€ê³ ê¸°)</td>
+											<td>±¹³»»ê(µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td rowspan=2>ì™¸êµ­ì‚°ê³¼ êµ­ë‚´ì‚° ì„žìŒ</td>
-											<td>í¬í¬íƒ‘í•‘(ë¼ì§€ê³ ê¸°)</td>
+											<td rowspan=2>¿Ü±¹»ê°ú ±¹³»»ê ¼¯À½</td>
+											<td>Æ÷Å©Å¾ÇÎ(µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td>ìŠ¤ëª¨í¬í–„(ë¼ì§€ê³ ê¸°)</td>
+											<td>½º¸ðÅ©ÇÜ(µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td class="th_bg" rowspan=3>ê³ êµ¬ë§ˆíë“€í”¼ìž</td>
-											<td>í˜¸ì£¼ì‚°(ì‡ ê³ ê¸°)</td>
-                                            <td rowspan=2>íŽ˜í¼ë¡œë‹ˆí”ŒëŸ¬ìŠ¤<br>(ì‡ ê³ ê¸°, ë¼ì§€ê³ ê¸°)</td>
+											<td class="th_bg" rowspan=3>°í±¸¸¶ÆþµàÇÇÀÚ</td>
+											<td>È£ÁÖ»ê(¼è°í±â)</td>
+                                            <td rowspan=2>ÆäÆÛ·Î´ÏÇÃ·¯½º<br>(¼è°í±â, µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td>êµ­ë‚´ì‚°(ë¼ì§€ê³ ê¸°)</td>
+											<td>±¹³»»ê(µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td>ì™¸êµ­ì‚°</td>
-											<td>ë² ì´ì»¨ìŠ¬ë¼ì´ìŠ¤(ë¼ì§€ê³ ê¸°)</td>
+											<td>¿Ü±¹»ê</td>
+											<td>º£ÀÌÄÁ½½¶óÀÌ½º(µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ë– ë¨¹ëŠ” ìŠ¤ìœ„íŠ¸ê°ìž</td>
-											<td>ì™¸êµ­ì‚°</td>
-											<td>ë² ì´ì»¨ì¹©(ë¼ì§€ê³ ê¸°)</td>
+											<td class="th_bg">¶°¸Ô´Â ½ºÀ§Æ®°¨ÀÚ</td>
+											<td>¿Ü±¹»ê</td>
+											<td>º£ÀÌÄÁÄ¨(µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ë°°ì¶”ê¹€ì¹˜</td>
-											<td>êµ­ë‚´ì‚°</td>
-											<td>ë°°ì¶”, ê³ ì¶§ê°€ë£¨</td>
+											<td class="th_bg">¹èÃß±èÄ¡</td>
+											<td>±¹³»»ê</td>
+											<td>¹èÃß, °íÃå°¡·ç</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì˜¤ë‹¤ë¦¬</td>
-											<td>ì¤‘êµ­ì‚°</td>
-											<td>ì˜¤ì§•ì–´</td>
+											<td class="th_bg">¿À´Ù¸®</td>
+											<td>Áß±¹»ê</td>
+											<td>¿ÀÂ¡¾î</td>
 										</tr>
 										<tr>
-											<td class="th_bg">BBQ ì†Œë–¡</td>
-											<td>êµ­ë‚´ì‚°</td>
-                                            <td>ì†Œì‹œì§€(ë‹­ê³ ê¸°, ë¼ì§€ê³ ê¸°)</td>
+											<td class="th_bg">BBQ ¼Ò¶±</td>
+											<td>±¹³»»ê</td>
+                                            <td>¼Ò½ÃÁö(´ß°í±â, µÅÁö°í±â)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì˜¤ì§•ì–´íŠ€ê¹€</td>
-											<td rowspan=2>ì™¸êµ­ì‚°</td>
-											<td rowspan=2>ì˜¤ì§•ì–´</td>
+											<td class="th_bg">¿ÀÂ¡¾îÆ¢±è</td>
+											<td rowspan=2>¿Ü±¹»ê</td>
+											<td rowspan=2>¿ÀÂ¡¾î</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ì˜¤ê°ë³¼</td>
+											<td class="th_bg">¿À°¨º¼</td>
 										</tr>
 										<tr>
-											<td class="th_bg">ë°¥(CJë”°ë°¥)</td>
-											<td>ë¯¸êµ­ì‚°</td>
-                                            <td>ìŒ€</td>
+											<td class="th_bg">¹ä(CJµû¹ä)</td>
+											<td>¹Ì±¹»ê</td>
+                                            <td>½Ò</td>
 										</tr>
 										</tbody>
 									</table>
@@ -314,6 +382,158 @@
 
 						</div>
 						<!-- // all_tab1 -->
+
+						<!-- all_tab2 -->
+						<div class="all_tab2">
+
+							<!-- allergy_pop_wrap -->
+							<div class="allergy_pop_wrap">
+								<div class="allergy_pop">
+									<p>¡Ø ¹Ý¸¶¸®´Â ÇÑ¸¶¸® Á¤º¸¿Í µ¿ÀÏÇÕ´Ï´Ù.</p>
+									<table>
+										<caption>
+											¿µ¾ç¼ººÐ Á¤º¸
+										</caption>
+										<colgroup>
+											<col width="100">
+											<col width="">
+											<col width="80">
+											<col width="80">
+											<col width="80">
+											<col width="80">
+											<col width="85">
+										</colgroup>
+										<thead>
+										<tr>
+											<th scope="col">Ä«Å×°í¸®¸í</th>
+											<th scope="col">À½½Ä¸í</th>
+											<th scope="col">¿­·®<br><span style="font-size:13px;">(kcal/100g)</span></th>
+											<th scope="col">´ç·ù<br><span style="font-size:13px;">(g/100g)</span></th>
+											<th scope="col">´Ü¹éÁú<br><span style="font-size:13px;">(g/100g)</span></th>
+											<th scope="col">Áö¹æ<br><span style="font-size:13px;">(g/100g)</span></th>
+											<th scope="col">³ªÆ®·ý<br><span style="font-size:13px;">(mg/100g)</span></th>
+										</tr>
+										</thead>
+										<tbody>
+<%	
+			Set aCmd = Server.CreateObject("ADODB.Command")
+
+			With aCmd
+				.ActiveConnection = dbconn
+				.CommandType = adCmdStoredProc
+				.CommandText = "bp_menu_base_select"
+
+				Set aRs = .Execute
+			End With
+
+			Set aCmd = Nothing
+
+			If Not (aRs.BOF Or aRs.EOF) Then
+				aRs.MoveFirst
+
+				Do Until aRs.EOF
+					CAT_NAME = aRs("CAT_NAME")
+					MENU_NAME = aRs("MENU_NAME")
+					CALORIE = aRs("CALORIE")
+					SUGARS = aRs("SUGARS")
+					PROTEIN = aRs("PROTEIN")
+					SATURATEDFAT = aRs("SATURATEDFAT")
+					NATRIUM = aRs("NATRIUM")
+%>
+											<tr>
+												<td class="th_bg"><%=CAT_NAME%></td>
+												<td><%=replace(replace(MENU_NAME,"¼ÒÀÌ°¥¸¯½º","¼ÒÀÌ°¥¸¯½º(ÇÑ¸¶¸®/À®)"),"(¶óÁö)","(¶óÁö/·¹±Ö·¯)")%></td>
+												<td><%=CALORIE%></td>
+												<td><%=SUGARS%></td>
+												<td><%=PROTEIN%></td>
+												<td><%=SATURATEDFAT%></td>
+												<td><%=NATRIUM%></td>
+											</tr>
+<%
+					aRs.MoveNext
+				Loop
+			End If
+
+			Set aRs = Nothing
+%>
+										</tbody>						
+										
+									</table>
+								</div>
+								
+							</div>
+							<!-- // allergy_pop_wrap -->
+
+						</div>
+						<!-- // all_tab2 -->
+
+						<!-- all_tab3 -->
+						<div class="all_tab3">
+
+							<!-- allergy_pop_wrap -->
+							<div class="allergy_pop_wrap">
+								<div class="allergy_pop">
+									<p>¡Ø ¹Ý¸¶¸®´Â ÇÑ¸¶¸® Á¤º¸¿Í µ¿ÀÏÇÕ´Ï´Ù.</p>
+									<table>
+										<caption>
+											¾Ë·¹¸£±â À¯¹ß¹°Áú
+										</caption>
+										<colgroup>
+											<col width="100">
+											<col width="290">
+											<col width="">
+										</colgroup>
+										<thead>
+										<tr>
+											<th scope="col">Ä«Å×°í¸®¸í</th>
+											<th scope="col">À½½Ä¸í</th>
+											<th scope="col">¾Ë·¯Áö À¯¹ß¹°Áú</th>
+										</tr>
+										</thead>
+										<tbody>
+<%
+			Set aCmd = Server.CreateObject("ADODB.Command")
+
+			With aCmd
+				.ActiveConnection = dbconn
+				.CommandType = adCmdStoredProc
+				.CommandText = "bp_menu_base_select"
+
+				Set aRs = .Execute
+			End With
+
+			Set aCmd = Nothing
+
+			If Not (aRs.BOF Or aRs.EOF) Then
+				aRs.MoveFirst
+
+				Do Until aRs.EOF
+					CAT_NAME = aRs("CAT_NAME")
+					MENU_NAME = aRs("MENU_NAME")
+					ALLERGY = aRs("ALLERGY")
+%>
+											<tr>
+												<td class="th_bg"><%=CAT_NAME%></td>
+												<td><%=replace(replace(replace(MENU_NAME,"¼ÒÀÌ°¥¸¯½º","¼ÒÀÌ°¥¸¯½º(ÇÑ¸¶¸®/À®)"),"(¶óÁö)","(¶óÁö/·¹±Ö·¯)"),"¹Ý¹Ý(","¹Ý¹Ý<br>(")%></td>
+												<td><%=ALLERGY%></td>
+											</tr>
+<%
+					aRs.MoveNext
+				Loop
+			End If
+
+			Set aRs = Nothing
+%>
+										</tbody>						
+										
+									</table>
+								</div>
+								
+							</div>
+							<!-- // allergy_pop_wrap -->
+
+						</div>
+						<!-- // all_tab3 -->
 
 					</div>
 					<!-- // all_tab -->
