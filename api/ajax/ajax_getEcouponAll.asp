@@ -49,14 +49,17 @@
             End If
             
             '쿠폰 조회 로그 쌓기 (2022.3.4)
-	dim client_ip 
-	client_ip = Request.ServerVariables("HTTP_X_FORWARDED_FOR")
-	If FncIsBlank(client_ip) Then
-		client_ip = Request.ServerVariables("HTTP_CLIENT_IP")
-		If FncIsBlank(client_ip) Then
-			client_ip = Request.ServerVariables("REMOTE_ADDR")
-		End If
-	End If
+            dim client_ip 
+            client_ip = Request.ServerVariables("HTTP_X_FORWARDED_FOR")
+            If FncIsBlank(client_ip) Then
+                client_ip = Request.ServerVariables("HTTP_CLIENT_IP")
+                If FncIsBlank(client_ip) Then
+                    client_ip = Request.ServerVariables("REMOTE_ADDR")
+                End If
+            End If
+
+            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & Session("userIdx") & "','['+convert(varchar(19), getdate() , 120)+'] PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & "P"&Session.sessionid & " / CLIENT_IP " & C_STR(client_ip) & " / REMOTE_ADDR " & Request.ServerVariables("REMOTE_ADDR") & " / REFERER " & Request.ServerVariables("HTTP_REFERER") & "','0','ajax_getEcouponAll-1')"
+            dbconn.Execute(Sql)
 
 			Set eCmd = Server.CreateObject("ADODB.Command")
 			With eCmd
@@ -68,7 +71,7 @@
 				.Parameters.Append .CreateParameter("@coupon_number", adVarChar, adParamInput, 50, txtPIN)
 				.Parameters.Append .CreateParameter("@sessionid", adVarChar, adParamInput, 100, "P"&Session.sessionid)
 			    .Parameters.Append .CreateParameter("@member_idx", adInteger, adParamInput, , Session("userIdx"))
-				.Parameters.Append .CreateParameter("@remote_addr", adVarChar, adParamInput, 30, client_ip)
+				.Parameters.Append .CreateParameter("@remote_addr", adVarChar, adParamInput, 30, C_STR(client_ip))
 				.Parameters.Append .CreateParameter("@ERRCODE", adInteger, adParamOutput)
 				.Parameters.Append .CreateParameter("@ERRMSG", adVarChar, adParamOutput, 500)
 				.Execute
@@ -78,7 +81,7 @@
 			End With
 			Set eCmd = Nothing
 			If ERRCODE = 1 Then 
-                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & "P"&Session.sessionid & "/" & C_STR(Session("userIdx")) & " / REMOTE_ADDR " & client_ip & " / ERRCODE " & ERRCODE & " / ERRMSG 조회초과-" & ERRMSG & "','0','ajax_getEcouponAll-err')"
+                Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & Session("userIdx") & "','['+convert(varchar(19), getdate() , 120)+'] PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & "P"&Session.sessionid & "/" & C_STR(Session("userIdx")) & " / REMOTE_ADDR " & client_ip & " / ERRCODE " & ERRCODE & " / ERRMSG 조회초과-" & ERRMSG & "','0','ajax_getEcouponAll-err')"
                 dbconn.Execute(Sql)
 
 				Response.Write "{""result"":1, ""message"":"""& ERRMSG &"""}"
@@ -111,7 +114,7 @@
                 RESULT_PRODUCT_CODE = smartcon_Result.m_ProductCode
             end if 
 
-            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & "P"&Session.sessionid & "/" & C_STR(Session("userIdx")) & " / REMOTE_ADDR " & Request.ServerVariables("REMOTE_ADDR") & " / RESULT " & RESULT & " / RESULT_MSG " & RESULT_MSG & "','0','ajax_getEcouponAll-2')"
+            Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & Session("userIdx") & "','['+convert(varchar(19), getdate() , 120)+'] PIN_save "& PIN_save & " / txtPIN " & txtPIN & " / SESSION " & "P"&Session.sessionid & "/" & C_STR(Session("userIdx")) & " / REMOTE_ADDR " & Request.ServerVariables("REMOTE_ADDR") & " / RESULT " & RESULT & " / RESULT_MSG " & RESULT_MSG & "','0','ajax_getEcouponAll-2')"
             dbconn.Execute(Sql)
 
             Dim cmd, rs
