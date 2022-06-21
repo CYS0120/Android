@@ -1193,7 +1193,7 @@
 				<div class="btn-wrap one mar-t30">
 
 					<%
-						If CheckLogin() Then
+						If Not CheckLogin() Then
 					%>
 
 					<a href="/" class="btn btn_big btn-red">홈으로 가기</a>
@@ -1203,7 +1203,7 @@
 						Else
 					%>
 
-					<a href="/" class="btn btn_big btn-red">주문내역 확인</a>
+					<a href="/mypage/orderList.asp" class="btn btn_big btn-red">주문내역 확인</a>
 
 					<%
 						End If
