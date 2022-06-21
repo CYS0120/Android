@@ -110,8 +110,8 @@ function ChangeOrder(MENU_IDX, FVAL){
 
 									<select name="USE" id="USE" onChange="document.location.href='?CD=<%=CD%>&SM=<%=SM%>&SW=<%=Server.UrlEncode(SW)%>&ORD=<%=ORD%>&LNUM=<%=LNUM%>&MTP=<%=MTP%>&GUBUN=<%=GUBUN%>&USE='+this.value">
 										<option value="Y"<%If USE="Y" Then%> selected<%End If%>>사용</option>
-										<option value="N"<%If USE="N" Then%> selected<%End If%>>중지</option>
 										<option value="H"<%If USE="H" Then%> selected<%End If%>>숨기기</option>
+										<option value="N"<%If USE="N" Then%> selected<%End If%>>중지</option>
 									</select>
 									<select name="SM" id="SM">
 										<option value="N"<%If SM="N" Then%> selected<%End If%>>메뉴명</option> 
