@@ -249,9 +249,6 @@ var tab_free3_b2_wrap;
 											<td class="th_bg">오리지날 양념치킨 반마리</td>
 										</tr>
 										<tr>
-											<td class="th_bg">황금올리브치킨™<br>순살양념 반마리</td>
-										</tr>
-										<tr>
 											<td class="th_bg">핫황금올리브치킨™<br>블랙페퍼 반마리</td>
 										</tr>
 										<tr>
@@ -264,16 +261,10 @@ var tab_free3_b2_wrap;
 											<td class="th_bg">자메이카 통다리구이 반마리</td>
 										</tr>
 										<tr>
-											<td class="th_bg">스모크치킨 반마리</td>
-										</tr>
-										<tr>
 											<td class="th_bg">황올한 깐풍치킨 반마리</td>
 										</tr>
 										<tr>
 											<td class="th_bg">황올한 깐풍순살 반마리</td>
-										</tr>
-										<tr>
-											<td class="th_bg">크런치 버터치킨 반마리</td>
 										</tr>
 										<tr>
 											<td class="th_bg">핫치킨피자</td>
@@ -286,6 +277,15 @@ var tab_free3_b2_wrap;
 										</tr>
 										<tr>
 											<td class="th_bg">황올한 닭발튀김</td>
+										</tr>
+										<tr>
+											<td class="th_bg">TOP3세트메뉴 Set1</td>
+										</tr>
+										<tr>
+											<td class="th_bg">TOP3세트메뉴 Set2</td>
+										</tr>
+										<tr>
+											<td class="th_bg">TOP3세트메뉴 Set3</td>
 										</tr>
 										<tr>
 											<td class="th_bg" rowspan=2>로제치킨</td>
@@ -303,8 +303,8 @@ var tab_free3_b2_wrap;
 										</tr>
 										<tr>
 											<td class="th_bg">BBQ 치킨버거 마일드</td>
-											<td rowspan=2>국내산(닭고기)</td>
-											<td rowspan=2>충진식패티(치킨패티)</td>
+											<td rowspan=2>국내산</td>
+											<td rowspan=2>치킨패티(닭고기)</td>
 										</tr>
 										<tr>
 											<td class="th_bg">BBQ 치킨버거 스파이시</td>
@@ -345,6 +345,11 @@ var tab_free3_b2_wrap;
 											<td class="th_bg">떠먹는 스위트감자</td>
 											<td>외국산</td>
 											<td>베이컨칩(돼지고기)</td>
+										</tr>
+										<tr>
+											<td class="th_bg">브라운 비프 피자</td>
+											<td>호주산(쇠고기)</td>
+											<td>비프스트립</td>
 										</tr>
 										<tr>
 											<td class="th_bg">배추김치</td>
