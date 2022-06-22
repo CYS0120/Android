@@ -195,6 +195,11 @@
     REQ_DATA.Add "ISNOTI", "N"
     REQ_DATA.Add "BYPASSVALUE", "this=is;a=test;bypass=value" '// BILL응답 또는 Noti에서 돌려받을 값. '&'를 사용할 경우 값이 잘리게되므로 유의.
 
+    '**************************************************
+	'* 제휴사 정보
+	'**************************************************/
+    REQ_DATA.Add "ALLIANCECODEBASE", "NONE"
+    
 ' ISDEBUG = TRUE
     if ISDEBUG Then
         FOR EACH key IN REQ_DATA
@@ -202,10 +207,15 @@
         NEXT
     end if
 
+    FOR EACH key IN REQ_DATA
+        sReqData = sReqData & key & " : " & REQ_DATA.Item(key) & "/" 
+    NEXT
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"&sReqData&"','0','danal_card-Ready-000')"
+	dbconn.Execute(Sql)
 
 	Set RES_DATA = CallCredit(REQ_DATA, false)
 	
-    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','"& Session("UserId") &"','0','danal_card-session-ready')"
+    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] "& Session("UserId") & "/" & Session("UserIdx") &"','0','danal_card-session-ready')"
     dbconn.Execute(Sql)
 
 	IF RES_DATA.Item("RETURNCODE") = "0000" Then
