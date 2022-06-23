@@ -385,6 +385,8 @@
 			<input type="hidden" name="b_code" value="">
 			<input type="hidden" name="mobile" value="">
 			<input type="hidden" name="h_code" value=""> <!-- 행정동코드 -->
+			<input type="hidden" name="lat" value=""> <!-- 위경도 추가 (2022. 6. 22) -->
+			<input type="hidden" name="lng" value=""> <!-- 위경도 추가 (2022. 6. 22) -->
 
 			<!-- LP Header -->
 			<div class="lp-header">

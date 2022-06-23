@@ -1177,12 +1177,15 @@ function selectCoordHCode(mode, addr_idx, query, param){
 						if(res.documents[0].hasOwnProperty("address") && res.documents[0].address.hasOwnProperty("h_code")){ // 행정동코드 정보 있을 때 
 							err_msg = ""; //오류 없음
 							h_code = res.documents[0].address.h_code;
+							lat = res.documents[0].address.y;
+							lng = res.documents[0].address.x;
 														
 							// 4. 회원 주소 정보에 행정동코드 저장하기 
 							if(h_code != ""){
                                 if(typeof(param) == 'object' && param.prop('tagName')=="INPUT") { //행정동 코드 form에 저장
                                     $(param).val(h_code);
-                                }
+                                    $("#form_addr input[name=lat]").val(String(lat).substr(0,10));
+                                    $("#form_addr input[name=lng]").val(String(lng).substr(0,11));                                }
 								if(addr_idx != "" && addr_idx > 0){
 									var err_msg2 = "행정동 코드 저장 오류";
 									$.ajax({
