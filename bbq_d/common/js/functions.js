@@ -42,6 +42,20 @@ function setAddress(addr_idx) {
                 $("#form_addr [name=zip_code]").val(res[0].zip_code);
                 $("#form_addr [name=address_main]").val(res[0].address_main);
                 $("#form_addr [name=address_detail]").val(res[0].address_detail);
+                
+				if(typeof($("#form_addr [name=h_code]")) != 'undefined'){
+					//기존에 등록된 배달지 중 행정동코드(h_code)가 없는 경우 h_code 가져오기
+					if(res[0].h_code == ""){
+						var query = res[0].address_road;
+						
+						if(query == "")
+							query = res[0].address_jibun;
+						
+						selectCoordHCode("F", addr_idx, query, $("#form_addr [name=h_code]"));
+					}else{
+						$("#form_addr [name=h_code]").val(res[0].h_code);
+					}
+				}
             }
         }
     });

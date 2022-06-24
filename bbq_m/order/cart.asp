@@ -129,6 +129,7 @@
 				<input type="hidden" name="addr_data" id="addr_data" value='<%=addr_data%>'>
 				<input type="hidden" name="spent_time" id="spent_time">
 				<input type="hidden" name="pin_save" id="pin_save">
+				<input type="hidden" name="h_code" id="h_code"> <!-- 행정동 코드 값 보관 -->
 			</form>
 
 			<input type="hidden" id="CART_IN_PRODIDX">
@@ -771,6 +772,11 @@
 		} else {
 			var addr_data = JSON.parse(sessionStorage.getItem("ss_addr_data"));
 			var branch_data = JSON.parse(sessionStorage.getItem("ss_branch_data"));
+			
+			if($("#cart_form input[name='h_code']").val() != undefined && $("#cart_form input[name='h_code']").val() != "" && (addr_data.h_code == "" || addr_data.h_code == undefined)){
+				addr_data["h_code"] = $("#cart_form input[name='h_code']").val();
+				sessionStorage.setItem("ss_addr_data", JSON.stringify(addr_data));
+			}
 		}
 		// 매장선택부터 안했다면 메인으로 ㄱ
 		if (branch_data != "" && typeof(branch_data) != "undefined" && branch_data != "" && branch_data != null) {
@@ -1056,6 +1062,13 @@
 			switch($("#order_type").val()) {
 				case "D":
 				if($("#branch_id").val() != "" && $("#branch_data").val() != "" && $("#addr_id").val() != "" && $("#addr_data").val() != "") {
+					//행정동 코드 확인 (2022. 6. 7)
+					var obj = $.parseJSON($("#addr_data").val()); 
+					let h_code = obj.h_code;
+					if(h_code == "" || h_code == undefined){
+						//행정동 코드 가져오기 
+						selectCoordHCode("F", "", obj.address_road, $("#cart_form input[name=h_code]"));
+					}
 					$("#btn_order").show();
 				} else {
 					$("#order_type_title").text("주문방법 및 주소지가 선택되지 않았습니다.");

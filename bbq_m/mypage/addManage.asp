@@ -301,7 +301,7 @@
 				<!-- 배달지 리스트 -->
 				<section class="section_addManage">
 
-					<div class="btn_wrap"><button type="button" onClick="javascript:lpOpen('.lp_addShipping');"  class="btn btn-red btn_middle">배달지 추가</button></div>
+					<div class="btn_wrap"><button type="button" onClick="javascript:$('#form_addr input[name=mode]').val('I');$('#form_addr input[name=addr_idx]').val('');$('#form_addr')[0].reset();lpOpen('.lp_addShipping');"  class="btn btn-red btn_middle">배달지 추가</button></div>
 
 					<div class="section-header">
 						<h3>등록된 주소</h3>

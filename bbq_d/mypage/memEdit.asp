@@ -330,7 +330,7 @@ function validInfo() {
 								<table border="1" cellspacing="0" class="tbl-list" id="address_list">
 									<caption>주소지 관리</caption>
 									<colgroup>
-										<col style="width:120px;">
+										<col style="width:180px;">
 										<col style="width:auto;">
 										<col style="width:180px;">
 									</colgroup>
@@ -421,7 +421,7 @@ function validInfo() {
 										<button class="btn btn-sm btn-grayLine" onClick="setPcMainAddress();">기본주소지 설정</button>
 									</div>
 									<div class="right">
-										<button type="button" class="btn btn-md3 btn-red" onclick="javascript:lpOpen('.lp_address');">주소지 추가</button>
+										<button type="button" class="btn btn-md3 btn-red" onclick="javascript:$('#form_addr input[name=mode]').val('I');$('#form_addr input[name=addr_idx]').val('');$('#form_addr')[0].reset();lpOpen('.lp_address');">주소지 추가</button>
 									</div>
 								</div>
 							</div>
@@ -460,7 +460,7 @@ function validInfo() {
 							<!-- LP Content -->
 							<div class="lp-content">
 								<section class="section">
-									<form id="form_addr" name="form_addr" method="post" onsubmit="return validAddress(); return false;">
+									<form id="form_addr" name="form_addr" method="post" onsubmit="selectCoordHCode('Y', $('#form_addr input[name=addr_idx]').val(), $('#form_addr input[name=address_main]').val(), $('#form_addr input[name=h_code]'));return false;">
 										<input type="hidden" name="addr_idx" value="">
 										<input type="hidden" name="mode" value="I">
 										<input type="hidden" name="addr_type" value="">
