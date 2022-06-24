@@ -281,44 +281,47 @@
 	Dim iLen : iLen = cJson.length
 	For i = 0 To iLen - 1
 		if Not cJson.get(i).hasOwnProperty("value") then 
-			'pin 번호 확인을 위한 로그 
-			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& Session("userIdx") &"','['+convert(varchar(19), getdate() , 120)+'] cart_value : "& cart_value & " / i : "& i &" / iLen : " & iLen & "','0','payment-pin-2')"
-			dbconn.Execute(Sql)
-		end if 
-		CouponPin = cJson.get(i).value.pin
-		If CouponPin <> "" Then 
-			If vCoupon_yn = "N" Then 
-				CouponYNCheck = "N"
-				Exit For
-			End If
-
-			set pinRs=server.createobject("adodb.recordset")
-			Set pinCmd = Server.CreateObject("ADODB.Command")
-
-			with pinCmd
-				.ActiveConnection = dbconn
-				.CommandText = BBQHOME_DB & ".DBO.UP_COUPON_CHECK_JOIN_PARTNER"
-				.CommandType = adCmdStoredProc
-
-				.Parameters.Append .CreateParameter("@PIN",advarchar,adParamInput,50, CouponPin)
-				.Parameters.Append .CreateParameter("@BRAND_CD",advarchar,adParamInput,2, "01")
-				.Parameters.Append .CreateParameter("@PARTNER_CD",advarchar,adParamInput,7, branch_id)
-
-				pinRs.CursorLocation = adUseClient
-				pinRs.Open pinCmd
-			End With
-
-			Set pinCmd = Nothing
-			If pinRs.Eof And pinRs.Bof Then
-			Else
-				Do Until pinRs.EOF
-					If pinRs("RESULT_CODE") = "1000" Then 
-						 CouponYNCheck = "N"
+		else
+			if Not cJson.get(i).value.hasOwnProperty("pin") then 
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& Session("userIdx") &"','['+convert(varchar(19), getdate() , 120)+'] cart_value : "& cart_value & " / i : "& i &" / iLen : " & iLen & "','0','payment-pin-2')"
+				dbconn.Execute(Sql)
+			else
+				CouponPin = cJson.get(i).value.pin
+				If CouponPin <> "" Then 
+					If vCoupon_yn = "N" Then 
+						CouponYNCheck = "N"
+						Exit For
 					End If
-					pinRs.MoveNext
-				Loop
-			End If
-		End If 
+
+					set pinRs=server.createobject("adodb.recordset")
+					Set pinCmd = Server.CreateObject("ADODB.Command")
+
+					with pinCmd
+						.ActiveConnection = dbconn
+						.CommandText = BBQHOME_DB & ".DBO.UP_COUPON_CHECK_JOIN_PARTNER"
+						.CommandType = adCmdStoredProc
+
+						.Parameters.Append .CreateParameter("@PIN",advarchar,adParamInput,50, CouponPin)
+						.Parameters.Append .CreateParameter("@BRAND_CD",advarchar,adParamInput,2, "01")
+						.Parameters.Append .CreateParameter("@PARTNER_CD",advarchar,adParamInput,7, branch_id)
+
+						pinRs.CursorLocation = adUseClient
+						pinRs.Open pinCmd
+					End With
+
+					Set pinCmd = Nothing
+					If pinRs.Eof And pinRs.Bof Then
+					Else
+						Do Until pinRs.EOF
+							If pinRs("RESULT_CODE") = "1000" Then 
+								 CouponYNCheck = "N"
+							End If
+							pinRs.MoveNext
+						Loop
+					End If
+				End If 
+			end if 
+		end if 
 	Next
 
 	If Not IsNumeric(vDeliveryFee) Then vDeliveryFee = 0
@@ -1119,7 +1122,7 @@ function calcTotalAmount() {
 	var delivery = removeCommas($.trim($("#delivery_fee").val()));
 	var add_total_price = removeCommas($.trim($("#add_total_price").val()));
 	var ecoupon_amt = eval($.trim($("#ecoupon_amt").val()));
-	var pickup_discount = eval($.trim($("#pickup_discount").val())); 
+	var pickup_discount = Number(<%=pickup_discount%>); // 포장할인 추가(2022. 6. 7)
 
 	order_amt = isNaN(order_amt)? 0: Number(order_amt);
 	delivery = isNaN(delivery)? 0: Number(delivery);
@@ -1131,7 +1134,20 @@ function calcTotalAmount() {
 <%End If%>
 	var pay_amt = 0;
 	
-	pay_amt = order_amt + delivery + add_total_price - discount - pickup_discount;
+	pay_amt = order_amt + delivery + add_total_price - discount;
+
+	// 포장할인 추가(2022. 6. 7)
+	if(pickup_discount > 0){
+		if (pay_amt >= pickup_discount){
+			pay_amt = pay_amt - pickup_discount;
+		}else{ 
+			//포장할인 금액이 주문금액 초과할 때 금액 조정
+			pickup_discount = pay_amt;
+			pay_amt = 0;
+		}
+		$("#pickup_discount").val(pickup_discount);
+		$("#pickup_discount_txt").text("- "+ addCommas(pickup_discount) + "원");
+	}
 
 	$("#dc_amt").val(discount);
 	$("#pay_amt").val(pay_amt);
@@ -1153,7 +1169,7 @@ function calcTotalAmount() {
 		$("#payment_payco").prop("disabled", true);
 		$("#payment_kakaopay").prop("disabled", true);
 		$("#payment_paycoin").prop("disabled", true);
-		$("#payment_sgpay").prop("disabled", true);
+		$("#payment_sgpay2").prop("disabled", true);
 		$("#payment_later").prop("disabled", true);
 		$("#payment_cash").prop("disabled", true);
 
@@ -1162,7 +1178,7 @@ function calcTotalAmount() {
 		$("#payment_payco").removeClass("on");
 		$("#payment_kakaopay").removeClass("on");
 		$("#payment_paycoin").removeClass("on");
-		$("#payment_sgpay").removeClass("on");
+		$("#payment_sgpay2").removeClass("on");
 		$("#payment_later").removeClass("on");
 		$("#payment_cash").removeClass("on");
 
@@ -1177,7 +1193,7 @@ function calcTotalAmount() {
 		$("#payment_payco").prop("disabled", false);
 		$("#payment_kakaopay").prop("disabled", false);
 		$("#payment_paycoin").prop("disabled", false);
-		$("#payment_sgpay").prop("disabled", false);
+		$("#payment_sgpay2").prop("disabled", false);
 		$("#payment_later").prop("disabled", false);
 		$("#payment_cash").prop("disabled", false);
 
@@ -1187,7 +1203,7 @@ function calcTotalAmount() {
         $("#payment_payco").removeClass("on");
         $("#payment_kakaopay").removeClass("on");
         $("#payment_paycoin").removeClass("on");
-        $("#payment_sgpay").removeClass("on");
+        $("#payment_sgpay2").removeClass("on");
         $("#payment_later").removeClass("on");
         $("#payment_cash").removeClass("on");
         // 2021-07 더페이 추가 끝
@@ -2738,7 +2754,7 @@ function calcTotalAmount() {
 						<!-- 포장할인 추가(2022. 6. 7) -->
 						<dl class="tr" style="display:<%if pickup_discount > 0 then%><%else%>none<%end if%>">
 							<dt class="td">포장할인</dt>
-							<dd class="td"><%=FormatNumber(pickup_discount*-1,0)%>원</dd>
+							<dd class="td" id="pickup_discount_txt"><%=FormatNumber(pickup_discount*-1,0)%>원</dd>
 						</dl>
 					</div>
 					<div class="bot div-table">

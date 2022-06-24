@@ -126,6 +126,9 @@
         Response.End
     End If
 
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / BRANCH_ID " & branch_id & " / SessionUserIdNo " & Session("userIdNo") & " / OrderType " & order_type & " / GetIPADDR " & GetIPADDR() & " / coupon_id " & coupon_id & "','"& pay_amt &"','payment_proc-1')"
+	dbconn.Execute(Sql)
+	
 	' 쿠폰금액 부분 비교
 	If CheckLogin() Then
 		If Trim(coupon_id) <> "" Then ' 쿠폰이 있다면 검사
@@ -153,6 +156,9 @@
     If order_type = "P" And addr_idx = "" Then addr_idx = 0
     ' Response.Write cart_value
 
+    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / BRANCH_ID " & branch_id & " / SessionUserIdNo " & Session("userIdNo") & " / OrderType " & order_type & " / GetIPADDR " & GetIPADDR() & " / cart_value " & cart_value & "','"& pay_amt &"','payment_proc-2')"
+    dbconn.Execute(Sql)
+	
     Dim aCmd, aRs
 
     Dim cJson : Set cJson = JSON.Parse(cart_value)
@@ -235,6 +241,9 @@
 		SESS_menu_qty = cJson.get(i).value.qty
 		SESS_coupon_pin = cJson.get(i).value.pin
 
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / BRANCH_ID " & branch_id & " / SessionUserIdNo " & Session("userIdNo") & " / OrderType " & order_type & " / GetIPADDR " & GetIPADDR() & " / i " & i & " / SESS_menu_idx " & SESS_menu_idx & " / SESS_menu_qty " & SESS_menu_qty & " / SESS_coupon_pin " & SESS_coupon_pin & "','"& pay_amt &"','payment_proc-2-1')"
+		dbconn.Execute(Sql)
+		
 		Set bCmd = Server.CreateObject("ADODB.Command")
 		With bCmd
 			.ActiveConnection = dbconn
@@ -391,6 +400,9 @@
         mmidno = "P"&Session.sessionid
     End If 
 
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / BRANCH_ID " & branch_id & " / SessionUserIdNo " & Session("userIdNo") & " / OrderType " & order_type & " / GetIPADDR " & GetIPADDR() & "','"& pay_amt &"','payment_proc-2-2')"
+	dbconn.Execute(Sql)
+	
 	For i = 0 To iLen - 1
 		CouponPin = cJson.get(i).value.pin
 		If CouponPin <> "" Then 
@@ -419,6 +431,9 @@
 		End If 
 	Next
 
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / BRANCH_ID " & branch_id & " / SessionUserIdNo " & Session("userIdNo") & " / OrderType " & order_type & " / GetIPADDR " & GetIPADDR() & "','"& pay_amt &"','payment_proc-2-3')"
+	dbconn.Execute(Sql)
+	
 	If event_point > 0 Then 
 		Set aCmd = Server.CreateObject("ADODB.Command")
 		With aCmd
@@ -631,7 +646,7 @@
     Dim dt : dt = FormatDateTime(Now, 4)
 
 	'payco 쿠폰 누락 확인을 위한 로그 
-	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / cart_value " & cart_value & " / cart_value 길이 " & iLen & "','0','payment-payco_coupon-1')"
+	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / cart_value " & cart_value & " / cart_value 길이 " & iLen & " / mmidno " & mmidno & "','0','payment-payco_coupon-1')"
 	dbconn.Execute(Sql)
 		
     For i = 0 To iLen - 1
@@ -676,7 +691,7 @@
 			'Response.write i & ":" & errCode & "-" & errMsg & "-" & order_detail_idx & "<br>"
 			If errCode = 1 Then
 				'payco 쿠폰 누락 확인을 위한 로그 
-				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / errCode " & cstr(errCode) & " / cart_value 순번 " & cstr(i) & "','0','payment-payco_coupon-2')"
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / errCode " & cstr(errCode) & " / cart_value 순번 " & cstr(i) & " / mmidno " & mmidno & "','0','payment-payco_coupon-2')"
 				dbconn.Execute(Sql)
 				
 				Response.Write "{""result"":1, ""result_msg"":""주문상세내역이 저장되지 않았습니다."", ""order_idx"":"& order_idx &",""order_num"":""" & order_num & """}"
@@ -1025,12 +1040,12 @@
 
 	'포장할인 추가(2022. 6. 7)
 	If order_type = "P" and (pickup_discount > 0 or branch_pickup_discount > 0) Then
-		if branch_pickup_discount <> pickup_discount then 
+		if branch_pickup_discount < pickup_discount then 
 			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / pickup_discount " & pickup_discount & " / branch_pickup_discount " & branch_pickup_discount & " / mmidno " & mmidno & "','0','payment-pickup-err')"
 			dbconn.Execute(Sql)
 			Response.Write "{""result"":1, ""result_msg"":""포장할인 금액이 올바르지 않습니다.""}"
 			Response.End
-		else
+		elseif pickup_discount > 0 then 
 			Set aCmd = Server.CreateObject("ADODB.Command")
 			With aCmd
 				.ActiveConnection = dbconn
@@ -1330,8 +1345,9 @@ If gift_prod <> "" Then
     'order_idx = GetReqStr("order_idx","")
     'Response.Write order_idx
 
+
     '값 확인을 위한 로그 
-    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / gift_prod " & cstr(gift_prod) & " / giftproductcode " & cstr(giftproductcode) & "','0','payment_proc-check-giftproductcode')"
+    Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('" & order_idx & "','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / gift_prod " & cstr(gift_prod) & " / giftproductcode " & cstr(giftproductcode) & " / giftproductclasscode " & cstr(giftproductclasscode) & " / mmidno " & mmidno & "','0','payment_proc-check-giftproductcode')"
     dbconn.Execute(Sql)
 
     Set aCmd = Server.CreateObject("ADODB.Command")
@@ -1498,6 +1514,10 @@ End If
 			Calc_Discount_amt = Calc_Discount_amt + CDbl(save_point)
 
 		End If
+		
+		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / BRANCH_ID " & branch_id & " / SessionIdx " & Session("userIdNo") & " / OrderType " & order_type & " / mmidno " & mmidno & " / bbq_card " & bbq_card & "','"& pay_amt &"','payment_proc-3')"
+		dbconn.Execute(Sql)
+		
 		Set pJson = JSON.Parse(bbq_card)
 		
 		If pJson.length > 0 Then
