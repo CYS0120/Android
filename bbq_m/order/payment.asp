@@ -186,6 +186,7 @@
 
 	vUseDANAL = "N"
 	vUsePAYCO = "N"
+	vUseKAKAOPAY = "N"
 	vUsePAYCOIN = "N"
 	vUseSGPAY = "N"		'SGPAY 추가(가맹점별 가입 여부) / Sewoni31™ / 2019.12.09
 
@@ -197,6 +198,7 @@
 		vSubCPID = aRs("DANAL_H_SCPID")
 		vUseDANAL = aRs("USE_DANAL")
 		vUsePAYCO = aRs("USE_PAYCO")
+		vUseKAKAOPAY = aRs("USE_KAKAOPAY")
 		vPayco_Seller = aRs("payco_seller")
 		vPayco_Cpid = aRs("payco_cpid")
 		vPayco_Itemcd = aRs("payco_itemcd")
@@ -1149,6 +1151,7 @@ function calcTotalAmount() {
 		$("#payment_card").prop("disabled", true);
 		$("#payment_phone").prop("disabled", true);
 		$("#payment_payco").prop("disabled", true);
+		$("#payment_kakaopay").prop("disabled", true);
 		$("#payment_paycoin").prop("disabled", true);
 		$("#payment_sgpay").prop("disabled", true);
 		$("#payment_later").prop("disabled", true);
@@ -1157,6 +1160,7 @@ function calcTotalAmount() {
 		$("#payment_card").removeClass("on");
 		$("#payment_phone").removeClass("on");
 		$("#payment_payco").removeClass("on");
+		$("#payment_kakaopay").removeClass("on");
 		$("#payment_paycoin").removeClass("on");
 		$("#payment_sgpay").removeClass("on");
 		$("#payment_later").removeClass("on");
@@ -1171,6 +1175,7 @@ function calcTotalAmount() {
 		$("#payment_card").prop("disabled", false);
 		$("#payment_phone").prop("disabled", false);
 		$("#payment_payco").prop("disabled", false);
+		$("#payment_kakaopay").prop("disabled", false);
 		$("#payment_paycoin").prop("disabled", false);
 		$("#payment_sgpay").prop("disabled", false);
 		$("#payment_later").prop("disabled", false);
@@ -1180,6 +1185,7 @@ function calcTotalAmount() {
         $("#payment_card").removeClass("on");
         $("#payment_phone").removeClass("on");
         $("#payment_payco").removeClass("on");
+        $("#payment_kakaopay").removeClass("on");
         $("#payment_paycoin").removeClass("on");
         $("#payment_sgpay").removeClass("on");
         $("#payment_later").removeClass("on");
@@ -1321,7 +1327,7 @@ function calcTotalAmount() {
 		%>
 
 		var pay_method = $("#pay_method").val();
-		if (pay_method=='Point' || pay_method=='Later' || pay_method=='ECoupon' || pay_method=='Cash' || pay_method=='Paycoin' || pay_method=='Sgpay' || pay_method=='Sgpay2'){
+		if (pay_method=='Point' || pay_method=='Later' || pay_method=='ECoupon' || pay_method=='Cash' || pay_method=='Paycoin' || pay_method=='Sgpay' || pay_method=='Sgpay2' || pay_method=='Kakaopay'){
 			ClickCheck = 1;
 		}
 
@@ -1546,6 +1552,18 @@ function calcTotalAmount() {
 					$("#o_form").attr("action", "/pay/payco/payco_popup.asp");
 					$("#o_form").submit();
 				}
+				setTimeout("ClickCheck = 0", 1000);
+				break;
+			// 카카오페이 간편결제 (다날)
+			case "Kakaopay":
+				<% If instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqiOS") > 0 Or instr(Request.ServerVariables("HTTP_USER_AGENT"), "bbqAOS") > 0 Then %>
+				<% else %>
+					win_pay = window.open("","pgp",pgPopupOption);
+					$("#o_form").attr("target", "pgp");
+				<% end if %>
+
+				$("#o_form").attr("action","/pay/kakaopay/Ready.asp");
+				$("#o_form").submit();
 				setTimeout("ClickCheck = 0", 1000);
 				break;
 			case "Paycoin":
@@ -2617,7 +2635,7 @@ function calcTotalAmount() {
    end if
 
    'If vUseDANAL = "Y" Or vUsePAYCO = "Y" Then
-   If vUseDANAL = "Y" Or vUsePAYCO = "Y" Or vUseSGPAY = "Y" Or vUsePAYCOIN = "Y" Then      'SGPAY 추가(사용 가맹점 여부에 따라 노출/비노출) / Sewoni31™ / 2019.12.09
+   If vUseDANAL = "Y" Or vUsePAYCO = "Y" Or vUseSGPAY = "Y" Or vUsePAYCOIN = "Y" Or vUseKAKAOPAY = "Y" Then      'SGPAY 추가(사용 가맹점 여부에 따라 노출/비노출) / Sewoni31™ / 2019.12.09
 %>
        <dl class="online">
           <dt>일반결제</dt>
@@ -2644,6 +2662,11 @@ function calcTotalAmount() {
                 <%
                    If SAMSUNG_USEFG = "Y" Then
                    Else
+                      If vUseKAKAOPAY = "Y" Then
+                %>
+                         <li><button type="button" id="payment_kakaopay" onclick="javascript:setPayMethod('Kakaopay');" class="payment_choiceSel">카카오페이</button></li>
+                <%
+                      End If
                       If vUsePAYCO = "Y" Then
                 %>
                          <li><button type="button" id="payment_payco" onclick="javascript:setPayMethod('Payco');" class="payment_choiceSel">페이코</button></li>

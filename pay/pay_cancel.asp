@@ -302,6 +302,12 @@
 				params = "tid="& TID &"&order_num="& ORDER_ID &"&branch_id="& BRANCH_ID
 				html_result = URL_Send(host, params)
 
+			ElseIf PAY_TYPE = "Kakaopay" Then
+
+				host = SITE_DOMAINURL_BBQ & "/pay/kakaopay/BillCancel.asp"
+				params = "tid="& TID &"&order_num="& ORDER_ID &"&branch_id="& BRANCH_ID
+				html_result = URL_Send(host, params)
+
 			ElseIf PAY_TYPE = "Payco" Then
 
 				host = SITE_DOMAINURL_BBQ & "/pay/payco/payco_cancel.asp"
@@ -502,6 +508,8 @@
 				payMethodCode = "23"
 			ElseIf PAY_TYPE = "Cash" Then 
 				payMethodCode = "21"
+			ElseIf PAY_TYPE = "Kakopay" Then 
+				payMethodCode = "23"
 			Else
 				payMethodCode = "99"
 			End If

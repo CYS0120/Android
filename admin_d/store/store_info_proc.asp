@@ -45,6 +45,7 @@
 	payco_cpid	= InjRequest("payco_cpid")
 	payco_itemcd	= InjRequest("payco_itemcd")
 	paycoin_cpid	= InjRequest("paycoin_cpid")
+	kakaopay_cpid	= InjRequest("kakaopay_cpid")
 	sgpay_merchant	= InjRequest("sgpay_merchant")
 	newbranch_title	= InjRequest("newbranch_title")
 	newbranch_explan	= InjRequest("newbranch_explan")
@@ -73,6 +74,7 @@
 		Sql = Sql & ", wgs84_x='"& wgs84_x &"', wgs84_y='"& wgs84_y &"' "
 	end if
 	Sql = Sql & ", pickup_discount='"& pickup_discount &"' " '포장할인 추가(2022. 6. 7)
+	Sql = Sql & ", kakaopay_cpid='"& kakaopay_cpid &"' " '카카오페이 추가(2022. 6. 20)
 	Sql = Sql & " , mod_user_idx='"& SITE_ADM_CD &"', mod_date=GetDate(), mod_ip='"& REG_IP &"' "
 	Sql = Sql & " Where branch_id = '" & branch_id & "'"
 	conn.Execute(Sql)

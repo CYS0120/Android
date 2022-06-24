@@ -526,6 +526,8 @@ function SmsHistory(ORDER_ID){
 					USE_PAY_METHOD_TXT = "핸드폰"
 				ElseIf USE_PAY_METHOD = "DANAL_000002" Then
 					USE_PAY_METHOD_TXT = "신용카드"
+				ElseIf USE_PAY_METHOD = "DANAL_000003" Then
+					USE_PAY_METHOD_TXT = "카카오페이"
 				ElseIf USE_PAY_METHOD = "PCO_00000001" Then
 					USE_PAY_METHOD_TXT = "페이코"
 				ElseIf USE_PAY_METHOD = "PCOIN_000001" Then
