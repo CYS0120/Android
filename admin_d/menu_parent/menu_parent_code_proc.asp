@@ -39,8 +39,8 @@
 		End If
 
 '		code_name	= Replace(code_name,"'","''")
-		Sql = "	Insert Into bt_code_detail(item_idx, code_name, code_ord) " & _
-			"	Values("& item_idx &",'"& code_name &"', (Select isnull(max(code_ord),0)+1 From bt_code_detail Where item_idx="& item_idx &") )"
+		Sql = "	Insert Into bt_code_detail(item_idx, code_name, code_ord, reg_date) " & _
+			"	Values("& item_idx &",'"& code_name &"', (Select isnull(max(code_ord),0)+1 From bt_code_detail Where item_idx="& item_idx &"), getdate() )"
 		conn.Execute(Sql)
 
 		Response.Write "Y^등록 되었습니다"
@@ -60,7 +60,7 @@
 		End If 
 
 '		code_name	= Replace(code_name,"'","''")
-		Sql = "	Update bt_code_detail Set code_name='"& code_name &"' Where code_idx=" & code_idx
+		Sql = "	Update bt_code_detail Set code_name='"& code_name &"', mod_date=getdate() Where code_idx=" & code_idx
 		conn.Execute(Sql)
 
 		Response.Write "Y^변경 되었습니다"
@@ -106,7 +106,7 @@
 			code_idx = arrcode_idx(Cnt)
 			code_ord = Cnt + 1	
 
-			Sql = "	Update bt_code_detail Set code_ord='"& code_ord &"' Where code_idx=" & code_idx
+			Sql = "	Update bt_code_detail Set code_ord='"& code_ord &"', mod_date=getdate() Where code_idx=" & code_idx
 			conn.Execute(Sql)
 		Next 				
 
