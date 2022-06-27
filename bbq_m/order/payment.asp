@@ -2665,7 +2665,6 @@ function calcTotalAmount() {
 
                 <% If vCPID <> "" And vUseDANAL = "Y" Then %>
 					<li><button type="button" id="payment_card" onclick="javascript:setPayMethod('Card');" class="payment_choiceSel">신용카드</button></li>
-					<li><button type="button" id="payment_phone" onclick="javascript:setPayMethod('Phone');" class="payment_choiceSel">휴대전화 결제</button></li>
                 <% end if %>
 
                 <% If vUseSGPAY = "Y" AND CheckLogin() Then %>
@@ -2675,14 +2674,19 @@ function calcTotalAmount() {
 	                <% end if %>
                 <% end if %>
 
+                <% If vUseKAKAOPAY = "Y" Then %>
+					<%	if branch_id = "1146001" then %>
+                         <li><button type="button" id="payment_kakaopay" onclick="javascript:setPayMethod('Kakaopay');" class="payment_choiceSel">카카오페이</button></li>
+	                <% end if %>
+                <% End If %>
+
+                <% If vCPID <> "" And vUseDANAL = "Y" Then %>
+					<li><button type="button" id="payment_phone" onclick="javascript:setPayMethod('Phone');" class="payment_choiceSel">휴대전화 결제</button></li>
+                <% end if %>
+
                 <%
                    If SAMSUNG_USEFG = "Y" Then
                    Else
-                      If vUseKAKAOPAY = "Y" Then
-                %>
-                         <li><button type="button" id="payment_kakaopay" onclick="javascript:setPayMethod('Kakaopay');" class="payment_choiceSel">카카오페이</button></li>
-                <%
-                      End If
                       If vUsePAYCO = "Y" Then
                 %>
                          <li><button type="button" id="payment_payco" onclick="javascript:setPayMethod('Payco');" class="payment_choiceSel">페이코</button></li>
