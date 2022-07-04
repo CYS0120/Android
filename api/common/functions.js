@@ -1641,6 +1641,9 @@ function sessionStorageException(key)
 	if(key.substring(0, 3) == "ss_") return false;
 	if(key.substring(0, 3) == "ec_") return false;
 	if(key == "ENP_SESSION_KEY") return false;
+    
+	if(key == "ENP_KEYWORD") return false; // 검색엔진 키워드
+	if(key == "savefrom-helper-extension") return false;
 }
 
 function change_store_cart(br_id)
