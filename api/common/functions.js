@@ -887,7 +887,7 @@ function getCurrentPage() {
 function checkDeliveryShop(addrdata) {
     $.ajax({
         method: "post",
-        url: "/api/ajax/ajax_getshop.asp",
+        url: "/api/ajax/ajax_getshopNew.asp",
         data: {data: JSON.stringify(addrdata)},
         dataType: "json",
         success: function(res) {
