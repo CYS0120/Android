@@ -1,3 +1,10 @@
+<%@Language="VBScript" CODEPAGE="65001" %>
+<%
+  Response.CharSet="utf-8"
+  Session.codepage="65001"
+  Response.codepage="65001"
+  Response.ContentType="text/html;charset=utf-8"
+%>
 <%
 	BRCD = "1146001"	' prm / 로그인 정보로 수정 필요(필수)
 	BRAND_CODE	= "01"
@@ -11,7 +18,7 @@
 	strConnection = "Provider=SQLOLEDB;Persist Security Info=False;User ID="& UserName &";passWord="& UserPass &";Initial Catalog="& DatabaseName &";Data Source="& ServerHost &""
 	conn.Open strConnection
 
-	Sql = "Select * From bt_branch Where branch_id = " & BRCD & " And BRAND_CODE='"& BRAND_CODE &"' "
+	Sql = "Select branch_id, brand_code, branch_name, pickup_discount From bt_branch Where branch_id = " & BRCD & " And BRAND_CODE='"& BRAND_CODE &"' "
 	Set Rinfo = conn.Execute(Sql)
 	If Rinfo.eof Then 
 %>
@@ -64,14 +71,14 @@ function InputCheck(){
 		type: "POST",
 		url: "store_pickupDC_proc.asp",
 		data: $("#inputfrm").serialize(),
-		dataType: "text",
-		success: function (data) {
-			alert(data.split("^")[1]);
-			if(data.split("^")[0] == 'Y'){
+		dataType: "json",
+		success: function (res) {
+			alert(res.result_msg);
+			if(res.result == "00"){
 				location.reload();
 			}
 		},
-		error: function(data, status, err) {
+		error: function(res, status, err) {
 			alert(err + '서버와의 통신이 실패했습니다.');
 		}
 	});
