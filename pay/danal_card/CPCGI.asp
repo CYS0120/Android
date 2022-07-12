@@ -157,6 +157,7 @@
 			Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / Result "& Replace(Result, "'","") & " / ErrMsg "& Replace(ErrMsg, "'","") &"','0','danal_card-err1')"
 			dbconn.Execute(Sql)
 
+			RETURNCODE = "COUPON"
 			BackURL 	= "javascript:self.close();"
 %>
             <!--#include file="Error.asp"-->
@@ -431,6 +432,9 @@
 				dbconn.Execute(Sql)
 
 				returnUrl = "/order/orderEnd.asp?order_idx="& order_idx &"&pm=Card"
+                if session("userId") = "ozwitch" then 
+                    returnUrl = "/order/orderEnd_test_used_ecoupon.asp?order_idx="& order_idx &"&pm=Card"
+                end if 
 
 				response.write vbCrLf & "<iframe id='err_iframe' src='"& returnUrl &"' width='0' height='0' scrolling='no' frameborder='0' style='display:none'></iframe>"
 				response.write vbCrLf & "<script>"
