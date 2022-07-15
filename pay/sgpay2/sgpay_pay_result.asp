@@ -524,13 +524,6 @@
 				dbconn.Execute(Sql)
 
 
-	'지류상품권 사용 처리 inc_giftcard_use.asp (2021. 10 더페이)
-	'inc_giftcard_use.asp에서 order_num, order_idx, brand_code, branch_id 사용함
-%>
-<!--#include virtual="/order/inc_giftcard_use.asp"-->
-
-<%
-
 				If errCode <> 0 Then
 					'상태업데이트가 제대로 이루어지지 않음
 					'페이지 리로드일 경우
@@ -539,6 +532,11 @@
 					dbconn.Execute(Sql)
 
 				Else
+					'지류상품권 사용 처리 inc_giftcard_use.asp (2021. 10 더페이)
+					'inc_giftcard_use.asp에서 order_num, order_idx, brand_code, branch_id 사용함
+%>
+<!--#include virtual="/order/inc_giftcard_use.asp"-->
+<%
 					If member_type = "Member" Then
 						Sql = "Select payco_log, coupon_amt From bt_order_payco with(nolock) Where order_idx="& order_idx
 						Set Pinfo = dbconn.Execute(Sql)

@@ -22,7 +22,7 @@
 	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] start / ORDER_IDX " & order_idx & " / IP " & Request.ServerVariables("LOCAL_ADDR") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & " / HTTP_URL " & Request.ServerVariables("HTTP_URL") & "','0','end-START')"
 	dbconn.Execute(Sql)
 
-	If order_idx = "" Then
+	If order_idx = "" or paytype = "" Then
 %>
 	<script type="text/javascript">
 		alert("잘못된 접근입니다."); 
@@ -159,12 +159,6 @@
 	Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] "& order_channel &"','0','end-001')"
 	dbconn.Execute(Sql)
 
-	'지류상품권 사용 처리 inc_giftcard_use.asp (2021. 10 더페이)
-	'inc_giftcard_use.asp에서 order_num, order_idx, brand_code, branch_id 사용함
-%>
-<!--#include virtual="/order/inc_giftcard_use.asp"-->
-
-<%
 	If errCode <> 0 Then
 		'상태업데이트가 제대로 이루어지지 않음
 		'페이지 리로드일 경우
@@ -172,6 +166,12 @@
 		Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('"& order_idx &"','['+convert(varchar(19), getdate() , 120) + '] errCode-"&errCode&"','0','end-err')"
 		dbconn.Execute(Sql)
 	Else
+		'지류상품권 사용 처리 inc_giftcard_use.asp (2021. 10 더페이)
+		'inc_giftcard_use.asp에서 order_num, order_idx, brand_code, branch_id 사용함
+%>
+<!--#include virtual="/order/inc_giftcard_use.asp"-->
+
+<%
 		If member_type = "Member" Then
 			Sql = "Select payco_log, coupon_amt From bt_order_payco Where order_idx="& order_idx
 			Set Pinfo = dbconn.Execute(Sql)
