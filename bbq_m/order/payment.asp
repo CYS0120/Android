@@ -230,8 +230,21 @@
 
 				Set fRs = .Execute
 				
+				If Session("userIdNo") <> "" Then
+					mmidno = Session("userIdNo")
+				Else
+					mmidno = "P"&Session.sessionid
+				End If
+
+				Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / branch_id " & branch_id & " / b_code " & vBcode & " / h_code " & vHcode & " / vAddress " & vAddress & " / mmidno " & mmidno & "','0','payment-delivery_fee-1')"
+				dbconn.Execute(Sql)
+
 				If Not (fRs.BOF Or fRs.EOF) Then
 					iDongFee = fRs("delivery_fee") 
+
+					Sql = "Insert Into bt_order_g2_log(order_idx, payco_log, coupon_amt, log_point) values('0','['+convert(varchar(19), getdate() , 120)+'] IP " & Request.ServerVariables("LOCAL_ADDR") & " / branch_id " & branch_id & " / b_code " & vBcode & " / h_code " & vHcode & " / vAddress " & vAddress & " / mmidno " & mmidno & " / 추가배달비 " & iDongFee & "','0','payment-delivery_fee-2')"
+					dbconn.Execute(Sql)
+
 					If IsNumeric(iDongFee) Then 
 						vDeliveryFee = vDeliveryFee + iDongFee
 					End If
@@ -2675,9 +2688,7 @@ function calcTotalAmount() {
                 <% end if %>
 
                 <% If vUseKAKAOPAY = "Y" Then %>
-					<%	if branch_id = "1146001" then %>
-                         <li><button type="button" id="payment_kakaopay" onclick="javascript:setPayMethod('Kakaopay');" class="payment_choiceSel">카카오페이</button></li>
-	                <% end if %>
+					<li><button type="button" id="payment_kakaopay" onclick="javascript:setPayMethod('Kakaopay');" class="payment_choiceSel">카카오페이</button></li>
                 <% End If %>
 
                 <% If vCPID <> "" And vUseDANAL = "Y" Then %>
