@@ -22,12 +22,14 @@ Class clsResMapStore
 
 		'DataList
 		If JSON.hasKey(obj, "data") Then
-			ReDim mDataList(obj.data.length-1)
-			For i=0 To obj.data.length-1
-				Dim tmpDataList : Set tmpDataList = New clsMapStoreDataList
-				tmpDataList.Init(obj.data.get(i))
-				Set mDataList(i) = tmpDataList
-			Next
+			If obj.data <> "" Then
+				ReDim mDataList(obj.data.length-1)
+				For i=0 To obj.data.length-1
+					Dim tmpDataList : Set tmpDataList = New clsMapStoreDataList
+					tmpDataList.Init(obj.data.get(i))
+					Set mDataList(i) = tmpDataList
+				Next
+			End If
 		End If
 	End Function
 
