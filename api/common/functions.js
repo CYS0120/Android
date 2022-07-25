@@ -1357,18 +1357,23 @@ function go_site(SITE) {
         dataType: "json",
         success: function(res) {
 			var f = document.SITE_MOVE;
-			if (res.result == "1"){
-				f.target = "_self";
-			}else if (res.result == "2"){
-				f.target = "_self";
-			}else if (res.result == "3"){
-				f.target = "_blank";
-			}else{
-	            showAlertMsg({msg:'준비중입니다.'});
-				return;
-			}
-			f.action = res.url;
-			f.submit();
+            if (res.url.substring(0,7) == "http://"){
+                window.open(res.url);
+            }else{
+                if (res.result == "1"){
+                    f.target = "_self";
+                }else if (res.result == "2"){
+                    f.target = "_self";
+                }else if (res.result == "3"){
+                    f.target = "_blank";
+                }else{
+                    showAlertMsg({msg:'준비중입니다.'});
+                    return;
+                }
+
+                f.action = res.url;
+                f.submit();
+            }
         }
     });
 }
