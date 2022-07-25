@@ -15,6 +15,8 @@
 	'일반 형태가 아닌 게시판종류 해당 게시물로 이동
 	If BBSCODE = "A05" Then 
 		Response.redirect "csbbs.asp?CD="& CD &"&BBSCODE="& BBSCODE
+	ElseIf BBSCODE = "A09" Then
+		Response.redirect "bbcarbbs.asp?CD="& CD &"BBSCODE="& BBSCODE
 	Else
 	End If
 %>
