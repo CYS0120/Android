@@ -20,12 +20,12 @@
 <!-- #include virtual="/inc/head.asp" -->
 <script type="text/javascript">
 
-function AdjustDiv(proc_type, main_kind){
+function AdjustDiv(proc_type, main_kind, brand_code){
 	$.ajax({
 		async: false,
 		type: "POST",
 		url: "main_set_div_proc.asp",
-		data: {"proc_type":proc_type, "main_kind":main_kind},
+		data: {"proc_type":proc_type, "main_kind":main_kind, "brand_code":brand_code},
 		dataType: "text",
 		success: function (data) {
 			if(data.split("^")[0] == 'Y'){
@@ -43,7 +43,7 @@ function AdjustDiv(proc_type, main_kind){
 }
 
 function InputCheck(main_kind){
-	<% if CD = "A" then %>
+	<% if CD = "A" Or CD = "J" then %>
 	var f = document.inputfrm;
 	// alert(f.IMGNUM.value);
 	if (f.IMGNUM.value == "W1") {
@@ -87,7 +87,7 @@ function InputCheck(main_kind){
 
 
 function SaveAll(main_kind){
-	<% if CD = "A" then %>
+	<% if CD = "A" Or CD = "J" then %>
 	var f = document.inputfrm;
 	// alert(f.IMGNUM.value);
 	if (f.IMGNUM.value == "W1") {
@@ -474,7 +474,7 @@ function DateYn(GB, check_){
 								</div>
 							</td>
 						</tr>
-<%					If CD = "A" Then %>
+<%					If CD = "A" Or CD = "J" Then %>
 						<tr>
 							<td>
 								<div>
@@ -516,7 +516,7 @@ function DateYn(GB, check_){
 							</td>
 							<td width=13>
 								<div style="text-align:right;margin-right:15px;">
-									<input type="button" value="삭제" class="btn_red125" onClick="AdjustDiv('DEL_W', '<%=main_kind%>')">
+									<input type="button" value="삭제" class="btn_red125" onClick="AdjustDiv('DEL_W', '<%=main_kind%>', '<%=brand_code%>')">
 								</div>
 							</td>
 						</tr>
@@ -534,10 +534,10 @@ function DateYn(GB, check_){
 %>
 
 				<input type="hidden" id="IMGNUM" name="IMGNUM" value="<%=IMGNUM%>">
-<% if CD = "A" then %>
+<% if CD = "A" Or CD = "J" then %>
 				<div class="section_main_sel">
 					<div class="section_main_sel_btn">
-						<input type="button" value="추가" class="btn_white125" onClick="AdjustDiv('INS_W', '')"> 
+						<input type="button" value="추가" class="btn_white125" onClick="AdjustDiv('INS_W', '', '<%=brand_code%>')"> 
 					</div>
 				</div>
 <% end if %>
