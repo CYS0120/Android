@@ -122,8 +122,16 @@ Const JUSO_API_KEY_XY = "U01TX0FVVEgyMDIwMTAwNjExNDc1MDExMDI1OTk="
 	Const SITE_BRAND_CODE_GROUP		= "36"
 
 	Const SITE_DOMAINURL_BBQ		= "https://www.bbq.co.kr"		'BBQ치킨
+	Const SITE_DOMAINURL_BBQUSA		= "https://bbdotqchicken.com"		'BBQ치킨 USA
+	Const SITE_DOMAINURL_BBQJAPAN		= "https://bbq-olivechickencafe.jp/"		'BBQ치킨 JAPAN
+	Const SITE_DOMAINURL_BBQTAIWAN		= "https://bbqchicken.com.tw"		'BBQ치킨 TAIWAN
+	Const SITE_DOMAINURL_BBQGERMANY		= "https://www.bbq-chicken.de/"		'BBQ치킨 GERMANY
+	Const SITE_DOMAINURL_BBQMALAYSIA		= "http://bbqchicken.com.my/"		'BBQ치킨 MALAYSIA
+	Const SITE_DOMAINURL_BBQCANADA		= "https://bbqchickenca.com/?nowprocket=1"		'BBQ치킨 CANADA
+	Const SITE_DOMAINURL_BBQCHINA		= "http://www.bbq.com.cn"		'BBQ치킨 CHINA
+	Const SITE_DOMAINURL_BBQVIETNAM		= "http://bbqvietnam.com"		'BBQ치킨 VIETNAM
 	Const SITE_DOMAINURL_HAPPY		= "NO"	'행복한집밥
-	Const SITE_DOMAINURL_CKPLACE	= "https://www.ckpalace.co.kr"		'닭익는마을
+	Const SITE_DOMAINURL_CKPLACE	= "http://ckpalace-family.co.kr/"		'닭익는마을
 	Const SITE_DOMAINURL_BARBECUE	= "https://www.bbqbarbecue.co.kr"		'참숯바베큐
 	Const SITE_DOMAINURL_UNINE		= "http://ukuya-family.co.kr/" '"http://www.ukuya.co.kr"		'우쿠야
 	Const SITE_DOMAINURL_ALLTOKK	= "http://www.alltokk.co.kr"		'올떡
@@ -137,7 +145,7 @@ Const JUSO_API_KEY_XY = "U01TX0FVVEgyMDIwMTAwNjExNDc1MDExMDI1OTk="
 
 	Const MSITE_DOMAINURL_BBQ		= "https://m.bbq.co.kr"		'BBQ치킨
 	Const MSITE_DOMAINURL_HAPPY		= "NO"	'행복한집밥
-	Const MSITE_DOMAINURL_CKPLACE	= "http://m.ckpalace.co.kr"		'닭익는마을
+	Const MSITE_DOMAINURL_CKPLACE	= "http://ckpalace-family.co.kr/"		'닭익는마을
 	Const MSITE_DOMAINURL_BARBECUE	= "http://m.bbqbarbecue.co.kr"		'참숯바베큐
 	Const MSITE_DOMAINURL_UNINE		= "http://ukuya-family.co.kr/" '"http://m.ukuya.co.kr"		'우쿠야
 	Const MSITE_DOMAINURL_ALLTOKK	= "http://m.alltokk.co.kr"		'올떡
