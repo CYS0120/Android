@@ -2655,7 +2655,7 @@ function calcTotalAmount() {
 	End If
    ' 페이코인 당일 이벤트
    paycoin_event = ""
-   if left(date(), 10) = "2021-09-08" AND FormatDateTime(Now(),4) >= "11:00" then
+   if left(date(), 10) >= "2022-08-01" AND FormatDateTime(Now(),4) >= "11:00" AND left(date(), 10) <= "2022-08-31" AND FormatDateTime(Now(),4) < "23:00" then
       paycoin_event = "<div><span class='event_layer'>event</span></div>"
    end if
    sgpay_event = ""
