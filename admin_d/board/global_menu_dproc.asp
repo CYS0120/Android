@@ -14,7 +14,7 @@
 		Response.End 
 	End If
 
-	Sql = "	Delete From bt_global_menu Where MIDX = " & MIDX
+	Sql = "	Update bt_global_menu Set open_fg = 'N' Where MIDX = " & MIDX
 	conn.Execute(Sql)
 
 	Response.Write "Y^삭제되었습니다"
