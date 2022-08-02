@@ -116,8 +116,8 @@ var tab_free3_b2_wrap;
 										<tbody>
 										<tr>
 											<td class="th_bg">황금올리브치킨™</td>
-											<td rowspan=57>국내산</td>
-											<td rowspan=57>닭고기</td>
+											<td rowspan=58>국내산</td>
+											<td rowspan=58>닭고기</td>
 										</tr>
 										<tr>
 											<td class="th_bg">크런치 버터치킨</td>
@@ -192,7 +192,7 @@ var tab_free3_b2_wrap;
 											<td class="th_bg">소이갈릭스</td>
 										</tr>
 										<tr>
-											<td class="th_bg">소이갈릭스(윙)</td>
+											<td class="th_bg">소이갈릭스(한마리/윙)</td>
 										</tr>
 										<tr>
 											<td class="th_bg">자메이카 통다리구이</td>
@@ -202,6 +202,9 @@ var tab_free3_b2_wrap;
 										</tr>
 										<tr>
 											<td class="th_bg">매달구</td>
+										</tr>
+										<tr>
+											<td class="th_bg">황금올리브치킨™속안심반반</td>
 										</tr>
 										<tr>
 											<td class="th_bg">황금올리브치킨™순살반반</td>
@@ -267,7 +270,7 @@ var tab_free3_b2_wrap;
 											<td class="th_bg">황올한 깐풍순살 반마리</td>
 										</tr>
 										<tr>
-											<td class="th_bg">핫치킨피자</td>
+											<td class="th_bg">핫치킨피자(바베큐치킨:닭고기)</td>
 										</tr>
 										<tr>
 											<td class="th_bg">BBQ 닭껍데기</td>
@@ -279,27 +282,21 @@ var tab_free3_b2_wrap;
 											<td class="th_bg">황올한 닭발튀김</td>
 										</tr>
 										<tr>
-											<td class="th_bg">TOP3세트메뉴 Set1</td>
+											<td class="th_bg">TOP3세트메뉴 (Set1/Set2/Set3)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">TOP3세트메뉴 Set2</td>
+											<td class="th_bg">꿀조합 (Set1/Set2)</td>
 										</tr>
 										<tr>
-											<td class="th_bg">TOP3세트메뉴 Set3</td>
-										</tr>
-										<tr>
-											<td class="th_bg" rowspan=2>로제치킨</td>
-											<td>국내산</td>
-											<td>닭고기</td>
-										</tr>
-										<tr>
-											<td>외국산</td>
-											<td>베이컨슬라이스(돼지고기)</td>
+											<td class="th_bg">크런치 올치팝</td>
 										</tr>
 										<tr>
 											<td class="th_bg">황올 크런치 너겟(크래커)</td>
-											<td>브라질산</td>
-											<td>닭고기</td>
+											<td rowspan=2>브라질산</td>
+											<td rowspan=2>닭고기</td>
+										</tr>
+										<tr>
+											<td class="th_bg">황올 크런치 너겟(크래커) 반반</td>
 										</tr>
 										<tr>
 											<td class="th_bg">BBQ 치킨버거 마일드</td>
@@ -315,7 +312,7 @@ var tab_free3_b2_wrap;
 											<td>페퍼로니(돼지고기)</td>
 										</tr>
 										<tr>
-											<td class="th_bg" rowspan=4>콤비네이션피자</td>
+											<td class="th_bg" rowspan=5>콤비네이션피자</td>
 											<td>호주산(쇠고기)</td>
 											<td rowspan=2>페퍼로니플러스<br>(쇠고기, 돼지고기)</td>
 										</tr>
@@ -328,6 +325,10 @@ var tab_free3_b2_wrap;
 										</tr>
 										<tr>
 											<td>스모크햄(돼지고기)</td>
+										</tr>
+										<tr>
+											<td>국내산</td>
+											<td>바베큐치킨(닭고기)</td>
 										</tr>
 										<tr>
 											<td class="th_bg" rowspan=3>고구마퐁듀피자</td>
