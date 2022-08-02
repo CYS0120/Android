@@ -5,10 +5,13 @@
 %>
 <!-- #include virtual="/inc/admin_check.asp" -->
 <%
+	SM		= InjRequest("SM")
+	SW		= InjRequest("SW")
 	LNUM	= InjRequest("LNUM")
 	If FncIsBlank(LNUM) Then LNUM = 10
 
-	Detail = "&LNUM="& LNUM
+	DetailN = "&SM="& SM & "&SW="& SW
+	Detail = "&LNUM="& LNUM & "&"& DetailN
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -119,6 +122,20 @@ function CheckInput(){
 									</ul>
 								</th>
 							</tr>
+							<tr>
+								<th>
+									<ul>
+										<div class="couponmn_search">
+											<select name="SM" id="SM">
+												<option value="CI"<% If SM = "CI" Then %> selected<% End If %>>쿠폰ID</option> 
+												<option value="CN"<% If SM = "CN" Then %> selected<% End If %>>쿠폰명</option>
+											</select>
+											<input type="text" name="SW" value="<%=SW%>">
+											<input type="submit" value="검색" class="btn_white" onClick="document.location.href='?<%=DetailN%>">
+										</div>
+									</ul>
+								</th>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -131,8 +148,15 @@ function CheckInput(){
 	page = InjRequest("page")
 	If page = "" Then page = 1
 
-	Sql = "UP_ADMIN_COUPON_PRM 'MN', " & page & " , " & LNUM
-	' Sql = "SELECT COUNT(*) CNT FROM (	SELECT T1.CPNID, T1.CD_PARTNER FROM "& BBQHOME_DB &".DBO.T_CPN T1 WITH(NOLOCK) WHERE T1.CPNTYPE = 'PR' ) T1 INNER JOIN "& BBQHOME_DB &".DBO.T_CPN_PARTNER T3 WITH(NOLOCK) ON T3.CD_PARTNER = T1.CD_PARTNER "
+	CN = ""
+	CI = ""
+	If SM = "CN" Then
+		CN = SW
+	ElseIf SM = "CI" Then
+		CI = SW
+	End If
+
+	Sql = "UP_ADMIN_COUPON_PRM 'MN', " & page & " , " & LNUM & " , '" & CN & "' , '" & CI & "' , '' "
 	Set Rlist = conn.Execute(Sql)
 	if not Rlist.EOF then
 		total_num = Rlist("TOT_ROW")
@@ -185,44 +209,6 @@ function CheckInput(){
 	If total_num > 0 Then
 		STARTNUM = ( (page-1) * num_per_page) + 1
 		ENDNUM = ( page * num_per_page)
-
-		' Sql = "	SELECT T1.ROW_NUM, T1.CPNID,	" & _
-		' 	"		CASE WHEN T1.STATUS = 1 AND CONVERT(VARCHAR(10), GETDATE(), 121) BETWEEN ISNULL(T2.USESDATE, '1900-01-01') AND ISNULL(T2.USEEDATE, '1900-01-01')	" & _
-		' 	"			THEN '<span style=''color:green''>[진행] </span>' 	" & _
-		' 	"			ELSE '<span style=''color:red''>[종료] </span>'	" & _
-		' 	"		END + T1.CPNNAME	" & _
-		' 	"		AS CPNNAME,	" & _
-		' 	"		T1.CPNTYPE, T1.MENUID, T1.OPTIONID,	" & _
-		' 	"		T2.USESDATE, T2.USEEDATE, T2.REGDATE,	" & _
-		' 	"		DBO.FN_MENU_INFO(T1.MENUID, T1.OPTIONID) AS MENUNAME,	" & _
-		' 	"		T1.CD_PARTNER, T3.NM_PARTNER,	" & _
-		' 	"		T2.USED_CNT, T2.TOT_CNT	" & _
-		' 	"	FROM (	" & _
-		' 	"		SELECT	" & _
-		' 	"			RANK() OVER (ORDER BY T1.REGDATE DESC) ROW_NUM,	" & _
-		' 	"			T1.CPNID, T1.CPNNAME, T1.CPNTYPE, T1.MENUID, T1.OPTIONID, T1.STATUS, T1.CD_PARTNER	" & _
-		' 	"		FROM "& BBQHOME_DB &".DBO.T_CPN T1 WITH(NOLOCK)	" & _
-		' 	"		WHERE T1.CPNTYPE = 'PR'	" & _
-		' 	"	) T1	" & _
-		' 	"	INNER JOIN "& BBQHOME_DB &".DBO.T_CPN_PARTNER T3 WITH(NOLOCK) ON T3.CD_PARTNER = T1.CD_PARTNER	" & _
-		' 	"	LEFT JOIN (	" & _
-		' 	"		SELECT	" & _
-		' 	"			CPNID,	" & _
-		' 	"			MIN(PUBDATE) AS REGDATE,	" & _
-		' 	"			MIN(USESDATE) AS USESDATE,	" & _
-		' 	"			MAX(USEEDATE) AS USEEDATE,	" & _
-		' 	"			SUM(CASE WHEN STATUS = 9 THEN 1 ELSE 0 END) AS USED_CNT,	" & _
-		' 	"			COUNT(*) AS TOT_CNT	" & _
-		' 	"		FROM "& BBQHOME_DB &".DBO.T_CPN_MST WITH(NOLOCK)	" & _
-		' 	"		WHERE	" & _
-		' 	"			CPNID IN (SELECT CPNID FROM "& BBQHOME_DB &".DBO.T_CPN T1 WITH(NOLOCK) WHERE T1.CPNTYPE = 'PR')	" & _
-		' 	"			AND STATUS IN (1, 9)	" & _
-		' 	"		GROUP BY CPNID	" & _
-		' 	"	) T2	" & _
-		' 	"	ON T2.CPNID = T1.CPNID	" & _
-		' 	"	WHERE T1.ROW_NUM BETWEEN "& STARTNUM &" AND "& ENDNUM &"	" & _
-		' 	"	ORDER BY T1.ROW_NUM Asc	"
-		' Set Rlist = conn.Execute(Sql)
 
 		If Not Rlist.Eof Then 
 			num	= total_num - first

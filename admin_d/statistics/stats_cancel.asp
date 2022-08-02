@@ -208,7 +208,8 @@ function gosubmit(t)
 									<th>매장코드</th>
 									<th>매장명</th>
 									<th>취소사유</th>
-									<th>사유건수</th>
+									<th>취소건수</th>
+									<th>취소금액</th>
 								</tr>
 <%
 		Sql = "UP_ADMIN_STATISTIC_CANCEL '"&SCD&"', '"&BRAND_CODE&"', '"&SDATE&"', '"&EDATE&"' "
@@ -238,6 +239,7 @@ function gosubmit(t)
 									<td style="<%=border_top%>"><%=Rlist("BRANCH_NM")%></td>
 									<td style="<%=border_top&letter_sp%>"><%=Rlist("CANCEL_MSG")%></td>
 									<td style="<%=border_top%>"><%=Rlist("CANCEL_MSG_CNT")%></td>
+									<td style="<%=border_top%>"><%=Rlist("CANCEL_MSG_AMT")%></td>
 								</tr>
 <%
 				branch_before = branch_next

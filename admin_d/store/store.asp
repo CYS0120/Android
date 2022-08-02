@@ -90,13 +90,15 @@ function ExcelDown(){
 							</ul>
 						</th>
 					</tr>
-<%	END IF %>					<tr>
+<%	END IF %>					
+					<tr>
 						<th>
 							<div class="board_select">
 								<div class="board_search">
 									<select name="SM" id="SM">
 										<option value="BN"<% If SM = "BN" Then %> selected<% End If %>>매장명</option> 
 										<option value="ON"<% If SM = "ON" Then %> selected<% End If %>>점주명</option>
+										<option value="BC"<% If SM = "BC" Then %> selected<% End If %>>매장코드</option>
 									</select>
 									<input type="text" name="SW" value="<%=SW%>">
 									<input type="submit" value="검색" class="btn_white">
@@ -143,6 +145,7 @@ function ExcelDown(){
 	If Not FncIsBlank(SW) Then 
 		If SM = "BN" Then SqlWhere = SqlWhere & " AND BRANCH_NAME LIKE '%"& SW &"%' "
 		If SM = "ON" Then SqlWhere = SqlWhere & " AND BRANCH_OWNER_NAME LIKE '%"& SW &"%' "
+		If SM = "BC" Then SqlWhere = SqlWhere & " AND BRANCH_ID LIKE '"& SW &"%' "
 	End If
 	
 	SqlOrder	= "ORDER BY BRANCH_ID "
@@ -185,6 +188,9 @@ function ExcelDown(){
 									<th>NO</th>
 									<th>
 										매장명
+									</th>
+									<th>
+										매장코드
 									</th>
 									<th>
 										점주명
@@ -289,6 +295,7 @@ function ExcelDown(){
 								<tr>
 									<td><%=num%></td>
 									<td><%=BRANCH_NAME%></td>
+									<td><%=BRANCH_ID%></td>
 									<td><%=BRANCH_OWNER_NAME%></td>
 									<td><%=BRANCH_ADDRESS%></td>
 									<td><%=BRANCH_TEL%></td>

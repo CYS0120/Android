@@ -25,7 +25,7 @@ Next
 <link rel="stylesheet" href="<%=SITE_ADM_DIR%>css/reset.css">
 <link rel="stylesheet" href="<%=SITE_ADM_DIR%>css/common.css">
 <link rel="stylesheet" href="<%=SITE_ADM_DIR%>css/layout.css">
-<link rel="stylesheet" href="<%=SITE_ADM_DIR%>css/content.css">
+<link rel="stylesheet" href="<%=SITE_ADM_DIR%>css/content.css?ver=20220802">
 
 <script>
 $(function(){
