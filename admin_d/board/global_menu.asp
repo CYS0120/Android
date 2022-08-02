@@ -165,8 +165,8 @@ function ChangeOrder(MIDX, FVAL){
 									<th>NO</th>
 									<th>카테고리</th>
 									<th width="44%">메뉴명</th>
-									<th>올린날짜</th>
 									<th>노출</th>
+									<th>올린날짜</th>
                                     <th>순위관리</th>
 									<th>관리</th>
 								</tr>

@@ -194,7 +194,7 @@
 								<div class="filebox">
 									<input id="THUMBIMG" name="THUMBIMG" class="upload-name" value="<%=THUMBIMG%>" readonly>
 									<label for="THUMBIMG" onClick="OpenUploadIMG('THUMBIMG','UPIMG_DIR')">찾아보기</label>
-									<span>이미지 사이즈(단위:픽셀)-가로 1070px, 세로520px, 확장자 jpg</span>
+									<span>이미지 사이즈(단위:픽셀)-가로 380px, 세로568.5px, 확장자 jpg</span>
 								</div>
 							</div>
 <%		If Not FncIsBlank(THUMBIMG) Then %>

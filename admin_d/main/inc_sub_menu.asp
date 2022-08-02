@@ -18,7 +18,7 @@ end if
 										<% end if %>
 										<% if CD = "A" then %>
 											<li><label><input type="radio" name="curpage" <%if sub_menu = "main_hit_m" then %>checked <% end if %>onClick="document.location.href='main_hit_m.asp?CD=<%=CD%>'">실시간 인기</label></li>
-											<li><label><input type="radio" name="curpage" <%if sub_menu = "main_set_m" then %>checked <% end if %>onClick="document.location.href='main_set_m.asp?CD=<%=CD%>'>모바일 메인 이미지 관리</label></li>
+											<li><label><input type="radio" name="curpage" <%if sub_menu = "main_set_m" then %>checked <% end if %>onClick="document.location.href='main_set_m.asp?CD=<%=CD%>'">모바일 메인 이미지 관리</label></li>
 											<li><label><input type="radio" name="curpage" <%if sub_menu = "main_set_sub" then %>checked <% end if %>onClick="document.location.href='main_set_sub.asp?CD=<%=CD%>'">서브 이미지 관리</label></li>
 											<li><label><input type="radio" name="curpage" <%if sub_menu = "main_set_sub_m" then %>checked <% end if %>onClick="document.location.href='main_set_sub_m.asp?CD=<%=CD%>'">모바일 서브 이미지 관리</label></li>
 										<% end if %>
