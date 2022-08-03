@@ -68,7 +68,7 @@
 
 	input{padding:0;margin:0;border:0 none;vertical-align:middle;}
 	input[type="number"] {height:30px;padding-left:12px;text-align:right;padding-right:5px;margin-right:5px;font-size:19px;border:1px solid #cccccc;}
-	input[type="text"] {width:1000px;height:30px;padding-left:12px;text-align:left;padding-right:5px;margin-right:5px;font-size:19px;border:1px solid #cccccc;}
+	input[type="text"] {width:700px;height:30px;padding-left:12px;text-align:left;padding-right:5px;margin-right:5px;font-size:19px;border:1px solid #cccccc;}
 	button, input[type=button], input[type=submit] {cursor: pointer;}
 	.btn_red125 {height:37px;width:125px;background:#e41937;font-size:20px;color:#fff;display:inline-block;line-height:37px;font-weight:bold;}
 
