@@ -56,9 +56,18 @@
 	REG_IP	= GetIPADDR()
 	branch_id	= InjRequest("branch_id")
 	pickup_discount = InjRequest("pickup_discount")
+	owner_greeting = InjRequest("owner_greeting")
+	open_time = InjRequest("open_hour") + InjRequest("open_minute")
+	close_time = InjRequest("close_hour") + InjRequest("close_minute")
+	branch_seats = InjRequest("branch_seats")
+	parking_yn = InjRequest("parking_yn")
+	wifi_yn = InjRequest("wifi_yn")
+	group_yn = InjRequest("group_yn")
+	beer_yn = InjRequest("beer_yn")
 
-	json_data = "{""brand_cd"":""01"", ""user_ip"":""" & REG_IP & """, ""branch_id"":""" & branch_id & """, ""add"":{""pickup_discount"":" & pickup_discount & "}}"
-
+	json_data = "{""brand_cd"":""01"", ""user_ip"":""" & REG_IP & """, ""branch_id"":""" & branch_id & """, ""add"":{""pickup_discount"":" & pickup_discount & ", ""owner_greeting"":""" & owner_greeting & """, ""open_time"":""" & open_time & """, ""close_time"":""" & close_time & """, ""branch_seats"":" & branch_seats & ", ""parking_yn"":""" & parking_yn & """, ""wifi_yn"":""" & wifi_yn & """, ""group_yn"":""" & group_yn & """, ""beer_yn"":""" & beer_yn & """}}"
+	' response.write json_data
+	' response.end
 	ServerHost		= "40.82.154.186,1433"
 	UserName		= "sa_homepage"
 	UserPass		= "home123!@#"
