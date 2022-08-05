@@ -261,7 +261,7 @@ end if
 		<dl class="Aside_footer">				
 			<dt><span>주식회사 </span>제너시스비비큐</dt>						
 			<dd>서울시 송파구 중대로 64(문정동)<span>/</span>대표자 : 이승재</dd>
-			<dd>통신판매업신고 : 2010-서울송파-1181호</dd>
+			<dd>통신판매업신고 : 2017-서울송파-0087</dd>
 			<dd>사업자등록번호 : 207-81-43555</dd>
 			<dd>고객센터 : <%=SERVICE_CENTER_TEL%><span>/</span>창업문의 : 080-383-9000</dd>
 			<dd></dd>
