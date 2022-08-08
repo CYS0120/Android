@@ -141,6 +141,7 @@
 						<ul class="submenu">
 							<li class="node2"><a href="/brand/bbq.asp" class="depth2">브랜드스토리</a></li>
 							<li class="node2"><a href="/brand/noticeList.asp" class="depth2">공지사항</a></li>
+							<li class="node2"><a href="/brand/csr.asp" class="depth2">사회공헌활동</a></li>
 						</ul>						
 					</li>
 					<li class="node1"><a href="https://www.bbqchangup.co.kr:446/" class="depth1">창업정보</a>

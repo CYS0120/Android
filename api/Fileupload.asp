@@ -51,10 +51,9 @@
 	<input type="hidden" name="RTURL" value="<%=Request("HTTP_HOST")%>">
 	
 		<div style="width:600px;text-align:center;margin-top:30px" class="file_wrap">
-			<table style="width:100%">
+			<table style="width:98%">
 				<colgroup>
-					<col width="15%">
-					<col width="85%">
+					<col width="100%">
 				</colgroup>
 				<tr>
 					<!-- <th>파일 업로드</th> -->

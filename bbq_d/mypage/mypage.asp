@@ -174,7 +174,7 @@ jQuery(document).ready(function(e) {
 			<!-- 문의내역 -->
 			<section class="section mar-t100">
 				<div class="section-header">
-					<h3>문의내역</h3>
+					<h3>나의 작성글</h3>
 					<%If totalCount > 0 Then%><a href="./inquiryList.asp" class="btn_more btn btn-sm btn-grayLine">더보기</a><%End If%>
 				</div>
 				<div class="section-body">

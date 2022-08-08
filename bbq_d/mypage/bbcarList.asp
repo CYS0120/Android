@@ -22,7 +22,6 @@ jQuery(document).ready(function(e) {
 <%
 	gotoPage = GetReqNum("gotopage", 1)
 	pageSize = GetReqNum("pageSize", 10)
-	brand_code = "01"
 %>
 <body>	
 <div class="wrapper">
@@ -59,94 +58,80 @@ jQuery(document).ready(function(e) {
 			<!-- My Inquiry List -->
 			<section class="section section_inquiry">
 				<div class="section-header">
-					<!--<h3>고객의 소리</h3>-->
 					<div class="tab-wrap tab-type3 mar-b0 leng2">
 						<ul class="tab">
-							<li class="on"><a href="javascript:;"><span>고객의 소리</span></a></li>
-							<li><a href="./bbcarList.asp"><span>비비카 신청</span></a></li>
+							<li><a href="./inquiryList.asp"><span>고객의 소리</span></a></li>
+							<li class="on"><a href="javascript:;"><span>비비카 신청</span></a></li>
 						</ul>
-					</div>
-					<div class="right">
-						<!-- <select name="" id="" class="w-250">
-							<option value="">전체브랜드 보기</option>
-							<option value="">비비큐치킨</option>
-							<option value="">비비큐몰</option>
-							<option value="">행복한집밥</option>
-							<option value="">닭익는마을</option>
-							<option value="">참숯바베큐</option>
-							<option value="">우쿠야</option>
-							<option value="">올떡</option>
-							<option value="">소신</option>
-							<option value="">와타미</option>
-						</select> -->
 					</div>
 				</div>
 				<div class="section-body">
 					<div class="boardList-wrap">
 
 						<table border="1" cellspacing="0" class="tbl-list">
-							<caption>고객의 소리 목록</caption>
+							<caption>비비카 신청 목록</caption>
 							<colgroup>
-								<col style="width:106px;">
+								<col style="width:100px;">
+								<col style="width:180px;">
+								<col style="width:180px;">
 								<col style="width:auto;">
 								<col style="width:180px;">
-								<col style="width:150px;">
 							</colgroup>
 							<thead>
 								<tr>
 									<th>번호</th>
+									<th>신청월</th>
+									<th>지역</th>
 									<th>제목</th>
 									<th>작성일</th>
-									<th>조회</th>
 								</tr>
 							</thead>
 							<tbody>
 <%
-	Set cmd = Server.CreateObject("ADODB.Command")
-	totalCount = 0
+							Set cmd = Server.CreateObject("ADODB.Command")
+							totalCount = 0
 
-	With cmd
-		.ActiveConnection = dbconn
-		.NamedParameters = True
-		.CommandType = adCmdStoredProc
-		.CommandText = "bp_member_q_select"
+							With cmd
+								.ActiveConnection = dbconn
+								.NamedParameters = True
+								.CommandType = adCmdStoredProc
+								.CommandText = "bp_member_bbcar_select"
 
-        .Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput, 10, "LIST")
-        ' .Parameters.Append .CreateParameter("@q_idx", adParamInput, adParamInput, , q_idx)
-        .Parameters.Append .CreateParameter("@brand_code", adVarChar, adParamInput, 10, brand_code)
-        .Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 50, Session("userIdNo") )
-        .Parameters.Append .CreateParameter("@pageSize", adInteger, adParamInput, , pageSize)
-        .Parameters.Append .CreateParameter("@curPage", adInteger, adParamInput, , gotopage)
-        .Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
+								.Parameters.Append .CreateParameter("@mode", adVarChar, adParamInput, 10, "LIST")
+								' .Parameters.Append .CreateParameter("@idx", adParamInput, adParamInput, , idx)
+								.Parameters.Append .CreateParameter("@member_idno", adVarChar, adParamInput, 50, Session("userIdNo") )
+								.Parameters.Append .CreateParameter("@pageSize", adInteger, adParamInput, , pageSize)
+								.Parameters.Append .CreateParameter("@curPage", adInteger, adParamInput, , gotopage)
+								.Parameters.Append .CreateParameter("@totalCount", adInteger, adParamOutput)
 
-        Set rs = .Execute
+								Set rs = .Execute
 
-        totalCount = .Parameters("@totalCount").Value
-    End With
-    Set cmd = Nothing
+								totalCount = .Parameters("@totalCount").Value
+							End With
+							Set cmd = Nothing
 
-    If Not (rs.BOF Or rs.EOF) Then
-    	Do Until rs.EOF
+							If Not (rs.BOF Or rs.EOF) Then
+								Do Until rs.EOF
+%>
+									<tr>
+										<td><%=rs("row_num")%></td>
+										<td><%=rs("visit_ym")%></td>
+										<td><%=rs("visit_city")%></td>
+										<td>
+											<a href="/brand/bbcarView.asp?idx=<%=rs("idx")%>"><%=rs("title")%></a>
+										</td>
+										<td><%=FormatDateTime(rs("regdate"),2)%></td>
+									</tr>
+<%
+									rs.MoveNext
+								Loop
+							Else
 %>
 								<tr>
-									<td><%=rs("RN")%></td>
-									<td class="ta-l">
-										<span class="ico-branch red mar-r10">비비큐치킨</span>
-										<a href="./inquiryView.asp?qidx=<%=rs("q_idx")%>"><%=rs("title")%></a>
-									</td>
-									<td><%=FormatDateTime(rs("regdate"),2)%></td>
-									<td><%If rs("q_status") = "답변완료" Then%><span class="red">답변완료</span><%Else%><span>답변전</span><%End If%></td>
+									<td colspan="5" class="noData">등록된 내역이 없습니다.</td>
 								</tr>
 <%
-    		rs.MoveNext
-    	Loop
-	Else
-%>
-								<tr>
-									<td colspan="4" class="noData">등록된 내역이 없습니다.</td>
-								</tr>
-<%
-    End If
+							End If
 %>
 							</tbody>
 						</table>
@@ -163,7 +148,7 @@ jQuery(document).ready(function(e) {
 								params: ""
 							});
 						</script>
-						<div class="btn-area"><a href="/customer/inquiryWrite.asp" class="btn btn-red">문의하기</a></div>
+						<div class="btn-area"><a href="/brand/bbcarWrite.asp" class="btn btn-red">비비카 신청하기</a></div>
 					</div>
 				</div>
 			</section>

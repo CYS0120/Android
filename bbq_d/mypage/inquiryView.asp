@@ -76,7 +76,7 @@ jQuery(document).ready(function(e) {
 	Else
 %>
 	<script type="text/javascript">
-		alert("문의내역이 없습니다.");
+		alert("등록된 내역이 없습니다.");
 		history.back();
 	</script>
 <%
@@ -97,7 +97,7 @@ jQuery(document).ready(function(e) {
 			<ul class="breadcrumb">
 				<li>bbq home</li>
 				<li>마이페이지</li>
-				<li>문의내역</li>
+				<li>고객의 소리</li>
 			</ul>
 		</div>
 		<!--// BreadCrumb -->
@@ -118,7 +118,7 @@ jQuery(document).ready(function(e) {
 			<!-- My Inquiry -->
 			<section class="section section_inquiry">
 				<div class="section-header">
-					<h3>문의내역</h3>
+					<h3>고객의 소리</h3>
 				</div>
 				<div class="section-body">
 
@@ -167,7 +167,7 @@ jQuery(document).ready(function(e) {
 			</div>
 <script type="text/javascript">
 	function inquiryDel() {
-		if(showConfirmMsg({msg:"문의내역을 삭제하시겠습니까?",ok: function(){
+		if(showConfirmMsg({msg:"고객의 소리를 삭제하시겠습니까?",ok: function(){
 			$.ajax({
 				method: "post",
 				url: "/api/ajax/ajax_delInquiry.asp",
