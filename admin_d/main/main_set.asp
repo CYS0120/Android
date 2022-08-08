@@ -503,8 +503,8 @@ function DateYn(GB, check_){
 								<div><span>LINK 주소 입력</span></div>
 								<div>
 									<input type="text" name="WLINKURL<%=i%>" value="<%=link_url%>" class="w50">
-									<label for="new_window<%=i%>"><input type="radio" id="new_window<%=i%>" name="WLINKTARGET<%=i%>"<%If WLINKTARGET1="B" Then%> checked<%End If%> value="B">새창 열기</label>
-									<label for="now_window<%=i%>"><input type="radio" id="now_window<%=i%>" name="WLINKTARGET<%=i%>"<%If WLINKTARGET1="S" Then%> checked<%End If%> value="S">현재창 열기</label>
+									<label for="new_window<%=i%>"><input type="radio" id="new_window<%=i%>" name="WLINKTARGET<%=i%>"<%If link_target="B" Then%> checked<%End If%> value="B">새창 열기</label>
+									<label for="now_window<%=i%>"><input type="radio" id="now_window<%=i%>" name="WLINKTARGET<%=i%>"<%If link_target="S" Then%> checked<%End If%> value="S">현재창 열기</label>
 								</div>
 							</td>
 						</tr>
