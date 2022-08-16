@@ -668,6 +668,7 @@ function setCouponUse(obj) {
         }else{
 		    $("#coupon_discount_result").show();
             $("#coupon_discount_won").html("원");
+		    $("#giftproductcode").val(giftProductCode); //(2022. 8. 16)
 		    $("#discount_amount").val(discount_amount);
         }
 		
@@ -770,6 +771,11 @@ function coupon_apply() {
                     showAlertMsg({msg:"모바일 상품권 적용에 실패하였습니다."});
                 }
             });
+		}else{ //증정쿠폰 없을 때 html 초기화 (2022. 8. 16)
+			$("#order_product").html('');
+			$("#coupon_amt").css('display','inline'); //할인금액 보이기 
+			$("#coupon_amt_prod").css('display','none'); //증정품 명칭 감추기
+			$("#prod_list").css('display','none'); //증정품 HTML 감추기
 		}
 		//증정쿠폰 적용
 		
