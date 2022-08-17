@@ -217,11 +217,11 @@
 					<ul class="li_style2">
 						<li>
 							<span>개인정보 관리책임자</span>
-                            이 름 : 황원철<br />
-                            소 속 : 원칙경영실<br />
-                            직 위 : 상무<br />
-                            전 화 : 02-3403-9112<br />
-                            메 일 : <a href="mailto:wild90@bbq.co.kr ">wild90@bbq.co.kr </a><br />
+                            이 름 : 김성우<br />
+                            소 속 : 전략기획팀장<br />
+                            직 위 : 차장<br />
+                            전 화 : 02-3403-9268<br />
+                            메 일 : <a href="mailto:sungwoo.kim@bbq.co.kr ">sungwoo.kim@bbq.co.kr </a><br />
 						</li>
 					</ul>
 					<br />
