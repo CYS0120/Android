@@ -234,6 +234,8 @@ function CheckInput(){
 		USE_PAY_METHOD_TXT = "페이코인"
 	ElseIf USE_PAY_METHOD = "SGPAY_000001" Then
 		USE_PAY_METHOD_TXT = "BBQ PAY"
+	ElseIf USE_PAY_METHOD = "UBPAY_000001" Then  '올리브페이 추가 (2022. 8. 16)
+		USE_PAY_METHOD_TXT = "올리브페이"
 	Else
 		USE_PAY_METHOD_TXT = "기타"
 	End If
