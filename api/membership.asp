@@ -223,7 +223,7 @@
         Set CouponGetHoldList = resClass
     End Function
 
-
+    ' 쿠폰상세정보
     Function CouponGetDetail(couponId)
         ' Response.Write data & "<br>"
         req_str = ""
@@ -281,6 +281,7 @@
         Set CouponGetUseList = resClass
     End Function
 
+    ' 쿠폰 발행
     Function CouponIssue(couponId)
         req_str = ""
         api_url = "/coupon/issue"
@@ -306,6 +307,7 @@
         Set CouponIssue = resClass
     End Function
 
+    ' PIN 쿠폰 발행
     Function CouponIssueByPinV2(pinNo)
         req_str = ""
         api_url = "/coupon/issueByPinV2"
@@ -326,6 +328,30 @@
         resClass.Init(oJson)
 
         Set CouponIssueByPinV2 = resClass
+    End Function
+
+    ' 점원 수동 사용
+    Function CouponRedeem(couponNo)
+        req_str = ""
+        api_url = "/coupon/redeem"
+        result = ""
+
+        Dim reqClass : Set reqClass = New clsReqCouponRedeem
+        reqClass.mCompanyCode = PAYCO_MEMBERSHIP_COMPANYCODE
+        reqClass.mMemberNo = Session("userIdNo")
+        reqClass.mCouponNo = couponNo
+        reqClass.mPassword = ""
+
+        req_str = reqClass.toJson()
+
+        result = executeApi ("POST", "application/json", req_str, PAYCO_MEMBERSHIP_URL & api_url)
+
+        Set oJson = JSON.Parse(result)
+
+        Dim resClass : Set resClass = New clsResCouponRedeem
+        resClass.Init(oJson)
+
+        Set CouponRedeem = resClass
     End Function
 
 '----------------------------------------------------------------------------------------------'

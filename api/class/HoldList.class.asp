@@ -4,6 +4,7 @@
 Class clsHoldList
 	Public mIssueTypeCode, mCouponNo, mCouponId, mCouponName, mValidStartDate, mValidEndDate, mStatusCode, mExpiredYn, mBenefitTypeCode, mConditionProductYn, mConditionProductClassCode, mConditionProductCode, mConditionAmountYn, mConditionAmountTypeCode, mConditionAmount, mRateTypeCode, mRateValue, mMaxRateAmount, mGiftApplicationType, mGiftProductCode, mGiftProductClassCode
 	Public mStampId, mStampName, mStampCount, mAccumulatedStampCount, mCouponIssueCount, mStampCompletedCount, mStampFinishCount, mPromotionStartDate, mPromotionEndDate, mCouponConditions
+	Public mCouponUseTypeCode, mPasswordUseYn, mConditionProducts, mGiftProducts
 
 	Public Function Init(ByRef obj)
 		If JSON.hasKey(obj, "issueTypeCode") Then
@@ -107,6 +108,19 @@ Class clsHoldList
 				Set mCouponConditions(i) = tmpCouponConditions
 			Next
 		End If
+
+		If JSON.hasKey(obj, "couponUseTypeCode") Then
+			mCouponUseTypeCode = obj.couponUseTypeCode
+		End If
+		If JSON.hasKey(obj, "passwordUseYn") Then
+			mPasswordUseYn = obj.passwordUseYn
+		End If
+		If JSON.hasKey(obj, "conditionProducts") Then
+			mConditionProducts = obj.conditionProducts
+		End If
+		If JSON.hasKey(obj, "giftProducts") Then
+			mGiftProducts = obj.giftProducts
+		End If
 	End Function
 
 	Private Sub Class_Initialize
@@ -142,6 +156,11 @@ Class clsHoldList
 		mPromotionStartDate = ""
 		mPromotionEndDate = ""
 		mCouponConditions = Array()
+
+		mCouponUseTypeCode = ""
+		mPasswordUseYn = ""
+		mConditionProducts = ""
+		mGiftProducts = ""
 	End Sub
 
 	Private Sub Class_Terminate

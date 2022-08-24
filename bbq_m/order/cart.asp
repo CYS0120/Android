@@ -1,7 +1,19 @@
 <!--#include virtual="/api/include/utf8.asp"-->
+<script src="/common/js/jquery.min.js"></script>
+<script src="/common/js/jquery.beefup.min.js"></script>
 <script type="text/javascript">
+	// 홈파티 (예약배달)
 	if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
 		sessionStorage.setItem("ss_order_type", "R");
+	}
+	// 송도맥주축제 (예약포장)
+	if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_")){
+		// $('#branch_name_p').html("<span>🎉 송도맥주축제 [현장방문] 🍺</span>");
+		sessionStorage.setItem("ss_branch_id", "7451401");
+		sessionStorage.setItem("ss_order_type", "P");
+		var var_branch_data = JSON.stringify({"branch_id":"7451401","branch_name":"송도맥주축제","brand_code":"01","branch_tel":"02-1234-1234","branch_address":"인천광역시 연수구 송도동 센트럴로 350","branch_type":"올리브카페","branch_seats":"0","branch_services":"0010000000","branch_weekday_open":"0000","branch_weekday_close":"0000","close_day":"","branch_status":"10","wgs84_x":126.6338237,"wgs84_y":37.4064278,"online_status":"Y","lunch_box_yn":"N","order_yn":"Y","membership_yn_code":"50","coupon_yn":"N","yogiyo_yn":"","cooking_time":"0","chain_id":"","delivery_fee":0});
+		var jobj = JSON.parse(var_branch_data);
+		sessionStorage.setItem("ss_branch_data", JSON.stringify(jobj));
 	}
 </script>
 <%
@@ -785,6 +797,10 @@
 				showAlertMsg({msg:"홈파티 사전예약은 배달만 가능합니다. 배달지를 선택해주세요.", ok: function(){
 					document.location.href='/order/delivery.asp?order_type=R';
 				}});
+			}else if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_")){
+				showAlertMsg({msg:"송도맥주축제 메뉴는 현장수령만 가능합니다.", ok: function(){
+					document.location.href='/order/payment.asp?order_type=P';
+				}});
 			}else{
 				showAlertMsg({msg:"매장선택이 안되어있습니다. 매장선택부터 해주시기 바랍니다.", ok: function(){
 					document.location.href='/order/selection.asp';
@@ -1176,7 +1192,11 @@
 		// 2019-05-23 이벤트로 인해 생성
 
 		function goMenuList(){
-			location.href='/menu/menuList.asp?order_type='+sessionStorage.getItem("ss_order_type");
+			if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_")){
+				location.href='/menu/menuList.asp?anc=133&order_type='+sessionStorage.getItem("ss_order_type");
+			} else{
+				location.href='/menu/menuList.asp?order_type='+sessionStorage.getItem("ss_order_type");
+			}
 		}
 
 		$(document).ready(function(e){

@@ -87,12 +87,6 @@
 		Response.End
 	End If
 
-	If order_type = "P" And branch_id = "7451401" Then
-%>
-        <script>alert("홈파티 사전예약은 배달만 가능합니다.");history.back();</script>
-<%
-	End If
-
 	If order_type = "D" Then
 		order_type_title = "배달정보"
 		order_type_name = "배달매장"
@@ -186,7 +180,7 @@
 
 	vUseDANAL = "N"
 	vUsePAYCO = "N"
-	vUseKAKAOPAY = "N"
+	vUseKAKAOPAY = "N"	'카카오페이 추가 / 2022.07.11
 	vUsePAYCOIN = "N"
 	vUseSGPAY = "N"		'SGPAY 추가(가맹점별 가입 여부) / Sewoni31™ / 2019.12.09
 
@@ -198,7 +192,7 @@
 		vSubCPID = aRs("DANAL_H_SCPID")
 		vUseDANAL = aRs("USE_DANAL")
 		vUsePAYCO = aRs("USE_PAYCO")
-		vUseKAKAOPAY = aRs("USE_KAKAOPAY")
+		vUseKAKAOPAY = aRs("USE_KAKAOPAY")	'카카오페이 추가 / 2022.07.11
 		vPayco_Seller = aRs("payco_seller")
 		vPayco_Cpid = aRs("payco_cpid")
 		vPayco_Itemcd = aRs("payco_itemcd")
@@ -1391,6 +1385,7 @@ function calcTotalAmount() {
 							data: $("#pay_form").serialize(),
 							success: function(data) {
 								var res = JSON.parse(data);
+								var order_num = res.order_num;
 
 								if(res.result == 0) {
 									$("#o_form input[name=order_idx]").val(res.order_idx);
@@ -2269,7 +2264,7 @@ function calcTotalAmount() {
 				<div class="area border">
 					<dl>
 						<dt><%=order_type_name%></dt>
-						<dd id="deliver_event"><strong class="red">홈파티 사전예약 매장</strong>(1588-9282)</dd>
+						<dd id="deliver_event"><strong class="red">송도맥주축제</strong>(1588-9282)</dd>
 						<dd id="deliver_addr"><strong class="red"><%=vBranchName%></strong>(<%=vBranchTel%>)</dd>
 					</dl>
 					<dl>
@@ -2291,7 +2286,7 @@ function calcTotalAmount() {
 						</dd>
 					</dl>
 					<dl>
-						<dt>기타요청사항</dt>
+						<dt id="delivery_message">기타요청사항</dt>
 						<dd><input type="text" name="delivery_message" placeholder="<%If order_type = "P" Then%>방문자명 및 <%End If%>요청사항을 남겨주세요." class="w-100p" onkeyup="chkWord_new(this, 180, 'N');"></dd>
 					</dl>
 					<span id="event_book">
@@ -2347,7 +2342,7 @@ function calcTotalAmount() {
 
 
 					<%
-						If order_type = "P" Then
+						If order_type = "P" And branch_id <> "7451401" Then
 					%>
 
 						<dl>
@@ -2671,6 +2666,9 @@ function calcTotalAmount() {
 
    'If vUseDANAL = "Y" Or vUsePAYCO = "Y" Then
    If vUseDANAL = "Y" Or vUsePAYCO = "Y" Or vUseSGPAY = "Y" Or vUsePAYCOIN = "Y" Or vUseKAKAOPAY = "Y" Then      'SGPAY 추가(사용 가맹점 여부에 따라 노출/비노출) / Sewoni31™ / 2019.12.09
+		If branch_id = "7451401" Then
+			vUseSGPAY = "N"
+		End If
 %>
        <dl class="online">
           <dt>일반결제</dt>
@@ -2730,10 +2728,8 @@ function calcTotalAmount() {
 						<dt>현장결제</dt>
 						<dd>
 							<ul>
-							<% If order_type <> "R" Then %>
 								<li><button type="button" id="payment_later" onclick="javascript:setPayMethod('Later');" class="payment_choiceSel">신용카드</button></li>
 								<li><button type="button" id="payment_cash" onclick="javascript:setPayMethod('Cash');" class="payment_choiceSel">현금</button></li>
-							<% End If %>
                                 <li id="payment_text" style="text-align:center;">※ 예약주문은 선결제만<br>가능합니다.</li>
 								<!-- <li class="cash_text">※현금결제시 100원미만 단위는 거스름이 없습니다<br>Ex)14,425원=14,500원결제</li> -->
 							</ul>
@@ -3414,16 +3410,17 @@ function calcTotalAmount() {
 	        }*/
         //현금영수증 선택 영역 끝
 
-        //홈파티 Test 1248 = 홈파티 트레이 , 치본스테이크가 장바구니에 있으면 배달매장, 예약일자, 결제수단 등 표출 20201204
-        if(sessionStorage.getItem("M_1695_0_") || sessionStorage.getItem("M_1696_0_")){
-            $("#deliver_event").prop("disabled", false).show();
-			$("#event_book").prop("disabled", false).show();
-			$("#deliver_addr").prop("disabled", true).hide();
-			$("#payment_later").prop("disabled", true).hide();
-			$("#payment_cash").prop("disabled", true).hide();
-			$("#payment_text").prop("disabled", false).show();
+        //홈파티 Test 1248 = 홈파티 트레이 , 치본스테이크가 장바구니에 있으면 배달매장, 예약일자, 결제수단 등 표출 20201204 //송도맥주축제 20220816
+		if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_")){
+			$('#delivery_message').html("방문예정일");
+			$("#deliver_event").prop("disabled", true).show();	// 매장명(7451401)
+			$("#event_book").prop("disabled", true).hide();		// 예약일시
+			$("#deliver_addr").prop("disabled", false).hide();	// 매장명(일반)
+			$("#payment_later").prop("disabled", true).hide();	// 현장결제(카드)
+			$("#payment_cash").prop("disabled", true).hide();	// 현장결제(현금)
+			$("#payment_text").prop("disabled", false).show();	// 예약주문은 선결제만 가능하다는 텍스트
 			$("#payment_paycoin").prop("disabled", true).hide();
-			$("#payment_phone").prop("disabled", true).hide();
+			// $("#payment_phone").prop("disabled", true).hide();
 			$("#payment_payco").prop("disabled", true).hide();
 			$("#payco_txt").prop("disabled", true).hide();
 			$("#coupon_area").prop("disabled", true).hide();
@@ -3436,8 +3433,6 @@ function calcTotalAmount() {
                 nowMinute = 30;
             }
 			$("#nowTime").val((nowHour+1) + ":" + nowMinute);
-
-
         }else{
 			$("#deliver_event").prop("disabled", true).hide();
 			$("#event_book").prop("disabled", true).hide();
@@ -3446,7 +3441,7 @@ function calcTotalAmount() {
 			$("#payment_cash").prop("disabled", false).show();
 			$("#payment_text").prop("disabled", true).hide();
 			$("#payment_paycoin").prop("disabled", false).show();
-			$("#payment_phone").prop("disabled", false).show();
+			// $("#payment_phone").prop("disabled", false).show();
 			$("#payment_payco").prop("disabled", false).show();
 			$("#payco_txt").prop("disabled", false).show();
 			$("#coupon_area").prop("disabled", false).show();

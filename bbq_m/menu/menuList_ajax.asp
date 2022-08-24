@@ -65,6 +65,7 @@
 			.CommandText = "bp_category_menu_list"
 
 			.Parameters.Append .CreateParameter("@category_idx", adInteger, adParamInput, , category_idx)
+			' .Parameters.Append .CreateParameter("@use_yn", adVarChar, adParamInput, 1, "N")
 
 			Set aRs = .Execute
 		End With
@@ -86,7 +87,16 @@
 				vMenuType_plus = "M"
 			else
 				vMenuType_plus = aRs("menu_type")
-			end if 
+			end if
+
+			If aRs("KIND_SEL") = "133" Then
+				If Not CheckLogin() Then
+%>
+					<!--#include virtual="/api/include/requireLogin.asp"-->
+<%
+				End If
+
+			End If
 %>
 
 			<div name="menu_div" id="list_div_<%=m_i%>" data-menuname="<%=aRs("menu_name")%>" data-menuidx="<%=aRs("menu_idx")%>" data-menucate="<%=category_idx%>" class="menuBox menu_cate_<%=category_idx%> menu_list_idx_<%=category_idx%>_<%=aRs("menu_idx")%>" <% if anc_display = "N" then %>style="display:none"<% end if %>>
