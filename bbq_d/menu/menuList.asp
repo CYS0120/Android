@@ -88,7 +88,7 @@ jQuery(document).ready(function(e) {
 		aRs.MoveFirst
 
 		Do Until aRs.EOF
-			if cstr(aRs("category_use_yn")) = "Y" then
+			if cstr(aRs("category_use_yn")) = "Y" Or aRs("category_idx") = 133 then
 				if category_idx = "" then
 					category_idx = cstr(aRs("category_idx"))
 					category_name = cstr(aRs("category_name"))

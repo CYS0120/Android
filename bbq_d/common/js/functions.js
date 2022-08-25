@@ -42,7 +42,7 @@ function setAddress(addr_idx) {
                 $("#form_addr [name=zip_code]").val(res[0].zip_code);
                 $("#form_addr [name=address_main]").val(res[0].address_main);
                 $("#form_addr [name=address_detail]").val(res[0].address_detail);
-                
+
 				if(typeof($("#form_addr [name=h_code]")) != 'undefined'){
 					//기존에 등록된 배달지 중 행정동코드(h_code)가 없는 경우 h_code 가져오기
 					if(res[0].h_code == ""){
@@ -790,6 +790,8 @@ function mobile_window_open(str)
 		url = g2_bbq_m_url +"/mypage/orderListNonMem.asp?pc_move=Y";
 	} else if (str == "ecoupon") { 
 		url = g2_bbq_m_url +"/main.asp?pc_move=Y&ecoupon=Y";
+	} else if (str == "beerfstv") { 
+		url = g2_bbq_m_url +"/menu/menuList.asp?anc=133&order_type=R";
 	} else {
 		url = g2_bbq_m_url +"/main.asp?pc_move=Y";
 	}

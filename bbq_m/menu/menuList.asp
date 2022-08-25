@@ -116,7 +116,7 @@
 			// $('.menu_cate_'+ anc).show(0);
 		// }
 
-		if (anc == "133") {fstv = "<span style='font-size:13px;'>※ 페스티벌 메뉴는 다른 카테고리 메뉴와 함께 구매가 불가능합니다.</span>"} else {fstv = ""};
+		if (anc == "133") {fstv = "<p><span style='font-size:13px;'>※ 페스티벌 메뉴는 다른 카테고리 메뉴와 함께 구매가 불가능합니다.</span></p><p><span style='font-size:13px;'>※ 축제 기간 동안 현장에서만 사용 가능합니다.</span></p><p><span style='font-size:13px;'>축제 기간 : 2022-08-26 ~ 2022-09-03</span></p>"} else {fstv = ""};
 
 		$.ajax({
 			type: 'POST',
