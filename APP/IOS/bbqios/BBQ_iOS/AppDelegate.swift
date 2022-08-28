@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import UserNotifications
+import UBpayFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let nvc: UINavigationController
     let gcmMessageIDKey = "gcm.message_id"
     
+    var ubpay = UBpayInterface(service: "I35", isDev: true) // BBQ
     
     override init() {
         mainStoryboard      =  UIStoryboard(name: "Main", bundle: nil)
@@ -139,6 +141,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // With swizzling disabled you must set the APNs token here.
         Messaging.messaging().apnsToken = deviceToken
+        
+        
+        let chars = (deviceToken as NSData).bytes.bindMemory(to: CChar.self, capacity: deviceToken.count)
+        var token = ""
+        
+        for i in 0..<deviceToken.count {
+            token += String(format: "%02.2hhx", arguments: [chars[i]])
+        }
+        
+        print("Device Token = \(token)")
+    
+        ubpay.pushToken = token
     }
     
 
@@ -243,21 +257,29 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
      *-----------------------------------------------------------------------*/
     // Receive displayed notifications for iOS 10 devices.
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        let userInfo = notification.request.content.userInfo
         
-        // With swizzling disabled you must let Messaging know about the message, for Analytics
-        // Messaging.messaging().appDidReceiveMessage(userInfo)
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
+        if let pushInfo: Dictionary = notification.request.content.userInfo as? Dictionary<String,Any> {
+            if ubpay.checkPush(info: pushInfo) {
+                NotificationCenter.default.post(name: Notification.Name("startUBpayPush"), object: pushInfo)
+            } else {
+                let userInfo = notification.request.content.userInfo
+                
+                // With swizzling disabled you must let Messaging know about the message, for Analytics
+                // Messaging.messaging().appDidReceiveMessage(userInfo)
+                // Print message ID.
+                if let messageID = userInfo[gcmMessageIDKey] {
+                    print("Message ID: \(messageID)")
+                }
+                
+                // Print full message.
+                print(userInfo)
+            }
         }
-        
-        // Print full message.
-        print(userInfo)
-        
         
         // Change this to your preferred presentation option
         completionHandler([UNNotificationPresentationOptions.alert, UNNotificationPresentationOptions.sound])
+        
+//        completionHandler([.sound]) // foreground push 일 경우 noti 제거
     }
 
     
@@ -266,24 +288,35 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
      *-----------------------------------------------------------------------*/
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
-        let userInfo = response.notification.request.content.userInfo
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
+        if UIApplication.shared.applicationState == .active {
+            return
         }
-        
-        //
-        // Print full message.
-        //
-        print(userInfo)
-        
-        UIApplication.shared.applicationIconBadgeNumber = 0
+       
+        if let pushInfo: Dictionary = response.notification.request.content.userInfo as? Dictionary<String,Any> {
+            if ubpay.checkPush(info: pushInfo) {
+                NotificationCenter.default.post(name: Notification.Name("startUBpayPush"), object: pushInfo)
+            } else {
+                let userInfo = response.notification.request.content.userInfo
+                
+                if let messageID = userInfo[gcmMessageIDKey] {
+                    print("Message ID: \(messageID)")
+                }
+                
+                //
+                // Print full message.
+                //
+                print(userInfo)
+                
+                UIApplication.shared.applicationIconBadgeNumber = 0
 
-        
-        //
-        // TODO: 확인 할 것
-        //
-        if let pushType = userInfo["PUSHTYPE"] as? String {
-            self.mainViewController.loadPushUrl(pushType)
+                
+                //
+                // TODO: 확인 할 것
+                //
+                if let pushType = userInfo["PUSHTYPE"] as? String {
+                    self.mainViewController.loadPushUrl(pushType)
+                }
+            }
         }
 
         completionHandler()

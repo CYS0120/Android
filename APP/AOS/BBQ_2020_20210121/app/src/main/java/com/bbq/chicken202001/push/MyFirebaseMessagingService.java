@@ -12,14 +12,15 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
-import java.util.Map;
-import java.util.Random;
 
 import com.bbq.chicken202001.R;
 import com.bbq.chicken202001.activity.MainActivity;
-import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+import com.harex.android.ubpay.a35.UBModule;
 
+import java.util.Map;
+import java.util.Random;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -39,6 +40,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(String s) {
         super.onNewToken(s);
         Log.e(TAG, "====> onNewToken: " + s);
+
+        // 모앱의 FCM 토큰 업데이트 시,
+        // UBpay 앱모듈로 동기화 API 호출
+        UBModule.getUBpayModule().syncPushToken(getApplicationContext(), s);
+        Log.d("pushtoken", s);
     }
 
     //경우에 따라 FCM에서 메시지를 전달하지 못할 수 있습니다.
@@ -58,6 +64,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "Data: " + remoteMessage.getData());
         super.onMessageReceived(remoteMessage);
 
+        // Ubpay 앱모듈 용 push 인지 체크하여, Ubpay 앱모듈 push 이면
+        // 해당 API 호출.
+        final Map<String, String> remoteMessageData = remoteMessage.getData();
+
+        if (UBModule.getUBpayModule().isUbpayPush(remoteMessageData)) {
+            UBModule.getUBpayModule().handleUbpayPush(remoteMessageData);
+            return;
+        }
 
         //백그라운드이면 notEmpty
         //백그라운드시에는 알람이 오지 않기 때문에 아래 내용을 참조해서 처리해야함 2019-05-17

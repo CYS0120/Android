@@ -11,6 +11,11 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         multiDexEnabled true
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
     signingConfigs {
         releaseWithSignedKey {
             storeFile file(SIGNED_STORE_FILE)
@@ -67,8 +72,10 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-core'
     implementation 'com.google.firebase:firebase-messaging'
+//    implementation 'com.google.firebase:firebase-messaging:20.1.7'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-config'
+    implementation("com.google.firebase:firebase-iid")
 
     // glide 추가
     implementation 'com.github.bumptech.glide:glide:4.10.0'
@@ -96,7 +103,7 @@ dependencies {
     implementation "com.google.zxing:core:3.4.1" //(바코드 생성 관련)
 //    implementation "com.journeyapps:zxing-android-embedded:3.2.0@aar"
     implementation "gun0912.ted:tedpermission:2.2.2" //(permission 라이브러리)
-    implementation "dev.haenara:bricksharedpref:1.0.2" //(sharedPrefrence 암호화)
+//    implementation "dev.haenara:bricksharedpref:1.0.2" //(sharedPrefrence 암호화)
     implementation "androidx.security:security-crypto:1.0.0-alpha02" //(sharedPrefrence 암호화)
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
