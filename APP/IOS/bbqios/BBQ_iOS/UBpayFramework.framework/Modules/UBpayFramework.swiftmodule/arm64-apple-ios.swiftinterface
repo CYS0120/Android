@@ -1,0 +1,46 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.6 (swiftlang-5.6.0.323.62 clang-1316.0.20.8)
+// swift-module-flags: -target arm64-apple-ios10.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name UBpayFramework
+import AVFoundation
+import Foundation
+import MessageUI
+import Swift
+@_exported import UBpayFramework
+import UIKit
+import WebKit
+import _Concurrency
+extension Swift.String {
+  public func encMMAA() -> Swift.String
+  public func decMMAA() -> Swift.String
+}
+@objc public protocol UBpayInterfaceDelegate {
+  @objc func ubpayFinished(info: [Swift.String : Any]?)
+  @objc func ubpayFinished(error: [Swift.String : Any]?)
+  @objc func ubpayCallbackResponse(code: Swift.String, data: [Swift.String : Any]?)
+}
+@objc public class UBpayInterface : ObjectiveC.NSObject {
+  @objc public var delegate: UBpayFramework.UBpayInterfaceDelegate!
+  @objc public var serviceCode: Swift.String {
+    @objc get
+    @objc set
+  }
+  @objc public var isDev: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc public var pushToken: Swift.String {
+    @objc get
+    @objc set
+  }
+  @objc public var customData: Any?
+  @objc public init(service: Swift.String, isDev: Swift.Bool)
+  @objc public func startUBpay()
+  @objc public func startUBpay(menu: Swift.String, info: [Swift.String : Any]?)
+  @objc public func startUBpay(push: [Swift.String : Any])
+  @objc public func startUBpay(scheme: Swift.String)
+  @objc public func exitUBpay()
+  @objc public func isAuth() -> Swift.Bool
+  @objc public func checkPush(info: [Swift.String : Any]) -> Swift.Bool
+  @objc public func phoneNo() -> Swift.String
+  @objc deinit
+}
