@@ -1362,7 +1362,7 @@ function calcTotalAmount() {
 
 		var order_amt = removeCommas($.trim($("#total_amt").val()));
 		var ecoupon_amt = eval($.trim($("#ecoupon_amt").val()));
-		if (Number(order_amt) + Number(ecoupon_amt) < 13000){
+		if (Number(order_amt) + Number(ecoupon_amt) < 13000 && ! sessionStorage.getItem("M_2609_0_")){
 			alert('총 상품금액 13,000원 이상 주문 가능합니다.');
 			sessionStorage.removeItem("olympic_winter");
 			document.location.href='/order/cart.asp';
@@ -3411,7 +3411,7 @@ function calcTotalAmount() {
         //현금영수증 선택 영역 끝
 
         //홈파티 Test 1248 = 홈파티 트레이 , 치본스테이크가 장바구니에 있으면 배달매장, 예약일자, 결제수단 등 표출 20201204 //송도맥주축제 20220816
-		if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_")){
+		if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_") || sessionStorage.getItem("M_2609_0_") || sessionStorage.getItem("M_2610_0_")){
 			$('#delivery_message').html("방문예정일");
 			$("#deliver_event").prop("disabled", true).show();	// 매장명(7451401)
 			$("#event_book").prop("disabled", true).hide();		// 예약일시
