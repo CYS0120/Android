@@ -46,6 +46,7 @@
 <!--#include virtual="/api/class/Req.Coupon.GetUseList.class.asp"-->
 <!--#include virtual="/api/class/Req.Coupon.Issue.class.asp"-->
 <!--#include virtual="/api/class/Req.Coupon.IssuePin.class.asp"-->
+<!--#include virtual="/api/class/Req.Coupon.Redeem.class.asp"-->
 <!--#include virtual="/api/class/Req.Map.Store.class.asp"-->
 <!--#include virtual="/api/class/Req.Order.Cancel.class.asp"-->
 <!--#include virtual="/api/class/Req.Order.CancelListForOrder.class.asp"-->
@@ -82,6 +83,7 @@
 <!--#include virtual="/api/class/Res.Coupon.GetUseList.class.asp"-->
 <!--#include virtual="/api/class/Res.Coupon.Issue.class.asp"-->
 <!--#include virtual="/api/class/Res.Coupon.IssuePin.class.asp"-->
+<!--#include virtual="/api/class/Res.Coupon.Redeem.class.asp"-->
 <!--#include virtual="/api/class/Res.Map.Store.class.asp"-->
 <!--#include virtual="/api/class/Res.Order.Cancel.class.asp"-->
 <!--#include virtual="/api/class/Res.Order.CancelListForOrder.class.asp"-->

@@ -225,6 +225,9 @@ function ExcelDown(){
 									<th>
 										KB간편결제
 									</th>
+									<th>
+										올리브페이
+									</th>
 <%	END IF %>
 									<th>관리</th>
 								</tr>
@@ -238,6 +241,10 @@ function ExcelDown(){
     	Sql = Sql & " , CASE WHEN LEN(ISNULL(paycoin_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS PAYCOIN_YN " & vbCrLf
     	Sql = Sql & " , CASE WHEN LEN(ISNULL(payco_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS PAYCO_YN " & vbCrLf
     	Sql = Sql & " , CASE WHEN LEN(ISNULL(sgpay_merchant_v2, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS SGPAY_YN " & vbCrLf
+		
+		'올리브페이 추가 (2022. 8. 16)
+		Sql = Sql & " , CASE WHEN LEN(ISNULL(ubpay_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS UBPAY_YN " & vbCrLf
+		
     	Sql = Sql & " , CASE WHEN ISNULL(WGS84_X, 0) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS WGS84 " & vbCrLf
 		Sql = Sql & SqlFrom & SqlWhere & vbCrLf
 		Sql = Sql & " And BRANCH_ID Not In " & vbCrLf
@@ -276,6 +283,7 @@ function ExcelDown(){
 				PAYCOIN_YN = Rlist("PAYCOIN_YN")
 				PAYCO_YN = Rlist("PAYCO_YN")
 				SGPAY_YN = Rlist("SGPAY_YN")
+				UBPAY_YN = Rlist("UBPAY_YN")
 				WGS84 = Rlist("WGS84")
 
 '				branch_services_name = ""
@@ -323,6 +331,7 @@ function ExcelDown(){
 									<td><%=PAYCOIN_YN%></td>
 									<td><%=PAYCO_YN%></td>
 									<td><%=SGPAY_YN%></td>
+									<td><%=UBPAY_YN%></td>
 <%	END IF %>
 									<td><input type="button" value="수정" class="btn_white" onClick="document.location.href='store_info.asp?CD=<%=CD%>&BRCD=<%=BRANCH_ID%>'"></td>
 								</tr>

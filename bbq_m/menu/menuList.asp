@@ -116,6 +116,8 @@
 			// $('.menu_cate_'+ anc).show(0);
 		// }
 
+		if (anc == "133") {fstv = "<p><span style='font-size:13px;'>※ 페스티벌 메뉴는 다른 카테고리 메뉴와 함께 구매가 불가능합니다.</span></p><p><span style='font-size:13px;'>※ 축제 기간 동안 현장에서만 사용 가능합니다.</span></p><p><span style='font-size:13px;'>축제 기간 : 2022-08-26 ~ 2022-09-03</span></p>"} else {fstv = ""};
+
 		$.ajax({
 			type: 'POST',
 			url: "/menu/menuList_ajax.asp",
@@ -125,6 +127,7 @@
 			},
 			dataType: 'html',
 			success: function(data) {
+				$("#fstv-menu").html(fstv);				
 				$("#menu-list").html(data);
 
 				$("div[name=menu_div]").each(function(){
@@ -221,6 +224,10 @@
 						end if 
 					end if 
 
+					if anc = "133" then
+						cate_idx_str = cate_idx_str & split_str & aRs("category_idx")
+						cate_name_str = cate_name_str & split_str & aRs("category_name")
+					end if
 					aRs.MoveNext
 				Loop
 			End If
@@ -251,9 +258,13 @@
 							<span class="<% if anc = "" then %>				on <% end if %> swiper-slide2"><button type="button" name="btnMenuCate" data-cateid="" onclick="menu_go(''); ">전체</button></span>
 						<% end if '전체메뉴보기 빼기 %>
 
+						<% If anc = "133" Then %>
+								<span class="on swiper-slide2"><button type="button" name="btnMenuCate" data-cateid="133" onclick="menu_go('133'); ">페스티벌</button></span>
+						<% Else %>
 							<% For i=0 To UBound(cate_idx_arr) %>
 								<span class="<% if anc = cate_idx_arr(i) then %>		on <% end if %> swiper-slide2"><button type="button" name="btnMenuCate" data-cateid="<%=cate_idx_arr(i)%>" onclick="menu_go('<%=cate_idx_arr(i)%>'); "><%=cate_name_arr(i)%></button></span>
 							<% Next %>
+						<% End If %>
 						</div>
 					</nav>
 				</div>
@@ -306,13 +317,15 @@
 					<span id="re_text" class="re_text" onclick="menu_list_reset(1)">X</span>
 					<span id="list_src_result" class="re_search"><span>
 				</div>
-				
+
 			</div>
 
 
 			<!-- 메뉴 리스트 -->
 			<div class="menu_accordion h-inbox1000" >
 
+				<div id="fstv-menu" style="text-align:center;margin-bottom:10px;">
+				</div>				
 				
 				<!-- menu-list -->
 				<div class="menu-list" id="menu-list">

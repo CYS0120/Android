@@ -69,13 +69,21 @@
 							For i = 0 To UBound(couponHoldList.mHoldList)
 					%>
                     <%
+                        If couponHoldList.mHoldList(i).mCouponUseTypeCode = "MANUAL" Then
+                            onClick = "onClick=""offEventCheck('FSTV_00002', '"& couponHoldList.mHoldList(i).mCouponId &"','"& couponHoldList.mHoldList(i).mCouponNo &"')"""
+                            useChannel = "오프라인(송도맥주축제)"
+                        Else
+                            onClick = ""
+                            useChannel = "PC · 모바일 · App"
+                        End If
+
                         '페이코 쿠폰 오류 발급으로 인한 코드 (쿠폰번호 - CP00002347, 유효기간- 2021.03.23-2021.04.23) 
                         If couponHoldList.mHoldList(i).mCouponId <> "CP00002347" then
                     %>
-					<div class="couponUseOk">
+					<div class="couponUseOk" <%=onClick%>>
 						<div class="coupon">
 							<ul class="tit">
-								<li class="device"><span class="ico-branch red">비비큐치킨</span></li>
+								<!--li class="device"><span class="ico-branch red">비비큐치킨</span></li-->
 								<li class="day"><span>D - <%=DateDiff("d", Date, left(couponHoldList.mHoldList(i).mValidEndDate,4)&"-"&mid(couponHoldList.mHoldList(i).mValidEndDate,5,2)&"-"&mid(couponHoldList.mHoldList(i).mValidEndDate,7,2))%></span></li>
 							</ul>
 							<dl class="info">
@@ -85,7 +93,7 @@
 								<dt><%=couponHoldList.mHoldList(i).mCouponName%></dt>
 								<dd>
 									유효기간 : <%=left(couponHoldList.mHoldList(i).mValidStartDate,4)&"-"&mid(couponHoldList.mHoldList(i).mValidStartDate,5,2)&"-"&mid(couponHoldList.mHoldList(i).mValidStartDate,7,2)%> ~ <%=left(couponHoldList.mHoldList(i).mValidEndDate,4)&"-"&mid(couponHoldList.mHoldList(i).mValidEndDate,5,2)&"-"&mid(couponHoldList.mHoldList(i).mValidEndDate,7,2)%><br/>
-									사용처 : PC · 모바일 · App
+									사용처 : <%=useChannel%>
 								</dd>
 							</dl>
 							<!-- <ul class="txt">

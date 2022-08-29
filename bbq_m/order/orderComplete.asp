@@ -151,7 +151,7 @@
 	Set aRs = Nothing
 
 	If branch_id = "7451401" Then
-		branch_name = "홈파티 사전예약 매장"
+		branch_name = "송도맥주축제"
 	End If
 %>
 
@@ -249,8 +249,8 @@
 	ElseIf order_type = "R" Then
 		order_type_icon_title = "<img src='/images/main/icon_m_out.png'> 예약주문"
 		order_type_title = "예약정보"
-		order_type_name = "배달매장"
-		address_title = "배달주소"
+		order_type_name = "포장매장"
+		address_title = "포장매장주소"
 		address = ""
 	End If
 
@@ -597,6 +597,29 @@
 		OItem.mApprovalYmdt = ""
 		reqOC.addOuterPayMethodList(OItem)
 
+		' 송도맥주축제 동일 고객, 주문번호가 이미 존재하는지 확인
+		Set cmd = Server.CreateObject("ADODB.Command")
+		With cmd
+			.ActiveConnection = dbconn
+			.NamedParameters = True
+			.CommandType = adCmdStoredProc
+			.CommandText = "UP_EVENT_OFFLINE_MEMBER"
+
+			.Parameters.Append .CreateParameter("@TP", adVarChar, adParamInput, 10, "SELECT")
+			.Parameters.Append .CreateParameter("@EVENT_CD", adVarChar, adParamInput, 10, "FSTV_00002")
+			.Parameters.Append .CreateParameter("@MEMBER_IDNO", adVarChar, adParamInput, 20 , Session("userIdNo"))
+			.Parameters.Append .CreateParameter("@ORDER_ID", adVarChar, adParamInput, 40, order_num)
+			.Parameters.Append .CreateParameter("@MESSAGE", adVarChar, adParamInput, 1000 , delivery_message)
+			.Parameters.Append .CreateParameter("@COUPON_ID", adVarChar, adParamInput, 10, "")
+			.Parameters.Append .CreateParameter("@COUPON_NO", adVarChar, adParamInput, 16 , "")
+			.Parameters.Append .CreateParameter("@RSTMSG", adVarChar, adParamOutput, 500)
+
+			.Execute
+
+			rstMsgChk = .Parameters("@RSTMSG").Value
+		End With
+		Set cmd = Nothing
+
 		If Not (aRs.BOF Or aRs.EOF) Then
 			aRs.MoveFirst
 			Do until aRs.EOF
@@ -651,6 +674,61 @@
 
 					reqOC.addProductList(pItem)
 				End If 
+
+				' 송도맥주축제 쿠폰 발행
+				menu_idx = aRs("menu_idx")
+				Select Case menu_idx
+					Case "2600"
+						payco_couponid = "CP00027221"
+					Case "2589"
+						payco_couponid = "CP00027341"
+					Case "2590"
+						payco_couponid = "CP00027348"
+					Case "2591"
+						payco_couponid = "CP00027355"
+					Case "2592"
+						payco_couponid = "CP00027356"
+					Case "2609"
+						payco_couponid = "CP00027769"
+					Case "2610"
+						payco_couponid = "CP00027770"
+					Case else
+						payco_couponid = ""
+				End Select
+				If payco_couponid <> "" Then
+					If rstMsgChk = "0000" Then
+						menu_cnt = 1
+						Do While menu_cnt <= aRs("menu_qty")
+							' response.write menu_idx & " || qty: " & aRs("menu_qty") & " || cnt: " & menu_cnt & "<br>"
+							Set CouponIssuance = CouponIssue(payco_couponid)
+							If CouponIssuance.mCode = 0 Then
+								Set cmd = Server.CreateObject("ADODB.Command")
+								With cmd
+									.ActiveConnection = dbconn
+									.NamedParameters = True
+									.CommandType = adCmdStoredProc
+									.CommandText = "UP_EVENT_OFFLINE_MEMBER"
+
+									.Parameters.Append .CreateParameter("@TP", adVarChar, adParamInput, 10, "BUY")
+									.Parameters.Append .CreateParameter("@EVENT_CD", adVarChar, adParamInput, 10, "FSTV_00002")
+									.Parameters.Append .CreateParameter("@MEMBER_IDNO", adVarChar, adParamInput, 20 , Session("userIdNo"))
+									.Parameters.Append .CreateParameter("@ORDER_ID", adVarChar, adParamInput, 40, order_num)
+									.Parameters.Append .CreateParameter("@MESSAGE", adVarChar, adParamInput, 1000 , delivery_message)
+									.Parameters.Append .CreateParameter("@COUPON_ID", adVarChar, adParamInput, 10, CouponIssuance.mCouponId)
+									.Parameters.Append .CreateParameter("@COUPON_NO", adVarChar, adParamInput, 16 , CouponIssuance.mCouponNo)
+									.Parameters.Append .CreateParameter("@RSTMSG", adVarChar, adParamOutput, 500)
+
+									.Execute
+
+									rstMsg = .Parameters("@RSTMSG").Value
+								End With
+								Set cmd = Nothing
+							End If
+							menu_cnt = menu_cnt + 1
+						Loop
+					End If
+				End If
+
 				aRs.MoveNext
 			Loop
 		End If

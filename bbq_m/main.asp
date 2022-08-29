@@ -193,7 +193,7 @@
 					</ul>
 				<%  If False Then %>
 					<ul class="h-main_order_2">
-						<li><div class="h-main_order05"><a href="/menu/menuList.asp?anc=128&order_type=R">홈파티 사전예약</a></div></li>
+						<li><div class="h-main_order05"><a href="/menu/menuList.asp?anc=133&order_type=R">송도맥주축제 사전예약</a></div></li>
 					</ul>
 					<ul class="h-footer_line">
 					</ul>

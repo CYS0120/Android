@@ -576,7 +576,7 @@ function getCartPartyCount(){
         for(var i=0; i < len; i++) {
             var key = sessionStorage.key(i);
 
-			if (key.substring(0, 9) == "M_1695_0_" || key.substring(0, 9) == "M_1696_0_"){
+			if (key.substring(0, 9) == "M_2600_0_" || key.substring(0, 9) == "M_2589_0_" || key.substring(0, 9) == "M_2590_0_" || key.substring(0, 9) == "M_2591_0_" || key.substring(0, 9) == "M_2592_0_" || key.substring(0, 9) == "M_2609_0_" || key.substring(0, 9) == "M_2610_0_"){
 				count++;
 			}
         }

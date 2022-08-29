@@ -197,7 +197,7 @@ End Function
 Function CheckOpenTime
 	CHECK_DATETIME = year(date) & Right("0" & month(date),2) & Right("0" & day(date),2) & Right("0" & hour(time),2) & Right("0" & minute(time),2) & Right("0" & second(time),2)
 	'If CHECK_DATETIME >= "20190615110000" And CHECK_DATETIME < "20190616010000" Then	'U20 축구 결승때문에 연장 체크
-	If branch_id = "1146001" then   ' 테스트매장은 언제든지 테스트 가능하도록
+	If branch_id = "1146001" Or branch_id = "7451401" then   ' 테스트매장은 언제든지 테스트 가능하도록
 		CheckOpenTime = True
 	Else
 		if G2_SITE_MODE = "production" then 

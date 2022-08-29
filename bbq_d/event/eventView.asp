@@ -152,6 +152,14 @@ function EventClick(eventurl,FVAL) {
 							end if 
 						%>
 						<a href="<%=link_str%>" target="_blank"><%=vRs("contents")%></a>
+					<% elseif eidx = "1849" then %>
+						<p>
+							<img src="https://img.bbq.co.kr:449/uploads/bbq_d/bbseditor/렌딩페이지_01.png">
+							<a href="javascript: mobile_window_open('beerfstv');"><img src="https://img.bbq.co.kr:449/uploads/bbq_d/bbseditor/렌딩페이지_02.png"></a>
+							<img src="https://img.bbq.co.kr:449/uploads/bbq_d/bbseditor/렌딩페이지_03.png">
+							<a onclick="alert('모바일 환경에서 진행해주세요.');"><img src="https://img.bbq.co.kr:449/uploads/bbq_d/bbseditor/렌딩페이지_04.png"></a>
+							<img src="https://img.bbq.co.kr:449/uploads/bbq_d/bbseditor/렌딩페이지_05.png">
+						</p>
 					<% else %>
 						<%=vRs("contents")%>
 					<% end if %>

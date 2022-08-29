@@ -75,6 +75,12 @@
 								<th>
 									KB간편결제 ID
 								</th>
+								<th>
+									올리브페이 여부
+								</th>
+								<th>
+									올리브페이 ID
+								</th>
 <%	END IF %>
 							</tr>
 <%
@@ -126,6 +132,10 @@
 	Sql = Sql & " , CASE WHEN LEN(ISNULL(paycoin_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS PAYCOIN_YN " & vbCrLf
 	Sql = Sql & " , CASE WHEN LEN(ISNULL(payco_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS PAYCO_YN " & vbCrLf
 	Sql = Sql & " , CASE WHEN LEN(ISNULL(SGPAY_MERCHANT_V2, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS SGPAY_YN " & vbCrLf
+	
+	'올리브페이 추가 (2022. 8. 16)
+	Sql = Sql & " , CASE WHEN LEN(ISNULL(ubpay_cpid, '')) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS UBPAY_YN " & vbCrLf
+
 	Sql = Sql & " , CASE WHEN ISNULL(WGS84_X, 0) > 0 THEN '<div style=''color:green''>Y</div>' ELSE '<span style=''color:red;font-weight:bold;''>N</div>' END AS WGS84 " & vbCrLf
 	Sql = Sql & SqlFrom & SqlWhere & SqlOrder
 
@@ -163,6 +173,10 @@
 			PAYCO_ID = Rlist("payco_cpid")
 			SGPAY_YN = Rlist("SGPAY_YN")
 			SGPAY_ID = Rlist("SGPAY_MERCHANT_V2")
+			
+			'올리브페이 추가 (2022. 8. 16)
+			UBPAY_YN = Rlist("UBPAY_YN")
+			UBPAY_ID = Rlist("ubpay_cpid")
 			WGS84 = Rlist("WGS84")
 %>
 							<tr>
@@ -200,6 +214,8 @@
 								<td><%=PAYCO_ID%></td>
 								<td><%=SGPAY_YN%></td>
 								<td><%=SGPAY_ID%></td>
+								<td><%=UBPAY_YN%></td>
+								<td><%=UBPAY_ID%></td>
 <%	END IF %>
 							</tr>
 <%

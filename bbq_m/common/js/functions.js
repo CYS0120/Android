@@ -498,7 +498,7 @@ function drawCartPage(page){
 	//}
 	if(partyAndEcYn){
 		resetCartMenuEcAmt();
-		showAlertMsg({msg:"홈파티 메뉴에는 모바일상품권을 사용할 수 없습니다.", ok: function(){			
+		showAlertMsg({msg:"송도맥주축제 메뉴에는 모바일상품권을 사용할 수 없습니다.", ok: function(){			
 			if(page == "C") {
 				location.href = "/order/cart.asp";
 			}
@@ -915,7 +915,7 @@ function drawCouponFromCart(page){
 			
 			retrun_val = true;
 		}else{
-			showAlertMsg({msg:"홈파티 메뉴에는 모바일상품권을 사용할 수 없습니다."});
+			showAlertMsg({msg:"송도맥주축제 메뉴에는 모바일상품권을 사용할 수 없습니다."});
 			retrun_val = false;
 		}
 	}
@@ -2047,4 +2047,23 @@ function viewPickupDiscount(branch_id){
 			}
 		}
 	}
+}
+
+
+//--------------------------------------------------------
+// 이벤트 참여 회원
+//--------------------------------------------------------
+
+function offEventCheck(event_cd, cpnid, cpnno) {
+    if(window.confirm("직원확인 처리를 하시겠습니까?\n직원 확인 후에는 쿠폰이 사용처리되어 더 이상 사용하실 수 없습니다.")) {
+        $.ajax({
+            method: "post",
+            url: "/api/ajax/ajax_offEventCheck.asp",
+            data: {event_cd: event_cd, cpnid: cpnid, cpnno: cpnno},
+            dataType: "json",
+            success: function(res) {
+				showAlertMsg({msg:res.message});
+            }
+        });
+    }
 }

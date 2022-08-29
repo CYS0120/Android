@@ -61,6 +61,7 @@
 	payco_cpid	= Rinfo("payco_cpid")
 	payco_itemcd	= Rinfo("payco_itemcd")
 	paycoin_cpid	= Rinfo("paycoin_cpid")
+	ubpay_cpid	= Rinfo("ubpay_cpid")
 	kakaopay_cpid	= Rinfo("kakaopay_cpid")
 	sgpay_merchant	= Rinfo("sgpay_merchant_v2")
 	newbranch_title	= Rinfo("newbranch_title")
@@ -857,6 +858,24 @@ function onChange_dong(sido_id, sigungu_id, dong_id)
 							<tr>
 								<th>CPID</th>
 								<td><input type="text" name="kakaopay_cpid" id="kakaopay_cpid" value="<%=kakaopay_cpid%>"></td>
+							</tr>
+							
+						</table>
+					</div>
+
+					<div class="paycoin_in">
+						<div>
+							<span>올리브페이 등록</span>
+						</div>
+						<table>
+							<colgroup>
+								<col width="15%">
+								<col width="85%">
+							</colgroup>
+
+							<tr>
+								<th>CPID</th>
+								<td><input type="text" name="ubpay_cpid" id="ubpay_cpid" value="<%=ubpay_cpid%>"></td>
 							</tr>
 							
 						</table>
