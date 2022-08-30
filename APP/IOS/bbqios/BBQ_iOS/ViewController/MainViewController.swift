@@ -66,7 +66,7 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
     public var strBarCode : String?
     public var isSetBarCode : Bool = false
     
-    var ubpayParam: String = ""
+    var ubpayParams: String = ""
 
 
     required init?(coder aDecoder: NSCoder) {
@@ -1176,10 +1176,11 @@ extension MainViewController: WKScriptMessageHandler {
             self.navigationController?.pushViewController(controller, animated: false)
             
         } else if (message.name == "bbqHandler") {
+            ubpayParams = ""
             if message.body as! String == "payment" { // 결제하기
                 let ubpay:[String:String] = message.body as! Dictionary
                 app.ubpay.customData = ubpay["tid"]
-                ubpayParam = ubpay["param"] ?? ""
+                ubpayParams = ubpay["param"] ?? ""
                 app.ubpay.startUBpay(menu: "PAYMENT", info: nil)
             } else if message.body as! String == "managePayment" { // 결제수단
                app.ubpay.startUBpay(menu: "MANAGEPAYMENT", info: nil)
@@ -1290,8 +1291,7 @@ extension MainViewController : UBpayInterfaceDelegate {
         print("ubpayCallbackResponse : \(code) \(String(describing: data))")
         
         let app = UIApplication.shared.delegate as! AppDelegate
-        
-        wkWebView.evaluateJavaScript("ubpay_done('\(ubpayParam)')", completionHandler: {(result, error) in
+        wkWebView.evaluateJavaScript("ubpay_done('\(ubpayParams)')", completionHandler: {(result, error) in
             if let result = result {
                 print("barCodeData result :: \(result)")
             }
