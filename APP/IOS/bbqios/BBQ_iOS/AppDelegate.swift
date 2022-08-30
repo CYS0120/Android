@@ -21,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let nvc: UINavigationController
     let gcmMessageIDKey = "gcm.message_id"
     
-    var ubpay = UBpayInterface(service: "I35", isDev: true) // BBQ
+//    var ubpay = UBpayInterface(service: "I35", isDev: true) // ubpay 개발서버
+    var ubpay = UBpayInterface(service: "I35", isDev: false) // ubpay 운영서버
     
     override init() {
         mainStoryboard      =  UIStoryboard(name: "Main", bundle: nil)
