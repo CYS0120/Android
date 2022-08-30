@@ -649,11 +649,9 @@ public class MainActivity extends AppCompatActivity {
         mWebView.setVisibility(View.VISIBLE);
          */
 
-        ////////////////////////////////////// ubpay Start //////////////////////////////////////
-
-        // 앱모듈 인스턴스 획득
-        UBModule.getUBpayModule().initModule(this);
-        ////////////////////////////////////// ubpay End //////////////////////////////////////
+        // ubpay 앱모듈 인스턴스 획득
+        UBModule.getUBpayModule().initModule(this, UBModule.SERVER_TYPE_DEV); // 테스트서버
+//        UBModule.getUBpayModule().initModule(this); // 실서버
     }
 
     @Override
@@ -715,11 +713,38 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 401 && resultCode == RESULT_OK) {
-            mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-            return;
-        } else if (requestCode == 402 && resultCode == RESULT_OK) {
-            mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+        if ((requestCode == 401 || requestCode == 402)) {
+            String result = data.getStringExtra("result");
+            Log.d(TAG, "ubpay_done : " + result);
+
+            if (resultCode == RESULT_OK) {
+                if (result.equals(UBModule.MANAGEPAYMENT)) { // 결제수단
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                } else if (result.equals(UBModule.APPROVAL)) { // 승인내역
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                } else if (result.equals("ZPMANAGEPAYMENT")) { // 상품권 충전 결제계좌
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                } else if (result.equals("ZPAPPROVAL")) { // 상품권 결제내역
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                } else if (result.equals(UBModule.PWCHANGE)) { // 결제비번 변경
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                } else if (result.equals(UBModule.EMAILCHANGE)) { // 이메일 변경
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                } else if (result.equals(UBModule.NOTICEEVENT)) { // 공지.이벤트
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                } else if (result.equals(UBModule.GUIDEUSE)) { // 이용안내
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                } else if (result.equals(UBModule.FAQ)) { // FAQ
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                } else if (result.equals(UBModule.CS)) { // 고객지원
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                } else { // 결제요청 TID
+                    mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                }
+            } else {
+                mWebView.loadUrl("javascript:ubpay_done('')");
+            }
+
             return;
         }
 
@@ -1338,6 +1363,7 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public void managePayment() { // post방식으로 호출
             Log.i(TAG, "managePayment");
+            ubpayParams = "";
             UBModule.getUBpayModule().startUBpay(MainActivity.this, 401, UBModule.MANAGEPAYMENT);
         }
 
