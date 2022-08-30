@@ -624,7 +624,6 @@ public class MainActivity extends AppCompatActivity {
                         //
                         // url 이동
                         //
-                        // TEST
                         mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId=" + deviceId + "&token=" + token + "&osTypeCd=ANDROID&pushtype=" + pushType + "&version=" + appVersion); // 실서버 보안연결
 //                        mWebView.loadUrl("https://m.bbq.co.kr/gps_test.asp");
                         progressBar.setVisibility(View.VISIBLE);
