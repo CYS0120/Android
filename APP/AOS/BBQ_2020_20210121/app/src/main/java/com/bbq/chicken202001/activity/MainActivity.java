@@ -12,18 +12,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-//import android.support.annotation.NonNull;
-//import android.support.v4.app.ActivityCompat;
-//import android.support.v4.content.ContextCompat;
-//import android.support.v7.app.AlertDialog;
-//import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -45,7 +39,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,13 +50,19 @@ import com.bbq.chicken202001.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.harex.android.ubpay.a35.UBModule;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Stack;
+
+//import android.support.annotation.NonNull;
+//import android.support.v4.app.ActivityCompat;
+//import android.support.v4.content.ContextCompat;
+//import android.support.v7.app.AlertDialog;
+//import android.support.v7.app.AppCompatActivity;
 
 
 
@@ -100,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
     boolean  mBarCode;
 
     DialogWebBridge dialogWebBridge;
+
+    private String ubpayParams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -589,6 +590,9 @@ public class MainActivity extends AppCompatActivity {
                         String pushType     = "";
                         String appVersion   = "";
 
+                        // UBpay 앱모듈로 동기화 API 호출
+                        UBModule.getUBpayModule().syncPushToken(getApplicationContext(), token);
+
                         try {
                             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
                             appVersion = pInfo.versionName;         // versionName은 1.0.4와 version을 표시하는 String
@@ -620,14 +624,12 @@ public class MainActivity extends AppCompatActivity {
                         //
                         // url 이동
                         //
-                      mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId="+deviceId+"&token="+token+"&osTypeCd=ANDROID&pushtype="+pushType+"&version="+appVersion); // 실서버 보안연결
+                        mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId=" + deviceId + "&token=" + token + "&osTypeCd=ANDROID&pushtype=" + pushType + "&version=" + appVersion); // 실서버 보안연결
 //                        mWebView.loadUrl("https://m.bbq.co.kr/gps_test.asp");
                         progressBar.setVisibility(View.VISIBLE);
                         mWebView.setVisibility(View.VISIBLE);
                     }
                 });
-
-
 
         /*
         Intent pushtype = getIntent();
@@ -646,7 +648,14 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         mWebView.setVisibility(View.VISIBLE);
          */
+
+        ////////////////////////////////////// ubpay Start //////////////////////////////////////
+
+        // 앱모듈 인스턴스 획득
+        UBModule.getUBpayModule().initModule(this);
+        ////////////////////////////////////// ubpay End //////////////////////////////////////
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //권한을 허용 했을 경우
@@ -706,6 +715,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (requestCode == 401 && resultCode == RESULT_OK) {
+            mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+            return;
+        } else if (requestCode == 402 && resultCode == RESULT_OK) {
+            mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+            return;
+        }
 
         //barCodeResult
         if(mBarCode == true) {
@@ -1318,8 +1334,27 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-    }
 
+        @JavascriptInterface
+        public void managePayment() { // post방식으로 호출
+            Log.i(TAG, "managePayment");
+            UBModule.getUBpayModule().startUBpay(MainActivity.this, 401, UBModule.MANAGEPAYMENT);
+        }
+
+        @JavascriptInterface
+        public void startUbpay(String tid, String params) { // post방식으로 호출
+            Log.i(TAG, "changeOpenerStyleById tid, params = " + tid + "    " + params);
+
+            ubpayParams = params;
+
+            // 만약, 미인증 상태일 경우, TID값으로 "none"을 전달하여, 사용자가 인증하도록 함.
+            boolean isAuth = UBModule.getUBpayModule().isAuth();
+            if (!isAuth) {
+                tid = "none";
+            }
+            UBModule.getUBpayModule().startUBpay(MainActivity.this, 402, tid);
+        }
+    }
 
     private String getCookie(String siteName) {
         String cookieValue = null;

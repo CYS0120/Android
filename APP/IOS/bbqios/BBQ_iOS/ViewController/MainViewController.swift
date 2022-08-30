@@ -15,6 +15,8 @@ import SwiftEventBus
 import SafariServices
 import Lottie
 
+import UBpayFramework
+
 
 class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewControllerDataSource, SFSafariViewControllerDelegate {
 
@@ -64,6 +66,7 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
     public var strBarCode : String?
     public var isSetBarCode : Bool = false
     
+    var ubpayParam: String = ""
 
 
     required init?(coder aDecoder: NSCoder) {
@@ -264,6 +267,7 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
         contentController.add(self, name: "openDocument")
         contentController.add(self, name: "jsError")
         contentController.add(self, name: "openPopup")
+        contentController.add(self, name: "ubpay")
         
         // QuickLook document preview
         documentPreviewController.dataSource  = self
@@ -337,9 +341,9 @@ class MainViewController: BasicViewController, UIScrollViewDelegate, QLPreviewCo
                                             let userDefaults = UserDefaults.standard
                                         
                                             userDefaults.set(arr.hour,forKey: "hour")
-                                            print(self.hour)
+                                            print(self.hour!)
                                             userDefaults.set(arr.minute,forKey: "min")
-                                            print(self.min)
+                                            print(self.min!)
                                         }
                                     }
                                 }
@@ -1142,7 +1146,11 @@ extension MainViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController,
                                didReceive message: WKScriptMessage) {
 
+        print("message.name : ", message.name)
         print("message.body : ", message.body)
+        
+        let app = UIApplication.shared.delegate as! AppDelegate
+        app.ubpay.delegate = self
         
         if (message.name == "openDocument") {
             previewDocument(messageBody: message.body as! String)
@@ -1162,11 +1170,34 @@ extension MainViewController: WKScriptMessageHandler {
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
-            controller.url = message.body as! String
-            print("controller.url :: \(controller.url)");
+            controller.url = message.body as? String
+            print("controller.url :: \(String(describing: controller.url))");
 
             self.navigationController?.pushViewController(controller, animated: false)
             
+        } else if (message.name == "bbqHandler") {
+            if message.body as! String == "payment" { // 결제하기
+                let ubpay:[String:String] = message.body as! Dictionary
+                app.ubpay.customData = ubpay["tid"]
+                ubpayParam = ubpay["param"] ?? ""
+                app.ubpay.startUBpay(menu: "PAYMENT", info: nil)
+            } else if message.body as! String == "managePayment" { // 결제수단
+               app.ubpay.startUBpay(menu: "MANAGEPAYMENT", info: nil)
+            } else if message.body as! String == "approval" { // 승인내역
+               app.ubpay.startUBpay(menu: "APPROVAL", info: nil)
+            } else if message.body as! String == "pwchange" { // 결제비밀번호 변경
+               app.ubpay.startUBpay(menu: "PWCHANGE", info: nil)
+            } else if message.body as! String == "emailchange" { // 이메일 변경
+               app.ubpay.startUBpay(menu: "EMAILCHANGE", info: nil)
+            } else if message.body as! String == "noticeevent" { // 공지/이벤트
+               app.ubpay.startUBpay(menu: "NOTICEEVENT", info: nil)
+            } else if message.body as! String == "guideuse" { // 이용안내
+               app.ubpay.startUBpay(menu: "GUIDEUSE", info: nil)
+            } else if message.body as! String == "faq" { // FAQ
+               app.ubpay.startUBpay(menu: "FAQ", info: nil)
+            } else if message.body as! String == "cs" { // 고객지원
+               app.ubpay.startUBpay(menu: "CS", info: nil)
+           }
         } else {
             if (message.name == "callbackHandler" || message.name == "bbqHandler") {
                 print("JavaScript is sending a message \(message.body)")
@@ -1232,5 +1263,39 @@ extension MainViewController: WKScriptMessageHandler {
                 }
             }
         }
+    }
+    
+    @objc func startUBpayPush(_ notification: Notification) {
+        if let pushinfo = notification.object as? Dictionary<String,Any> {
+            
+            let app = UIApplication.shared.delegate as! AppDelegate
+            app.ubpay.delegate = self
+            app.ubpay.customData = pushinfo["tid"] ?? ""
+            app.ubpay.startUBpay(push: pushinfo)
+        }
+    }
+}
+
+extension MainViewController : UBpayInterfaceDelegate {
+    
+    func ubpayFinished(info: [String:Any]?) {
+        print("ubpayFinished : \(String(describing: info))")
+    }
+    
+    func ubpayFinished(error: [String:Any]?) {
+        print("ubpayFinished : \(String(describing: error))")
+    }
+    
+    func ubpayCallbackResponse(code: String, data: [String : Any]?) {
+        print("ubpayCallbackResponse : \(code) \(String(describing: data))")
+        
+        let app = UIApplication.shared.delegate as! AppDelegate
+        
+        wkWebView.evaluateJavaScript("ubpay_done('\(ubpayParam)')", completionHandler: {(result, error) in
+            if let result = result {
+                print("barCodeData result :: \(result)")
+            }
+        })
+        app.ubpay.exitUBpay()
     }
 }
