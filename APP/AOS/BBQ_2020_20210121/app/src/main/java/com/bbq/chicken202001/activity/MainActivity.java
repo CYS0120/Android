@@ -651,7 +651,7 @@ public class MainActivity extends AppCompatActivity {
 
         // ubpay 앱모듈 인스턴스 획득
         UBModule.getUBpayModule().initModule(this, UBModule.SERVER_TYPE_DEV); // 테스트서버
-//        UBModule.getUBpayModule().initModule(this); // 실서버
+//        UBModule.getUBpayModule().initModule(this); // 운영서버
     }
 
     @Override
