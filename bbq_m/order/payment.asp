@@ -3411,7 +3411,7 @@ function calcTotalAmount() {
         //현금영수증 선택 영역 끝
 
         //홈파티 Test 1248 = 홈파티 트레이 , 치본스테이크가 장바구니에 있으면 배달매장, 예약일자, 결제수단 등 표출 20201204 //송도맥주축제 20220816
-		if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_") || sessionStorage.getItem("M_2609_0_") || sessionStorage.getItem("M_2610_0_")){
+		if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_") || sessionStorage.getItem("M_2593_0_") || sessionStorage.getItem("M_2594_0_") || sessionStorage.getItem("M_2595_0_") || sessionStorage.getItem("M_2596_0_") || sessionStorage.getItem("M_2597_0_") || sessionStorage.getItem("M_2609_0_") || sessionStorage.getItem("M_2610_0_")){
 			$('#delivery_message').html("방문예정일");
 			$("#deliver_event").prop("disabled", true).show();	// 매장명(7451401)
 			$("#event_book").prop("disabled", true).hide();		// 예약일시
