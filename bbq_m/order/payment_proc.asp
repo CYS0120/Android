@@ -472,7 +472,10 @@
 	' If  reserv_date <> "" Or reserv_time <> "" Then
 	' 	branch_id = "7451401" '1146001
 	' End If
-
+	If branch_id = "7451401" Then
+		order_status = "W"
+		order_type = "R"
+	End If
     Set aCmd = Server.CreateObject("ADODB.Command")
 
     With aCmd
