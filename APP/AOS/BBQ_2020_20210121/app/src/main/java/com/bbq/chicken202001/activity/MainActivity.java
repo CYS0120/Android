@@ -56,6 +56,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.Stack;
 
 //import android.support.annotation.NonNull;
@@ -115,11 +116,14 @@ public class MainActivity extends AppCompatActivity {
 
         bottomToast = Toast.makeText(getApplicationContext(),"처리중", Toast.LENGTH_LONG);
 
+        // ubpay 앱모듈 인스턴스 획득
+        UBModule.getUBpayModule().initModule(this, UBModule.SERVER_TYPE_DEV); // 테스트서버
+//        UBModule.getUBpayModule().initModule(this); // 운영서버
+
 
         errorView = (TextView) findViewById(R.id.network_error_view);
         // webView ---------------------------------------------------------------------------
         mWebView = (WebView) findViewById(R.id.activity_main_webview);
-
 
 
         /**
@@ -196,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
             cookieManager.setAcceptThirdPartyCookies(mWebView, true);
         }
 
-
         // Android Webview 디버깅 지원
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
@@ -259,31 +262,31 @@ public class MainActivity extends AppCompatActivity {
                         // 인터넷 프로토콜 주소가 들어왔을 경우
                         view.loadUrl(url);
                         return true;
- //                       return super.shouldOverrideUrlLoading(view, url);
+                        //                       return super.shouldOverrideUrlLoading(view, url);
                     }
                 }
                 /**
-                *결제 이후 blank화면을 알람을 띄워서 메인화면으로 이동되게 처리
+                 *결제 이후 blank화면을 알람을 띄워서 메인화면으로 이동되게 처리
                  */
                 if(url.equals("about:blank"))
                 {
-                       if(goMain) {
-                           goMain = false;
+                    if(goMain) {
+                        goMain = false;
 
-                           new AlertDialog.Builder(view.getContext())
-                                   .setTitle("알림")
-                                   .setMessage("메인화면으로 이동")
-                                   .setPositiveButton(android.R.string.ok,
-                                          new AlertDialog.OnClickListener(){
-                                               public void onClick(DialogInterface dialog, int which) {
-                                                   Log.e(this.getClass().getName(), "메인화면으로 이동= ");
-                                                   view.loadUrl("https://m.bbq.co.kr/main.asp");
-                                               }
-                                           })
-                                   .setCancelable(false)
-                                   .create()
-                                   .show();
-                           return true;
+                        new AlertDialog.Builder(view.getContext())
+                                .setTitle("알림")
+                                .setMessage("메인화면으로 이동")
+                                .setPositiveButton(android.R.string.ok,
+                                        new AlertDialog.OnClickListener(){
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Log.e(this.getClass().getName(), "메인화면으로 이동= ");
+                                                view.loadUrl("https://m.bbq.co.kr/main.asp");
+                                            }
+                                        })
+                                .setCancelable(false)
+                                .create()
+                                .show();
+                        return true;
 
 //                           AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
 //                           alertDialog.setMessage("메인화면으로 이동")
@@ -293,9 +296,9 @@ public class MainActivity extends AppCompatActivity {
 //                                                view.loadUrl("http://m.bbq.co.kr/");
 //                                            }
 //                                        }).create().show();
-                      //     view.loadUrl("https://m.bbq.co.kr/");
-                       }
-                        return false;
+                        //     view.loadUrl("https://m.bbq.co.kr/");
+                    }
+                    return false;
                 }
                 return true;
             }
@@ -370,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url){
                 //progressBar.setVisibility(View.GONE);
                 //bottomToast.cancel();
-               // mfadoutImageVeiw.setVisibility(View.GONE);
+                // mfadoutImageVeiw.setVisibility(View.GONE);
             }
 
         });
@@ -493,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
 
                 CallbackLollipop = filePathCallback;
 
- //               String text = "Text";
+                //               String text = "Text";
 //                Uri pictureUri = Uri.parse("file://my_picture");
 
 //                Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
@@ -534,8 +537,8 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.addCategory(Intent.CATEGORY_OPENABLE);
-               i.setType("image/*");
-               // i.setType("*/*");
+                i.setType("image/*");
+                // i.setType("*/*");
                 startActivityForResult(Intent.createChooser(i, "File Chooser"), LOLLIPOP_REQ_CODE);
 
                 return true;
@@ -600,7 +603,6 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-
                         Intent intent = getIntent();
 
                         //
@@ -624,10 +626,15 @@ public class MainActivity extends AppCompatActivity {
                         //
                         // url 이동
                         //
-                        mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId=" + deviceId + "&token=" + token + "&osTypeCd=ANDROID&pushtype=" + pushType + "&version=" + appVersion); // 실서버 보안연결
+//                        mWebView.loadUrl("https://m.bbq.co.kr/main.asp?deviceId=" + deviceId + "&token=" + token + "&osTypeCd=ANDROID&pushtype=" + pushType + "&version=" + appVersion); // 실서버 보안연결
+                        mWebView.loadUrl("http://mtest.bbq.co.kr/main.asp?deviceId=" + deviceId + "&token=" + token + "&osTypeCd=ANDROID&pushtype=" + pushType + "&version=" + appVersion); // 실서버 보안연결
 //                        mWebView.loadUrl("https://m.bbq.co.kr/gps_test.asp");
                         progressBar.setVisibility(View.VISIBLE);
                         mWebView.setVisibility(View.VISIBLE);
+
+                        if (pushType.equals("Ubpay")) {
+                            UBModule.getUBpayModule().handleUbpayPush((Map<String, String>) intent.getExtras().get("remoteMessageData"));
+                        }
                     }
                 });
 
@@ -648,10 +655,6 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         mWebView.setVisibility(View.VISIBLE);
          */
-
-        // ubpay 앱모듈 인스턴스 획득
-        UBModule.getUBpayModule().initModule(this, UBModule.SERVER_TYPE_DEV); // 테스트서버
-//        UBModule.getUBpayModule().initModule(this); // 운영서버
     }
 
     @Override

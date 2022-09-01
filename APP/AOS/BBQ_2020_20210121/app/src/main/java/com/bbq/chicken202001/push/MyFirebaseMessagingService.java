@@ -19,6 +19,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.harex.android.ubpay.a35.UBModule;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Random;
 
@@ -29,6 +30,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public MyFirebaseMessagingService() {
 
     }
+
+    Map<String, String> mRemoteMessageData;
 
 //    @Override
 //    public void onCreate() {
@@ -69,7 +72,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         final Map<String, String> remoteMessageData = remoteMessage.getData();
 
         if (UBModule.getUBpayModule().isUbpayPush(remoteMessageData)) {
-            UBModule.getUBpayModule().handleUbpayPush(remoteMessageData);
+            Map<String, String> data = remoteMessage.getData();
+            data.put("pushType", "Ubpay");
+            mRemoteMessageData = remoteMessageData;
+            showNotification(data);
             return;
         }
 
@@ -143,6 +149,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("PUSHTYPE",pushtype);
+        intent.putExtra("remoteMessageData", (Serializable) mRemoteMessageData);
 
         intent.setAction(Intent.ACTION_MAIN);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
