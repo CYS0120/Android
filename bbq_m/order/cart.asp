@@ -7,7 +7,7 @@
 		sessionStorage.setItem("ss_order_type", "R");
 	}
 	// 송도맥주축제 (예약포장)
-	if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_") || sessionStorage.getItem("M_2609_0_") || sessionStorage.getItem("M_2610_0_")){
+	if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_") || sessionStorage.getItem("M_2593_0_") || sessionStorage.getItem("M_2594_0_") || sessionStorage.getItem("M_2595_0_") || sessionStorage.getItem("M_2596_0_") || sessionStorage.getItem("M_2597_0_") || sessionStorage.getItem("M_2609_0_") || sessionStorage.getItem("M_2610_0_")){
 		// $('#branch_name_p').html("<span>🎉 송도맥주축제 [현장방문] 🍺</span>");
 		sessionStorage.setItem("ss_branch_id", "7451401");
 		sessionStorage.setItem("ss_order_type", "P");
@@ -797,7 +797,7 @@
 				showAlertMsg({msg:"홈파티 사전예약은 배달만 가능합니다. 배달지를 선택해주세요.", ok: function(){
 					document.location.href='/order/delivery.asp?order_type=R';
 				}});
-			}else if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_") || sessionStorage.getItem("M_2609_0_") || sessionStorage.getItem("M_2610_0_")){
+			}else if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_") || sessionStorage.getItem("M_2593_0_") || sessionStorage.getItem("M_2594_0_") || sessionStorage.getItem("M_2595_0_") || sessionStorage.getItem("M_2596_0_") || sessionStorage.getItem("M_2597_0_") || sessionStorage.getItem("M_2609_0_") || sessionStorage.getItem("M_2610_0_")){
 				showAlertMsg({msg:"송도맥주축제 메뉴는 현장수령만 가능합니다.", ok: function(){
 					document.location.href='/order/payment.asp?order_type=P';
 				}});
@@ -1192,7 +1192,7 @@
 		// 2019-05-23 이벤트로 인해 생성
 
 		function goMenuList(){
-			if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_") || sessionStorage.getItem("M_2609_0_") || sessionStorage.getItem("M_2610_0_")){
+			if(sessionStorage.getItem("M_2600_0_") || sessionStorage.getItem("M_2589_0_") || sessionStorage.getItem("M_2590_0_") || sessionStorage.getItem("M_2591_0_") || sessionStorage.getItem("M_2592_0_") || sessionStorage.getItem("M_2593_0_") || sessionStorage.getItem("M_2594_0_") || sessionStorage.getItem("M_2595_0_") || sessionStorage.getItem("M_2596_0_") || sessionStorage.getItem("M_2597_0_") || sessionStorage.getItem("M_2609_0_") || sessionStorage.getItem("M_2610_0_")){
 				location.href='/menu/menuList.asp?anc=133&order_type='+sessionStorage.getItem("ss_order_type");
 			} else{
 				location.href='/menu/menuList.asp?order_type='+sessionStorage.getItem("ss_order_type");
