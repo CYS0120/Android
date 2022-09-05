@@ -633,6 +633,7 @@ public class MainActivity extends AppCompatActivity {
                         mWebView.setVisibility(View.VISIBLE);
 
                         if (pushType.equals("ubpay")) {
+                            // 커밋 안됨?
                             UBModule.getUBpayModule().handleUbpayPush((Map<String, String>) intent.getExtras().get("remoteMessageData"));
                         }
                     }
