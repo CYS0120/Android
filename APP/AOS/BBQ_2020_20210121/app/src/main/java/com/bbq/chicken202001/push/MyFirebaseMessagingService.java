@@ -73,7 +73,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (UBModule.getUBpayModule().isUbpayPush(remoteMessageData)) {
             Map<String, String> data = remoteMessage.getData();
-            data.put("pushType", "Ubpay");
+            data.put("pushType", "ubpay");
             mRemoteMessageData = remoteMessageData;
             showNotification(data);
             return;
@@ -149,7 +149,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("PUSHTYPE",pushtype);
-        intent.putExtra("remoteMessageData", (Serializable) mRemoteMessageData);
+        if (mRemoteMessageData != null) {
+            intent.putExtra("remoteMessageData", (Serializable) mRemoteMessageData);
+        }
 
         intent.setAction(Intent.ACTION_MAIN);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
