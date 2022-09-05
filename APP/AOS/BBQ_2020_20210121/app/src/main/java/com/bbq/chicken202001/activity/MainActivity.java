@@ -52,6 +52,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.harex.android.ubpay.a35.UBModule;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -717,34 +720,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ((requestCode == 401 || requestCode == 402)) {
-            if (data != null) {
-                String result = data.getStringExtra("result");
-                Log.d(TAG, "ubpay_done : " + result);
-                if (resultCode == RESULT_OK) {
-                    if (result.equals(UBModule.MANAGEPAYMENT)) { // 결제수단
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-                    } else if (result.equals(UBModule.APPROVAL)) { // 승인내역
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-                    } else if (result.equals("ZPMANAGEPAYMENT")) { // 상품권 충전 결제계좌
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-                    } else if (result.equals("ZPAPPROVAL")) { // 상품권 결제내역
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-                    } else if (result.equals(UBModule.PWCHANGE)) { // 결제비번 변경
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-                    } else if (result.equals(UBModule.EMAILCHANGE)) { // 이메일 변경
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-                    } else if (result.equals(UBModule.NOTICEEVENT)) { // 공지.이벤트
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-                    } else if (result.equals(UBModule.GUIDEUSE)) { // 이용안내
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-                    } else if (result.equals(UBModule.FAQ)) { // FAQ
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-                    } else if (result.equals(UBModule.CS)) { // 고객지원
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
-                    } else { // 결제요청 TID
-                        mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+            if (data != null && !ubpayParams.isEmpty()) {
+                try {
+                    JSONObject result = new JSONObject(data.getStringExtra("result"));
+                    Log.d(TAG, "ubpay_done : " + result);
+                    if (resultCode == RESULT_OK) {
+                        if (!result.get("code").equals("9"))
+                            mWebView.loadUrl("javascript:ubpay_done('"+ubpayParams+"')");
+                        else
+                            mWebView.loadUrl("javascript:ubpay_done('')");
+                    } else {
+                        mWebView.loadUrl("javascript:ubpay_done('')");
                     }
-                } else {
+                } catch (JSONException e) {
+                    e.printStackTrace();
                     mWebView.loadUrl("javascript:ubpay_done('')");
                 }
             } else {
