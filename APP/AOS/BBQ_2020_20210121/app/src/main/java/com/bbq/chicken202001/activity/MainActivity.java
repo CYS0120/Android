@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
         bottomToast = Toast.makeText(getApplicationContext(),"처리중", Toast.LENGTH_LONG);
 
         // ubpay 앱모듈 인스턴스 획득
-        UBModule.getUBpayModule().initModule(this, UBModule.SERVER_TYPE_DEV); // 테스트서버
-//        UBModule.getUBpayModule().initModule(this); // 운영서버
+        UBModule.getUBpayModule().initModule(getApplicationContext(), UBModule.SERVER_TYPE_DEV); // 테스트서버
+//        UBModule.getUBpayModule().initModule(getApplicationContext()); // 운영서버
 
 
         errorView = (TextView) findViewById(R.id.network_error_view);
